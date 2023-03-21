@@ -1,4 +1,3 @@
-Technology,Mode,Type,Component,Subcomponent,Region,Period,Usage,Reported value,Reported uncertainty,Reported unit,Non-unit conversion factor,Used value,Used uncertainty,Used unit,Value and uncertainty comment,Source reference,Source comment
 Integrated SMR + Haber-Bosch synthesis,,CAPEX,,,,,,670,,EUR/(t/a),,670,,#NAME?,,"DECHEMA, 2017",Table 35
 Integrated SMR + Haber-Bosch synthesis,,Fixed OPEX total,,,,,,100,,EUR/t,,100,,#NAME?,,"DECHEMA, 2017",Table 35
 Integrated SMR + Haber-Bosch synthesis,,Energy demand,Electricity,,,,,0.3,,GJ/t,,0.0833333333333333,,#NAME?,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
