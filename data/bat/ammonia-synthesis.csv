@@ -1,0 +1,12 @@
+Technology,Mode,Type,Component,Subcomponent,Region,Period,Usage,Reported value,Reported uncertainty,Reported unit,Non-unit conversion factor,Used value,Used uncertainty,Used unit,Value and uncertainty comment,Source reference,Source comment
+Integrated SMR + Haber-Bosch synthesis,,CAPEX,,,,,,670,,EUR/(t/a),,670,,#NAME?,,"DECHEMA, 2017",Table 35
+Integrated SMR + Haber-Bosch synthesis,,Fixed OPEX total,,,,,,100,,EUR/t,,100,,#NAME?,,"DECHEMA, 2017",Table 35
+Integrated SMR + Haber-Bosch synthesis,,Energy demand,Electricity,,,,,0.3,,GJ/t,,0.0833333333333333,,#NAME?,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+Integrated SMR + Haber-Bosch synthesis,,Energy demand,Natural gas,Feedstock,,,,21,,GJ/t,,5.83333333333333,,#NAME?,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+Integrated SMR + Haber-Bosch synthesis,,Energy demand,Natural gas,Fuel,,,,11.1,,GJ/t,,3.08333333333333,,#NAME?,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+Integrated SMR + Haber-Bosch synthesis,,Energy demand,Natural gas,,,,,29.7,2.1,GJ/t,,8.25,0.583333333333333,#NAME?,,"European Commission BAT, 2007",Table 2.14
+Air-separation unit + Haber-Bosch synthesis,,CAPEX,,,,,,643,,EUR/kWNH3,,379.242770167428,,#NAME?,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.","Pozo et al, 2022","Supplementary Information, Table 2"
+Air-separation unit + Haber-Bosch synthesis,,Energy demand,Hydrogen,,,,,0.178,,tH2/t,,5.93274,,#NAME?,,"Matzen et al, 2015",Page 6 / Table 10
+Air-separation unit + Haber-Bosch synthesis,,Energy demand,Heat,Air-separation unit,,,,2.604,,GJ/t,,0.723333333333333,,#NAME?,"This source claims 3.1 MJ/kg electricity denand for the ASU. Assuming a nitrogen demand of 0.84 tonnes per tonne of ammonia, this amounts of an electricity demand of 3.1×0.85 GJ per tonne of ammonia.","Matzen et al, 2015",Page 6 / Table 10
+Air-separation unit + Haber-Bosch synthesis,,Energy demand,Heat,Haber-Bosch process,,,,2.06,,MWh/t,,2.06,,#NAME?,"According to this source, a heat duty of 103.54 MW is required for a daily production of 1202.6 tonnes, which is amounts to 24×103.54 MWh / 1202.6 t.","Matzen et al, 2015",Page 6 / Table 10
+,,Output,Ammonia,,,,,1,,t,,1,,#NAME?,,,
