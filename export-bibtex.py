@@ -21,11 +21,12 @@ def formatEntries(bib_data, style, form, exclude_fields = None):
     ret = []
     for identifier in bib_data.entries:
         entry = bib_data.entries[identifier]
+        fields = entry.fields.__dict__['_dict']
         ret.append({
             'identifier': identifier,
             'citation': next(style.format_entries([entry])).text.render(form),
-            'doi': entry.fields.__dict__['_dict']['doi'],
-            'url': entry.fields.__dict__['_dict']['url'],
+            'doi': fields['doi'] if 'doi' in fields else '',
+            'url': fields['url'] if 'url' in fields else '',
         })
 
     return ret
