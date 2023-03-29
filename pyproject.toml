@@ -5,7 +5,7 @@ description = "Potsdam open-source techno-economic database"
 authors = ["Philipp Verpoort <philipp.verpoort@pik-potsdam.de>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "~3.10.10"
 pybtex = "^0.24.0"
 pybtex-apa-style = "^1.3"
 
