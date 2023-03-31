@@ -99,6 +99,27 @@ pytz = ">=2020.1"
 test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
 
 [[package]]
+name = "pint"
+version = "0.20.1"
+description = "Physical quantities module"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "Pint-0.20.1-py3-none-any.whl", hash = "sha256:68afe65665542ee3ec99f69f043b1d39bfe7c6d61b786940157138fd08b838fb"},
+    {file = "Pint-0.20.1.tar.gz", hash = "sha256:387cf04078dc7dfe4a708033baad54ab61d82ab06c4ee3d4922b1e45d5626067"},
+]
+
+[package.extras]
+babel = ["babel (<=2.8)"]
+dask = ["dask"]
+numpy = ["numpy (>=1.19.5)"]
+pandas = ["pint-pandas (>=0.3)"]
+test = ["pytest", "pytest-cov", "pytest-mpl", "pytest-subtests"]
+uncertainties = ["uncertainties (>=3.1.6)"]
+xarray = ["xarray"]
+
+[[package]]
 name = "pybtex"
 version = "0.24.0"
 description = "A BibTeX-compatible bibliography processor in Python"
@@ -222,4 +243,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10.10"
-content-hash = "d9853c895318dfc41dabb93a1794a0c90124592f79bdfada5ee9e55f44acfa65"
+content-hash = "45eef9f833e8b89bd21031d727b9b4df8c22805f6c6b9835de41fa49015cbe0c"

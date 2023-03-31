@@ -1,0 +1,13 @@
+@context(density=0,energycontent=0) flow_conversion = flocon
+    # density is the mass density per volume
+    # energycontent is the energy content per mass
+
+    [mass] -> [energy]: value * energycontent
+    [energy] -> [mass]: value / energycontent
+
+    [volume] -> [mass]: value * density
+    [mass] -> [volume]: value / density
+
+    [volume] -> [energy]: value * density * energycontent
+    [energy] -> [volume]: value / density / energycontent
+@end
