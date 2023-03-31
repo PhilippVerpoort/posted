@@ -1,0 +1,32 @@
+HT-DAC,,capex,,,,2018,1126.8,,MUSD,,0.98,Mt,Value reported for a capacity of 0.98 Mt-CO2/year.,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
+LT-DAC,,capex,,,,2015,730,,EUR,,,,,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
+,,fopex_rel,,,,2018,4,,percent,,,,,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
+HT-DAC,,energy demand,elec,,,2018,366,,kWh,,,,,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
+HT-DAC,,energy demand,heat,,,2018,5.25,,GJ,,,,Assuming high temperature (900 °C).,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
+LT-DAC,,energy demand,elec,,,2015,694,,kWh,,,,Including compression.,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
+LT-DAC,,energy demand,heat,,,2015,2084,,kWh,,,,Assuming low temperature (80–100 °C).,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
+LT-DAC,,fopex_rel,,,,2020,4,,percent,,,,,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
+HT-DAC,,capex,,,,2020,815,,EUR,,,,,"Fasihi et al., 2019",
+HT-DAC,,fopex_rel,,,,2020,3.7,,percent,,,,,"Fasihi et al., 2019",
+HT-DAC,,lifetime,,,,2020,25,,year,,,,,"Fasihi et al., 2019",
+LT-DAC,,lifetime,,,,2020,20,,year,,,,,"Fasihi et al., 2019",
+,,flh,,,,2020,8000,,hour,,,,,"Fasihi et al., 2019",perhaps an overoptimistic assumption
+,,energy_dem,elec,CO2 compression,,2021,111,,kWh,,,,,Madhu et al. (2021),
+HT-DAC,,energy_dem,elec,Non-compression,,2021,345,56,kWh,,,,,Madhu et al. (2021),
+HT-DAC,,energy_dem,heat,,,2021,6.6,1.5,GJ,,,,Assuming high temperature (850–900 °C).,Madhu et al. (2021),
+LT-DAC,,energy_dem,elec,Non-compression,,2021,180,110,kWh,,,,,Madhu et al. (2021),
+LT-DAC,,energy_dem,heat,,,2021,6.25,1.25,GJ,,,,Assuming low temperature (80–120 °C).,Madhu et al. (2021),
+,,energy_dem,elec,CO2 compression,,2022,0.5,,Gj,,,,,IEA Direct Air Capture (2022),
+HT-DAC,,energy_dem,elec,Non-compression,,2022,0.8,,Gj,,,,,IEA Direct Air Capture (2022),
+HT-DAC,,energy_dem,heat,,,2022,5.3,,GJ,,,,Assuming a series of units operating at high temperature (between 300°C and 900°C).,IEA Direct Air Capture (2022),
+LT-DAC,,energy_dem,elec,Non-compression,,2022,2.3,,GJ,,,,,IEA Direct Air Capture (2022),
+LT-DAC,,energy_dem,heat,,,2022,7.2,,GJ,,,,Assuming medium temperature (80-120°C).,IEA Direct Air Capture (2022),
+HT-DAC,,feedstock_dem,water,,,2022,25,25,t,,,,,IEA Direct Air Capture (2022),
+HT-DAC,,capex,,,,,80,,USD,,,,optimistic assumption,Ozkan et al. (2022),
+HT-DAC,,capex,,,,,150,,USD,,,,conservative assumption,Ozkan et al. (2022),
+LT-DAC,,capex,,,,,200,,USD,,,,optimistic assumption,Ozkan et al. (2022),
+LT-DAC,,capex,,,,,1000,,USD,,,,conservative assumption,Ozkan et al. (2022),
+HT-DAC,,fopex_tot,,,,,40,,USD,,,,optimistic assumption,Ozkan et al. (2022),
+HT-DAC,,fopex_tot,,,,,80,,USD,,,,conservative assumption,Ozkan et al. (2022),
+LT-DAC,,fopex_tot,,,,,5,,USD,,,,optimistic assumption,Ozkan et al. (2022),
+LT-DAC,,fopex_tot,,,,,50,,USD,,,,conservative assumption,Ozkan et al. (2022),

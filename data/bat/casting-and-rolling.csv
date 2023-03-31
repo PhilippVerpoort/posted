@@ -1,0 +1,6 @@
+,,energy_dem,elec,Casting,,,0.0103,,MWh,,,,,"Devlin et al, 2022",Section 2.2.2
+,,energy_dem,elec,Casting,,,0.03,,GJ,,,,,"Worrell et al, 2007",Table 2.1.5
+,,energy_dem,heat,Casting,,,0.03,,GJ,,,,,"Worrell et al, 2007",Table 2.1.5
+,,energy_dem,elec,Rolling,,,0.3,,GJ,,,,,"Worrell et al, 2007",Table 2.1.5
+,,energy_dem,heat,Rolling,,,1.6,,GJ,,,,,"Worrell et al, 2007",Table 2.1.5
+,,feedstock_dem,lqsteel,,,,1,,t,,,,,,

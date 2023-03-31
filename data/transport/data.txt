@@ -1,0 +1,24 @@
+Hydrogen transport cost:
+
+Shipping: 2.0–2.6 USD/kg
+Pipeline: 0.5–1.0 USD/kg
+
+Multiply by 0.92 * 1000/33.33 to get EUR/MWh
+
+
+
+Ammonia transport:
+
+0.68ct/kWh = 68 EUR/MWh
+1kWhNH3 = 0.194 kgNH3
+3.5 ct/kg
+35 EUR/t
+
+
+
+Methanol transport:
+
+0.69ct/kWh
+1kgMeOH = 5.54 kWhMeOH
+3.8 ct/kg
+38 EUR/t

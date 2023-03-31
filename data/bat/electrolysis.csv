@@ -1,0 +1,20 @@
+Alkaline,,capex,,Full plant,,,950,450,USD,,,,calculated from range given in report,IEA Electrolyser special report
+Alkaline,,capex,,Electrolyser system,,,400,,EUR,,,,for a 100 MW(el) electrolyser,Vartiainen et al. (2022)
+Alkaline,,capex,,Electrolyser system,,,140,,EUR,,,,for a 100 MW(el) electrolyser,Vartiainen et al. (2022)
+Alkaline,,capex,,Full plant,,2030,444,,EUR,,,,for a 100 MW(el) electrolyser,ISE Fraunhofer (2021)
+Alkaline,,capex,,Full plant,,2030,726,,EUR,,,,for a 5 MW(el) electrolyser,ISE Fraunhofer (2021)
+Alkaline,,capex,,Full plant,,2050,134,,USD,,,,"optimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022)
+Alkaline,,capex,,Full plant,,2050,326,,USD,,,,"pessimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022)
+PEM,,capex,,Full plant,,,1450,350,USD,,,,calculated from range given in report,IEA Electrolyser special report
+PEM,,capex,,Full plant,,2030,500,,EUR,,,,for a 100 MW(el) electrolyser,ISE Fraunhofer (2021)
+PEM,,capex,,Full plant,,2030,730,,EUR,,,,for a 5 MW(el) electrolyser,ISE Fraunhofer (2021)
+Solid Oxide,,capex,,Full plant,,,4200,1400,USD,,,,calculated from range given in report,IEA Electrolyser special report
+Alkaline,,fopex_abs,,,,,20,5,EUR,,,,electrolyser annual maintenance costs,ISE Fraunhofer (2021)
+Alkaline,,fopex_rel,,,,,1,,percent,,,,"percent of CAPEX, value for a solar PV plant",IRENA Global Hydrogen trade costs (2022)
+Alkaline,,fopex_rel,,,,,3,,percent,,,,"percent of CAPEX, value for onshore wind",IRENA Global Hydrogen trade costs (2022)
+PEM,,fopex_abs,,,,,15,5,EUR,,,,electrolyser annual maintenance costs,ISE Fraunhofer (2021)
+Alkaline,,energy_dem,elec,,,2050,45,,kWh,,,kg,"LHV efficiency. Optimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022)
+Alkaline,,energy_dem,elec,,,2050,48,,kWh,,,kg,"LHV efficiency. Optimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022)
+PEM,,energy_dem,elec,,,,54.2,,kWh,,,kg,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani et al. (2021)
+PEM,,feedstock_dem,water,,,,10,,kg,,,kg,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani et al. (2021)
+,,feedstock_dem,water,,,,9,,kg,,,kg,The demand of water amounts to 9kg per kg of hydrogen.,"IEA, 2021"

@@ -10,3 +10,7 @@ techs = readYAMLDataFile('technologies')
 techs_missing = [t for t in techs if not pathOfBATFile(t).exists()]
 if techs_missing:
     raise Exception(f"BAT files missing for technologies: {techs_missing}")
+
+
+# load dataformats
+dataformats = readYAMLDataFile('dataformat')

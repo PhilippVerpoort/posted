@@ -1,0 +1,19 @@
+flowid,name,default unit
+elec,Electricity,MWh
+heat,Heat,MWh
+h2,Hydrogen,MWh
+nh3,Ammonia,t
+ch4,Methane,MWh
+meoh,Methanol,t
+ng,Natural gas,MWh
+coal,Coal,MWh
+identifier,name,default unit
+co2,Purified CO2,t
+ironore,Iron ore,t
+dri,Directly reduced iron,t
+alloys,Alloys,t
+lime,Lime,t
+liqsteel,Liquid steel,t
+sfsteel,Semi-finished steel,t
+hvcs,Higher-value chemicals,t
+urea,Urea,t
