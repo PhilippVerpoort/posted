@@ -3,8 +3,8 @@ ammonia-asu:
     desc:
         Synthesis of ammonia (NH₃) from hydrogen (H₂) and nitrogen (N₂), where the latter is obtained from ambient air
         via an air-separation unit.
-    type: conversion
-    primary-operation: nh3
+    class: conversion
+    primary: nh3
     default-ref-units:
         capacity: t/a
         operation: t
@@ -12,8 +12,8 @@ ammonia-asu:
 ammonia-integrated:
     name: Integrated ammonia plant (SMR + HB)
     desc: Steam-methane reforming of natural gas plus Haber-Bosch synthesis
-    type: conversion
-    primary-operation: nh3
+    class: conversion
+    primary: nh3
     default-ref-units:
         capacity: t/a
         operation: t
@@ -21,8 +21,8 @@ ammonia-integrated:
 casting-and-rolling:
     name: Casting and rolling steel
     desc: Casting and rolling of liquid steel into semi-finished steel
-    type: conversion
-    primary-operation: sfsteel
+    class: conversion
+    primary: sfsteel
     default-ref-units:
         capacity: t/a
         operation: t
@@ -30,8 +30,8 @@ casting-and-rolling:
 direct-air-capture:
     name: Direct-air capture
     desc: Capturing CO2 directly from ambient air, making it available as a purified gas for captuing or utilisation.
-    type: conversion
-    primary-operation: co2
+    class: conversion
+    primary: co2
     default-ref-units:
         capacity: t/a
         operation: t
@@ -39,8 +39,8 @@ direct-air-capture:
 direct-reduction:
     name: Direct-reduction shaft
     desc: A furnace/shaft to directly reduce iron ore into DRI/HBI.
-    type: conversion
-    primary-operation: dri
+    class: conversion
+    primary: dri
     default-ref-units:
         capacity: t/a
         operation: t
@@ -50,8 +50,8 @@ electric-arc-furnace:
     desc:
         An electric-arc furnace, which uses electricity directly to create temperature sufficiently high to melt iron 
         and other components into liquid steel.
-    type: conversion
-    primary-operation: liqsteel
+    class: conversion
+    primary: liqsteel
     default-ref-units:
         capacity: t/a
         operation: t
@@ -59,8 +59,8 @@ electric-arc-furnace:
 electrolysis:
     name: Electrolysis
     desc: Water electrolysis, which yields hydrogen and oxygen.
-    type: conversion
-    primary-operation: h2
+    class: conversion
+    primary: h2
     default-ref-units:
         capacity: kW
         operation: MWh
@@ -68,7 +68,7 @@ electrolysis:
 hydrogen-storage:
     name: Hydrogen storage
     desc: Long-term storage of hydrogen
-    type: storage
+    class: storage
     primary-content: h2
     default-ref-units:
         capacity: t/a
@@ -77,8 +77,8 @@ hydrogen-storage:
 low-temp-heat-pump:
     name: Low-temperature industrial heat pump
     desc: Industrial heat pumps providing heat at a temperature of 80–120°C.
-    type: conversion
-    primary-operation: heat
+    class: conversion
+    primary: heat
     default-ref-units:
         capacity: kW
         operation: MWh
@@ -86,8 +86,8 @@ low-temp-heat-pump:
 methanation:
     name: Methanation
     desc: Industrial plants combining H₂ and CO₂ to yield methane (Sabatier process).
-    type: conversion
-    primary-operation: ch4
+    class: conversion
+    primary: ch4
     default-ref-units:
         capacity: kW
         operation: MWh
@@ -95,7 +95,7 @@ methanation:
 methane-transport:
     name: Methane transport
     desc: Long-distance transportation of methane
-    type: transport
+    class: transport
     primary-commodity: ch4
     default-ref-units:
         capacity: t/a
@@ -104,8 +104,8 @@ methane-transport:
 methanol-synthesis:
     name: Methanol synthesis
     desc: Synthesis of methanol from H₂ and CO₂.
-    type: conversion
-    primary-operation: meoh
+    class: conversion
+    primary: meoh
     default-ref-units:
         capacity: t/a
         operation: t
@@ -113,8 +113,8 @@ methanol-synthesis:
 methanol-integrated:
     name: Methanol integrated
     desc: Integrated steam-methane reforming and synthesis of methanol.
-    type: conversion
-    primary-operation: meoh
+    class: conversion
+    primary: meoh
     default-ref-units:
         capacity: t/a
         operation: t
@@ -122,8 +122,8 @@ methanol-integrated:
 methanol-to-olefine-synthesis:
     name: Methanol-to-olefine process
     desc: Synthesis of ethylene, propylene, and by-products from methanol.
-    type: conversion
-    primary-operation: hvcs
+    class: conversion
+    primary: hvcs
     default-ref-units:
         capacity: t/a
         operation: t
@@ -131,8 +131,8 @@ methanol-to-olefine-synthesis:
 urea-synthesis:
     name: Urea synthesis
     desc: Stand-alone synthesis of urea from NH₃ and CO₂ (w/o SMR-based ammonia plant).
-    type: conversion
-    primary-operation: urea
+    class: conversion
+    primary: urea
     default-ref-units:
         capacity: t/a
         operation: t
