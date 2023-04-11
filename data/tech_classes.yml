@@ -26,6 +26,11 @@ conversion:
           desc: Variable operational expenditure
           rep_dim: currency
           ref_dim: quantity
+        ocf:
+          name: OCF
+          desc: Operational capacity factor
+          rep_dim: dimensionless
+          ref_dim: dimensionless
         energy_dem:
           name: Energy demand
           desc: Energy demand

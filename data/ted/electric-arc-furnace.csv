@@ -9,7 +9,7 @@
 ,primary,energy_dem,elec,,,,2.4,,MJ,,,kg,,"Devlin et al, 2022",Section 2.2.2
 ,primary,energy_dem,elec,,,,0.525,,MWh,,,,,"Hegemann et al, 2020",
 ,primary,energy_dem,elec,,,,2.07,,GJ,,,,,"Otto et al, 2017",Figure 6
-,primary,energy_dem,elec,,,,475,165,kWh,,,0.165,,"Rechberger et al, 2020",Section 4.2.1
+,primary,energy_dem,elec,,,,475,165,kWh,,,,,"Rechberger et al, 2020",Section 4.2.1
 ,primary,energy_dem,elec,,,,0.753,,MWh,,,,,"Vogl et al, 2018",Section 3.1
 ,primary,energy_dem,elec,,,,1.7,,GJ,,,,,"Worrell et al, 2007",Table 2.1.5
 ,primary,energy_dem,heat,,,,0.6,,GJ,,,,,"Worrell et al, 2007",Table 2.1.5
@@ -22,13 +22,13 @@
 ,secondary,energy_dem,ng,,,,0.15,,GJ,,,,,"Worrell et al, 2007",Section 2.1.4
 ,secondary,energy_dem,elec,,,,0.667,,MWh,,,,,"Vogl et al, 2018",Section 3.1
 ,secondary,energy_dem,elec,,,,0.4,,MWh,,,,,"Ecorys, 2014",Table 3.1
-,secondary,energy_dem,Heat,,,,0.43,,GJ,,,,,"Ecorys, 2014",Table 3.1
+,secondary,energy_dem,heat,,,,0.43,,GJ,,,,,"Ecorys, 2014",Table 3.1
 ,primary,feedstock_dem,dri,,,,1.1,,t,,,,,"Devlin et al, 2022",Section 2.2.2
 ,primary,feedstock_dem,dri,,,,1.03,,t,,,,,"Otto et al, 2017",Figure 6
 ,primary,feedstock_dem,steelscrap,,,,0.17,,t,,,,,"Agora Energiewende, 2022",
 ,secondary,feedstock_dem,steelscrap,,,,1.09,,t,,,,,"Ecorys, 2014",Table 3.1
 ,,feedstock_dem,oxygen,,,,0.5,,t,,,,,"Agora Energiewende, 2022",
-,,feedstock_dem,oxygen,,,,50,,Nm3,,,,,"Ecorys, 2014",Table 3.1
+,,feedstock_dem,oxygen,,,,50,,Nm³,,,,,"Ecorys, 2014",Table 3.1
 ,,feedstock_dem,oxygen,,,,0.5,,t,,,,,"Otto et al, 2017",Figure 6
 ,,feedstock_dem,nitrogen,,,,0.5,,t,,,,,"Otto et al, 2017",Figure 6
 ,,feedstock_dem,alloys,,,,0.011,,t,,,,,"Agora Energiewende, 2022",
@@ -36,6 +36,6 @@
 ,,feedstock_dem,alloys,,,,0.011,,t,,,,,"Vogl et al, 2018",Section 2.1
 ,,feedstock_dem,lime,,,,0.05,,t,,,,,"Agora Energiewende, 2022",
 ,,feedstock_dem,lime,,,,0.05,,t,,,,,"Vogl et al, 2018",Section 2.1
-,,feedstock_dem,graphite_electrodes,,,,0.002,,t,,,,,"Agora Energiewende, 2022",
-,,feedstock_dem,graphite_electrodes,,,,0.003,,t,,,,,"Ecorys, 2014",Table 3.1
-,,feedstock_dem,graphite_electrodes,,,,0.002,,t,,,,,"Vogl et al, 2018",Section 2.1
+,,feedstock_dem,graph_electr,,,,0.002,,t,,,,,"Agora Energiewende, 2022",
+,,feedstock_dem,graph_electr,,,,0.003,,t,,,,,"Ecorys, 2014",Table 3.1
+,,feedstock_dem,graph_electr,,,,0.002,,t,,,,,"Vogl et al, 2018",Section 2.1

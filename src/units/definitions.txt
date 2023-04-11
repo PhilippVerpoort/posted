@@ -11,11 +11,14 @@ ppm = 1e-6
     [mass] -> [energy]: value * energycontent
     [energy] -> [mass]: value / energycontent
 
-    [volume] -> [mass]: value * density
-    [mass] -> [volume]: value / density
+    [mass] / [time] -> [power]: value * energycontent
+    [power] -> [mass] / [time]: value / energycontent
 
-    [volume] -> [energy]: value * density * energycontent
-    [energy] -> [volume]: value / density / energycontent
+    [length] ** 3 -> [mass]: value * density
+    [mass] -> [length]**3: value / density
+
+    [length] ** 3 -> [energy]: value * density * energycontent
+    [energy] -> [length] ** 3: value / density / energycontent
 @end
 
 

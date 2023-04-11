@@ -2,6 +2,6 @@
 ,,capex,,,,,300,,EUR,,,,,Dechema (2017),Table 35
 ,,fopex_rel,,,,,3,,percent,,,,,"TNO, 2021",Section Costs at the end of page 1.
 ,,fopex_tot,,,,,45,,EUR,,,,,Dechema (2017),Table 35
-,,vopex,,,,,0.02,,MEUR,,,kt,,"TNO, 2021",Section Costs at the end of page 1.
+,,vopex,,,,,0.02,,MEUR,,,kilometric_ton,,"TNO, 2021",Section Costs at the end of page 1.
 ,,energy_dem,elec,,,,5,,GJ,,,,,Dechema (2017),Section 4.5.3
 ,,feedstock_dem,meoh,,,,2.28,,t,,,,,Dechema (2017),Section 4.5.3

@@ -1,4 +1,4 @@
-,,capex,,,,,348,,MUSD,0.667,1.5,Mt,,"Jarvis and Samsatli, 2018",Section 2.1.1
+,,capex,,,,,348,,MUSD,0.667,1.5,Mt/a,,"Jarvis and Samsatli, 2018",Section 2.1.1
 ,,energy_dem,elec,,,,173.7,27.2,kWh,,,,Quelle prüfen; hat keine Wärme GJ/t,"Fiamelda et al, 2020",
 ,,energy_dem,elec,,,,91.5,68.5,kWh,,,,,"Jarvis and Samsatli, 2018",Section 2.1.2
 ,,energy_dem,heat,,,,3.29,,GJ,,,,,"DECHEMA, 2017",Section 4.3.1

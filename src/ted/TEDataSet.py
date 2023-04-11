@@ -44,11 +44,25 @@ class TEDataSet:
         self.__normaliseUnits()
 
 
+    # get dataset
+    def getDataSet(self):
+        return self._dataset
+
+
     # check bat dataframe is consistent
     def __checkConsistency(self):
         # TODO: check reported units match dataFormats['bat']
 
         # TODO: check reference units match techs[techid]
+
+        # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
+        # TODO: implement those types so we don't need to remove them
+        dropTypes = ['flh', 'lifetime', 'energy_eff']
+        self._dataset = self._dataset.query(f"not type.isin({dropTypes})").reset_index(drop=True)
+
+        # replace Nm³/Sm³ with m³
+        # TODO: implement these units in the unit registry. Same for LHV and HHV.
+        self._dataset['reported_unit'] = self._dataset['reported_unit'].replace('(Nm³|Sm³)', 'm³', regex=True)
 
         pass
 
@@ -60,7 +74,7 @@ class TEDataSet:
 
         # add default reference unit
         ref_dims = {id: specs['ref_dim'] for id, specs in self._tspecs['entry_types'].items()}
-        self._dataset['reference_unit_default'] = self._dataset['type'].map(ref_dims)
+        self._dataset['reference_unit_default'] = self._dataset['type'].map(ref_dims).astype(str)
         for dim, unit in defaultUnits.items():
             self._dataset['reference_unit_default'] = self._dataset['reference_unit_default'].replace(dim, unit, regex=True)
         flowTypeRef = flowTypes[self._tspecs['primary']]
@@ -80,7 +94,7 @@ class TEDataSet:
 
         # add default reported unit
         rep_dims = {id: specs['rep_dim'] for id, specs in self._tspecs['entry_types'].items()}
-        self._dataset['reported_unit_default'] = self._dataset['type'].map(rep_dims)
+        self._dataset['reported_unit_default'] = self._dataset['type'].map(rep_dims).astype(str)
         for dim, unit in defaultUnits.items():
             self._dataset['reported_unit_default'] = self._dataset['reported_unit_default'].replace(dim, unit, regex=True)
         typesWithFlow = [typeid for typeid, typespecs in self._tspecs['entry_types'].items() if 'quantity' in typespecs['rep_dim']]
@@ -128,5 +142,3 @@ class TEDataSet:
             axis=1,
             inplace=True,
         )
-
-        print(self._dataset)
