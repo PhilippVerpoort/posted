@@ -3,7 +3,7 @@ import pathlib
 import pandas as pd
 import yaml
 
-from src.path import pathOfDataFile, pathOfTEDFile
+from src.path import pathOfDataFile
 
 
 # read BAT CSV input file

@@ -29,8 +29,8 @@ class TEDataSet:
 
         # read bat data from CSV files
         mapColsDtypes = {
-            colname: dataFormats['bat'][colname]['dtype']
-            for colname in dataFormats['bat']
+            colname: colspecs['dtype']
+            for colname, colspecs in dataFormats.items()
         }
         self._dataset = pd.concat([
             readTEDFile(p, mapColsDtypes)

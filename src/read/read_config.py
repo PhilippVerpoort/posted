@@ -23,7 +23,7 @@ if techs_missing:
 
 
 # read dataformats
-dataFormats = readYAMLDataFile('dataformat')
+dataFormats = readYAMLDataFile('ted_format')
 
 
 # read flow types
