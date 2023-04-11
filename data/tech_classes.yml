@@ -1,0 +1,55 @@
+conversion:
+    name: Conversion and production technologies
+    entry_types:
+        capex:
+          name: CAPEX
+          desc: Capital expenditure
+          rep_dim: currency
+          ref_dim: quantity/time
+        fopex_rel:
+          name: Fixed OPEX (rel)
+          desc: Fixed operational expenditure (relative to CAPEX)
+          rep_dim: dimensionless
+          ref_dim: dimensionless
+        fopex_abs:
+          name: Fixed OPEX (abs)
+          desc: Fixed operational expenditure (absolute; referring to primary production capacity)
+          rep_dim: currency
+          ref_dim: quantity/time
+        fopex_tot:
+          name: Fixed OPEX (tot)
+          desc: Fixed operational expenditure (total; referring to primary output)
+          rep_dim: currency
+          ref_dim: quantity
+        vopex:
+          name: Variable OPEX
+          desc: Variable operational expenditure
+          rep_dim: currency
+          ref_dim: quantity
+        energy_dem:
+          name: Energy demand
+          desc: Energy demand
+          rep_dim: quantity
+          ref_dim: quantity
+        feedstock_dem:
+          name: Feedstock demand
+          desc: Feedstock demand
+          rep_dim: quantity
+          ref_dim: quantity
+          allowed_units: quantity
+        by_products:
+          name: By-products
+          desc: Other products produced alongside the primary output
+          rep_dim: quantity
+          ref_dim: quantity
+        total_cost:
+          name: Total cost
+          desc: Total cost of the service provided by the technology
+          rep_dim: currency
+          ref_dim: quantity
+transport:
+    name: Transport technologies
+    entry_types: ~
+storage:
+    name: Storage technologies
+    entry_types: ~

@@ -1,6 +1,12 @@
-@context(density=0,energycontent=0) flow_conversion = flocon
-    # density is the mass density per volume
+# dimensionless stuff
+percent = 1e-2 = pct
+ppm = 1e-6
+
+
+# flows
+@context(energycontent=0,density=0) flow_conversion = flocon
     # energycontent is the energy content per mass
+    # density is the mass density per volume
 
     [mass] -> [energy]: value * energycontent
     [energy] -> [mass]: value / energycontent
@@ -10,4 +16,15 @@
 
     [volume] -> [energy]: value * density * energycontent
     [energy] -> [volume]: value / density / energycontent
+@end
+
+
+# currencies
+USD = [currency]
+EUR = nan USD
+GBP = nan USD
+
+@context currency_conversion = curcon
+    EUR = 1.11254 USD
+    GBP = 1.16956 EUR
 @end

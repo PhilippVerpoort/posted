@@ -9,8 +9,8 @@ def pathOfFile(dname, fname):
 def pathOfDataFile(fname):
     return (BASE_PATH / 'data' / fname).resolve()
 
-def pathOfBATFile(fname):
-    return (BASE_PATH / 'data' / 'bat' / f"{fname}.csv").resolve()
+def pathOfTEDFile(tid: str):
+    return (BASE_PATH / 'data' / 'ted' / f"{tid}.csv").resolve()
 
 def pathOfOutputFile(fname):
     return (BASE_PATH / 'output' / fname).resolve()

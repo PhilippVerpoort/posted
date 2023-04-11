@@ -4,136 +4,100 @@ ammonia-asu:
         Synthesis of ammonia (NH₃) from hydrogen (H₂) and nitrogen (N₂), where the latter is obtained from ambient air
         via an air-separation unit.
     class: conversion
-    primary: nh3
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: chemicals
+    primary: nh3
 ammonia-integrated:
     name: Integrated ammonia plant (SMR + HB)
     desc: Steam-methane reforming of natural gas plus Haber-Bosch synthesis
     class: conversion
-    primary: nh3
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: chemicals
+    primary: nh3
 casting-and-rolling:
     name: Casting and rolling steel
     desc: Casting and rolling of liquid steel into semi-finished steel
     class: conversion
-    primary: sfsteel
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: steel
+    primary: sfsteel
 direct-air-capture:
     name: Direct-air capture
     desc: Capturing CO2 directly from ambient air, making it available as a purified gas for captuing or utilisation.
     class: conversion
-    primary: co2
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: energy
+    primary: co2
 direct-reduction:
     name: Direct-reduction shaft
     desc: A furnace/shaft to directly reduce iron ore into DRI/HBI.
     class: conversion
+    sector: steel
     primary: dri
-    default-ref-units:
-        capacity: t/a
-        operation: t
-    sector: seteel
 electric-arc-furnace:
     name: Electric-arc furnace
     desc:
         An electric-arc furnace, which uses electricity directly to create temperature sufficiently high to melt iron 
         and other components into liquid steel.
     class: conversion
-    primary: liqsteel
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: steel
+    primary: liqsteel
 electrolysis:
     name: Electrolysis
     desc: Water electrolysis, which yields hydrogen and oxygen.
     class: conversion
+    sector: energy
     primary: h2
     default-ref-units:
-        capacity: kW
-        operation: MWh
-    sector: energy
+        capex: kW
+        fopex_abs: kW
 hydrogen-storage:
     name: Hydrogen storage
     desc: Long-term storage of hydrogen
     class: storage
-    primary-content: h2
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: energy
+    primary: h2
 low-temp-heat-pump:
     name: Low-temperature industrial heat pump
     desc: Industrial heat pumps providing heat at a temperature of 80–120°C.
     class: conversion
+    sector: energy
     primary: heat
     default-ref-units:
-        capacity: kW
-        operation: MWh
-    sector: energy
+        capex: kW
+        fopex_abs: kW
 methanation:
     name: Methanation
     desc: Industrial plants combining H₂ and CO₂ to yield methane (Sabatier process).
     class: conversion
+    sector: energy
     primary: ch4
     default-ref-units:
-        capacity: kW
-        operation: MWh
-    sector: energy
+        capex: kW
+        fopex_abs: kW
 methane-transport:
     name: Methane transport
     desc: Long-distance transportation of methane
     class: transport
-    primary-commodity: ch4
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: energy
+    primary: ch4
 methanol-synthesis:
     name: Methanol synthesis
     desc: Synthesis of methanol from H₂ and CO₂.
     class: conversion
-    primary: meoh
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: energy
+    primary: meoh
 methanol-integrated:
     name: Methanol integrated
     desc: Integrated steam-methane reforming and synthesis of methanol.
     class: conversion
-    primary: meoh
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: energy
+    primary: meoh
 methanol-to-olefine-synthesis:
     name: Methanol-to-olefine process
     desc: Synthesis of ethylene, propylene, and by-products from methanol.
     class: conversion
-    primary: hvcs
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: chemicals
+    primary: hvcs
 urea-synthesis:
     name: Urea synthesis
     desc: Stand-alone synthesis of urea from NH₃ and CO₂ (w/o SMR-based ammonia plant).
     class: conversion
-    primary: urea
-    default-ref-units:
-        capacity: t/a
-        operation: t
     sector: chemicals
+    primary: urea

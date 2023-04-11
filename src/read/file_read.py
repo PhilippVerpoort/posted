@@ -1,13 +1,20 @@
+import pathlib
+
 import pandas as pd
 import yaml
 
-from src.path import pathOfDataFile, pathOfBATFile
+from src.path import pathOfDataFile, pathOfTEDFile
 
 
 # read BAT CSV input file
-def readBATFile(t: str, mapColnamesDtypes: dict):
-    path = pathOfBATFile(t)
+def readTEDFile(path: pathlib.Path, mapColnamesDtypes: dict):
     return pd.read_csv(path, names=list(mapColnamesDtypes.keys()), dtype=mapColnamesDtypes, encoding='utf-8')
+
+
+# read CSV data file
+def readCSVDataFile(fname: str):
+    path = pathOfDataFile(fname)
+    return pd.read_csv(path)
 
 
 # read YAML config file

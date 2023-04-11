@@ -18,44 +18,7 @@ bat:
       desc: Type of entry that this row contributes.
       dtype: category
       required: True
-      allowed:
-        - typeid: capex
-          name: CAPEX
-          desc: Capital expenditure
-          allowed_rep_units: currency
-        - typeid: fopex_rel
-          name: Fixed OPEX (rel)
-          desc: Fixed operational expenditure (relative to CAPEX)
-          allowed_rep_units: dimensionless
-        - typeid: fopex_abs
-          name: Fixed OPEX (abs)
-          desc: Fixed operational expenditure (absolute; referring to primary production capacity)
-          allowed_rep_units: currency
-        - typeid: fopex_tot
-          name: Fixed OPEX (tot)
-          desc: Fixed operational expenditure (total; referring to primary output)
-          allowed_rep_units: currency
-        - typeid: vopex
-          name: Variable OPEX
-          desc: Variable operational expenditure
-          allowed_rep_units: currency
-        - typeid: energy_dem
-          name: Energy demand
-          desc: Energy demand
-          allowed_rep_units: quantity
-        - typeid: feedstock_dem
-          name: Feedstock demand
-          desc: Feedstock demand
-          allowed_rep_units: quantity
-          allowed_units: quantity
-        - typeid: by_products
-          name: By-products
-          desc: Other products produced alongside the primary output
-          allowed_rep_units: quantity
-        - typeid: total_cost
-          name: Total cost
-          desc: Total cost of the service provided by the technology
-          allowed_rep_units: currency
+      allowed: Allowed values are specific to each technology class.
     flow_type:
       name: Flow type
       desc:
