@@ -43,6 +43,9 @@ class TEDataSet:
         # adjust units to match default units for inputs and outputs
         self.__normaliseUnits()
 
+        # insert missing periods
+        self.__insertMissingPeriods()
+
 
     # get dataset
     def getDataSet(self):
@@ -142,3 +145,82 @@ class TEDataSet:
             axis=1,
             inplace=True,
         )
+
+
+    # insert missing periods
+    def __insertMissingPeriods(self):
+        self._dataset.fillna({'period': 2023}, inplace=True)
+
+
+    # select data
+    def selectData(self,
+            periods: float | list | np.ndarray,
+            subtechs: None | str | list = None,
+            modes: None | str | list = None,
+            sources: None | str | list = None,
+        ):
+
+        # filter by selected sources
+        if sources is None:
+            selected = self._dataset
+        elif isinstance(sources, str):
+            selected = self._dataset.query(f"src_ref=='{sources}'")
+        else:
+            selected = self._dataset.query(f"src_ref.isin({sources})")
+        selected = selected.reset_index(drop=True)
+
+        # expand technology specifications for all subtechs and modes
+        expandCols = {}
+        for colID, selectArg in [('subtech', subtechs), ('mode', modes)]:
+            if subtechs is None and f"{colID}s" in self._tspecs and self._tspecs[f"{colID}s"]:
+                expandCols[colID] = self._tspecs[f"{colID}s"]
+            elif isinstance(subtechs, str):
+                expandCols[colID] = [subtechs]
+            elif isinstance(subtechs, list):
+                expandCols[colID] = subtechs
+        selected = self.__expandTechs(selected, expandCols)
+
+        # drop columns that cannot be considered when selecting periods and aggregating
+        selected = selected.drop(columns=['region', 'unc', 'comment', 'src_comment'])
+
+        # group by identifying columns and select periods/generate time series
+        selected = self.__selectPeriods(selected, periods)
+
+        return selected
+
+
+    # expand based on subtechs, modes, and period
+    def __expandTechs(self,
+            selected: pd.DataFrame,
+            expandCols: dict,
+         ):
+
+        for colID, colVals in expandCols.items():
+            selected = pd.concat([
+                selected[selected[colID].notna()],
+                selected[selected[colID].isna()].drop(columns=[colID]).merge(pd.DataFrame.from_dict({colID: colVals}), how='cross'),
+            ]) \
+            .reset_index(drop=True)
+
+        return selected.sort_values(by=['subtech', 'mode', 'type', 'component', 'src_ref', 'period'])
+
+
+    # group by identifying columns and select periods/generate time series
+    def __selectPeriods(self, selected: pd.DataFrame, periods: float | list | np.ndarray):
+        groupCols = ['subtech', 'mode', 'type', 'component', 'src_ref']
+        grouped = selected.groupby(groupCols, dropna=False)
+
+        ret = []
+        for keys, ids in grouped.groups.items():
+            rows = selected.loc[ids].sort_values(by='period')
+            newRows = rows \
+                .merge(pd.DataFrame.from_dict({'period': periods}), on='period', how='outer') \
+                .sort_values(by='period') \
+                .set_index('period')
+            newRows['value'].interpolate(method='index', inplace=True)
+            newRows['unit'] = rows.iloc[0]['unit']
+            newRows[groupCols] = keys
+            newRows = newRows.query(f"period in @periods")
+            ret.append(newRows)
+
+        return pd.concat(ret).reset_index(drop=True)

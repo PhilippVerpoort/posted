@@ -24,12 +24,18 @@ direct-air-capture:
     class: conversion
     sector: energy
     primary: co2
+    subtechs:
+        - HT-DAC
+        - LT-DAC
 direct-reduction:
     name: Direct-reduction shaft
     desc: A furnace/shaft to directly reduce iron ore into DRI/HBI.
     class: conversion
     sector: steel
     primary: dri
+    modes:
+        - h2
+        - ng
 electric-arc-furnace:
     name: Electric-arc furnace
     desc:
@@ -38,6 +44,9 @@ electric-arc-furnace:
     class: conversion
     sector: steel
     primary: liqsteel
+    modes:
+        - primary
+        - secondary
 electrolysis:
     name: Electrolysis
     desc: Water electrolysis, which yields hydrogen and oxygen.
@@ -47,6 +56,10 @@ electrolysis:
     default-ref-units:
         capex: kW
         fopex_abs: kW
+    subtechs:
+        - Alkaline
+        - PEM
+        - Solid Oxide
 hydrogen-storage:
     name: Hydrogen storage
     desc: Long-term storage of hydrogen
