@@ -16,7 +16,7 @@ class TEDataSet:
     def __init__(self, tid: str):
         self._tid = tid
         self._tspecs = copy.deepcopy(techs[tid])
-        self._dataset = None
+        self._dataset: pd.DataFrame = None
 
 
     # loading data and performing basic initial processing
@@ -26,7 +26,7 @@ class TEDataSet:
         if not self._loadPaths:
             raise Exception(f"No TED files to load for technology '{self._tid}'.")
 
-        # read bat data from CSV files
+        # read TED data from CSV files
         mapColsDtypes = {
             colname: colspecs['dtype']
             for colname, colspecs in dataFormats.items()
@@ -36,7 +36,7 @@ class TEDataSet:
             for p in self._loadPaths
         ])
 
-        # check the bat dataframe is consistent
+        # check that the TED is consistent
         self.__checkConsistency()
 
         # adjust units to match default units for inputs and outputs
@@ -49,7 +49,7 @@ class TEDataSet:
 
 
     # get dataset
-    def getDataSet(self):
+    def getDataset(self):
         return self._dataset
 
 
