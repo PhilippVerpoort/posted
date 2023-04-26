@@ -13,17 +13,16 @@ from src.python.units.units import convUnitDF
 
 class TEDataSet:
     # initialise
-    def __init__(self, tid: str, load_default: bool = True, load_other: list = None):
+    def __init__(self, tid: str):
         self._tid = tid
         self._tspecs = copy.deepcopy(techs[tid])
         self._dataset = None
 
-        self._loadPaths = ([pathOfTEDFile(tid)] if load_default else []) + \
-                          ([Path(p) for p in load_other] if load_other else [])
-
 
     # loading data and performing basic initial processing
-    def load(self):
+    def load(self, *load_other, load_default: bool = True):
+        self._loadPaths = [Path(p) for p in load_other] + ([pathOfTEDFile(self._tid)] if load_default else [])
+
         if not self._loadPaths:
             raise Exception(f"No TED files to load for technology '{self._tid}'.")
 
@@ -45,6 +44,8 @@ class TEDataSet:
 
         # insert missing periods
         self.__insertMissingPeriods()
+
+        return self
 
 
     # get dataset
