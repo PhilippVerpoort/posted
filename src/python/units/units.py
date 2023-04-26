@@ -3,8 +3,8 @@ from typing import Union
 import pandas as pd
 import pint
 
-from src.path import pathOfFile
-from src.read.read_config import flowTypes
+from src.python.path import pathOfFile
+from src.python.read.read_config import flowTypes
 
 
 # define new registry
@@ -12,7 +12,7 @@ ureg = pint.UnitRegistry()
 
 
 # load definitions
-ureg.load_definitions(pathOfFile('src/units', 'definitions.txt'))
+ureg.load_definitions(pathOfFile('src/python/units', 'definitions.txt'))
 
 
 # convert units based on currency and flow type

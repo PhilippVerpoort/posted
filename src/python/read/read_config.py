@@ -1,5 +1,5 @@
-from src.path import pathOfTEDFile
-from src.read.file_read import readYAMLDataFile, readCSVDataFile
+from src.python.path import pathOfTEDFile
+from src.python.read.file_read import readYAMLDataFile, readCSVDataFile
 
 
 # load options

@@ -5,10 +5,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.path import pathOfTEDFile
-from src.read.file_read import readTEDFile
-from src.read.read_config import techs, dataFormats, flowTypes, defaultUnits
-from src.units.units import convUnitDF
+from src.python.path import pathOfTEDFile
+from src.python.read.file_read import readTEDFile
+from src.python.read.read_config import techs, dataFormats, flowTypes, defaultUnits
+from src.python.units.units import convUnitDF
 
 
 class TEDataSet:
