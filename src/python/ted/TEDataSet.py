@@ -7,7 +7,7 @@ import pandas as pd
 
 from src.python.path import pathOfTEDFile
 from src.python.read.file_read import readTEDFile
-from src.python.read.read_config import techs, dataFormats, flowTypes, defaultUnits
+from src.python.read.read_config import techs, dataFormats, flowTypes, defaultUnits, defaultMasks
 from src.python.units.units import convUnitDF
 
 
@@ -159,9 +159,12 @@ class TEDataSet:
             subtechs: None | str | list = None,
             modes: None | str | list = None,
             sources: None | str | list = None,
+            masks: None | list = None,
+            mask_default: bool = True,
+            aggregate: bool = True,
         ):
 
-        # filter by selected sources
+        # query by selected sources
         if sources is None:
             selected = self._dataset
         elif isinstance(sources, str):
@@ -182,10 +185,33 @@ class TEDataSet:
         selected = self.__expandTechs(selected, expandCols)
 
         # drop columns that cannot be considered when selecting periods and aggregating
-        selected = selected.drop(columns=['region', 'unc', 'comment', 'src_comment'])
+        selected.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
 
         # group by identifying columns and select periods/generate time series
         selected = self.__selectPeriods(selected, periods)
+
+        # set default weight to 1
+        selected.insert(0, 'weight', 1.0)
+
+        # apply masks
+        if masks is None:
+            masks = []
+        if mask_default:
+            masks += defaultMasks[self._tid]
+        for mask in masks:
+            q = ' & '.join([f"{key}=='{val}'" for key, val in mask['query'].items()])
+            selected.loc[selected.query(q).index, 'weight'] = mask['weight']
+
+        # aggregate
+        if aggregate:
+            selected['value'].fillna(0.0, inplace=True)
+            selected['value'] *= selected['weight']
+            selected = selected \
+                .groupby(['subtech', 'mode', 'type', 'period', 'flow_type', 'src_ref'], dropna=False) \
+                .agg({'value': 'sum'}) \
+                .groupby(['subtech', 'mode', 'type', 'period', 'flow_type'], dropna=False) \
+                .agg({'value': 'mean'}) \
+                .reset_index()
 
         return selected
 
@@ -208,7 +234,7 @@ class TEDataSet:
 
     # group by identifying columns and select periods/generate time series
     def __selectPeriods(self, selected: pd.DataFrame, periods: float | list | np.ndarray):
-        groupCols = ['subtech', 'mode', 'type', 'component', 'src_ref']
+        groupCols = ['subtech', 'mode', 'type', 'flow_type', 'component', 'src_ref']
         grouped = selected.groupby(groupCols, dropna=False)
 
         ret = []
@@ -221,7 +247,7 @@ class TEDataSet:
             newRows['value'].interpolate(method='index', inplace=True)
             newRows['unit'] = rows.iloc[0]['unit']
             newRows[groupCols] = keys
-            newRows = newRows.query(f"period in @periods")
+            newRows = newRows.query(f"period in @periods").reset_index()
             ret.append(newRows)
 
         return pd.concat(ret).reset_index(drop=True)

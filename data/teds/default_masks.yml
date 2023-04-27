@@ -1,0 +1,6 @@
+direct-air-capture:
+  - query:
+      type: capex
+      src_ref: Ozkan et al. (2022)
+    weight: 0
+    comment: All CAPEX data given is misquoted from a paper by Fuss et al (2018).
