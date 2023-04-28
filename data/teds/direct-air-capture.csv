@@ -30,3 +30,39 @@ HT-DAC,,fopex_tot,,,,,40,,USD,,,,optimistic assumption,Ozkan et al. (2022),
 HT-DAC,,fopex_tot,,,,,80,,USD,,,,conservative assumption,Ozkan et al. (2022),
 LT-DAC,,fopex_tot,,,,,5,,USD,,,,optimistic assumption,Ozkan et al. (2022),
 LT-DAC,,fopex_tot,,,,,50,,USD,,,,conservative assumption,Ozkan et al. (2022),
+LT-DAC,,capex,,,,2050,199,,EUR,,,t/a,conservative assumption,"Fasihi et al., 2019",
+LT-DAC,,capex,,,,2050,84,,EUR,,,t/a,optimistic assumption,"Fasihi et al., 2019",
+HT-DAC,,capex,,,,2050,222,,EUR,,,t/a,conservative assumption,"Fasihi et al., 2019",
+HT-DAC,,capex,,,,2050,93,,EUR,,,t/a,optimistic assumption,"Fasihi et al., 2019",
+,,fopex_rel,,,,2020,4,,percent,,,,,"Lux et al., 2023",
+LT-DAC,,lifetime,,,,2050,30,,year,,,,,"Lux et al., 2023",
+LT-DAC,,lifetime,,,,2050,25,,year,,,,,"Lux et al., 2023",
+LT-DAC,,energy_dem,elec,,,2050,1685,,kWh,,,,,"Lux et al., 2023",
+LT-DAC,,energy_dem,elec,,,2050,1339,,kWh,,,,,"Lux et al., 2023",
+HT-DAC,,energy_dem,elec,,,,0.49,,MWh,,,,,"Socolow et al., 2011",
+HT-DAC,,energy_dem,ht_heat,,,,8.1,,GJ,,,,,"Socolow et al., 2011",
+HT-DAC,,flh,,,,,8000,,hour,,,,,"Socolow et al., 2011",
+HT-DAC,,capex,,,,,2900,,EUR,,,t/a,"Used line "Total Installed capital cost" for the "realistic" column","Socolow et al., 2011",table 2.5
+HT-DAC,,vopex,,,,,120,,EUR,,,,"Used line "Maintenance labor and chemicals" cost for the "realistic" column","Socolow et al., 2011",table 2.5
+HT-DAC,,capex,,,,,2200,,EUR,,,t/a,"Used line "Total Installed capital cost" for the "optimistic" column","Socolow et al., 2011",table 2.5
+HT-DAC,,vopex,,,,,120,,EUR,,,,"Used line "Maintenance labor and chemicals" cost for the "optimistic" column","Socolow et al., 2011",table 2.5
+LT-DAC,,energy_dem,elec,,,,0.6,,GJ,,,,,Realmonte et al. (2019),
+LT-DAC,,energy_dem,heat,,,,4.4,,GJ,,,,,Realmonte et al. (2019),
+LT-DAC,,energy_dem,elec,,,,1.1,,GJ,,,,,Realmonte et al. (2019),
+LT-DAC,,energy_dem,heat,,,,7.2,,GJ,,,,,Realmonte et al. (2019),
+HT-DAC,,capex,,,,,1255,,USD,,,t/a,Upper bound,NASEM (2019),table 5.3
+HT-DAC,,capex,,,,,675,,USD,,,t/a,Lower bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,om,,,,18,,USD,,,,Lower bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,om,,,,33,,USD,,,,Upper bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,labour,,,,6,,USD,,,,Lower bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,labour,,,,10,,USD,,,,Upper bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,other,,,,5,,USD,,,,Lower bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,other,,,,7,,USD,,,,Upper bound,NASEM (2019),table 5.3
+LT-DAC,,capex_ann,,,,,186,,USD,,,t/a,High cost scenario,NASEM (2019),table 5.10
+LT-DAC,,capex_ann,,,,,70,,USD,,,t/a,Low cost scenario,NASEM (2019),table 5.10
+LT-DAC,,vopex,adsorbent,,,,19,,USD,,,,High cost scenario,NASEM (2019),table 5.10
+LT-DAC,,vopex,adsorbent,,,,9,,USD,,,,Low cost scenario,NASEM (2019),table 5.10
+LT-DAC,,capex_ann,,,,,988,,USD,,,t/a,Highest cost scenario,NASEM (2019),table 5.10
+LT-DAC,,capex_ann,,,,,3.6,,USD,,,t/a,Lowest cost scenario,NASEM (2019),table 5.10
+LT-DAC,,vopex,adsorbent,,,,4.3,,USD,,,,Highest cost scenario,NASEM (2019),table 5.10
+LT-DAC,,vopex,adsorbent,,,,1.3,,USD,,,,Lowest cost scenario,NASEM (2019),table 5.10

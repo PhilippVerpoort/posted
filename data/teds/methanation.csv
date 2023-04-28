@@ -22,3 +22,5 @@ Biological,,capex,,,,2050,300,,EUR,,,,,Thema et al. (2019)
 ,,fopex_rel,,,,2030,3,,percent,,,,,Fasihi et al. (2015)
 ,,lifetime,,,,2030,30,,year,,,,,Fasihi et al. (2015)
 ,,energy_eff,,,,2030,77.9,,percent,,,,H2 to SNG efficiency,Fasihi et al. (2015)
+,,feedstock_dem,co2,,,,0.2,,t,,,,,???
+,,feedstock_dem,h2,,,,0.037,,t,,,,,???
