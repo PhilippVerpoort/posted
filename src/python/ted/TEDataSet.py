@@ -27,12 +27,12 @@ class TEDataSet:
             raise Exception(f"No TED files to load for technology '{self._tid}'.")
 
         # read TED data from CSV files
-        mapColsDtypes = {
+        mapColnamesDtypes = {
             colname: colspecs['dtype']
             for colname, colspecs in dataFormats.items()
         }
         self._dataset = pd.concat([
-            readTEDFile(p, mapColsDtypes)
+            readTEDFile(p, mapColnamesDtypes)
             for p in self._loadPaths
         ])
 

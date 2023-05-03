@@ -1,2 +1,4 @@
 source("src/R/ted/TEDataSet.R")
-loadDataset('direct-air-capture')
+dataset <- loadDataset('direct-air-capture')
+
+print(dataset)

@@ -3,15 +3,29 @@ library(yaml)
 source("src/R/path.R")
 
 
+# mappings pandas dtypes to R dataframe types
+dtypeMapping <- list(
+    category="factor",
+    str="character",
+    float="numeric"
+)
+
+
 # read TED CSV input file
-readTEDFile <- function (path, mapColnamesDtypes){
+readTEDFile <- function (path, mapColnamesDtypes) {
+    # apply mapping from pandas dtypes to R dataframe types
+    colClasses <- c()
+    for (colName in names(mapColnamesDtypes)) {
+        colClasses <- append(colClasses, dtypeMapping[[mapColnamesDtypes[[colName]]]])
+    }
+
     return(read.csv(
-      path,
-      col.names=list(mapColnamesDtypes.keys()),
-      dtype=mapColnamesDtypes,
-      sep=',',
-      quote='"',
-      encoding='utf-8'
+        path,
+        col.names=names(mapColnamesDtypes),
+        colClasses=colClasses,
+        sep=',',
+        quote='"',
+        encoding='utf-8'
     ))
 }
 
@@ -20,10 +34,10 @@ readTEDFile <- function (path, mapColnamesDtypes){
 readCSVDataFile <- function (fname) {
     fpath <- pathOfDataFile(fname)
     return(read.csv(
-      fpath,
-      sep=',',
-      quote='"',
-      encoding='utf-8'
+        fpath,
+        sep=',',
+        quote='"',
+        encoding='utf-8'
     ))
 }
 
