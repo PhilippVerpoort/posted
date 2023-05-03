@@ -6,18 +6,28 @@ import yaml
 from src.python.path import pathOfDataFile
 
 
-# read BAT CSV input file
+# read TED CSV input file
 def readTEDFile(path: pathlib.Path, mapColnamesDtypes: dict):
-    return pd.read_csv(path, names=list(mapColnamesDtypes.keys()), dtype=mapColnamesDtypes, encoding='utf-8')
+    return pd.read_csv(
+        path,
+        names=list(mapColnamesDtypes.keys()),
+        dtype=mapColnamesDtypes,
+        sep=',',
+        quotechar='"',
+        encoding='utf-8',
+    )
 
 
 # read CSV data file
 def readCSVDataFile(fname: str):
-    path = pathOfDataFile(fname)
-    return pd.read_csv(path)
+    fpath = pathOfDataFile(fname)
+    return pd.read_csv(fpath)
 
 
 # read YAML config file
 def readYAMLDataFile(fname: str):
-    path = pathOfDataFile(f"{fname}.yml")
-    return yaml.load(open(path, 'r', encoding='utf-8').read(), Loader=yaml.FullLoader)
+    fpath = pathOfDataFile(f"{fname}.yml")
+    fhandle = open(fpath, 'r', encoding='utf-8')
+    ret = yaml.load(stream=fhandle, Loader=yaml.FullLoader)
+    fhandle.close()
+    return ret
