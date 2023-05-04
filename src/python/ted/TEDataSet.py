@@ -53,7 +53,7 @@ class TEDataSet:
         return self._dataset
 
 
-    # check bat dataframe is consistent
+    # check dataset is consistent
     def __checkConsistency(self):
         # TODO: check reported units match dataFormats['bat']
 
@@ -67,8 +67,6 @@ class TEDataSet:
         # replace Nm³/Sm³ with m³
         # TODO: implement these units in the unit registry. Same for LHV and HHV.
         self._dataset['reported_unit'] = self._dataset['reported_unit'].replace('(Nm³|Sm³)', 'm³', regex=True)
-
-        pass
 
 
     # convert value, unc, and units (reported and reference) to default units
