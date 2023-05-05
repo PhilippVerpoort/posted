@@ -16,7 +16,7 @@ class TEDataSet:
     def __init__(self, tid: str):
         self._tid = tid
         self._tspecs = copy.deepcopy(techs[tid])
-        self._dataset: pd.DataFrame = None
+        self._dataset: None|pd.DataFrame = None
 
         # determine default reference units of entry types from technology class
         self._refFlowType = flowTypes[self._tspecs['primary']]
@@ -128,7 +128,12 @@ class TEDataSet:
 
 
     # convert values to defined units (use defaults if non provided)
-    def convertUnits(self, type_units: dict = {}, flow_units: dict = {}):
+    def convertUnits(self, type_units=None, flow_units=None):
+        if flow_units is None:
+            flow_units = {}
+        if type_units is None:
+            type_units = {}
+
         # get default units
         repUnitsDef = []
         for typeid in self._dataset['type'].unique():
