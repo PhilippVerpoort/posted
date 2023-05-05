@@ -5,7 +5,7 @@ conversion:
           name: CAPEX
           desc: Capital expenditure
           rep_dim: currency
-          ref_dim: quantity/time
+          ref_dim: flow/time
         fopex_rel:
           name: Fixed OPEX (rel)
           desc: Fixed operational expenditure (relative to CAPEX)
@@ -15,17 +15,17 @@ conversion:
           name: Fixed OPEX (abs)
           desc: Fixed operational expenditure (absolute; referring to primary production capacity)
           rep_dim: currency
-          ref_dim: quantity/time
+          ref_dim: flow/time
         fopex_tot:
           name: Fixed OPEX (tot)
           desc: Fixed operational expenditure (total; referring to primary output)
           rep_dim: currency
-          ref_dim: quantity
+          ref_dim: flow
         vopex:
           name: Variable OPEX
           desc: Variable operational expenditure
           rep_dim: currency
-          ref_dim: quantity
+          ref_dim: flow
         ocf:
           name: OCF
           desc: Operational capacity factor
@@ -34,24 +34,23 @@ conversion:
         energy_dem:
           name: Energy demand
           desc: Energy demand
-          rep_dim: quantity
-          ref_dim: quantity
+          rep_dim: flow
+          ref_dim: flow
         feedstock_dem:
           name: Feedstock demand
           desc: Feedstock demand
-          rep_dim: quantity
-          ref_dim: quantity
-          allowed_units: quantity
+          rep_dim: flow
+          ref_dim: flow
         by_products:
           name: By-products
           desc: Other products produced alongside the primary output
-          rep_dim: quantity
-          ref_dim: quantity
+          rep_dim: flow
+          ref_dim: flow
         total_cost:
           name: Total cost
           desc: Total cost of the service provided by the technology
           rep_dim: currency
-          ref_dim: quantity
+          ref_dim: flow
 transport:
     name: Transport technologies
     entry_types: ~

@@ -18,9 +18,23 @@ class TEDataSet:
         self._tspecs = copy.deepcopy(techs[tid])
         self._dataset: pd.DataFrame = None
 
+        # determine default reference units of entry types from technology class
+        self._refFlowType = flowTypes[self._tspecs['primary']]
+        self._repUnitsDef = {}
+        for typeid in self._tspecs['entry_types']:
+            refUnit = self._tspecs['entry_types'][typeid]['ref_dim']
+            units = defaultUnits | {'flow': self._refFlowType['default_unit']}
+            for d, u in units.items():
+                refUnit = re.sub(d, u, refUnit)
+            self._repUnitsDef[typeid] = refUnit
+
+        # override with default reference unit of specific technology
+        if 'default-ref-units' in self._tspecs:
+            self._repUnitsDef |= self._tspecs['default-ref-units']
+
 
     # loading data and performing basic initial processing
-    def load(self, *load_other, load_default: bool = True):
+    def load(self, *load_other, load_default: bool = True, to_default_units: bool = True):
         self._loadPaths = [Path(p) for p in load_other] + ([pathOfTEDFile(self._tid)] if load_default else [])
 
         if not self._loadPaths:
@@ -39,18 +53,17 @@ class TEDataSet:
         # check that the TED is consistent
         self.__checkConsistency()
 
-        # adjust units to match default units for inputs and outputs
-        self.__normaliseUnits()
-
         # insert missing periods
         self.__insertMissingPeriods()
 
+        # apply references to values and units
+        self.__normaliseUnits()
+
+        # convert values to default units
+        if to_default_units:
+            self.convertUnits()
+
         return self
-
-
-    # get dataset
-    def getDataset(self):
-        return self._dataset
 
 
     # check dataset is consistent
@@ -61,6 +74,7 @@ class TEDataSet:
 
         # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
         # TODO: implement those types so we don't need to remove them
+        # TODO: drop all rows with types not declared in `tech_classes.yml`
         dropTypes = ['flh', 'lifetime', 'energy_eff']
         self._dataset = self._dataset.query(f"not type.isin({dropTypes})").reset_index(drop=True)
 
@@ -69,46 +83,23 @@ class TEDataSet:
         self._dataset['reported_unit'] = self._dataset['reported_unit'].replace('(Nm³|Sm³)', 'm³', regex=True)
 
 
-    # convert value, unc, and units (reported and reference) to default units
+    # insert missing periods
+    def __insertMissingPeriods(self):
+        self._dataset.fillna({'period': 2023}, inplace=True)
+
+
+    # apply references to values and units
     def __normaliseUnits(self):
         # default reference value is 1.0
         self._dataset['reference_value'].fillna(1.0, inplace=True)
 
-        # add default reference unit
-        ref_dims = {id: specs['ref_dim'] for id, specs in self._tspecs['entry_types'].items()}
-        self._dataset['reference_unit_default'] = self._dataset['type'].map(ref_dims).astype(str)
-        for dim, unit in defaultUnits.items():
-            self._dataset['reference_unit_default'] = self._dataset['reference_unit_default'].replace(dim, unit, regex=True)
-        flowTypeRef = flowTypes[self._tspecs['primary']]
-        self._dataset['reference_unit_default'] = self._dataset['reference_unit_default'].replace('quantity', flowTypeRef['default_unit'], regex=True)
-
-        # override with default reference unit of specific technology
-        if 'default-ref-units' in self._tspecs:
-            for typeid, unit in self._tspecs['default-ref-units'].items():
-                self._dataset.loc[self._dataset['type']==typeid, 'reference_unit_default'] = unit
-
-        # add reference unit conversion factor if a reference unit is provided
+        # add default reference unit conversion factor
+        self._dataset['reference_unit_default'] = self._dataset['type'].map(self._repUnitsDef).astype(str)
         self._dataset['reference_unit_factor'] = np.where(
             self._dataset['reference_unit'].notna(),
-            convUnitDF(self._dataset, 'reference_unit', 'reference_unit_default', flowTypeRef),
+            convUnitDF(self._dataset, 'reference_unit', 'reference_unit_default', self._refFlowType),
             1.0,
         )
-
-        # add default reported unit
-        rep_dims = {id: specs['rep_dim'] for id, specs in self._tspecs['entry_types'].items()}
-        self._dataset['reported_unit_default'] = self._dataset['type'].map(rep_dims).astype(str)
-        for dim, unit in defaultUnits.items():
-            self._dataset['reported_unit_default'] = self._dataset['reported_unit_default'].replace(dim, unit, regex=True)
-        typesWithFlow = [typeid for typeid, typespecs in self._tspecs['entry_types'].items() if 'quantity' in typespecs['rep_dim']]
-        condFlow = (self._dataset['type'].isin(typesWithFlow))
-        self._dataset.loc[condFlow, 'reported_unit_default'] = \
-            self._dataset.loc[condFlow].apply(lambda row:
-            re.sub('quantity', flowTypes[row['flow_type']]['default_unit'], row['reported_unit_default']),
-            axis=1,
-        )
-
-        # add reported unit conversion factor
-        self._dataset['reported_unit_factor'] = convUnitDF(self._dataset, 'reported_unit', 'reported_unit_default')
 
         # set non-unit conversion factor to 1.0 if not set otherwise
         self._dataset['conv_factor'].fillna(1.0, inplace=True)
@@ -116,27 +107,17 @@ class TEDataSet:
         # set converted value and unit
         self._dataset.insert(7, 'value',
             self._dataset['reported_value'] \
-          * self._dataset['reported_unit_factor'] \
           / self._dataset['reference_value'] \
           / self._dataset['reference_unit_factor'] \
           * self._dataset['conv_factor']
         )
         self._dataset.insert(8, 'unc',
             self._dataset['reported_unc'] \
-          * self._dataset['reported_unit_factor'] \
           / self._dataset['reference_value'] \
           / self._dataset['reference_unit_factor'] \
           * self._dataset['conv_factor']
         )
-        self._dataset.insert(9, 'unit',
-            self._dataset.apply(lambda row:
-                row['reported_unit_default'] + '/' + (row['reference_unit_default'] if '/' not in
-                row['reference_unit_default'] else ('('+row['reference_unit_default'])+')'),
-                axis=1,
-            )
-        )
-        condDimensionless = (self._dataset['unit']=='dimensionless/dimensionless')
-        self._dataset.loc[condDimensionless, 'unit'] = 'dimensionless'
+        self._dataset.insert(9, 'unit', self._dataset['reported_unit'])
 
         # drop old unit and value columns
         self._dataset.drop(
@@ -146,9 +127,43 @@ class TEDataSet:
         )
 
 
-    # insert missing periods
-    def __insertMissingPeriods(self):
-        self._dataset.fillna({'period': 2023}, inplace=True)
+    # convert values to defined units (use defaults if non provided)
+    def convertUnits(self, type_units: dict = {}, flow_units: dict = {}):
+        # get default units
+        repUnitsDef = []
+        for typeid in self._dataset['type'].unique():
+            repUnit = self._tspecs['entry_types'][typeid]['rep_dim']
+            for d, u in defaultUnits.items():
+                repUnit = re.sub(d, u, repUnit)
+            if 'flow' not in repUnit:
+                repUnitsDef.append({'type': typeid, 'unit_convert': repUnit})
+            else:
+                for flowid in self._dataset.query(f"type=='{typeid}'")['flow_type'].unique():
+                    repUnitFlow = re.sub('flow', flowTypes[flowid]['default_unit'], repUnit)
+                    repUnitsDef.append({'type': typeid, 'flow_type': flowid, 'unit_convert': repUnitFlow})
+
+        # override from function argument
+        for record in repUnitsDef:
+            if record['type'] in type_units:
+                record['unit_convert'] = type_units[record['type']]
+            elif 'flow_type' in record and record['flow_type'] in flow_units:
+                record['unit_convert'] = flow_units[record['flow_type']]
+
+        # add reported unit conversion factor
+        self._dataset = self._dataset.merge(
+            pd.DataFrame.from_records(repUnitsDef),
+            on=['type', 'flow_type'],
+        )
+        convFactor = convUnitDF(self._dataset, 'unit', 'unit_convert')
+        self._dataset['value'] *= convFactor
+        self._dataset['unc'] *= convFactor
+        self._dataset.drop(columns=['unit'], inplace=True)
+        self._dataset.rename(columns={'unit_convert': 'unit'}, inplace=True)
+
+
+    # get dataset
+    def getDataset(self):
+        return self._dataset
 
 
     # select data
@@ -194,7 +209,7 @@ class TEDataSet:
         # apply masks
         if masks is None:
             masks = []
-        if mask_default:
+        if mask_default and self._tid in defaultMasks:
             masks += defaultMasks[self._tid]
         for mask in masks:
             q = ' & '.join([f"{key}=='{val}'" for key, val in mask['query'].items()])
@@ -206,9 +221,9 @@ class TEDataSet:
             selected['value'] *= selected['weight']
             selected = selected \
                 .groupby(['subtech', 'mode', 'type', 'period', 'flow_type', 'src_ref'], dropna=False) \
-                .agg({'value': 'sum'}) \
+                .agg({'value': 'sum', 'unit': 'first'}) \
                 .groupby(['subtech', 'mode', 'type', 'period', 'flow_type'], dropna=False) \
-                .agg({'value': 'mean'}) \
+                .agg({'value': 'mean', 'unit': 'first'}) \
                 .reset_index()
 
         return selected
