@@ -1,6 +1,11 @@
 conversion:
     name: Conversion and production technologies
     entry_types:
+        lifetime:
+          name: Lifetime
+          desc: Expected time a facility can be in production for
+          rep_dim: time
+          ref_dim: time
         capex:
           name: CAPEX
           desc: Capital expenditure

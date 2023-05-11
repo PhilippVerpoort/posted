@@ -5,10 +5,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+import pint
+
 from src.python.path import pathOfTEDFile
 from src.python.read.file_read import readTEDFile
-from src.python.read.read_config import techs, dataFormats, flowTypes, defaultUnits, defaultMasks
-from src.python.units.units import convUnitDF
+from src.python.read.read_config import techs, dataFormats, flowTypes, defaultUnits, defaultMasks, techClasses
+from src.python.units.units import convUnitDF, ureg
+from src.python.ted.exceptions import ConsistencyException
 
 
 class TEDataSet:
@@ -66,15 +69,147 @@ class TEDataSet:
         return self
 
 
-    # check dataset is consistent
+     # check allowed dimensions for a flow type
+    def __allowed_flow_dims(self,flow_type):
+        if flow_type != flow_type: 
+            allowed_dims = ['[currency]']
+        else:
+            
+            flow_type_data = flowTypes[flow_type]
+
+            allowed_dims = [str(ureg.Quantity(flow_type_data["default_unit"]).dimensionality)] # defualt units dimension is always accepted
+            if '[mass]' not in allowed_dims: # [mass] is always accepted as dimension
+                allowed_dims += ['[mass]']
+
+            if(flow_type_data["energycontent_LHV"] == flow_type_data["energycontent_LHV"] or \
+               flow_type_data["energycontent_HHV"] == flow_type_data["energycontent_HHV"]):
+                if '[length] ** 2 * [mass] / [time] ** 2' not in allowed_dims:
+                    allowed_dims += ['[length] ** 2 * [mass] / [time] ** 2']
+
+            if(flow_type_data["density_norm"] == flow_type_data["density_norm"] or \
+                flow_type_data["density_std"] == flow_type_data["density_std"]):
+                allowed_dims += ['[volume]']
+                allowed_dims += ['[length] ** 3']
+        return allowed_dims
+
+    # check bat dataframe is consistent
     def __checkConsistency(self):
+
+        # check if subtechs and modes in data match defined categories
+        for col in [('subtech', 'subtechs'), ('mode', 'modes')]:
+            if col[1] in techs[self._tid]:
+                for index,row in self._dataset[[col[0]]].iterrows():
+                    row = row[col[0]]
+                    if row not in techs[self._tid][col[1]]:
+
+                        # NaNs in subtech are accepted; only real values can violate consistency here
+                        if row == row:
+                            raise ConsistencyException("invalid " + col[0] + ": " + row , index+1, self._tid + ".csv")
+                            
+            else:
+                if not self._dataset[col[0]].isna().all():
+                    raise ConsistencyException(col[0] + " should be empty, but the column contains values",0, self._tid + ".csv")
+        
+        # check if types match with defined entry types
+        for index,row in self._dataset[['type']].iterrows():
+            row = row['type']
+            if row not in techClasses['conversion']['entry_types']:
+                raise ConsistencyException("invalid entry type: " + row ,index+1, self._tid + ".csv")
+        
+        # check if reported unit and reference unit match with unit category of entry type and with flow type
+
+        switch_unit_dimensions={
+        'currency': '[currency]',
+        'dimensionless':  'dimensionless',
+        'time': '[time]'
+        # 'flow' is defined in __allowed_flow_dims
+        }
+    
+        # check for both ref_unit and rep_unit
+        for col in [('reported_unit', 'rep_dim'), ('reference_unit', 'ref_dim')]:
+            # iterrate over dataset to determine exact location of possible inconsistencies
+            for index, row in self._dataset[['type','flow_type',col[0]]].iterrows():
+                unit_type = techClasses['conversion']['entry_types'][row['type']][col[1]]
+
+                # --- The following determines the allowed dimensions based on the entry_type.
+                # Depending on the type of entry_type different dimensions and their combinations are added to the dimensions variable.
+                dimension = []
+                formula = unit_type.split("/")
+                if len(formula) > 1: # unit_type is a composite of two dimensions
+                    if(formula[0] == "flow"): # if flow is the dimension, the flow_type has to be checked
+                        dims_enum = self.__allowed_flow_dims(row["flow_type"])
+                    else:
+                        dims_enum = switch_unit_dimensions[formula[0]]
+                    if(formula[1] == "flow"): # if flow is the dimension, the flow_type has to be checked
+                        dims_denom = self.__allowed_flow_dims(row["flow_type"])
+                    else:
+                        dims_denom = switch_unit_dimensions[formula[1]]
+
+                    if type(dims_enum) is list or type(dims_denom) is list: # one of the dimensions is quivalent to a list of dimensions
+                        if type(dims_enum) is list: # the first dimension is quivalent to a list of dimensions, iteration is needed
+                            for elem_enum in dims_enum:
+                                if type(dims_denom) is list: # the second dimension is quivalent to a list of dimensions as well,iteration is needed
+                                    for elem_denom in dims_denom:
+                                        dimension += [elem_enum + " / " + elem_denom]
+                                else: # the second dimension is not quivalent to a list of dimensions
+                                    dimension += [elem_enum + " / " + dims_denom]
+                        else: # the first dimension is not quivalent to a list of dimensions
+                            if type(dims_denom) is list: # the second dimension is quivalent to a list of dimensions, iteration is needed
+                                for elem_denom in dims_denom:
+                                    dimension += [dims_enum + " / " + elem_denom]
+                            else: # the second dimension is not quivalent to a list of dimensions
+                                dimension += [dims_enum + " / " + dims_denom]
+                    else:
+                        dimension = [dims_enum + " / " + dims_denom]
+                else: # unit_type is a single dimension
+                    if(unit_type == "flow"): # if flow is the dimension, the flow_type has to be checked
+                        allowed_dims = self.__allowed_flow_dims(row["flow_type"])
+                    else:
+                        allowed_dims = switch_unit_dimensions[unit_type]
+
+                    if type(allowed_dims) is list:
+                        for dim in allowed_dims:
+                            dimension += [dim]
+                    else:
+                        dimension = switch_unit_dimensions[unit_type]
+                
+                # --- The dimensions variable is now set to all allowed dimensions for this row
+
+                if row[col[0]] == row[col[0]]:
+                    unit_to_check = row[col[0]]
+
+                    # check if unit is connected to a variant (LHV, HHV, norm or standard)
+                    unit_splitted = unit_to_check.split(";")
+                    if (len(unit_splitted) > 1): # the unit is connected to a variant
+                        unit_identifier = unit_splitted[0]
+                        unit_variant = unit_splitted[1]
+
+                        if unit_identifier not in ureg:
+                            raise ConsistencyException("invalid " + col[0] + " : " + unit_identifier + " is not a valid unit" ,index+1, self._tid + ".csv")
+                        elif (str(ureg.Quantity(unit_identifier).dimensionality) in ['[length] ** 3']): # unit is of dimension volume
+                            if unit_variant not in ["norm", "standard"]: # only ["norm", "standard"] variants are allowed for volume
+                               raise ConsistencyException("invalid " + col[0] + " variant: " + unit_variant + " is not a valid variant of " + unit_identifier ,index+1, self._tid + ".csv")
+                        elif (str(ureg.Quantity(unit_identifier).dimensionality) in ['[length] ** 2 * [mass] / [time] ** 2']): # unit is of type energy
+                            if unit_variant not in ["LHV", "HHV"]: # only ["LHV", "HHV"] variants are allowed for volume
+                               raise ConsistencyException("invalid " + col[0] + " variant: " + unit_variant + " is not a valid variant of " + unit_identifier ,index+1, self._tid + ".csv")
+                        else: # unit is nether volume nor energy: inconsistency because there shouldnt be a variant connected
+                            raise ConsistencyException("invalid " + col[0] + ": variants for unit " + unit_identifier + " are not allowed" ,index+1, self._tid + ".csv")
+                        
+                        unit_to_check = unit_identifier # set unit variable to proceed with consistency checks
+
+                    if unit_to_check not in ureg or str(ureg.Quantity(unit_to_check).dimensionality) not in dimension:
+                        raise ConsistencyException("invalid " + col[0] + ": " + unit_to_check + " is not of type " + unit_type ,index+1, self._tid + ".csv")
+                else:
+                    # only reported unit has to be non NaN
+                    if(col[0] == "reported_unit"):
+                        raise ConsistencyException("invalid reported_unit: NaN value" ,index+1, self._tid + ".csv")
+            
         # TODO: check reported units match dataFormats['bat']
 
         # TODO: check reference units match techs[techid]
 
         # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
         # TODO: implement those types so we don't need to remove them
-        # TODO: drop all rows with types not declared in `tech_classes.yml`
         dropTypes = ['flh', 'lifetime', 'energy_eff']
         self._dataset = self._dataset.query(f"not type.isin({dropTypes})").reset_index(drop=True)
 

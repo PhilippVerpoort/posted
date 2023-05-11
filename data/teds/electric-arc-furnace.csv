@@ -28,7 +28,7 @@
 ,primary,feedstock_dem,steelscrap,,,,0.17,,t,,,,,"Agora Energiewende, 2022",
 ,secondary,feedstock_dem,steelscrap,,,,1.09,,t,,,,,"Ecorys, 2014",Table 3.1
 ,,feedstock_dem,oxygen,,,,0.5,,t,,,,,"Agora Energiewende, 2022",
-,,feedstock_dem,oxygen,,,,50,,Nm³,,,,,"Ecorys, 2014",Table 3.1
+,,feedstock_dem,oxygen,,,,50,,m³;norm,,,,,"Ecorys, 2014",Table 3.1
 ,,feedstock_dem,oxygen,,,,0.5,,t,,,,,"Otto et al, 2017",Figure 6
 ,,feedstock_dem,nitrogen,,,,0.5,,t,,,,,"Otto et al, 2017",Figure 6
 ,,feedstock_dem,alloys,,,,0.011,,t,,,,,"Agora Energiewende, 2022",

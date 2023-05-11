@@ -2,6 +2,9 @@
 percent = 1e-2 = pct
 ppm = 1e-6
 
+year = 8760 * hour = a
+
+norm_cubic_meter = 1000000 * cubic_centimeters = Nm³
 
 # flows
 @context(energycontent=0,density=0) flow_conversion = flocon

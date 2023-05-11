@@ -60,6 +60,7 @@ electrolysis:
         - Alkaline
         - PEM
         - Solid Oxide
+        - SOEC
 hydrogen-storage:
     name: Hydrogen storage
     desc: Long-term storage of hydrogen
