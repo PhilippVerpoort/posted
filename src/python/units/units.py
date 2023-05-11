@@ -16,18 +16,24 @@ ureg.load_definitions(pathOfFile('src/python/units', 'definitions.txt'))
 
 
 # convert units based on currency and flow type; test for exceptions, rethrow pint exceptions as own exceptions
-switch_specs={
-        'LHV': [('energycontent','energycontent_LHV')],
-        'HHV':  [('energycontent','energycontent_HHV')],
-        'norm': [('density','density_norm')],
-        'standard': [('density','density_std')]
-        }
+switch_specs = {
+    'LHV': [('energycontent', 'energycontent_LHV')],
+    'HHV': [('energycontent', 'energycontent_HHV')],
+    'norm': [('density', 'density_norm')],
+    'standard': [('density', 'density_std')]
+}
 
-def convUnit(unit_from: str, unit_to: str, ft_specs: Union[dict, None]): # unit_to = "MWh;LHV", Nm³ := "m³;norm"
+# get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m³;norm"
+def convUnit(unit_from: str, unit_to: str, ft_specs: Union[dict, None]):
+    # return None if unit_from is None
     if unit_from != unit_from: return unit_from
-    __convFlowKeys =[]
+
+    # skip flow conversion if not flow type specs are provided
+    if ft_specs is None:
+        return ureg(f"1 {unit_from}").to(unit_to, 'curcon').magnitude
 
     # set convFlowKeys according to chosen specs
+    __convFlowKeys = []
     for elem in [unit_from, unit_to]:
         elem_split = elem.split(";")
         if len(elem_split) > 1:
@@ -37,16 +43,14 @@ def convUnit(unit_from: str, unit_to: str, ft_specs: Union[dict, None]): # unit_
             else:
                 unit_to = elem_split[0]
            
-     # set defaults (low, norm) specs if not set in unit param
+     # set defaults specs (LHV, norm) if not set in unit_from
     if switch_specs['LHV'] not in __convFlowKeys and switch_specs['HHV'] not in __convFlowKeys:
         __convFlowKeys += switch_specs['LHV']
     if switch_specs['norm'] not in __convFlowKeys and switch_specs['standard'] not in __convFlowKeys:
         __convFlowKeys += switch_specs['norm']
 
-    if ft_specs is not None:
-        return ureg(f"1 {unit_from}").to(unit_to, 'curcon', 'flocon', **{k[0]: ft_specs[k[1]] for k in __convFlowKeys}).magnitude
-    else:
-        return ureg(f"1 {unit_from}").to(unit_to, 'curcon').magnitude
+    # perform the actual conversion step
+    return ureg(f"1 {unit_from}").to(unit_to, 'curcon', 'flocon', **{k[0]: ft_specs[k[1]] for k in __convFlowKeys}).magnitude
 
 
 # vectorised versions
