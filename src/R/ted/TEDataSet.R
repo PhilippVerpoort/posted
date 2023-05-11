@@ -4,7 +4,8 @@ source("src/R/read/read_config.R")
 library(dplyr)
 
 
-loadDataset <- function(tid, load_other = list(), load_default = TRUE) {
+# load dataset
+loadDataset <- function(tid, load_other = list(), load_default = TRUE, to_default_units = TRUE) {
     loadPaths <- load_other
     if (load_default) {
         loadPaths <- append(loadPaths, pathOfTEDFile(tid))
@@ -25,11 +26,16 @@ loadDataset <- function(tid, load_other = list(), load_default = TRUE) {
     # check that the TED is consistent
     dataset <- checkConsistency(tid, dataset)
 
-    # adjust units to match default units for inputs and outputs
-    dataset <- normaliseUnits(tid, dataset)
-
     # insert missing periods
     dataset <- insertMissingPeriods(dataset)
+
+    # apply references to values and units
+    dataset <- normaliseUnits(tid, dataset)
+
+    # convert values to default units
+    if (to_default_units) {
+        dataset <- convertUnits(tid, dataset)
+    }
 
     return(dataset)
 }
@@ -37,25 +43,11 @@ loadDataset <- function(tid, load_other = list(), load_default = TRUE) {
 
 # check dataset is consistent
 checkConsistency <- function(tid, dataset) {
-    # TODO: check reported units match dataFormats['bat']
-
-    # TODO: check reference units match techs[techid]
-
     # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
     # TODO: implement those types so we don't need to remove them
     dropTypes <- c("flh", "lifetime", "energy_eff")
     dataset <- dataset %>% filter(!type %in% dropTypes)
 
-    # replace Nm³/Sm³ with m³
-    # TODO: implement these units in the unit registry. Same for LHV and HHV.
-    dataset["reported_unit"][dataset["reported_unit"] == 'Nm³'] <- "m³"
-
-    return(dataset)
-}
-
-
-# convert value, unc, and units (reported and reference) to default units
-normaliseUnits <- function(tid, dataset) {
     return(dataset)
 }
 
@@ -63,5 +55,17 @@ normaliseUnits <- function(tid, dataset) {
 # insert missing periods
 insertMissingPeriods <- function(dataset) {
     dataset["period"][is.na(dataset["period"])] <- 2023
+    return(dataset)
+}
+
+
+# apply references to values and units
+normaliseUnits <- function(tid, dataset) {
+    return(dataset)
+}
+
+
+# convert values to default units
+convertUnits <- function(tid, dataset) {
     return(dataset)
 }
