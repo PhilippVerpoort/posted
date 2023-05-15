@@ -7,7 +7,7 @@ import pandas as pd
 
 from src.python.path import pathOfTEDFile
 from src.python.read.file_read import readTEDFile
-from src.python.read.read_config import techs, dataFormats, flowTypes, defaultUnits, defaultMasks, techClasses
+from src.python.read.read_config import techs, dataFormat, flowTypes, defaultUnits, defaultMasks, techClasses
 from src.python.units.units import convUnitDF, ureg
 from src.python.ted.exceptions import ConsistencyException
 
@@ -42,12 +42,8 @@ class TEDataSet:
             raise Exception(f"No TED files to load for technology '{self._tid}'.")
 
         # read TED data from CSV files
-        mapColnamesDtypes = {
-            colname: colspecs['dtype']
-            for colname, colspecs in dataFormats.items()
-        }
         self._dataset = pd.concat([
-            readTEDFile(p, mapColnamesDtypes)
+            readTEDFile(p, dataFormat)
             for p in self._loadPaths
         ])
 

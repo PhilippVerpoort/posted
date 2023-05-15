@@ -23,7 +23,11 @@ if techs_missing:
 
 
 # read dataformats
-dataFormats = readYAMLDataFile('ted_format')
+dataFormat = readYAMLDataFile('ted_format')
+mapColnamesDtypes = {
+    colname: colspecs['dtype']
+    for colname, colspecs in dataFormat.items()
+}
 
 
 # read flow types

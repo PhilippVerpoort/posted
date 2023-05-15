@@ -14,6 +14,8 @@ pyyaml = "^6.0"
 pint = "^0.20.1"
 
 [tool.poetry.dev-dependencies]
+pyside6 = "^6.5.0"
+pyinstaller = "^5.11.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
