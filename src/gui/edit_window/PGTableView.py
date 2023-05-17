@@ -12,6 +12,9 @@ class PGTableView(QTableView):
 
         self.setModel(model)
 
+        self.setAlternatingRowColors(True)
+        self.setStyleSheet('alternate-background-color: grey;background-color: white;')
+
         self.horizontalHeader().setContextMenuPolicy(Qt.CustomContextMenu)
         self.horizontalHeader().customContextMenuRequested.connect(self.__horizontalHeaderMenuPopup)
 
