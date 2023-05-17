@@ -104,11 +104,11 @@ class PGTableModel(QtCore.QAbstractTableModel):
                 return QColor(255, 239, 239)
             else:
                 return QColor(Qt.white)
-        # elif role == Qt.ToolTipRole:
-        #     if self._viewConsistency:
-        #         check = self._checkValue(rowID, colID)
-        #         if check is not None:
-        #             return check
+        elif role == Qt.ToolTipRole:
+            if self._viewConsistency:
+                check = self._checkValue(rowID, colID)
+                if check is not None:
+                    return check
 
 
 
