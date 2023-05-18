@@ -5,15 +5,15 @@ import pandas as pd
 
 from src.python.path import pathOfTEDFile
 from src.python.read.read_config import flowTypes, techs, mapColnamesDtypes
-from src.python.ted.consistency import checkRowConsistency
+from src.python.ted.inconsistencies import checkRowConsistency
 
 
 class TEDataFile:
     # initialise
     def __init__(self, tid: str, path: None|Path = None):
         self._tid: str = tid
-        self._path: Path = path or pathOfTEDFile(self._tid)
         self._tspecs: dict = copy.deepcopy(techs[tid])
+        self._path: Path = path or pathOfTEDFile(self._tid)
         self._data: None | pd.DataFrame = None
         self._inconsistencies: dict = {}
 

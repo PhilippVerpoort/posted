@@ -7,7 +7,7 @@ from src.python.read.read_config import techs, techClasses
 from src.python.units.units import allowedFlowDims, ureg
 
 
-class TEDataConsistencyException(Exception):
+class TEInconsistencyException(Exception):
     """Exception raised for inconsistencies in the input data.
 
     Attributes:
@@ -40,7 +40,7 @@ class TEDataConsistencyException(Exception):
         super().__init__(exceptionMessage)
 
 
-def createException(re: bool, ex: TEDataConsistencyException):
+def createException(re: bool, ex: TEInconsistencyException):
     if re:
         raise ex
     else:
@@ -56,15 +56,15 @@ def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> 
         if f"{colID}s" in techs[tid]:
             # NaNs are accepted; only real values can violate consistency here
             if cell not in techs[tid][f"{colID}s"] and cell is not np.nan:
-                ret.append(createException(re, TEDataConsistencyException(f"invalid {colID}: {cell}", colID=colID, **kwargs)))
+                ret.append(createException(re, TEInconsistencyException(f"invalid {colID}: {cell}", colID=colID, **kwargs)))
         else:
             if cell is not np.nan:
-                ret.append(createException(re, TEDataConsistencyException(f"{colID} should be empty, but the column contains: {cell}", colID=colID, **kwargs)))
+                ret.append(createException(re, TEInconsistencyException(f"{colID} should be empty, but the column contains: {cell}", colID=colID, **kwargs)))
 
     # check whether type is among those types defined in the technology class specs
     cell = row['type']
     if cell not in techClasses['conversion']['entry_types']:
-        raise TEDataConsistencyException(f"invalid entry type: {cell}", colID='type', **kwargs)
+        raise TEInconsistencyException(f"invalid entry type: {cell}", colID='type', **kwargs)
 
     # check whether reported unit and reference unit match the entry type and flow type specified
     switchUnitDims = {
@@ -124,7 +124,7 @@ def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> 
         if row[colID] is np.nan:
             # only reported unit has to be non NaN
             if colID == 'reported_unit':
-                ret.append(createException(re, TEDataConsistencyException('invalid reported_unit: NaN value', colID=colID, **kwargs)))
+                ret.append(createException(re, TEInconsistencyException('invalid reported_unit: NaN value', colID=colID, **kwargs)))
         else:
             unit_to_check = row[colID]
 
@@ -135,25 +135,25 @@ def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> 
                 unit_variant = unit_splitted[1]
 
                 if unit_identifier not in ureg:
-                    ret.append(createException(re, TEDataConsistencyException(f"invalid {colID}: {unit_identifier} is not a valid unit", colID=colID, **kwargs)))
+                    ret.append(createException(re, TEInconsistencyException(f"invalid {colID}: {unit_identifier} is not a valid unit", colID=colID, **kwargs)))
                 elif (str(ureg.Quantity(unit_identifier).dimensionality) in [
                     '[length] ** 3']):  # unit is of dimension volume
                     if unit_variant not in ['norm',
                                             'standard']:  # only ["norm", "standard"] variants are allowed for volume
-                        ret.append(createException(re, TEDataConsistencyException(
+                        ret.append(createException(re, TEInconsistencyException(
                             f"invalid {colID} variant: {unit_variant} is not a valid variant of {unit_identifier}", colID=colID, **kwargs)))
                 elif (str(ureg.Quantity(unit_identifier).dimensionality) in [
                     '[length] ** 2 * [mass] / [time] ** 2']):  # unit is of type energy
                     if unit_variant not in ['LHV', 'HHV']:  # only ["LHV", "HHV"] variants are allowed for volume
-                        ret.append(createException(re, TEDataConsistencyException(
+                        ret.append(createException(re, TEInconsistencyException(
                             f"invalid {colID} variant: {unit_variant} is not a valid variant of {unit_identifier}", colID=colID, **kwargs)))
                 else:  # unit is nether volume nor energy: inconsistency because there should not be a variant connected
-                    ret.append(createException(re, TEDataConsistencyException(
+                    ret.append(createException(re, TEInconsistencyException(
                         f"invalid {colID}: variants for unit {unit_identifier} are not allowed", colID=colID, **kwargs)))
 
                 unit_to_check = unit_identifier  # set unit variable to proceed with consistency checks
 
             if unit_to_check not in ureg or str(ureg.Quantity(unit_to_check).dimensionality) not in dimension:
-                ret.append(createException(re, TEDataConsistencyException(f"invalid {colID}: {unit_to_check} is not of type {unit_type}", colID=colID, **kwargs)))
+                ret.append(createException(re, TEInconsistencyException(f"invalid {colID}: {unit_to_check} is not of type {unit_type}", colID=colID, **kwargs)))
 
     return ret
