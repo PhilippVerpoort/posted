@@ -8,12 +8,17 @@ import pandas as pd
 from src.python.path import pathOfTEDFile
 from src.python.read.read_config import techs, flowTypes, defaultUnits, defaultMasks
 from src.python.ted.TEDataFile import TEDataFile
+from src.python.ted.TEDataTable import TEDataTable
 from src.python.units.units import convUnitDF
 
 
 class TEDataSet:
     # initialise
-    def __init__(self, tid: str, *load_other, load_database: bool = True, to_default_units: bool = True):
+    def __init__(self,
+                 tid: str,
+                 load_database: bool = True,
+                 load_other: None | list = None,
+                 to_default_units: bool = True):
         # set fields from arguments
         self._tid: str = tid
         self._tspecs: dict = copy.deepcopy(techs[tid])
@@ -21,12 +26,6 @@ class TEDataSet:
 
         # read TEDataFiles and combine into dataset
         self._loadFiles(load_database, load_other)
-
-        # insert missing periods
-        self._insertMissingPeriods()
-
-        # apply quick fixes
-        self._quickFixes()
 
         # set default reference units for all entry types
         self._setRefUnitsDef()
@@ -62,20 +61,21 @@ class TEDataSet:
 
 
     # load TEDatFiles and compile into dataset
-    def _loadFiles(self, load_database: bool, load_other: tuple):
+    def _loadFiles(self, load_database: bool, load_other: None | list = None):
         files = []
 
         # load TEDataFile from POSTED database
         if load_database:
             files.append(TEDataFile(self._tid, pathOfTEDFile(self._tid)))
 
-        # load other TEDataFiles specified as arguments
-        for o in load_other:
-            if isinstance(o, TEDataFile):
-                files.append(o)
-            elif isinstance(o, Path) or isinstance(o, str):
-                p = o if isinstance(o, Path) else Path(o)
-                files.append(TEDataFile(self._tid, p))
+        # load other TEDataFiles if specified as arguments
+        if load_other is not None:
+            for o in load_other:
+                if isinstance(o, TEDataFile):
+                    files.append(o)
+                elif isinstance(o, Path) or isinstance(o, str):
+                    p = o if isinstance(o, Path) else Path(o)
+                    files.append(TEDataFile(self._tid, p))
 
         # raise exception if no TEDataFiles can be loaded
         if not files:
@@ -88,19 +88,6 @@ class TEDataSet:
 
         # compile dataset from the dataframes loaded from the individual files
         self._dataset = pd.concat([f.getData() for f in files])
-
-
-    # insert missing periods
-    def _insertMissingPeriods(self):
-        self._dataset.fillna({'period': 2023}, inplace=True)
-
-
-    # quick fix function for types not implemented yet
-    def _quickFixes(self):
-        # TODO: implement those types so we don't need to remove them
-        # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
-        dropTypes = ['flh', 'lifetime', 'energy_eff']
-        self._dataset = self._dataset.query(f"not type.isin({dropTypes})").reset_index(drop=True)
 
 
     # apply references to values and units
@@ -187,66 +174,76 @@ class TEDataSet:
 
 
     # select data
-    def selectData(self,
-            periods: float | list | np.ndarray,
-            subtechs: None | str | list = None,
-            modes: None | str | list = None,
-            sources: None | str | list = None,
-            masks: None | list = None,
-            mask_default: bool = True,
-            aggregate: bool = True,
-        ):
+    def generateTable(self,
+                      periods: float | list | np.ndarray,
+                      subtech: None | str | list = None,
+                      mode: None | str | list = None,
+                      src_ref: None | str | list = None,
+                      masks_database: bool = True,
+                      masks_other: None | list = None,
+                      aggregate: bool = True,
+                      ):
+
+        # the dataset it the starting-point for the table
+        table = self._dataset.copy()
+
+        # drop columns that are not considered
+        table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
+
+        # insert missing periods
+        table = self._insertMissingPeriods(table)
+
+        # apply quick fixes
+        table = self._quickFixes(table)
 
         # query by selected sources
-        if sources is None:
-            selected = self._dataset
-        elif isinstance(sources, str):
-            selected = self._dataset.query(f"src_ref=='{sources}'")
-        else:
-            selected = self._dataset.query(f"src_ref.isin({sources})")
-        selected = selected.reset_index(drop=True)
+        if src_ref is None:
+            pass
+        elif isinstance(src_ref, str):
+            table = table.query(f"src_ref=='{src_ref}'")
+        elif isinstance(src_ref, list):
+            table = table.query(f"src_ref.isin({src_ref})")
 
         # expand technology specifications for all subtechs and modes
         expandCols = {}
-        for colID, selectArg in [('subtech', subtechs), ('mode', modes)]:
-            if subtechs is None and f"{colID}s" in self._tspecs and self._tspecs[f"{colID}s"]:
+        for colID, selectArg in [('subtech', subtech), ('mode', mode)]:
+            if subtech is None and f"{colID}s" in self._tspecs and self._tspecs[f"{colID}s"]:
                 expandCols[colID] = self._tspecs[f"{colID}s"]
-            elif isinstance(subtechs, str):
-                expandCols[colID] = [subtechs]
-            elif isinstance(subtechs, list):
-                expandCols[colID] = subtechs
-        selected = self.__expandTechs(selected, expandCols)
-
-        # drop columns that cannot be considered when selecting periods and aggregating
-        selected.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
+            elif isinstance(subtech, str):
+                expandCols[colID] = [subtech]
+            elif isinstance(subtech, list):
+                expandCols[colID] = subtech
+        table = self.__expandTechs(table, expandCols)
 
         # group by identifying columns and select periods/generate time series
-        selected = self.__selectPeriods(selected, periods)
+        table = self._selectPeriods(table, periods)
 
         # set default weight to 1
-        selected.insert(0, 'weight', 1.0)
+        table.insert(0, 'weight', 1.0)
 
-        # apply masks
-        if masks is None:
-            masks = []
-        if mask_default and self._tid in defaultMasks:
+        # compile all masks into list
+        masks = masks_other if masks_other is not None else []
+        if masks_database and self._tid in defaultMasks:
             masks += defaultMasks[self._tid]
+
+        # apply masks and drop entries with zero weight
         for mask in masks:
             q = ' & '.join([f"{key}=='{val}'" for key, val in mask['query'].items()])
-            selected.loc[selected.query(q).index, 'weight'] = mask['weight']
+            table.loc[table.query(q).index, 'weight'] = mask['weight']
+            table = table.query('weight!=0.0')
 
         # aggregate
         if aggregate:
-            selected['value'].fillna(0.0, inplace=True)
-            selected['value'] *= selected['weight']
-            selected = selected \
+            table['value'].fillna(0.0, inplace=True)
+            table['value'] *= table['weight']
+            table = table \
                 .groupby(['subtech', 'mode', 'type', 'period', 'flow_type', 'src_ref'], dropna=False) \
                 .agg({'value': 'sum', 'unit': 'first'}) \
                 .groupby(['subtech', 'mode', 'type', 'period', 'flow_type'], dropna=False) \
                 .agg({'value': 'mean', 'unit': 'first'}) \
                 .reset_index()
 
-        return selected
+        return TEDataTable(self._tid, table)
 
 
     # expand based on subtechs, modes, and period
@@ -265,8 +262,22 @@ class TEDataSet:
         return selected.sort_values(by=['subtech', 'mode', 'type', 'component', 'src_ref', 'period'])
 
 
+    # insert missing periods
+    def _insertMissingPeriods(self, table: pd.DataFrame):
+        return table.fillna({'period': 2023})
+
+
+    # quick fix function for types not implemented yet
+    def _quickFixes(self, table: pd.DataFrame):
+        # TODO: implement those types so we don't need to remove them
+        # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
+        dropTypes = ['flh', 'lifetime', 'energy_eff']
+        table = table.query(f"not type.isin({dropTypes})").reset_index(drop=True)
+        return table
+
+
     # group by identifying columns and select periods/generate time series
-    def __selectPeriods(self, selected: pd.DataFrame, periods: float | list | np.ndarray):
+    def _selectPeriods(self, selected: pd.DataFrame, periods: float | list | np.ndarray):
         groupCols = ['subtech', 'mode', 'type', 'flow_type', 'component', 'src_ref']
         grouped = selected.groupby(groupCols, dropna=False)
 
