@@ -50,7 +50,7 @@ class TEDataSet:
             if 'reference_flow' in self._tspecs:
                 unitMappings |= {'flow': flowTypes[self._tspecs['reference_flow']]['default_unit']}
 
-            # map reference dimensions to default units
+            # map reference dimensions to default reference units
             self._refUnitsDef[typeid] = refDim
             for dim, unit in unitMappings.items():
                 self._refUnitsDef[typeid] = re.sub(dim, unit, self._refUnitsDef[typeid])
@@ -131,17 +131,21 @@ class TEDataSet:
 
     # convert values to defined units (use defaults if non provided)
     def convertUnits(self, type_units: None | dict = None, flow_units: None | dict = None):
-        if flow_units is None:
-            flow_units = {}
         if type_units is None:
             type_units = {}
+        if flow_units is None:
+            flow_units = {}
 
-        # get default units
+        # set reported units to convert to
         repUnitsDef = []
         for typeid in self._dataset['type'].unique():
-            repUnit = self._tspecs['entry_types'][typeid]['rep_dim']
-            for d, u in defaultUnits.items():
-                repUnit = re.sub(d, u, repUnit)
+            # get reported dimension of entry type
+            repDim = self._tspecs['entry_types'][typeid]['rep_dim']
+
+            # map reported dimensions to target reported units
+            repUnit = repDim
+            for dim, unit in defaultUnits.items():
+                repUnit = re.sub(dim, unit, repUnit)
             if 'flow' not in repUnit:
                 repUnitsDef.append({'type': typeid, 'unit_convert': repUnit})
             else:
