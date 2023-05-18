@@ -9,7 +9,7 @@ from src.python.path import pathOfTEDFile
 from src.python.read.read_config import techs, flowTypes, defaultUnits, defaultMasks
 from src.python.ted.TEDataFile import TEDataFile
 from src.python.ted.TEDataTable import TEDataTable
-from src.python.units.units import convUnitDF
+from src.python.units.units import convUnitDF, ureg
 
 
 class TEDataSet:
@@ -171,6 +171,8 @@ class TEDataSet:
         self._dataset.drop(columns=['unit'], inplace=True)
         self._dataset.rename(columns={'unit_convert': 'unit'}, inplace=True)
 
+        return self
+
 
     # get dataset
     def getDataset(self):
@@ -179,20 +181,23 @@ class TEDataSet:
 
     # select data
     def generateTable(self,
-                      periods: float | list | np.ndarray,
+                      periods: int | float | list | np.ndarray,
                       subtech: None | str | list = None,
                       mode: None | str | list = None,
                       src_ref: None | str | list = None,
                       masks_database: bool = True,
                       masks_other: None | list = None,
-                      aggregate: bool = True,
+                      no_agg: None | list = None,
                       ):
-
         # the dataset it the starting-point for the table
         table = self._dataset.copy()
 
         # drop columns that are not considered
         table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
+
+        # merge value and unit columns together
+        table['value'] *= table['unit'].apply(lambda x: ureg(x.split(';')[0]))
+        table.drop(columns=['unit'], inplace=True)
 
         # insert missing periods
         table = self._insertMissingPeriods(table)
@@ -220,10 +225,12 @@ class TEDataSet:
         table = self.__expandTechs(table, expandCols)
 
         # group by identifying columns and select periods/generate time series
+        if isinstance(periods, int) | isinstance(periods, float):
+            periods = [periods]
         table = self._selectPeriods(table, periods)
 
         # set default weight to 1
-        table.insert(0, 'weight', 1.0)
+        table['weight'] = 1.0
 
         # compile all masks into list
         masks = masks_other if masks_other is not None else []
@@ -236,16 +243,19 @@ class TEDataSet:
             table.loc[table.query(q).index, 'weight'] = mask['weight']
             table = table.query('weight!=0.0')
 
-        # aggregate
-        if aggregate:
-            table['value'].fillna(0.0, inplace=True)
-            table['value'] *= table['weight']
-            table = table \
-                .groupby(['subtech', 'mode', 'type', 'period', 'flow_type', 'src_ref'], dropna=False) \
-                .agg({'value': 'sum', 'unit': 'first'}) \
-                .groupby(['subtech', 'mode', 'type', 'period', 'flow_type'], dropna=False) \
-                .agg({'value': 'mean', 'unit': 'first'}) \
-                .reset_index()
+        # combine type and flow_type columns
+        table['type'] = table.apply(lambda row: row['type'] if row.isna()['flow_type'] else f"{row['type']}:{row['flow_type']}", axis=1)
+        table.drop(columns=['flow_type'], inplace=True)
+
+        # aggregation
+        indexCols = ['type'] + (['period'] if len(periods) > 1 else []) + (no_agg if no_agg is not None else [])
+        table['value'].fillna(0.0, inplace=True)
+        table['value'] *= table['weight']
+        table = table \
+            .groupby(['subtech', 'mode', 'type', 'period', 'src_ref'], dropna=False) \
+            .agg({'value': 'sum'}) \
+            .groupby(indexCols, dropna=False) \
+            .agg({'value': lambda x: sum(x) / len(x)})
 
         return TEDataTable(self._tid, table)
 
@@ -282,20 +292,52 @@ class TEDataSet:
 
     # group by identifying columns and select periods/generate time series
     def _selectPeriods(self, selected: pd.DataFrame, periods: float | list | np.ndarray):
+        # list of columns to group by
         groupCols = ['subtech', 'mode', 'type', 'flow_type', 'component', 'src_ref']
+
+        # perform groupby and do not drop NA values
         grouped = selected.groupby(groupCols, dropna=False)
 
+        # create return list
         ret = []
-        for keys, ids in grouped.groups.items():
-            rows = selected.loc[ids].sort_values(by='period')
-            newRows = rows \
-                .merge(pd.DataFrame.from_dict({'period': periods}), on='period', how='outer') \
-                .sort_values(by='period') \
-                .set_index('period')
-            newRows['value'].interpolate(method='index', inplace=True)
-            newRows['unit'] = rows.iloc[0]['unit']
-            newRows[groupCols] = keys
-            newRows = newRows.query(f"period in @periods").reset_index()
-            ret.append(newRows)
 
+        # loop over groups
+        for keys, ids in grouped.groups.items():
+            # get rows in group
+            rows = selected.loc[ids, ['period', 'value']]
+
+            # get a list of periods that exist
+            periodsExist = rows['period'].unique()
+
+            # create dataframe containing rows for all requested periods
+            reqRows = pd.DataFrame.from_dict({
+                'period': periods,
+                'period_upper': [min([ip for ip in periodsExist if ip >= p], default=np.nan) for p in periods],
+                'period_lower': [max([ip for ip in periodsExist if ip <= p], default=np.nan) for p in periods],
+            })
+
+            # set missing columns from group
+            reqRows[groupCols] = keys
+
+            # extrapolate
+            condExtrapolate = (reqRows['period_upper'].isna() | reqRows['period_lower'].isna())
+            rowsExtrapolate = reqRows.loc[condExtrapolate] \
+                .assign(period_combined=lambda x: np.where(x.notna()['period_upper'], x['period_upper'], x['period_lower'])) \
+                .merge(rows.rename(columns={'period': 'period_combined'}), on='period_combined')
+
+            # interpolate
+            rowsInterpolate = reqRows.loc[~condExtrapolate] \
+                .merge(rows.rename(columns={c: f"{c}_upper" for c in rows.columns}), on='period_upper') \
+                .merge(rows.rename(columns={c: f"{c}_lower" for c in rows.columns}), on='period_lower') \
+                .assign(value=lambda row: row['value_lower'] + (row['period_upper'] - row['period']) /
+                       (row['period_upper'] - row['period_lower']) * (row['value_upper'] - row['value_lower']))
+
+            # combine into one dataframe and drop unused columns
+            rowsAppend = pd.concat([rowsExtrapolate, rowsInterpolate]) \
+                .drop(columns=['period_upper', 'period_lower', 'period_combined', 'value_upper', 'value_lower'])
+
+            # add to return list
+            ret.append(rowsAppend)
+
+        # convert return list to dataframe and return
         return pd.concat(ret).reset_index(drop=True)
