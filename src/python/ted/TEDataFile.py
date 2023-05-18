@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.python.path import pathOfTEDFile
-from src.python.read.read_config import flowTypes, techs, mapColnamesDtypes
+from src.python.config.config import flowTypes, techs, mapColnamesDtypes
 from src.python.ted.inconsistencies import checkRowConsistency
 
 

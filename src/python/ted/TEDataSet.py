@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from src.python.path import pathOfTEDFile
-from src.python.read.read_config import techs, flowTypes, defaultUnits, defaultMasks
+from src.python.config.config import techs, flowTypes, defaultUnits, defaultMasks
 from src.python.ted.TEDataFile import TEDataFile
 from src.python.ted.TEDataTable import TEDataTable
 from src.python.units.units import convUnitDF, ureg

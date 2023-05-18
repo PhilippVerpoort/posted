@@ -6,7 +6,7 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
 
-from src.python.read.read_config import techs, dataFormat, mapColnamesDtypes, flowTypes, techClasses
+from src.python.config.config import techs, dataFormat, mapColnamesDtypes, flowTypes, techClasses
 from src.python.ted.TEDataFile import TEDataFile
 
 

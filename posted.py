@@ -2,7 +2,7 @@
 import argparse
 
 from src.gui.launchPG import launchPG
-from src.python.read.read_config import flowTypes
+from src.python.config.config import flowTypes
 from src.python.units.units import convUnit
 
 

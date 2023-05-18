@@ -4,7 +4,7 @@ import pandas as pd
 import pint
 
 from src.python.path import pathOfFile
-from src.python.read.read_config import flowTypes
+from src.python.config.config import flowTypes
 
 
 # define new registry

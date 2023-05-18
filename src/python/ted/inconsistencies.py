@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.python.read.read_config import techs, techClasses
+from src.python.config.config import techs, techClasses
 from src.python.units.units import allowedFlowDims, ureg
 
 

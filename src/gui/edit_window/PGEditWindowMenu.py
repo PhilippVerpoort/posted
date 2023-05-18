@@ -1,7 +1,7 @@
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMenuBar
 
-from src.python.read.read_config import dataFormat
+from src.python.config.config import dataFormat
 
 menuDict = {
     'file': {
