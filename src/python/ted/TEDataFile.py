@@ -17,9 +17,6 @@ class TEDataFile:
         self._data: None | pd.DataFrame = None
         self._inconsistencies: dict = {}
 
-        # determine default reference units of entry types from technology class
-        self._refFlowType = flowTypes[self._tspecs['primary']]
-
 
     # read TEDataFile from CSV file
     def read(self):

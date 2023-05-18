@@ -47,7 +47,7 @@ def createException(re: bool, ex: TEInconsistencyException):
         return ex
 
 
-def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> None:
+def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> list[TEInconsistencyException]:
     ret = []
 
     # check whether subtech and mode is among those defined in the technology specs
@@ -138,8 +138,7 @@ def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> 
                     ret.append(createException(re, TEInconsistencyException(f"invalid {colID}: {unit_identifier} is not a valid unit", colID=colID, **kwargs)))
                 elif (str(ureg.Quantity(unit_identifier).dimensionality) in [
                     '[length] ** 3']):  # unit is of dimension volume
-                    if unit_variant not in ['norm',
-                                            'standard']:  # only ["norm", "standard"] variants are allowed for volume
+                    if unit_variant not in ['norm', 'standard']:  # only ["norm", "standard"] variants are allowed for volume
                         ret.append(createException(re, TEInconsistencyException(
                             f"invalid {colID} variant: {unit_variant} is not a valid variant of {unit_identifier}", colID=colID, **kwargs)))
                 elif (str(ureg.Quantity(unit_identifier).dimensionality) in [
