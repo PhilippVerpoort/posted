@@ -83,7 +83,7 @@ class TEDataSet:
 
         # load all TEDataFiles and check consistency
         for f in files:
-            f.read()
+            f.load()
             f.check()
 
         # compile dataset from the dataframes loaded from the individual files

@@ -18,6 +18,12 @@ class TEDataFile:
         self._inconsistencies: dict = {}
 
 
+    # load TEDataFile (only if it has not been read yet)
+    def load(self):
+        if self._data is None:
+            self.read()
+
+
     # read TEDataFile from CSV file
     def read(self):
         self._data = pd.read_csv(
