@@ -125,7 +125,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
             colID = self._colIDList[index]
             return dataFormat[colID]['name']
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
-            return self._data.iloc[index].index
+            return self._data.index[index]
 
 
     def setData(self, index, value, role=QtCore.Qt.DisplayRole):
