@@ -5,25 +5,25 @@ ammonia-asu:
         via an air-separation unit.
     class: conversion
     sector: chemicals
-    primary: nh3
+    reference_flow: nh3
 ammonia-integrated:
     name: Integrated ammonia plant (SMR + HB)
     desc: Steam-methane reforming of natural gas plus Haber-Bosch synthesis
     class: conversion
     sector: chemicals
-    primary: nh3
+    reference_flow: nh3
 casting-and-rolling:
     name: Casting and rolling steel
     desc: Casting and rolling of liquid steel into semi-finished steel
     class: conversion
     sector: steel
-    primary: sfsteel
+    reference_flow: sfsteel
 direct-air-capture:
     name: Direct-air capture
     desc: Capturing CO2 directly from ambient air, making it available as a purified gas for captuing or utilisation.
     class: conversion
     sector: energy
-    primary: co2
+    reference_flow: co2
     subtechs:
         - HT-DAC
         - LT-DAC
@@ -32,7 +32,7 @@ direct-reduction:
     desc: A furnace/shaft to directly reduce iron ore into DRI/HBI.
     class: conversion
     sector: steel
-    primary: dri
+    reference_flow: dri
     modes:
         - h2
         - ng
@@ -43,7 +43,7 @@ electric-arc-furnace:
         and other components into liquid steel.
     class: conversion
     sector: steel
-    primary: liqsteel
+    reference_flow: liqsteel
     modes:
         - primary
         - secondary
@@ -52,7 +52,7 @@ electrolysis:
     desc: Water electrolysis, which yields hydrogen and oxygen.
     class: conversion
     sector: energy
-    primary: h2
+    reference_flow: h2
     default-ref-units:
         capex: kW
         fopex_abs: kW
@@ -66,13 +66,13 @@ hydrogen-storage:
     desc: Long-term storage of hydrogen
     class: storage
     sector: energy
-    primary: h2
+    reference_flow: h2
 low-temp-heat-pump:
     name: Low-temperature industrial heat pump
     desc: Industrial heat pumps providing heat at a temperature of 80–120°C.
     class: conversion
     sector: energy
-    primary: heat
+    reference_flow: heat
     default-ref-units:
         capex: kW
         fopex_abs: kW
@@ -81,7 +81,7 @@ methanation:
     desc: Industrial plants combining H₂ and CO₂ to yield methane (Sabatier process).
     class: conversion
     sector: energy
-    primary: ch4
+    reference_flow: ch4
     default-ref-units:
         capex: kW
         fopex_abs: kW
@@ -90,28 +90,28 @@ methane-transport:
     desc: Long-distance transportation of methane
     class: transport
     sector: energy
-    primary: ch4
+    reference_flow: ch4
 methanol-synthesis:
     name: Methanol synthesis
     desc: Synthesis of methanol from H₂ and CO₂.
     class: conversion
     sector: energy
-    primary: meoh
+    reference_flow: meoh
 methanol-integrated:
     name: Methanol integrated
     desc: Integrated steam-methane reforming and synthesis of methanol.
     class: conversion
     sector: energy
-    primary: meoh
+    reference_flow: meoh
 methanol-to-olefine-synthesis:
     name: Methanol-to-olefine process
     desc: Synthesis of ethylene, propylene, and by-products from methanol.
     class: conversion
     sector: chemicals
-    primary: hvcs
+    reference_flow: hvcs
 urea-synthesis:
     name: Urea synthesis
     desc: Stand-alone synthesis of urea from NH₃ and CO₂ (w/o SMR-based ammonia plant).
     class: conversion
     sector: chemicals
-    primary: urea
+    reference_flow: urea

@@ -13,41 +13,14 @@ from src.python.units.units import convUnitDF
 
 class TEDataSet:
     # initialise
-    def __init__(self, tid: str):
+    def __init__(self, tid: str, *load_other, load_database: bool = True, to_default_units: bool = True):
+        # set fields from arguments
         self._tid: str = tid
         self._tspecs: dict = copy.deepcopy(techs[tid])
         self._dataset: None | pd.DataFrame = None
 
-        # determine default reference units of entry types from technology class
-        self._refFlowType = flowTypes[self._tspecs['primary']]
-        self._repUnitsDef = {}
-        for typeid in self._tspecs['entry_types']:
-            refUnit = self._tspecs['entry_types'][typeid]['ref_dim']
-            units = defaultUnits | {'flow': self._refFlowType['default_unit']}
-            for d, u in units.items():
-                refUnit = re.sub(d, u, refUnit)
-            self._repUnitsDef[typeid] = refUnit
-
-        # override with default reference unit of specific technology
-        if 'default-ref-units' in self._tspecs:
-            self._repUnitsDef |= self._tspecs['default-ref-units']
-
-
-    # loading data and performing basic initial processing
-    def load(self, *load_other, load_default: bool = True, to_default_units: bool = True):
-        self._loadPaths = [Path(p) for p in load_other] + ([pathOfTEDFile(self._tid)] if load_default else [])
-
-        if not self._loadPaths:
-            raise Exception(f"No TED files to load for technology '{self._tid}'.")
-
-        # read TED data from CSV files
-        files = []
-        for p in self._loadPaths:
-            f = TEDataFile(self._tid, p)
-            f.read()
-            f.check()
-            files.append(f.getData())
-        self._dataset = pd.concat(files)
+        # read TEDataFiles and combine into dataset
+        self._loadFiles(load_database, load_other)
 
         # insert missing periods
         self._insertMissingPeriods()
@@ -55,14 +28,66 @@ class TEDataSet:
         # apply quick fixes
         self._quickFixes()
 
-        # apply references to values and units
-        self._normaliseUnits()
+        # set default reference units for all entry types
+        self._setRefUnitsDef()
+
+        # normalise all entries to a unified reference
+        self._normToRef()
 
         # convert values to default units
         if to_default_units:
             self.convertUnits()
 
-        return self
+
+    # determine default reference units of entry types from technology class
+    def _setRefUnitsDef(self):
+        self._refUnitsDef = {}
+        for typeid in self._tspecs['entry_types']:
+            # get reference dimension
+            refDim = self._tspecs['entry_types'][typeid]['ref_dim']
+
+            # create a mapping from dimensions to default units
+            unitMappings = defaultUnits.copy()
+            if 'reference_flow' in self._tspecs:
+                unitMappings |= {'flow': flowTypes[self._tspecs['reference_flow']]['default_unit']}
+
+            # map reference dimensions to default units
+            self._refUnitsDef[typeid] = refDim
+            for dim, unit in unitMappings.items():
+                self._refUnitsDef[typeid] = re.sub(dim, unit, self._refUnitsDef[typeid])
+
+        # override with default reference unit of specific technology
+        if 'default-ref-units' in self._tspecs:
+            self._refUnitsDef |= self._tspecs['default-ref-units']
+
+
+    # load TEDatFiles and compile into dataset
+    def _loadFiles(self, load_database: bool, load_other: tuple):
+        files = []
+
+        # load TEDataFile from POSTED database
+        if load_database:
+            files.append(TEDataFile(self._tid, pathOfTEDFile(self._tid)))
+
+        # load other TEDataFiles specified as arguments
+        for o in load_other:
+            if isinstance(o, TEDataFile):
+                files.append(o)
+            elif isinstance(o, Path) or isinstance(o, str):
+                p = o if isinstance(o, Path) else Path(o)
+                files.append(TEDataFile(self._tid, p))
+
+        # raise exception if no TEDataFiles can be loaded
+        if not files:
+            raise Exception(f"No TEDataFiles to load for technology '{self._tid}'.")
+
+        # load all TEDataFiles and check consistency
+        for f in files:
+            f.read()
+            f.check()
+
+        # compile dataset from the dataframes loaded from the individual files
+        self._dataset = pd.concat([f.getData() for f in files])
 
 
     # insert missing periods
@@ -79,15 +104,15 @@ class TEDataSet:
 
 
     # apply references to values and units
-    def _normaliseUnits(self):
+    def _normToRef(self):
         # default reference value is 1.0
         self._dataset['reference_value'].fillna(1.0, inplace=True)
 
         # add default reference unit conversion factor
-        self._dataset['reference_unit_default'] = self._dataset['type'].map(self._repUnitsDef).astype(str)
+        self._dataset['reference_unit_default'] = self._dataset['type'].map(self._refUnitsDef).astype(str)
         self._dataset['reference_unit_factor'] = np.where(
             self._dataset['reference_unit'].notna(),
-            convUnitDF(self._dataset, 'reference_unit', 'reference_unit_default', self._refFlowType),
+            convUnitDF(self._dataset, 'reference_unit', 'reference_unit_default', flowTypes[self._tspecs['reference_flow']]),
             1.0,
         )
 
