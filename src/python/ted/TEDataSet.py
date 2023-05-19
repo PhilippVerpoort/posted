@@ -9,7 +9,7 @@ from src.python.path import pathOfTEDFile
 from src.python.config.config import techs, flowTypes, defaultUnits, defaultMasks
 from src.python.ted.TEDataFile import TEDataFile
 from src.python.ted.TEDataTable import TEDataTable
-from src.python.units.units import convUnitDF, ureg
+from src.python.units.units import convUnitDF, convUnit, ureg
 
 
 class TEDataSet:
@@ -195,15 +195,15 @@ class TEDataSet:
         # drop columns that are not considered
         table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
 
-        # merge value and unit columns together
-        table['value'] *= table['unit'].apply(lambda x: ureg(x.split(';')[0]))
-        table.drop(columns=['unit'], inplace=True)
-
         # insert missing periods
         table = self._insertMissingPeriods(table)
 
         # apply quick fixes
         table = self._quickFixes(table)
+
+        # merge value and unit columns together
+        table['value'] *= table['unit'].apply(lambda x: ureg(x.split(';')[0]))
+        table.drop(columns=['unit'], inplace=True)
 
         # query by selected sources
         if src_ref is None:
@@ -283,10 +283,79 @@ class TEDataSet:
 
     # quick fix function for types not implemented yet
     def _quickFixes(self, table: pd.DataFrame):
-        # TODO: implement those types so we don't need to remove them
-        # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
-        dropTypes = ['flh', 'lifetime', 'energy_eff']
-        table = table.query(f"not type.isin({dropTypes})").reset_index(drop=True)
+        # ---------- 1. Convert fopex_rel entries to fopex_abs ----------
+
+        # copy fopex_rel entries to edit them safely
+        selected_rows = table.query(f"type.isin({['fopex_rel']})").copy()
+
+        # iterate over entries that need editing
+        for index, row in selected_rows.iterrows():
+
+            # ---- query for each row of fopex_rel the corresponding capex rows
+            matching_entries = table.query(f"type.isin({['capex']})").copy()
+            
+            # check that other columns which might be Nan are equal
+            for col in ['subtech', 'mode', 'component', 'src_ref']:
+                if row[col] == row[col]:
+                    matching_entries = matching_entries.query(f"{col}.isin({[row[col]]})")
+            
+            if(len(matching_entries) > 0):
+                selected_rows.at[index,'value'] *= matching_entries['value'].iloc[0]
+
+                selected_rows.at[index,'type'] = 'fopex_abs'
+
+                selected_rows.at[index,'unit'] = matching_entries['unit'].iloc[0]
+            else:
+                # delete the corresponding row cause without fitting CAPEX entry from the same source, this value becomes meaningless
+                table = table.drop([index])
+                selected_rows = selected_rows.drop([index])
+            
+        # override main dataset
+        table.loc[table['type'] == 'fopex_rel'] = selected_rows
+
+        # ---------- 2. Convert full load hours entries to operational capacity factor ----------
+
+        # copy fopex_rel entries to edit them safely
+        selected_rows = table.query(f"type.isin({['flh']})").copy()
+
+        # convert entries to ocf
+        # value doesnt need to be changed because the standard time unit is year, so full load hours will already be converted to years by now
+        selected_rows['type'] = 'ocf'
+        selected_rows['unit'] = "dimensionless"
+
+        # override main dataset
+        table.loc[table['type'] == 'flh'] = selected_rows
+
+        # ---------- 3. Convert energy_eff entries to energy_dem ----------
+
+        if 'reference_flow' in techs[self._tid]:
+
+            # copy energy_eff entries to edit them safely
+            selected_rows = table.query(f"type.isin({['energy_eff']})").copy()
+            reference_flow = techs[self._tid]['reference_flow']
+
+            # iterate over entries that need editing
+            for index, row in selected_rows.iterrows():
+                # derive units based on reference_flow
+
+                # has to be set to elec here because energy_eff entries dont have flow_type
+                unit_from = flowTypes['elec']['default_unit'] 
+                unit_to = flowTypes[reference_flow]['default_unit']
+                conversionFactor = convUnit(unit_from=unit_from, unit_to=unit_to, ft_specs=flowTypes[reference_flow])
+
+                # convert entry to energy_dem
+                selected_rows.at[index, 'value'] = conversionFactor * (1.0/row['value'])
+                selected_rows.at[index, 'type'] = 'energy_dem'
+                selected_rows.at[index, 'unit'] = unit_from
+                selected_rows.at[index, 'reference_unit'] = unit_to
+
+            # override main dataset
+            table.loc[table['type'] == 'energy_eff'] = selected_rows
+        else:
+            # no reference_flow found; energy_eff cannot be converted and has to be dropped
+            entriesToDrop = table.query(f"type.isin({['energy_eff']})")
+            table = table.drop(entriesToDrop.index.values)
+
         return table
 
 

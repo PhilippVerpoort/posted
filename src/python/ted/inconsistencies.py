@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.python.config.config import techs, techClasses
+from src.python.config.config import techs, techClasses, flowTypes
 from src.python.units.units import allowedFlowDims, ureg
 
 
@@ -49,6 +49,11 @@ def createException(re: bool, ex: TEInconsistencyException):
 
 def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> list[TEInconsistencyException]:
     ret = []
+
+    # check whether flow type (if non NaN) is among defined flow types
+    cell = row['flow_type']
+    if cell is not np.nan and cell not in flowTypes.keys():
+        ret.append(createException(re, TEInconsistencyException(f"invalid flow type: {cell}", colID='flow_type', **kwargs)))
 
     # check whether subtech and mode is among those defined in the technology specs
     for colID in ['subtech', 'mode']:

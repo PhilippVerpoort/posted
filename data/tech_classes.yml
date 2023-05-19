@@ -31,9 +31,19 @@ conversion:
           desc: Variable operational expenditure
           rep_dim: currency
           ref_dim: flow
+        flh:
+          name: FLH
+          desc: Full load hour
+          rep_dim: time
+          ref_dim: time
         ocf:
           name: OCF
           desc: Operational capacity factor
+          rep_dim: dimensionless
+          ref_dim: dimensionless
+        energy_eff:
+          name: Energy efficiency
+          desc: Energy efficiency
           rep_dim: dimensionless
           ref_dim: dimensionless
         energy_dem:
