@@ -1,4 +1,4 @@
-source("src/R/read/file_read.R")
+source("src/R/config/read_config.R")
 
 
 # load options
@@ -16,12 +16,23 @@ for (tid in names(techs)) {
 }
 
 
-# read dataformats
+# read data format and dtypes
 dataFormats <- readYAMLDataFile('ted_format')
+# mappings pandas dtypes to R dataframe types
+dtypeMapping <- list(
+    category="factor",
+    str="character",
+    float="numeric"
+)
+mapColnamesDtypes <- list()
+for (colType in names(dataFormats)) {
+    mapColnamesDtypes[[colType]] <- dtypeMapping[[dataFormats[[colType]]$dtype]]
+}
 
 
 # read flow types
 flowTypes <- readCSVDataFile('flow_types.csv')
+flowTypes <- split(flowTypes, flowTypes$flowid)
 
 
 # read default masks

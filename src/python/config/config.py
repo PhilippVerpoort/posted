@@ -15,7 +15,7 @@ for tspecs in techs.values():
     tspecs['entry_types'] = techClasses[tspecs['class']]['entry_types']
 
 
-# read dataformats
+# read data format and dtypes
 dataFormat = readYAMLDataFile('ted_format')
 mapColnamesDtypes = {
     colname: colspecs['dtype']

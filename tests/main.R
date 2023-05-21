@@ -1,4 +1,8 @@
+source("src/R/ted/TEDataFile.R")
 source("src/R/ted/TEDataSet.R")
-dataset <- loadDataset('direct-air-capture')
+#dataset <- loadDataset('direct-air-capture')
 
-print(dataset)
+
+#TEDataFile.read('electrolysis', 'data/teds/electrolysis.csv')
+
+TEDataSet('electrolysis')

@@ -16,8 +16,8 @@ class TEDataSet:
     # initialise
     def __init__(self,
                  tid: str,
-                 load_database: bool = True,
                  load_other: None | list = None,
+                 load_database: bool = False,
                  to_default_units: bool = True):
         # set fields from arguments
         self._tid: str = tid
@@ -25,7 +25,7 @@ class TEDataSet:
         self._dataset: None | pd.DataFrame = None
 
         # read TEDataFiles and combine into dataset
-        self._loadFiles(load_database, load_other)
+        self._loadFiles(load_other, load_database)
 
         # set default reference units for all entry types
         self._setRefUnitsDef()
@@ -36,6 +36,38 @@ class TEDataSet:
         # convert values to default units
         if to_default_units:
             self.convertUnits()
+
+
+    # load TEDatFiles and compile into dataset
+    def _loadFiles(self, load_other: None | list, load_database: bool):
+        files = []
+
+        # load default TEDataFile from POSTED database
+        if not load_other or load_database:
+            files.append(TEDataFile(self._tid, pathOfTEDFile(self._tid)))
+
+        # load TEDataFiles specified as arguments
+        if load_other is not None:
+            for o in load_other:
+                if isinstance(o, TEDataFile):
+                    files.append(o)
+                elif isinstance(o, Path) or isinstance(o, str):
+                    p = o if isinstance(o, Path) else Path(o)
+                    files.append(TEDataFile(self._tid, p))
+                else:
+                    raise Exception(f"Unknown load type: {type(o).__name__}")
+
+        # raise exception if no TEDataFiles can be loaded
+        if not files:
+            raise Exception(f"No TEDataFiles to load for technology '{self._tid}'.")
+
+        # load all TEDataFiles and check consistency
+        for f in files:
+            f.load()
+            f.check()
+
+        # compile dataset from the dataframes loaded from the individual files
+        self._dataset = pd.concat([f.getData() for f in files])
 
 
     # determine default reference units of entry types from technology class
@@ -58,36 +90,6 @@ class TEDataSet:
         # override with default reference unit of specific technology
         if 'default-ref-units' in self._tspecs:
             self._refUnitsDef |= self._tspecs['default-ref-units']
-
-
-    # load TEDatFiles and compile into dataset
-    def _loadFiles(self, load_database: bool, load_other: None | list = None):
-        files = []
-
-        # load TEDataFile from POSTED database
-        if load_database:
-            files.append(TEDataFile(self._tid, pathOfTEDFile(self._tid)))
-
-        # load other TEDataFiles if specified as arguments
-        if load_other is not None:
-            for o in load_other:
-                if isinstance(o, TEDataFile):
-                    files.append(o)
-                elif isinstance(o, Path) or isinstance(o, str):
-                    p = o if isinstance(o, Path) else Path(o)
-                    files.append(TEDataFile(self._tid, p))
-
-        # raise exception if no TEDataFiles can be loaded
-        if not files:
-            raise Exception(f"No TEDataFiles to load for technology '{self._tid}'.")
-
-        # load all TEDataFiles and check consistency
-        for f in files:
-            f.load()
-            f.check()
-
-        # compile dataset from the dataframes loaded from the individual files
-        self._dataset = pd.concat([f.getData() for f in files])
 
 
     # apply references to values and units
