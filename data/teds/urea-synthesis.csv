@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 ,,capex,,,,,348,,MUSD,0.667,1.5,Mt/a,,"Jarvis and Samsatli, 2018",Section 2.1.1
 ,,energy_dem,elec,,,,173.7,27.2,kWh,,,,Quelle prüfen; hat keine Wärme GJ/t,"Fiamelda et al, 2020",
 ,,energy_dem,elec,,,,91.5,68.5,kWh,,,,,"Jarvis and Samsatli, 2018",Section 2.1.2

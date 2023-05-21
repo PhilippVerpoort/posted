@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 ,,capex,,,,2019,890,,USD,,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA The future of Hydrogen (2019)
 ,,capex,,,,2020,1011,,EUR,,,kW,,Buchenberg et al. (2023), Table 1
 ,,capex,,,,2030,864,,EUR,,,kW,,Buchenberg et al. (2023), Table 1

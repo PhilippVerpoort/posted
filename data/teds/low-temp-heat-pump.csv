@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 ,,capex,,,,2020,660,,EUR,,,,,"Fasihi et al., 2019",Table 8
 ,,capex,,,,2030,590,,EUR,,,,,"Fasihi et al., 2020",Table 8
 ,,capex,,,,2040,554,,EUR,,,,,"Fasihi et al., 2021",Table 8

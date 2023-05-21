@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 ,,capex,,,,,643,,EUR,,,kW,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.","Pozo et al, 2022","Supplementary Information, Table 2"
 ,,energy_dem,h2,,,,0.178,,t,,,,,"Matzen et al, 2015",Page 6 / Table 10
 ,,energy_dem,heat,Air-separation unit,,,2.604,,GJ,,,,"This source claims 3.1 MJ/kg electricity denand for the ASU. Assuming a nitrogen demand of 0.84 tonnes per tonne of ammonia, this amounts of an electricity demand of 3.1×0.85 GJ per tonne of ammonia.","Matzen et al, 2015",Page 6 / Table 10

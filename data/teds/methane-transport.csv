@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 ,,capex,,Liquefaction,,2030,7265,,EUR,,,kg,plant capacity of 100MW (LHV) of methane output,Lux et al. (2021)
 ,,fopex_abs,,Liquefaction,,2030,437,,EUR,,,kg/a,plant capacity of 100MW (LHV) of methane output,Lux et al. (2021)
 Cascade,,capex,,Liquefaction,Trinidad,2002,354,,USD,,,t/a,process name: ConocoPhillips Optimized Cascade,Zhang et al. (2020)

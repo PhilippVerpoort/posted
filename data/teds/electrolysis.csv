@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 Alkaline,,capex,,Full plant,,,950,450,USD,,,,calculated from range given in report,IEA Electrolyser special report
 Alkaline,,capex,,Electrolyser system,,,400,,EUR,,,,for a 100 MW(el) electrolyser,Vartiainen et al. (2022)
 Alkaline,,capex,,Electrolyser system,,,140,,EUR,,,,for a 100 MW(el) electrolyser,Vartiainen et al. (2022)

@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 ,,capex,,,,,184,,EUR,,,,,"Wörtler et al, 2013",
 ,,capex,,,,,184,,EUR,1.8,,,"This reference assumes the value provided by Wörtler et al., 2013 but with an additional integration factor of 1.8.","Agora Energiewende, 2022",
 ,,fopex_rel,,,,,3,,percent,,,,,"Agora Energiewende, 2022",

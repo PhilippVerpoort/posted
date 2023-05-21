@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 ,,capex,,,,,312.5,,EUR,,,kW,,"Schemme, 2019",Table 3
 ,,capex,,,,,600,,EUR,,,kW,,"Grahn, 2022",Table 3
 ,,capex,,,,2020,307,,EUR,,,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94

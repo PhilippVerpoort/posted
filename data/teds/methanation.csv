@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 Catalytic,,total_cost,,,,,1.4,,USD,,,GJ,Fixed bed,Kiani et al. (2021)
 ,,capex,,,,2014,400,,EUR,,,,"for a 5MW plant, 20 bar operating pressure",Graf et al. (2014)
 ,,capex,,,,2014,130,,EUR,,,,"for a 110MW plant, 20 bar operating pressure",Graf et al. (2014)

@@ -6,8 +6,6 @@ TEDataFile.read <- function(tid, path) {
     # read data
     data <- read.csv(
         path,
-        header=0,
-        col.names=names(mapColnamesDtypes),
         colClasses=mapColnamesDtypes,
         sep=',',
         quote='"',

@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 HT-DAC,,capex,,,,2018,1126.8,,MUSD,,0.98,Mt/a,Value reported for a capacity of 0.98 Mt-CO2/year.,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
 LT-DAC,,capex,,,,2015,730,,EUR,,,,,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
 ,,fopex_rel,,,,2018,4,,percent,,,,,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.

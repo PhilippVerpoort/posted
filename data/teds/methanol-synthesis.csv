@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 ,,capex,,,,2014,496.5,,EUR,,,,,"Pérez-Fortes, 2015",Table 3
 ,,capex,,,,2019,790,,USD,,,t,"!!This includes electrolyser CAPEX costs. See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
 ,,capex,,,,2030,595,,USD,,,t,"!!This includes electrolyser CAPEX costs. See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)

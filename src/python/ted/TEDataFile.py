@@ -26,22 +26,32 @@ class TEDataFile:
 
     # read TEDataFile from CSV file
     def read(self):
+        # read CSV file
         self._data = pd.read_csv(
             self._path,
-            names=list(mapColnamesDtypes.keys()),
             dtype=mapColnamesDtypes,
             sep=',',
             quotechar='"',
             encoding='utf-8',
         )
+
+        # adjust row index to start at 1 instead of 0
         self._data.index += 1
+
+        # make sure the file contains no unknown columns
+        dataFormatColIDs = list(mapColnamesDtypes.keys())
+        for colID in self._data.columns:
+            if colID not in dataFormatColIDs:
+                raise Exception(f"Unknown column '{colID}' in file \"{self._path}\".")
+
+        # insert missing columns and reorder via reindexing
+        self._data = self._data.reindex(columns=dataFormatColIDs)
 
 
     # write TEDataFile to CSV file
     def write(self):
         self._data.to_csv(
             self._path,
-            header=False,
             index=False,
             sep=',',
             quotechar='"',

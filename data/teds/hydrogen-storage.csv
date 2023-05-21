@@ -1,3 +1,4 @@
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
 Above-ground compressed storage,,total_cost,Full plant,,,,0.33,,USD,,,kg,,Abdin et al. (2021)
 Above-ground compressed storage,,total_cost,,,,,25.2,,USD,,,kg,,Abdin et al. (2021)
 Salt caverns,,total_cost,,,,,0.14,,USD,,,kg,,Abdin et al. (2021)
