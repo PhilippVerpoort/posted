@@ -16,10 +16,6 @@ for (tid in names(techs)) {
 }
 
 
-# make sure techno-economic dataset files exist for each technology
-# TODO: Decide if we want to implement this in R too.
-
-
 # read dataformats
 dataFormats <- readYAMLDataFile('ted_format')
 

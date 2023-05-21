@@ -1,4 +1,3 @@
-from src.python.path import pathOfTEDFile
 from src.python.config.read_config import readYAMLDataFile, readCSVDataFile
 
 
@@ -14,12 +13,6 @@ techClasses = readYAMLDataFile('tech_classes')
 techs = readYAMLDataFile('techs')
 for tspecs in techs.values():
     tspecs['entry_types'] = techClasses[tspecs['class']]['entry_types']
-
-
-# make sure techno-economic dataset files exist for each technology
-techs_missing = [tid for tid in techs if not pathOfTEDFile(tid).exists()]
-if techs_missing:
-    raise Exception(f"TED files missing for technologies: {techs_missing}")
 
 
 # read dataformats
