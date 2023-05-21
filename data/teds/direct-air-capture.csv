@@ -1,69 +1,69 @@
-subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
-HT-DAC,,capex,,,,2018,1126.8,,MUSD,,0.98,Mt/a,Value reported for a capacity of 0.98 Mt-CO2/year.,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
-LT-DAC,,capex,,,,2015,730,,EUR,,,,,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
-,,fopex_rel,,,,2018,4,,percent,,,,,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
-HT-DAC,,energy_dem,elec,,,2018,366,,kWh,,,,,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
-HT-DAC,,energy_dem,heat,,,2018,5.25,,GJ,,,,Assuming high temperature (900 °C).,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
-LT-DAC,,energy_dem,elec,,,2015,694,,kWh,,,,Including compression.,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
-LT-DAC,,energy_dem,heat,,,2015,2084,,kWh,,,,Assuming low temperature (80–100 °C).,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
-LT-DAC,,fopex_rel,,,,2020,4,,percent,,,,,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
-HT-DAC,,capex,,,,2020,815,,EUR,,,,,"Fasihi et al., 2019",
-HT-DAC,,fopex_rel,,,,2020,3.7,,percent,,,,,"Fasihi et al., 2019",
-HT-DAC,,lifetime,,,,2020,25,,year,,,,,"Fasihi et al., 2019",
-LT-DAC,,lifetime,,,,2020,20,,year,,,,,"Fasihi et al., 2019",
-,,flh,,,,2020,8000,,hour,,,,,"Fasihi et al., 2019",perhaps an overoptimistic assumption
-,,energy_dem,elec,CO2 compression,,2021,111,,kWh,,,,,Madhu et al. (2021),
-HT-DAC,,energy_dem,elec,Non-compression,,2021,345,56,kWh,,,,,Madhu et al. (2021),
-HT-DAC,,energy_dem,heat,,,2021,6.6,1.5,GJ,,,,Assuming high temperature (850–900 °C).,Madhu et al. (2021),
-LT-DAC,,energy_dem,elec,Non-compression,,2021,180,110,kWh,,,,,Madhu et al. (2021),
-LT-DAC,,energy_dem,heat,,,2021,6.25,1.25,GJ,,,,Assuming low temperature (80–120 °C).,Madhu et al. (2021),
-,,energy_dem,elec,CO2 compression,,2022,0.5,,GJ,,,,,IEA Direct Air Capture (2022),
-HT-DAC,,energy_dem,elec,Non-compression,,2022,0.8,,GJ,,,,,IEA Direct Air Capture (2022),
-HT-DAC,,energy_dem,heat,,,2022,5.3,,GJ,,,,Assuming a series of units operating at high temperature (between 300°C and 900°C).,IEA Direct Air Capture (2022),
-LT-DAC,,energy_dem,elec,Non-compression,,2022,2.3,,GJ,,,,,IEA Direct Air Capture (2022),
-LT-DAC,,energy_dem,heat,,,2022,7.2,,GJ,,,,Assuming medium temperature (80-120°C).,IEA Direct Air Capture (2022),
-HT-DAC,,feedstock_dem,water,,,2022,25,25,t,,,,,IEA Direct Air Capture (2022),
-HT-DAC,,capex,,,,,80,,USD,,,,optimistic assumption,Ozkan et al. (2022),
-HT-DAC,,capex,,,,,150,,USD,,,,conservative assumption,Ozkan et al. (2022),
-LT-DAC,,capex,,,,,200,,USD,,,,optimistic assumption,Ozkan et al. (2022),
-LT-DAC,,capex,,,,,1000,,USD,,,,conservative assumption,Ozkan et al. (2022),
-HT-DAC,,fopex_tot,,,,,40,,USD,,,,optimistic assumption,Ozkan et al. (2022),
-HT-DAC,,fopex_tot,,,,,80,,USD,,,,conservative assumption,Ozkan et al. (2022),
-LT-DAC,,fopex_tot,,,,,5,,USD,,,,optimistic assumption,Ozkan et al. (2022),
-LT-DAC,,fopex_tot,,,,,50,,USD,,,,conservative assumption,Ozkan et al. (2022),
-LT-DAC,,capex,,,,2050,199,,EUR,,,t/a,conservative assumption,"Fasihi et al., 2019",
-LT-DAC,,capex,,,,2050,84,,EUR,,,t/a,optimistic assumption,"Fasihi et al., 2019",
-HT-DAC,,capex,,,,2050,222,,EUR,,,t/a,conservative assumption,"Fasihi et al., 2019",
-HT-DAC,,capex,,,,2050,93,,EUR,,,t/a,optimistic assumption,"Fasihi et al., 2019",
-,,fopex_rel,,,,2020,4,,percent,,,,,"Lux et al., 2023",
-LT-DAC,,lifetime,,,,2050,30,,year,,,,,"Lux et al., 2023",
-LT-DAC,,lifetime,,,,2050,25,,year,,,,,"Lux et al., 2023",
-LT-DAC,,energy_dem,elec,,,2050,1685,,kWh,,,,,"Lux et al., 2023",
-LT-DAC,,energy_dem,elec,,,2050,1339,,kWh,,,,,"Lux et al., 2023",
-HT-DAC,,energy_dem,elec,,,,0.49,,MWh,,,,,"Socolow et al., 2011",
-HT-DAC,,energy_dem,ht_heat,,,,8.1,,GJ,,,,,"Socolow et al., 2011",
-HT-DAC,,flh,,,,,8000,,hour,,,,,"Socolow et al., 2011",
-HT-DAC,,capex,,,,,2900,,EUR,,,t/a,"Used line "Total Installed capital cost" for the "realistic" column","Socolow et al., 2011",table 2.5
-HT-DAC,,vopex,,,,,120,,EUR,,,,"Used line "Maintenance labor and chemicals" cost for the "realistic" column","Socolow et al., 2011",table 2.5
-HT-DAC,,capex,,,,,2200,,EUR,,,t/a,"Used line "Total Installed capital cost" for the "optimistic" column","Socolow et al., 2011",table 2.5
-HT-DAC,,vopex,,,,,120,,EUR,,,,"Used line "Maintenance labor and chemicals" cost for the "optimistic" column","Socolow et al., 2011",table 2.5
-LT-DAC,,energy_dem,elec,,,,0.6,,GJ,,,,,Realmonte et al. (2019),
-LT-DAC,,energy_dem,heat,,,,4.4,,GJ,,,,,Realmonte et al. (2019),
-LT-DAC,,energy_dem,elec,,,,1.1,,GJ,,,,,Realmonte et al. (2019),
-LT-DAC,,energy_dem,heat,,,,7.2,,GJ,,,,,Realmonte et al. (2019),
-HT-DAC,,capex,,,,,1255,,USD,,,t/a,Upper bound,NASEM (2019),table 5.3
-HT-DAC,,capex,,,,,675,,USD,,,t/a,Lower bound,NASEM (2019),table 5.3
-HT-DAC,,vopex,om,,,,18,,USD,,,,Lower bound,NASEM (2019),table 5.3
-HT-DAC,,vopex,om,,,,33,,USD,,,,Upper bound,NASEM (2019),table 5.3
-HT-DAC,,vopex,labour,,,,6,,USD,,,,Lower bound,NASEM (2019),table 5.3
-HT-DAC,,vopex,labour,,,,10,,USD,,,,Upper bound,NASEM (2019),table 5.3
-HT-DAC,,vopex,other,,,,5,,USD,,,,Lower bound,NASEM (2019),table 5.3
-HT-DAC,,vopex,other,,,,7,,USD,,,,Upper bound,NASEM (2019),table 5.3
-LT-DAC,,capex_ann,,,,,186,,USD,,,,"High cost scenario. Value stated in MEUR/yr, for a production of 1 Mt/yr = 186 EUR/t",NASEM (2019),table 5.10
-LT-DAC,,capex_ann,,,,,70,,USD,,,,"Low cost scenario. Value stated in MEUR/yr, for a production of 1 Mt/yr = 70 EUR/t",NASEM (2019),table 5.10
-LT-DAC,,vopex,adsorbent,,,,19,,USD,,,,High cost scenario,NASEM (2019),table 5.10
-LT-DAC,,vopex,adsorbent,,,,9,,USD,,,,Low cost scenario,NASEM (2019),table 5.10
-LT-DAC,,capex_ann,,,,,988,,USD,,,,"Highest cost scenario. Value stated in MEUR/yr, for a production of 1 Mt/yr = 988 EUR/t",NASEM (2019),table 5.10
-LT-DAC,,capex_ann,,,,,3.6,,USD,,,,"Lowest cost scenario. Value stated in MEUR/yr, for a production of 1 Mt/yr = 3.6 EUR/t",NASEM (2019),table 5.10
-LT-DAC,,vopex,adsorbent,,,,4.3,,USD,,,,Highest cost scenario,NASEM (2019),table 5.10
-LT-DAC,,vopex,adsorbent,,,,1.3,,USD,,,,Lowest cost scenario,NASEM (2019),table 5.10
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
+HT-DAC,,capex,,,,2018,1126.8,,MUSD,0.98,Mt/a,Value reported for a capacity of 0.98 Mt-CO2/year.,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
+LT-DAC,,capex,,,,2015,730,,EUR,,,,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
+,,fopex_rel,,,,2018,4,,percent,,,,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
+HT-DAC,,energy_dem,elec,,,2018,366,,kWh,,,,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
+HT-DAC,,energy_dem,heat,,,2018,5.25,,GJ,,,Assuming high temperature (900 °C).,"Keith et al., 2018",Corresponding to the Carbon Engineering pilot plant.
+LT-DAC,,energy_dem,elec,,,2015,694,,kWh,,,Including compression.,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
+LT-DAC,,energy_dem,heat,,,2015,2084,,kWh,,,Assuming low temperature (80–100 °C).,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
+LT-DAC,,fopex_rel,,,,2020,4,,percent,,,,"Fasihi et al., 2019",Based on a Antecy pilot plant and future plant projections.
+HT-DAC,,capex,,,,2020,815,,EUR,,,,"Fasihi et al., 2019",
+HT-DAC,,fopex_rel,,,,2020,3.7,,percent,,,,"Fasihi et al., 2019",
+HT-DAC,,lifetime,,,,2020,25,,year,,,,"Fasihi et al., 2019",
+LT-DAC,,lifetime,,,,2020,20,,year,,,,"Fasihi et al., 2019",
+,,flh,,,,2020,8000,,hour,,,,"Fasihi et al., 2019",perhaps an overoptimistic assumption
+,,energy_dem,elec,CO2 compression,,2021,111,,kWh,,,,Madhu et al. (2021),
+HT-DAC,,energy_dem,elec,Non-compression,,2021,345,56,kWh,,,,Madhu et al. (2021),
+HT-DAC,,energy_dem,heat,,,2021,6.6,1.5,GJ,,,Assuming high temperature (850–900 °C).,Madhu et al. (2021),
+LT-DAC,,energy_dem,elec,Non-compression,,2021,180,110,kWh,,,,Madhu et al. (2021),
+LT-DAC,,energy_dem,heat,,,2021,6.25,1.25,GJ,,,Assuming low temperature (80–120 °C).,Madhu et al. (2021),
+,,energy_dem,elec,CO2 compression,,2022,0.5,,GJ,,,,IEA Direct Air Capture (2022),
+HT-DAC,,energy_dem,elec,Non-compression,,2022,0.8,,GJ,,,,IEA Direct Air Capture (2022),
+HT-DAC,,energy_dem,heat,,,2022,5.3,,GJ,,,Assuming a series of units operating at high temperature (between 300°C and 900°C).,IEA Direct Air Capture (2022),
+LT-DAC,,energy_dem,elec,Non-compression,,2022,2.3,,GJ,,,,IEA Direct Air Capture (2022),
+LT-DAC,,energy_dem,heat,,,2022,7.2,,GJ,,,Assuming medium temperature (80-120°C).,IEA Direct Air Capture (2022),
+HT-DAC,,feedstock_dem,water,,,2022,25,25,t,,,,IEA Direct Air Capture (2022),
+HT-DAC,,capex,,,,,80,,USD,,,optimistic assumption,Ozkan et al. (2022),
+HT-DAC,,capex,,,,,150,,USD,,,conservative assumption,Ozkan et al. (2022),
+LT-DAC,,capex,,,,,200,,USD,,,optimistic assumption,Ozkan et al. (2022),
+LT-DAC,,capex,,,,,1000,,USD,,,conservative assumption,Ozkan et al. (2022),
+HT-DAC,,fopex_tot,,,,,40,,USD,,,optimistic assumption,Ozkan et al. (2022),
+HT-DAC,,fopex_tot,,,,,80,,USD,,,conservative assumption,Ozkan et al. (2022),
+LT-DAC,,fopex_tot,,,,,5,,USD,,,optimistic assumption,Ozkan et al. (2022),
+LT-DAC,,fopex_tot,,,,,50,,USD,,,conservative assumption,Ozkan et al. (2022),
+LT-DAC,,capex,,,,2050,199,,EUR,,t/a,conservative assumption,"Fasihi et al., 2019",
+LT-DAC,,capex,,,,2050,84,,EUR,,t/a,optimistic assumption,"Fasihi et al., 2019",
+HT-DAC,,capex,,,,2050,222,,EUR,,t/a,conservative assumption,"Fasihi et al., 2019",
+HT-DAC,,capex,,,,2050,93,,EUR,,t/a,optimistic assumption,"Fasihi et al., 2019",
+,,fopex_rel,,,,2020,4,,percent,,,,"Lux et al., 2023",
+LT-DAC,,lifetime,,,,2050,30,,year,,,,"Lux et al., 2023",
+LT-DAC,,lifetime,,,,2050,25,,year,,,,"Lux et al., 2023",
+LT-DAC,,energy_dem,elec,,,2050,1685,,kWh,,,,"Lux et al., 2023",
+LT-DAC,,energy_dem,elec,,,2050,1339,,kWh,,,,"Lux et al., 2023",
+HT-DAC,,energy_dem,elec,,,,0.49,,MWh,,,,"Socolow et al., 2011",
+HT-DAC,,energy_dem,ht_heat,,,,8.1,,GJ,,,,"Socolow et al., 2011",
+HT-DAC,,flh,,,,,8000,,hour,,,,"Socolow et al., 2011",
+HT-DAC,,capex,,,,,2900,,EUR,,t/a,"Used line ""Total Installed capital cost"" for the ""realistic"" column","Socolow et al., 2011",table 2.5
+HT-DAC,,vopex,,,,,120,,EUR,,,"Used line ""Maintenance labor and chemicals"" cost for the ""realistic"" column","Socolow et al., 2011",table 2.5
+HT-DAC,,capex,,,,,2200,,EUR,,t/a,"Used line ""Total Installed capital cost"" for the ""optimistic"" column","Socolow et al., 2011",table 2.5
+HT-DAC,,vopex,,,,,120,,EUR,,,"Used line ""Maintenance labor and chemicals"" cost for the ""optimistic"" column","Socolow et al., 2011",table 2.5
+LT-DAC,,energy_dem,elec,,,,0.6,,GJ,,,,Realmonte et al. (2019),
+LT-DAC,,energy_dem,heat,,,,4.4,,GJ,,,,Realmonte et al. (2019),
+LT-DAC,,energy_dem,elec,,,,1.1,,GJ,,,,Realmonte et al. (2019),
+LT-DAC,,energy_dem,heat,,,,7.2,,GJ,,,,Realmonte et al. (2019),
+HT-DAC,,capex,,,,,1255,,USD,,t/a,Upper bound,NASEM (2019),table 5.3
+HT-DAC,,capex,,,,,675,,USD,,t/a,Lower bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,om,,,,18,,USD,,,Lower bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,om,,,,33,,USD,,,Upper bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,labour,,,,6,,USD,,,Lower bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,labour,,,,10,,USD,,,Upper bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,other,,,,5,,USD,,,Lower bound,NASEM (2019),table 5.3
+HT-DAC,,vopex,other,,,,7,,USD,,,Upper bound,NASEM (2019),table 5.3
+LT-DAC,,capex_ann,,,,,186,,USD,,,"High cost scenario. Value stated in MEUR/yr, for a production of 1 Mt/yr = 186 EUR/t",NASEM (2019),table 5.10
+LT-DAC,,capex_ann,,,,,70,,USD,,,"Low cost scenario. Value stated in MEUR/yr, for a production of 1 Mt/yr = 70 EUR/t",NASEM (2019),table 5.10
+LT-DAC,,vopex,adsorbent,,,,19,,USD,,,High cost scenario,NASEM (2019),table 5.10
+LT-DAC,,vopex,adsorbent,,,,9,,USD,,,Low cost scenario,NASEM (2019),table 5.10
+LT-DAC,,capex_ann,,,,,988,,USD,,,"Highest cost scenario. Value stated in MEUR/yr, for a production of 1 Mt/yr = 988 EUR/t",NASEM (2019),table 5.10
+LT-DAC,,capex_ann,,,,,3.6,,USD,,,"Lowest cost scenario. Value stated in MEUR/yr, for a production of 1 Mt/yr = 3.6 EUR/t",NASEM (2019),table 5.10
+LT-DAC,,vopex,adsorbent,,,,4.3,,USD,,,Highest cost scenario,NASEM (2019),table 5.10
+LT-DAC,,vopex,adsorbent,,,,1.3,,USD,,,Lowest cost scenario,NASEM (2019),table 5.10

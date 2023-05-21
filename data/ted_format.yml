@@ -66,14 +66,6 @@ reported_unit:
   dtype: str
   required: True
   allowed: Any unit matching the entry type
-conv_factor:
-  name: Non-unit non-reference conversion factor
-  desc:
-    Conversion factor(s) that need to be accounted for beyond unit conversion (e.g. integration factors, reference 
-    volumes, etc), as described in the column containing value and unit comment.
-  dtype: float
-  required: False
-  allowed: Any floating-point number
 reference_value:
   name: Reference value
   desc:

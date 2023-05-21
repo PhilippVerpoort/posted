@@ -1,14 +1,14 @@
-subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
-,,capex,,,,,312.5,,EUR,,,kW,,"Schemme, 2019",Table 3
-,,capex,,,,,600,,EUR,,,kW,,"Grahn, 2022",Table 3
-,,capex,,,,2020,307,,EUR,,,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-,,capex,,,,2030,269,,EUR,,,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-,,capex,,,,2050,200,,EUR,,,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-,,fopex_rel,,,,,4.5,,percent,,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-,,vopex,,,,,1350,,EUR,,,GWh,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-,,energy_dem,elec,,,,0.2,,MWh,,,,"data given in the table as 0.71 MJ/kg. Converted manually by C.B to MWh/t. ","Soler, 2022",Table 5
-,,energy_dem,elec,,,,0.229,,MWh,,,,,"Takunju, 2021",Table 4.13
-,,feedstock_dem,methanol,,,,2.29,,t,,,,,"Soler, 2022",Table 5
-,,feedstock_dem,methanol,,,,2.564,,t,,,,,"Takunju, 2021",Table 4.13
-,,feedstock_dem,h2,,,,0.001,,t,,,,,"Soler, 2022",Table 5
-,,lifetime,,,,,30,,year,,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
+,,capex,,,,,312.5,,EUR,,kW,,"Schemme, 2019",Table 3
+,,capex,,,,,600,,EUR,,kW,,"Grahn, 2022",Table 3
+,,capex,,,,2020,307,,EUR,,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
+,,capex,,,,2030,269,,EUR,,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
+,,capex,,,,2050,200,,EUR,,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
+,,fopex_rel,,,,,4.5,,percent,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
+,,vopex,,,,,1350,,EUR,,GWh,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
+,,energy_dem,elec,,,,0.2,,MWh,,,"data given in the table as 0.71 MJ/kg. Converted manually by C.B to MWh/t. ","Soler, 2022",Table 5
+,,energy_dem,elec,,,,0.229,,MWh,,,,"Takunju, 2021",Table 4.13
+,,feedstock_dem,methanol,,,,2.29,,t,,,,"Soler, 2022",Table 5
+,,feedstock_dem,methanol,,,,2.564,,t,,,,"Takunju, 2021",Table 4.13
+,,feedstock_dem,h2,,,,0.001,,t,,,,"Soler, 2022",Table 5
+,,lifetime,,,,,30,,year,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94

@@ -1,28 +1,28 @@
-subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,conv_factor,reference_value,reference_unit,comment,src_ref,src_comment
-,,capex,,,,2014,496.5,,EUR,,,,,"Pérez-Fortes, 2015",Table 3
-,,capex,,,,2019,790,,USD,,,t,"!!This includes electrolyser CAPEX costs. See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
-,,capex,,,,2030,595,,USD,,,t,"!!This includes electrolyser CAPEX costs. See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
-,,capex,,,,,209.5,,EUR,,,,"CB: calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant. See",Nyari (2020), Table A4
-,,capex,,,,,169,,EUR,,,,"CB: calculated manually from paper data: CAPEX = 11 MEUR, (as stated in the paper) and 65 kt/a plant. See",Bos (2020), Table S8
-,,vopex,,,,,25,,EUR,,,,"This source states fixed cost of 11 MEUR/a for a capacity of 440 kt/a, which yields total fixed OPEX of 11000/440=25 EUR/t. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t","Pérez-Fortes, 2015",Table 3
-,,vopex,direct_labour,,,,2.01,,EUR,,,t,"Nyari misquotes the result from Collodi (2017). There are in fact 61 workers * 60 000 mean salary =3.66MEUR/a. Production of 5000 MTPD => 1.825e6 t/a.Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t ",Nyari (2020), Table 5
-,,vopex,admin,,,,0.6,,EUR,,,t,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * direct labour.Production of 5000 MTPD => 1.825e6 t/a. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t",Nyari (2020), Table 5
-,,fopex_rel,admin,,,,0.45,,percent,,,,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * om = 0.45% of TPC .",Nyari (2020), Table 5
-,,fopex_rel,om,,,,1.5,,percent,,,,"Operation and maintenance. Percentage of the total plant cost (TPC)",Nyari (2020), Table 5
-,,fopex_rel,tax,,,,1,,percent,,,,"In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)",Nyari (2020), Table 5
-,,fopex_rel,,,,,1.5,,percent,,,,"See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
-,,energy_dem,elec,,,,1.5,,MWh,,,,,"DECHEMA, 2017",Section 4.4.3
-,,energy_dem,elec,,,,0.3,,MWh,,,,"data given in the table as 1.07 MJ/kg. Converted manually by C.B to MWh/t. ","Soler, 2022",Table 3
-,,energy_dem,elec,,,2019,25.4,,GJ,,,t,"See ""Assumptions"" of the report. Here, we have GJ(el)/t(MeOH)",IEA The future of Hydrogen (2019)
-,,energy_dem,elec,,,2030,23.7,,GJ,,,t,"See ""Assumptions"" of the report. Here, we have GJ(el)/t(MeOH)",IEA The future of Hydrogen (2019)
-,,energy_dem,elec,,,,0.175,,kWh,,,kg,,Nyari (2020),Table 6
-,,feedstock_dem,co2,,,,1.46,,t,,,,,Pérez-Fortes (2015),Table 1
-,,feedstock_dem,co2,,,,1.373,,t,,,,,DECHEMA 2017,Section 4.4.3
-,,feedstock_dem,co2,,,,1.4,,t,,,,,Soler 2022,Table 3
-,,feedstock_dem,co2,,,,1.397,,t,,,,,Nyari (2020),Table 6
-,,feedstock_dem,h2,,,,0.199,,t,,,,,Pérez-Fortes (2015),Table 1
-,,feedstock_dem,h2,,,,0.193,,t,,,,,Soler 2022,Table 3
-,,feedstock_dem,h2,,,,189,,kg,,,,,DECHEMA (2017),Section 4.4.3
-,,feedstock_dem,h2,,,,0.129,,t,,,,,Nyari (2020),Table 6
-,,lifetime,,,,,25,,year,,,,"See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
-,,emission,co2,,,,0.023,,kg,,,kg,,Nyari (2020),Table 6
+subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
+,,capex,,,,2014,496.5,,EUR,,,,"Pérez-Fortes, 2015",Table 3
+,,capex,,,,2019,790,,USD,,t,"!!This includes electrolyser CAPEX costs. See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
+,,capex,,,,2030,595,,USD,,t,"!!This includes electrolyser CAPEX costs. See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
+,,capex,,,,,209.5,,EUR,,,"CB: calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant. See",Nyari (2020), Table A4
+,,capex,,,,,169,,EUR,,,"CB: calculated manually from paper data: CAPEX = 11 MEUR, (as stated in the paper) and 65 kt/a plant. See",Bos (2020), Table S8
+,,vopex,,,,,25,,EUR,,,"This source states fixed cost of 11 MEUR/a for a capacity of 440 kt/a, which yields total fixed OPEX of 11000/440=25 EUR/t. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t","Pérez-Fortes, 2015",Table 3
+,,vopex,direct_labour,,,,2.01,,EUR,,t,"Nyari misquotes the result from Collodi (2017). There are in fact 61 workers * 60 000 mean salary =3.66MEUR/a. Production of 5000 MTPD => 1.825e6 t/a.Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t ",Nyari (2020), Table 5
+,,vopex,admin,,,,0.6,,EUR,,t,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * direct labour.Production of 5000 MTPD => 1.825e6 t/a. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t",Nyari (2020), Table 5
+,,fopex_rel,admin,,,,0.45,,percent,,,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * om = 0.45% of TPC .",Nyari (2020), Table 5
+,,fopex_rel,om,,,,1.5,,percent,,,"Operation and maintenance. Percentage of the total plant cost (TPC)",Nyari (2020), Table 5
+,,fopex_rel,tax,,,,1,,percent,,,"In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)",Nyari (2020), Table 5
+,,fopex_rel,,,,,1.5,,percent,,,"See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
+,,energy_dem,elec,,,,1.5,,MWh,,,,"DECHEMA, 2017",Section 4.4.3
+,,energy_dem,elec,,,,0.3,,MWh,,,"data given in the table as 1.07 MJ/kg. Converted manually by C.B to MWh/t. ","Soler, 2022",Table 3
+,,energy_dem,elec,,,2019,25.4,,GJ,,t,"See ""Assumptions"" of the report. Here, we have GJ(el)/t(MeOH)",IEA The future of Hydrogen (2019)
+,,energy_dem,elec,,,2030,23.7,,GJ,,t,"See ""Assumptions"" of the report. Here, we have GJ(el)/t(MeOH)",IEA The future of Hydrogen (2019)
+,,energy_dem,elec,,,,0.175,,kWh,,kg,,Nyari (2020),Table 6
+,,feedstock_dem,co2,,,,1.46,,t,,,,Pérez-Fortes (2015),Table 1
+,,feedstock_dem,co2,,,,1.373,,t,,,,DECHEMA 2017,Section 4.4.3
+,,feedstock_dem,co2,,,,1.4,,t,,,,Soler 2022,Table 3
+,,feedstock_dem,co2,,,,1.397,,t,,,,Nyari (2020),Table 6
+,,feedstock_dem,h2,,,,0.199,,t,,,,Pérez-Fortes (2015),Table 1
+,,feedstock_dem,h2,,,,0.193,,t,,,,Soler 2022,Table 3
+,,feedstock_dem,h2,,,,189,,kg,,,,DECHEMA (2017),Section 4.4.3
+,,feedstock_dem,h2,,,,0.129,,t,,,,Nyari (2020),Table 6
+,,lifetime,,,,,25,,year,,,"See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
+,,emission,co2,,,,0.023,,kg,,kg,,Nyari (2020),Table 6

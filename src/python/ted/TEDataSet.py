@@ -105,27 +105,22 @@ class TEDataSet:
             1.0,
         )
 
-        # set non-unit conversion factor to 1.0 if not set otherwise
-        self._dataset['conv_factor'].fillna(1.0, inplace=True)
-
         # set converted value and unit
         self._dataset.insert(7, 'value',
             self._dataset['reported_value'] \
           / self._dataset['reference_value'] \
-          / self._dataset['reference_unit_factor'] \
-          * self._dataset['conv_factor']
+          / self._dataset['reference_unit_factor']
         )
         self._dataset.insert(8, 'unc',
             self._dataset['reported_unc'] \
           / self._dataset['reference_value'] \
-          / self._dataset['reference_unit_factor'] \
-          * self._dataset['conv_factor']
+          / self._dataset['reference_unit_factor']
         )
         self._dataset.insert(9, 'unit', self._dataset['reported_unit'])
 
         # drop old unit and value columns
         self._dataset.drop(
-            self._dataset.filter(regex=r"^(reported|reference)_(value|unc|unit).*$").columns.to_list() + ['conv_factor'],
+            self._dataset.filter(regex=r"^(reported|reference)_(value|unc|unit).*$").columns.to_list(),
             axis=1,
             inplace=True,
         )
