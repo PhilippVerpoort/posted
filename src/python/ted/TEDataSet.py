@@ -18,14 +18,16 @@ class TEDataSet:
                  tid: str,
                  load_other: None | list = None,
                  load_database: bool = False,
-                 to_default_units: bool = True):
+                 to_default_units: bool = True,
+                 skip_checks: bool = False,
+                 ):
         # set fields from arguments
         self._tid: str = tid
         self._tspecs: dict = copy.deepcopy(techs[tid])
         self._dataset: None | pd.DataFrame = None
 
         # read TEDataFiles and combine into dataset
-        self._loadFiles(load_other, load_database)
+        self._loadFiles(load_other, load_database, skip_checks)
 
         # set default reference units for all entry types
         self._setRefUnitsDef()
@@ -39,7 +41,7 @@ class TEDataSet:
 
 
     # load TEDatFiles and compile into dataset
-    def _loadFiles(self, load_other: None | list, load_database: bool):
+    def _loadFiles(self, load_other: None | list, load_database: bool, skip_checks: bool):
         files = []
 
         # load default TEDataFile from POSTED database
@@ -64,7 +66,8 @@ class TEDataSet:
         # load all TEDataFiles and check consistency
         for f in files:
             f.load()
-            f.check()
+            if not skip_checks:
+                f.check()
 
         # compile dataset from the dataframes loaded from the individual files
         self._dataset = pd.concat([f.getData() for f in files])
