@@ -24,7 +24,7 @@ class TEDataSet:
         # set fields from arguments
         self._tid: str = tid
         self._tspecs: dict = copy.deepcopy(techs[tid])
-        self._dataset: None | pd.DataFrame = None
+        self._df: None | pd.DataFrame = None
 
         # read TEDataFiles and combine into dataset
         self._loadFiles(load_other, load_database, skip_checks)
@@ -70,7 +70,7 @@ class TEDataSet:
                 f.check()
 
         # compile dataset from the dataframes loaded from the individual files
-        self._dataset = pd.concat([f.getData() for f in files])
+        self._df = pd.concat([f.data for f in files])
 
 
     # determine default reference units of entry types from technology class
@@ -98,32 +98,32 @@ class TEDataSet:
     # apply references to values and units
     def _normToRef(self):
         # default reference value is 1.0
-        self._dataset['reference_value'].fillna(1.0, inplace=True)
+        self._df['reference_value'].fillna(1.0, inplace=True)
 
         # add default reference unit conversion factor
-        self._dataset['reference_unit_default'] = self._dataset['type'].map(self._refUnitsDef).astype(str)
-        self._dataset['reference_unit_factor'] = np.where(
-            self._dataset['reference_unit'].notna(),
-            convUnitDF(self._dataset, 'reference_unit', 'reference_unit_default', self._tspecs['reference_flow']),
+        self._df['reference_unit_default'] = self._df['type'].map(self._refUnitsDef).astype(str)
+        self._df['reference_unit_factor'] = np.where(
+            self._df['reference_unit'].notna(),
+            convUnitDF(self._df, 'reference_unit', 'reference_unit_default', self._tspecs['reference_flow']),
             1.0,
         )
 
         # set converted value and unit
-        self._dataset.insert(7, 'value',
-            self._dataset['reported_value'] \
-          / self._dataset['reference_value'] \
-          / self._dataset['reference_unit_factor']
+        self._df.insert(7, 'value',
+            self._df['reported_value'] \
+          / self._df['reference_value'] \
+          / self._df['reference_unit_factor']
         )
-        self._dataset.insert(8, 'unc',
-            self._dataset['reported_unc'] \
-          / self._dataset['reference_value'] \
-          / self._dataset['reference_unit_factor']
+        self._df.insert(8, 'unc',
+            self._df['reported_unc'] \
+          / self._df['reference_value'] \
+          / self._df['reference_unit_factor']
         )
-        self._dataset.insert(9, 'unit', self._dataset['reported_unit'])
+        self._df.insert(9, 'unit', self._df['reported_unit'])
 
         # drop old unit and value columns
-        self._dataset.drop(
-            self._dataset.filter(regex=r"^(reported|reference)_(value|unc|unit).*$").columns.to_list(),
+        self._df.drop(
+            self._df.filter(regex=r"^(reported|reference)_(value|unc|unit).*$").columns.to_list(),
             axis=1,
             inplace=True,
         )
@@ -138,7 +138,7 @@ class TEDataSet:
 
         # set reported units to convert to
         repUnitsDef = []
-        for typeid in self._dataset['type'].unique():
+        for typeid in self._df['type'].unique():
             # get reported dimension of entry type
             repDim = self._tspecs['entry_types'][typeid]['rep_dim']
 
@@ -149,7 +149,7 @@ class TEDataSet:
             if 'flow' not in repUnit:
                 repUnitsDef.append({'type': typeid, 'unit_convert': repUnit})
             else:
-                for flowid in self._dataset.query(f"type=='{typeid}'")['flow_type'].unique():
+                for flowid in self._df.query(f"type=='{typeid}'")['flow_type'].unique():
                     repUnitFlow = re.sub('flow', flowTypes[flowid]['default_unit'], repUnit)
                     repUnitsDef.append({'type': typeid, 'flow_type': flowid, 'unit_convert': repUnitFlow})
 
@@ -161,22 +161,23 @@ class TEDataSet:
                 record['unit_convert'] = flow_units[record['flow_type']]
 
         # add reported unit conversion factor
-        self._dataset = self._dataset.merge(
+        self._df = self._df.merge(
             pd.DataFrame.from_records(repUnitsDef),
             on=['type', 'flow_type'],
         )
-        convFactor = convUnitDF(self._dataset, 'unit', 'unit_convert')
-        self._dataset['value'] *= convFactor
-        self._dataset['unc'] *= convFactor
-        self._dataset.drop(columns=['unit'], inplace=True)
-        self._dataset.rename(columns={'unit_convert': 'unit'}, inplace=True)
+        convFactor = convUnitDF(self._df, 'unit', 'unit_convert')
+        self._df['value'] *= convFactor
+        self._df['unc'] *= convFactor
+        self._df.drop(columns=['unit'], inplace=True)
+        self._df.rename(columns={'unit_convert': 'unit'}, inplace=True)
 
         return self
 
 
     # get dataset
-    def getDataset(self):
-        return self._dataset
+    @property
+    def data(self):
+        return self._df
 
 
     # select data
@@ -190,7 +191,7 @@ class TEDataSet:
                       no_agg: None | list = None,
                       ):
         # the dataset it the starting-point for the table
-        table = self._dataset.copy()
+        table = self._df.copy()
 
         # drop columns that are not considered
         table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)

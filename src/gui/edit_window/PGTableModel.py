@@ -48,7 +48,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
     # get data from TEDataFile object
     @property
     def _data(self) -> pd.DataFrame:
-        return self._dataFile.getData()
+        return self._dataFile.data
 
 
     # get inconsistencies from TEDataFile object
