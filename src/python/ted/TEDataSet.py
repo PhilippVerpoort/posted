@@ -168,8 +168,8 @@ class TEDataSet:
         convFactor = convUnitDF(self._df, 'unit', 'unit_convert')
         self._df['value'] *= convFactor
         self._df['unc'] *= convFactor
-        self._df.drop(columns=['unit'], inplace=True)
-        self._df.rename(columns={'unit_convert': 'unit'}, inplace=True)
+        self._df['unit'] = self._df['unit_convert']
+        self._df.drop(columns=['unit_convert'], inplace=True)
 
         return self
 
