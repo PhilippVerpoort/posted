@@ -137,7 +137,7 @@ class TEDataSet:
             flow_units = {}
 
         # set reported units to convert to
-        repUnitsDef = []
+        repUnitsTarget = []
         for typeid in self._df['type'].unique():
             # get reported dimension of entry type
             repDim = self._tspecs['entry_types'][typeid]['rep_dim']
@@ -147,14 +147,14 @@ class TEDataSet:
             for dim, unit in defaultUnits.items():
                 repUnit = re.sub(dim, unit, repUnit)
             if 'flow' not in repUnit:
-                repUnitsDef.append({'type': typeid, 'unit_convert': repUnit})
+                repUnitsTarget.append({'type': typeid, 'unit_convert': repUnit})
             else:
                 for flowid in self._df.query(f"type=='{typeid}'")['flow_type'].unique():
                     repUnitFlow = re.sub('flow', flowTypes[flowid]['default_unit'], repUnit)
-                    repUnitsDef.append({'type': typeid, 'flow_type': flowid, 'unit_convert': repUnitFlow})
+                    repUnitsTarget.append({'type': typeid, 'flow_type': flowid, 'unit_convert': repUnitFlow})
 
         # override from function argument
-        for record in repUnitsDef:
+        for record in repUnitsTarget:
             if record['type'] in type_units:
                 record['unit_convert'] = type_units[record['type']]
             elif 'flow_type' in record and record['flow_type'] in flow_units:
@@ -162,7 +162,7 @@ class TEDataSet:
 
         # add reported unit conversion factor
         self._df = self._df.merge(
-            pd.DataFrame.from_records(repUnitsDef),
+            pd.DataFrame.from_records(repUnitsTarget),
             on=['type', 'flow_type'],
         )
         convFactor = convUnitDF(self._df, 'unit', 'unit_convert')
