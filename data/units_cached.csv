@@ -1,0 +1,4 @@
+from,to,ft,factor
+MWh,GJ,,3.6
+t,MWh,h2,33.33
+kg,MWh,h2,0.03

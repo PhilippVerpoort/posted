@@ -4,7 +4,7 @@ source("src/R/config/config.R")
 # read TED CSV input file
 TEDataFile.read <- function(tid, path) {
     # read data
-    data <- read.csv(
+    df <- read.csv(
         path,
         colClasses=mapColnamesDtypes,
         sep=',',
@@ -17,6 +17,6 @@ TEDataFile.read <- function(tid, path) {
     return(list(
         tid=tid,
         path=path,
-        data=data
+        data=df
     ))
 }

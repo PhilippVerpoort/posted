@@ -1,30 +1,35 @@
-source("src/R/path.R")
-source("src/R/config/read_config.R")
-
 library(dplyr)
+library(tibble)
+
+source("src/R/config/read_config.R")
+source("src/R/path.R")
+source("src/R/units/units.R")
 
 
 TEDataSet <- function(tid, load_other=list(), load_database=FALSE, to_default_units=TRUE) {
     # read TEDataFiles and combine into dataset
-    dataset <- TEDataSet.loadFiles(tid=tid, load_other=load_other, load_database=load_database)
+    df <- TEDataSet.loadFiles(tid=tid, load_other=load_other, load_database=load_database)
 
     # set default reference units for all entry types
     refUnitsDef <- TEDataSet.setRefUnitsDef(tid=tid)
 
     # normalise all entries to a unified reference
-    dataset <- TEDataSet.normToRef(tid=tid, dataset=dataset, refUnitsDef=refUnitsDef)
+    df <- TEDataSet.normToRef(tid=tid, dataset=df, refUnitsDef=refUnitsDef)
+
+    # create TEDataSet list object
+    obj <- list(
+      tid=tid,
+      refUnitsDef=refUnitsDef,
+      data=df
+    )
 
     # convert values to default units
     if (to_default_units) {
-        dataset <- TEDataSet.convertUnits(tid=tid, dataset=dataset)
+        obj <- TEDataSet.convertUnits(obj)
     }
 
     # return TEDataSet object as list
-    return(list(
-      tid=tid,
-      dataset=dataset,
-      refUnitsDef=refUnitsDef
-    ))
+    return(obj)
 }
 
 
@@ -33,18 +38,18 @@ TEDataSet.loadFiles <- function(tid, load_other, load_database) {
     files <- list()
 
     # load default TEDataFile from POSTED database
-    if ((!!length(load_other)) | load_database) {
-        files <- append(files, TEDataFile.read(tid, pathOfTEDFile(tid)))
+    if ((!length(load_other)) || load_database) {
+        files[[length(files)+1]] <- TEDataFile.read(tid, pathOfTEDFile(tid))
     }
 
     # load TEDataFiles specified as arguments
     if (!!length(load_other)) {
         for (o in load_other) {
             if (typeof(o) == "list") {
-                files <- append(files, o)
+                files[[length(files)+1]] <- o
             }
             else if (typeof(o) == "character") {
-                files <- append(files, TEDataFile.read(tid, o))
+                files[[length(files)+1]] <- TEDataFile.read(tid, o)
             }
             else {
                 stop("Unknown load type.")
@@ -53,7 +58,7 @@ TEDataSet.loadFiles <- function(tid, load_other, load_database) {
     }
 
     # raise exception if no TEDataFiles can be loaded
-    if (!!length(files)) {
+    if (!length(files)) {
         stop(paste0("No TEDataFiles to load for technology '", tid, "'."))
     }
 
@@ -94,8 +99,10 @@ TEDataSet.setRefUnitsDef <- function(tid) {
     }
 
     # override with default reference unit of specific technology
-    if ('default-ref-units' %in% tspecs) {
-        refUnitsDef <- append(refUnitsDef, tspecs[['default-ref-units']])
+    if ('default-ref-units' %in% names(tspecs)) {
+        for (dim in names(tspecs[['default-ref-units']])) {
+            refUnitsDef[[dim]] <- tspecs[['default-ref-units']][[dim]]
+        }
     }
 
     # return
@@ -105,13 +112,90 @@ TEDataSet.setRefUnitsDef <- function(tid) {
 
 # apply references to values and units
 TEDataSet.normToRef <- function(tid, dataset, refUnitsDef) {
+    # default reference value is 1.0
+    dataset$reference_value[is.na(dataset["reference_value"])] <- 1.0
+
+    # add default reference unit conversion factor
+    dataset$reference_unit_default <- apply(dataset, 1, function(row) {return(refUnitsDef[[row['type']]]) })
+    dataset$reference_unit_factor <- 1.0
+    dataset[!is.na(dataset["reference_unit"]), 'reference_unit_factor'] <-
+        convUnitDF(dataset[!is.na(dataset["reference_unit"]), ], 'reference_unit', 'reference_unit_default', techs[[tid]]$reference_flow)
+
+    # set converted value and unit
+    dataset <- add_column(dataset, value=dataset$reported_value / dataset$reference_value / dataset$reference_unit_factor, .after='period')
+    dataset <- add_column(dataset, unc=dataset$reported_unc / dataset$reference_value / dataset$reference_unit_factor, .after='value')
+    dataset <- add_column(dataset, unit=dataset$reported_unit, .after='unc')
+
+    # drop columns by
+    dataset <- dataset[, -grep("^(reported|reference)_(value|unc|unit).*$", colnames(dataset))]
+
+    # return
     return(dataset)
 }
 
 
 # convert values to defined units (use defaults if non provided)
-TEDataSet.convertUnits <- function(tid, dataset) {
-    return(dataset)
+TEDataSet.convertUnits <- function(obj, type_units = NULL, flow_units = NULL) {
+    tid <- obj$tid
+    tspecs <- techs[[tid]]
+    df <- obj$data
+    refUnitsDef <- obj$refUnitsDef
+
+    if(is.null(type_units)) {
+        type_units <- list()
+    }
+    if(is.null(flow_units)) {
+        flow_units <- list()
+    }
+
+    # set reported units to convert to
+    repUnitsTarget <- list()
+    for (typeid in unique(df$type)) {
+        # get reported dimension of entry type
+        repDim <- tspecs$entry_types[[typeid]]$rep_dim
+
+        # map reported dimensions to target reported units
+        repUnit <- repDim
+        for (dim in names(defaultUnits)) {
+            unit <- defaultUnits[[dim]]
+            repUnit <- sub(dim, unit, repUnit)
+        }
+        if (!grepl('flow', repUnit, fixed=TRUE)) {
+            repUnitsTarget[[length(repUnitsTarget)+1]] <- list(type=typeid, flow_type=NA, 'unit_convert'=repUnit)
+        } else {
+            for (flowid in unique(filter(df, type==typeid)$flow_type)) {
+                repUnitFlow <- sub('flow', flowTypes[[flowid]]$default_unit, repUnit)
+                repUnitsTarget[[length(repUnitsTarget)+1]] <- list(type=typeid, flow_type=flowid, 'unit_convert'=repUnitFlow)
+            }
+        }
+    }
+
+    # override from function argument
+    for (record in repUnitsTarget) {
+        if (record$type %in% names(type_units)) {
+            record$unit_convert <- type_units[[record$type]]
+        } else if (('flow_type' %in% names(record)) && (record$flow_type %in% names(flow_units))) {
+            record$unit_convert <- flow_units[[record$flow_type]]
+        }
+    }
+
+    # add reported unit conversion factor
+    df <- merge(df,
+        as.data.frame(do.call(bind_rows, repUnitsTarget)),
+        by=c('type', 'flow_type')
+    )
+    convFactor <- convUnitDF(df, 'unit', 'unit_convert')
+    df[, 'value'] <- convFactor * df[, 'value']
+    df[, 'unc'] <- convFactor & df[, 'unc']
+    df[, 'unit'] <- df[, 'unit_convert']
+    df <- df %>% select(-unit_convert)
+
+    # return TEDataSet object as list
+    return(list(
+      tid=tid,
+      refUnitsDef=refUnitsDef,
+      data=df
+    ))
 }
 
 
