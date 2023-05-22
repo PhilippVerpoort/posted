@@ -104,7 +104,7 @@ class TEDataSet:
         self._dataset['reference_unit_default'] = self._dataset['type'].map(self._refUnitsDef).astype(str)
         self._dataset['reference_unit_factor'] = np.where(
             self._dataset['reference_unit'].notna(),
-            convUnitDF(self._dataset, 'reference_unit', 'reference_unit_default', flowTypes[self._tspecs['reference_flow']]),
+            convUnitDF(self._dataset, 'reference_unit', 'reference_unit_default', self._tspecs['reference_flow']),
             1.0,
         )
 

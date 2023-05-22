@@ -2,7 +2,6 @@
 import argparse
 
 from src.gui.launchPG import launchPG
-from src.python.config.config import flowTypes
 from src.python.units.units import convUnit
 
 
@@ -35,9 +34,7 @@ def main():
     if cmd == 'gui':
         launchPG(tid=args.tid)
     elif cmd == 'conv':
-        ft = flowTypes[args.flow] if args.flow is not None else None
-        convFactor = convUnit(args.fromUnit, args.toUnit, ft)
-
+        convFactor = convUnit(args.fromUnit, args.toUnit, args.flow)
         print(f"{convFactor*args.value:.2f} {args.toUnit}")
 
     return

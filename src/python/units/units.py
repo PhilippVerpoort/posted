@@ -49,12 +49,12 @@ switch_specs = {
 
 
 # get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m³;norm"
-def convUnit(unit_from: str, unit_to: str, ft_specs: Union[dict, None]):
+def convUnit(unit_from: str, unit_to: str, flow_type: None | str = None):
     # return None if unit_from is None
     if unit_from != unit_from: return unit_from
 
     # skip flow conversion if not flow type specs are provided
-    if ft_specs is None:
+    if flow_type is None:
         return ureg(f"1 {unit_from}").to(unit_to, 'curcon').magnitude
 
     # set convFlowKeys according to chosen specs
@@ -75,13 +75,14 @@ def convUnit(unit_from: str, unit_to: str, ft_specs: Union[dict, None]):
         __convFlowKeys += switch_specs['norm']
 
     # perform the actual conversion step
+    ft_specs = flowTypes[flow_type]
     return ureg(f"1 {unit_from}").to(unit_to, 'curcon', 'flocon', **{k[0]: ft_specs[k[1]] for k in __convFlowKeys}).magnitude
 
 
 # vectorised versions
-def convUnitDF(df: pd.DataFrame, unit_from_col: str, unit_to_col: str, ft_specs: dict = None):
+def convUnitDF(df: pd.DataFrame, unit_from_col: str, unit_to_col: str, flow_type: None | str = None):
     return df.apply(
         lambda row:
-        convUnit(row[unit_from_col], row[unit_to_col], ft_specs or (flowTypes[row['flow_type']] if not pd.isnull(row['flow_type']) else None)),
+        convUnit(row[unit_from_col], row[unit_to_col], flow_type or (row['flow_type'] if not pd.isnull(row['flow_type']) else None)),
         axis=1,
     )
