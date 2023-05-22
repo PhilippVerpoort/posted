@@ -9,7 +9,8 @@ TEDataFile.read <- function(tid, path) {
         colClasses=mapColnamesDtypes,
         sep=',',
         quote='"',
-        encoding='utf-8'
+        encoding='utf-8',
+        na.strings=c('', ' ')
     )
 
     # return TEDataFile object as list
