@@ -216,19 +216,23 @@ class TEDataSet:
 
         # expand technology specifications for all subtechs and modes
         expandCols = {}
-        for colID, selectArg in [('subtech', subtech), ('mode', mode)]:
-            if subtech is None and f"{colID}s" in self._tspecs and self._tspecs[f"{colID}s"]:
-                expandCols[colID] = self._tspecs[f"{colID}s"]
-            elif isinstance(subtech, str):
-                expandCols[colID] = [subtech]
-            elif isinstance(subtech, list):
-                expandCols[colID] = subtech
-        table = self.__expandTechs(table, expandCols)
+        for colID, selectArg in {'subtech': subtech, 'mode': mode}.items():
+            colIDs = f"{colID}s"
+            if selectArg is None and colIDs in self._tspecs and self._tspecs[f"{colID}s"]:
+                expandCols[colID] = self._tspecs[colIDs]
+            elif isinstance(selectArg, str):
+                expandCols[colID] = [selectArg]
+            elif isinstance(selectArg, list):
+                expandCols[colID] = selectArg
+        table = self._expandTechs(table, expandCols)
 
         # group by identifying columns and select periods/generate time series
         if isinstance(periods, int) | isinstance(periods, float):
             periods = [periods]
         table = self._selectPeriods(table, periods)
+
+        # sort table
+        table.sort_values(by=['subtech', 'mode', 'type', 'component', 'src_ref', 'period'], inplace=True)
 
         # set default weight to 1
         table['weight'] = 1.0
@@ -261,25 +265,13 @@ class TEDataSet:
         return TEDataTable(self._tid, table)
 
 
-    # expand based on subtechs, modes, and period
-    def __expandTechs(self,
-            selected: pd.DataFrame,
-            expandCols: dict,
-         ):
-
-        for colID, colVals in expandCols.items():
-            selected = pd.concat([
-                selected[selected[colID].notna()],
-                selected[selected[colID].isna()].drop(columns=[colID]).merge(pd.DataFrame.from_dict({colID: colVals}), how='cross'),
-            ]) \
-            .reset_index(drop=True)
-
-        return selected.sort_values(by=['subtech', 'mode', 'type', 'component', 'src_ref', 'period'])
-
-
     # insert missing periods
     def _insertMissingPeriods(self, table: pd.DataFrame):
-        return table.fillna({'period': 2023})
+        # TODO: insert year of publication instead of current year
+        table = table.fillna({'period': 2023})
+
+        # return
+        return table
 
 
     # quick fix function for types not implemented yet
@@ -360,13 +352,26 @@ class TEDataSet:
         return table
 
 
+    # expand based on subtechs, modes, and period
+    def _expandTechs(self, table: pd.DataFrame, expandCols: dict):
+        # loop over affected columns (subtech and mode)
+        for colID, colVals in expandCols.items():
+            table = pd.concat([
+                table[table[colID].notna()],
+                table[table[colID].isna()].drop(columns=[colID]).merge(pd.DataFrame.from_dict({colID: colVals}), how='cross'),
+            ]) \
+            .reset_index(drop=True)
+
+        return table
+
+
     # group by identifying columns and select periods/generate time series
-    def _selectPeriods(self, selected: pd.DataFrame, periods: float | list | np.ndarray):
+    def _selectPeriods(self, table: pd.DataFrame, periods: float | list | np.ndarray):
         # list of columns to group by
         groupCols = ['subtech', 'mode', 'type', 'flow_type', 'component', 'src_ref']
 
         # perform groupby and do not drop NA values
-        grouped = selected.groupby(groupCols, dropna=False)
+        grouped = table.groupby(groupCols, dropna=False)
 
         # create return list
         ret = []
@@ -374,7 +379,7 @@ class TEDataSet:
         # loop over groups
         for keys, ids in grouped.groups.items():
             # get rows in group
-            rows = selected.loc[ids, ['period', 'value']]
+            rows = table.loc[ids, ['period', 'value']]
 
             # get a list of periods that exist
             periodsExist = rows['period'].unique()
