@@ -60,7 +60,7 @@ class TEDataFile:
         )
 
 
-    # get data
+    # access dataframe
     @property
     def data(self) -> pd.DataFrame:
         return self._df

@@ -8,6 +8,7 @@ class TEDataTable:
         self._df: pd.DataFrame = datatable
 
 
+    # access dataframe
     @property
     def data(self):
         return self._df

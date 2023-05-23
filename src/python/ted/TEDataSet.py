@@ -174,7 +174,7 @@ class TEDataSet:
         return self
 
 
-    # get dataset
+    # access dataframe
     @property
     def data(self):
         return self._df
@@ -261,6 +261,9 @@ class TEDataSet:
             .agg({'value': 'sum'}) \
             .groupby(indexCols, dropna=False) \
             .agg({'value': lambda x: sum(x) / len(x)})
+
+        # unstack type
+        table = table['value'].unstack('type')
 
         return TEDataTable(self._tid, table)
 
