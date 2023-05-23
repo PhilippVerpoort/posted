@@ -67,6 +67,15 @@ hydrogen-storage:
     class: storage
     sector: energy
     reference_flow: h2
+integrated-steel-mill-ccs:
+    name: Integrated steel mill with CCS
+    desc: Integrated steel mill with a blast furnace and basic oxygen furnace, equipped with CCS.
+    class: conversion
+    sector: steel
+    reference_flow: sfsteel
+    subtechs:
+        - post-combustion
+        - tgr-obf
 low-temp-heat-pump:
     name: Low-temperature industrial heat pump
     desc: Industrial heat pumps providing heat at a temperature of 80–120°C.

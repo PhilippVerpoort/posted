@@ -21,3 +21,4 @@ steelscrap,Steel scrap,t,,,,
 oxygen,Oxygen,t,,,0.6998 kg/m³,0.6998 kg/m³
 nitrogen,Nitrogen,t,,,,
 graph_electr,Graphite electrodes,t,,,,
+steam,Steam,MWh,,,,

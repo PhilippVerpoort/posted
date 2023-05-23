@@ -12,6 +12,7 @@ numpy = "^1.24.2"
 pandas = "^1.5.3"
 pyyaml = "^6.0"
 pint = "^0.20.1"
+pyside6 = "^6.5.0"
 
 [tool.poetry.dev-dependencies]
 pyside6 = "^6.5.0"
