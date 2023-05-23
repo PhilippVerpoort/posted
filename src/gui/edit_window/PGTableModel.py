@@ -94,7 +94,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
 
         if (role == Qt.DisplayRole) | (role == Qt.EditRole):
             cell = self._data.loc[rowID, colID]
-            return cell if cell is not np.nan else ''
+            return str(cell) if cell==cell else ''
         elif role == Qt.ForegroundRole:
             return QColor(Qt.black) if self._isEditable(colID) else QColor(Qt.gray)
         elif role == Qt.BackgroundRole:
@@ -109,7 +109,6 @@ class PGTableModel(QtCore.QAbstractTableModel):
                 check = self._checkValue(rowID, colID)
                 if check is not None:
                     return check
-
 
 
     def rowCount(self, index):
