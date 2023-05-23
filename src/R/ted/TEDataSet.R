@@ -4,6 +4,7 @@ library(tibble)
 
 source("src/R/config/read_config.R")
 source("src/R/path.R")
+source("src/R/ted/TEDataFile.R")
 source("src/R/units/units.R")
 
 
