@@ -74,8 +74,8 @@ integrated-steel-mill-ccs:
     sector: steel
     reference_flow: sfsteel
     subtechs:
-        - post-combustion
-        - tgr-obf
+        - bf-bof-post-combustion
+        - tgr-bof-post-combustion
 low-temp-heat-pump:
     name: Low-temperature industrial heat pump
     desc: Industrial heat pumps providing heat at a temperature of 80–120°C.
