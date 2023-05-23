@@ -1,4 +1,5 @@
 library(dplyr)
+library(magrittr)
 library(tibble)
 
 source("src/R/config/read_config.R")
@@ -135,12 +136,14 @@ TEDataSet.normToRef <- function(tid, dataset, refUnitsDef) {
 
 
 # convert values to defined units (use defaults if non provided)
-TEDataSet.convertUnits <- function(obj, type_units = NULL, flow_units = NULL) {
-    tid <- obj$tid
+TEDataSet.convertUnits <- function(self, type_units = NULL, flow_units = NULL) {
+    # get object fields
+    tid <- self$tid
     tspecs <- techs[[tid]]
-    df <- obj$data
-    refUnitsDef <- obj$refUnitsDef
+    df <- self$data
+    refUnitsDef <- self$refUnitsDef
 
+    # set empty list if arguments are NULL
     if(is.null(type_units)) {
         type_units <- list()
     }
@@ -199,19 +202,109 @@ TEDataSet.convertUnits <- function(obj, type_units = NULL, flow_units = NULL) {
 }
 
 
-# check dataset is consistent
-checkConsistency <- function(tid, dataset) {
-    # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
-    # TODO: implement those types so we don't need to remove them
-    dropTypes <- c("flh", "lifetime", "energy_eff")
-    dataset <- dataset %>% filter(!type %in% dropTypes)
+TEDataSet.generateTable <- function (self,
+    q_periods,
+    q_subtech=NULL,
+    q_mode=NULL,
+    q_src_ref=NULL,
+    masks_database=TRUE,
+    masks_other=NULL,
+    no_agg=NULL
+) {
+    # get object fields
+    self._tid <- self$tid
+    self._tspecs <- techs[[self._tid]]
+    self._df <- self$data
+    self._refUnitsDef <- self$refUnitsDef
 
-    return(dataset)
+    # the dataset it the starting-point for the table
+    table <- self._df
+
+    # drop columns that are not considered
+    table <- table %>% select(-c('region', 'unc', 'unit', 'comment', 'src_comment'))
+
+    # insert missing periods
+    table <- TEDataSet.insertMissingPeriods(table)
+
+    # apply quick fixes
+    table <- TEDataSet.quickFixes(table)
+
+    # query by selected sources
+    if(is.null(q_src_ref)) {
+        # pass
+    } else if (!is.vector(q_src_ref) && (typeof(q_src_ref) == "character")) {
+        table <- table %>% filter(src_ref==q_src_ref)
+    } else if ((typeof(src_ref) == "list") || (is.vector(q_src_ref) && (typeof(q_src_ref) == "character"))) {
+        table <- table %>% filter(src_ref %in% q_src_ref)
+    }
+
+    # expand technology specifications for all subtechs and modes
+    expandCols <- list()
+    loopList <- list(subtech=q_subtech, mode=q_mode)
+    for (colID in names(loopList)) {
+        selectArg <- loopList[[colID]]
+        colIDs <- paste0(colID, 's')
+        if (is.null(selectArg) && (colIDs %in% names(self._tspecs)) && !is.null(self._tspecs[[colIDs]])) {
+            expandCols[[colID]] <- self._tspecs[[colIDs]]
+        } else if (!is.vector(selectArg) && (typeof(selectArg) == "character")) {
+            expandCols[[colID]] <- list(selectArg)
+        } else if ((typeof(selectArg) == "list") || (is.vector(selectArg) && (typeof(selectArg) == "character"))) {
+            expandCols[[colID]] <- selectArg
+        }
+    }
+    table <- TEDataSet.expandTechs(table, expandCols)
+
+    # group by identifying columns and select periods/generate time series
+    if (!is.vector(q_periods) || typeof(q_periods) == "list") {
+        q_periods <- list(q_periods)
+    }
+    table <- TEDataSet.selectPeriods(table, q_periods)
+
+    # return
+    return(table)
 }
 
 
 # insert missing periods
-insertMissingPeriods <- function(dataset) {
-    dataset["period"][is.na(dataset["period"])] <- 2023
-    return(dataset)
+TEDataSet.insertMissingPeriods <- function(table) {
+    # TODO: insert year of publication instead of current year
+    table[is.na(table["period"]), "period"] <- 2023
+
+    # return
+    return(table)
+}
+
+
+# quick fix function for types not implemented yet
+TEDataSet.quickFixes <- function(table) {
+    # drop types that are not implemented (yet): flh, lifetime, efficiency, etc
+    # TODO: implement those types so we don't need to remove them
+    dropTypes <- c("flh", "lifetime", "energy_eff")
+    table <- table %>% filter(!type %in% dropTypes)
+
+    # return
+    return(table)
+}
+
+
+# expand based on subtechs and modes
+TEDataSet.expandTechs <- function (table, expandCols) {
+    dfMerge <- as.data.frame(do.call(cbind, expandCols))
+
+    # loop over affected columns (subtech and mode)
+    for (colID in names(expandCols)) {
+        table <- rbind(
+            table[!is.na(table[[colID]]),],
+            table[is.na(table[[colID]]),] %>% select(-all_of(colID)) %>% merge(as.data.frame(select(dfMerge, all_of(colID))))
+        )
+    }
+
+    # return
+    return(table)
+}
+
+
+# group by identifying columns and select periods/generate time series
+TEDataSet.selectPeriods <- function (table, q_periods) {
+    return(table)
 }
