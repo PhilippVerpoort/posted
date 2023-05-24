@@ -22,8 +22,8 @@ class TEDataTable:
     # calculate levelised cost of X
     def calcLCOX(self,
                  prices: None | dict = None,
-                 wacc: int | float = 10.0,
-                 lifetime: int | float = 18.0,
+                 wacc: float = 0.10,
+                 lifetime: int | float = 18,
                  ocf: int | float = 0.95,
                  ):
         newColumns = {}
@@ -61,5 +61,5 @@ class TEDataTable:
 
     # calculate annuity factor
     @classmethod
-    def _calcAF(cls, irate, n: int):
+    def _calcAF(cls, irate: float, n: int):
         return irate * (1 + irate) ** n / ((1 + irate) ** n - 1)
