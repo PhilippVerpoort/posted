@@ -198,6 +198,9 @@ class TEDataSet:
         # drop columns that are not considered
         table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
 
+        # apply quick fixes
+        table = self._quickFixes(table)
+
         # combine type, flow_type, and unit columns
         f = lambda row: f"{row['type']}{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''} [{row['unit']}]"
         table['type'] = table.apply(f, axis=1)
@@ -205,9 +208,6 @@ class TEDataSet:
 
         # insert missing periods
         table = self._insertMissingPeriods(table)
-
-        # apply quick fixes
-        table = self._quickFixes(table)
 
         # query by selected sources
         if src_ref is None:
