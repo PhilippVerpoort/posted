@@ -1,9 +1,9 @@
-import re
-
+import numpy as np
 import pandas as pd
-import pint
+import pint_pandas
+from sigfig import round
 
-from src.python.units.units import ureg
+from src.python.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
 
 
 class TEDataTable:
@@ -20,46 +20,20 @@ class TEDataTable:
 
 
     # calculate levelised cost of X
-    def calcLCOX(self,
-                 prices: None | dict = None,
-                 wacc: float = 0.10,
-                 lifetime: int | float = 18,
-                 ocf: int | float = 0.95,
-                 ):
-        newColumns = {}
+    def calc(self, routine: AbstractCalcRoutine, unit: None | str = None):
+        # call calc routine
+        newColumns = routine.calc(self._df)
 
-        # add capital cost data
-        newColumns['cap'] = self._df['capex'] * self._calcAF(wacc, lifetime) / (ocf * ureg('a'))
+        # compile new dataframe from new columns
+        results = pd.DataFrame().assign(**newColumns)
 
-        # add fixed operational cost data
-        newColumns['fo'] = self._df['fopex_abs'] / (ocf * ureg('a'))
+        # adjust units
+        results = results.apply(lambda col: col.pint.to(unit) if unit is not None else col.pint.to_reduced_units())
 
-        # add energy and feedstock cost data
-        colsEnF = [colID for colID in self._df.columns if any(colID.startswith(t) for t in ('energy_dem:', 'feedstock_dem:'))]
-        for colID in colsEnF:
-            # resulting new column name
-            newColID = re.sub(r"_dem", '', colID)
-
-            # get flow type and associated price
-            flow_type = colID.split(':')[1]
-            if prices is None or flow_type not in prices:
-                raise Exception(f"No price information provided for '{colID}'.")
-            price = prices[flow_type]
-
-            if isinstance(price, float) or isinstance(price, int) or isinstance(price, pint.Quantity):
-                newColumns[newColID] = self._df[colID] * price
-            elif isinstance(price, dict) or isinstance(price, pd.DataFrame):
-                if isinstance(price, dict):
-                    price = pd.DataFrame.from_dict(price, orient='tight')
-                newColumns[newColID] = self._df.merge(price).apply(lambda col: col['price'] * col[colID])
-            else:
-                raise Exception(f"Unknown type in price provided for '{flow_type}'.")
+        # round values
+        roundVec = np.vectorize(lambda scalar: round(scalar, sigfigs=4, warn=False) if scalar==scalar else scalar)
+        for colName in results.columns:
+            results[colName] = pint_pandas.PintArray(roundVec(results[colName].values.quantity.m), dtype=results[colName].dtype)
 
         # return
-        return pd.DataFrame().assign(**newColumns)
-
-
-    # calculate annuity factor
-    @classmethod
-    def _calcAF(cls, irate: float, n: int):
-        return irate * (1 + irate) ** n / ((1 + irate) ** n - 1)
+        return results

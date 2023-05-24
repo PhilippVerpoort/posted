@@ -4,7 +4,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import pint_pandas
 from sigfig import round
 
 from src.python.path import pathOfTEDFile
@@ -202,8 +201,11 @@ class TEDataSet:
         table = self._quickFixes(table)
 
         # combine type, flow_type, and unit columns
-        f = lambda row: f"{row['type']}{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''} [{row['unit']}]"
-        table['type'] = table.apply(f, axis=1)
+        table['type'] = table.apply(lambda row:
+            f"{row['type']}"
+            f"{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''}"
+            f" [{row['unit']}{'/('+self._refUnitsDef[row['type']]+')' if self._refUnitsDef[row['type']] else ''}]",
+        axis=1)
         table.drop(columns=['flow_type'], inplace=True)
 
         # insert missing periods
