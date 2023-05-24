@@ -339,9 +339,9 @@ class TEDataSet:
                 # derive units based on reference_flow
 
                 # has to be set to elec here because energy_eff entries dont have flow_type
-                unit_from = flowTypes['elec']['default_unit'] 
+                unit_from = flowTypes['elec']['default_unit']
                 unit_to = flowTypes[reference_flow]['default_unit']
-                conversionFactor = convUnit(unit_from=unit_from, unit_to=unit_to, ft_specs=flowTypes[reference_flow])
+                conversionFactor = convUnit(unit_from=unit_from, unit_to=unit_to, flow_type=reference_flow)
 
                 # convert entry to energy_dem
                 selected_rows.at[index, 'value'] = conversionFactor * (1.0/row['value'])
