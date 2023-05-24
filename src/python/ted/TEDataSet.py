@@ -4,6 +4,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pint_pandas
 from sigfig import round
 
 from src.python.path import pathOfTEDFile
@@ -197,15 +198,16 @@ class TEDataSet:
         # drop columns that are not considered
         table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
 
+        # combine type, flow_type, and unit columns
+        f = lambda row: f"{row['type']}{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''} [{row['unit']}]"
+        table['type'] = table.apply(f, axis=1)
+        table.drop(columns=['flow_type'], inplace=True)
+
         # insert missing periods
         table = self._insertMissingPeriods(table)
 
         # apply quick fixes
         table = self._quickFixes(table)
-
-        # merge value and unit columns together
-        table['value'] *= table['unit'].apply(lambda x: ureg(x.split(';')[0]))
-        table.drop(columns=['unit'], inplace=True)
 
         # query by selected sources
         if src_ref is None:
@@ -267,7 +269,17 @@ class TEDataSet:
         table = table['value'].unstack('type')
 
         # round values
-        table = table.apply(lambda col: col.apply(lambda cell: cell if cell!=cell else round(cell.m, sigfigs=4, warn=False) * cell.u if isinstance(cell, ureg.Quantity) else round(cell, sigfigs=4, warn=False)))
+        table = table.apply(lambda col: col.apply(lambda cell:
+            cell if cell!=cell else round(cell, sigfigs=4, warn=False)
+        ))
+
+        # move units from column name to pint column unit
+        for typeName in table.columns:
+            tokens = typeName.split(' ')
+            typeNameNew = tokens[0]
+            unit = tokens[1]
+            table.rename(columns={typeName: typeNameNew}, inplace=True)
+            table[typeNameNew] = table[typeNameNew].astype(f"pint{unit}")
 
         return TEDataTable(self._tid, table)
 
@@ -375,7 +387,7 @@ class TEDataSet:
     # group by identifying columns and select periods/generate time series
     def _selectPeriods(self, table: pd.DataFrame, periods: float | list | np.ndarray):
         # list of columns to group by
-        groupCols = ['subtech', 'mode', 'type', 'flow_type', 'component', 'src_ref']
+        groupCols = ['subtech', 'mode', 'type', 'component', 'src_ref']
 
         # perform groupby and do not drop NA values
         grouped = table.groupby(groupCols, dropna=False)

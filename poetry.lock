@@ -159,6 +159,25 @@ uncertainties = ["uncertainties (>=3.1.6)"]
 xarray = ["xarray"]
 
 [[package]]
+name = "pint-pandas"
+version = "0.3"
+description = "Physical quantities module"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "Pint-Pandas-0.3.tar.gz", hash = "sha256:154c05ebe3a295abe8c177a90317bae887d37ea5b88813a38e10e1d64fd1589d"},
+    {file = "Pint_Pandas-0.3-py2.py3-none-any.whl", hash = "sha256:5b2062c883b6d203c735e182ac91d7cd32a7a6776074841659b08e1bba26eee3"},
+]
+
+[package.dependencies]
+pandas = ">=1.5"
+pint = ">=0.20.1"
+
+[package.extras]
+test = ["codecov", "coveralls", "nbval", "pyarrow", "pytest", "pytest-cov", "pytest-mpl", "pytest-subtests"]
+
+[[package]]
 name = "pybtex"
 version = "0.24.0"
 description = "A BibTeX-compatible bibliography processor in Python"
@@ -460,4 +479,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.10.10"
-content-hash = "2592377201bbdd7628f28d6870f07c75f537b562a449adbd9b9dbea43b032c50"
+content-hash = "2afc07f6bf8173fe5d014f60a542e37e98d12b23a1b888b662a4c1817dcd5d0f"

@@ -14,6 +14,7 @@ pyyaml = "^6.0"
 pint = "^0.20.1"
 pyside6 = "^6.5.0"
 sigfig = "^1.3.2"
+pint-pandas = "^0.3"
 
 [tool.poetry.dev-dependencies]
 pyside6 = "^6.5.0"

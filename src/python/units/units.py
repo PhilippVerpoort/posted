@@ -1,7 +1,6 @@
-from typing import Union
-
 import pandas as pd
 import pint
+import pint_pandas
 
 from src.python.path import pathOfFile
 from src.python.config.config import flowTypes
@@ -9,6 +8,12 @@ from src.python.config.config import flowTypes
 
 # define new registry
 ureg = pint.UnitRegistry()
+pint_pandas.PintType.ureg = ureg
+
+
+# display format
+ureg.Unit.default_format = "~P"
+pint_pandas.PintType.ureg.default_format = "~P"
 
 
 # load definitions
