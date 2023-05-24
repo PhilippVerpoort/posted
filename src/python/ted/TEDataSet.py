@@ -4,6 +4,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from sigfig import round
 
 from src.python.path import pathOfTEDFile
 from src.python.config.config import techs, flowTypes, defaultUnits, defaultMasks
@@ -264,6 +265,9 @@ class TEDataSet:
 
         # unstack type
         table = table['value'].unstack('type')
+
+        # round values
+        table = table.apply(lambda col: col.apply(lambda cell: cell if cell!=cell else round(cell.m, sigfigs=4, warn=False) * cell.u if isinstance(cell, ureg.Quantity) else round(cell, sigfigs=4, warn=False)))
 
         return TEDataTable(self._tid, table)
 
