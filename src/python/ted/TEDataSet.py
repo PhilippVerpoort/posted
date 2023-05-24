@@ -234,31 +234,15 @@ class TEDataSet:
             periods = [periods]
         table = self._selectPeriods(table, periods)
 
+        # apply masks
+        table = self._applyMasks(table, masks_other, masks_database)
+
         # sort table
-        table.sort_values(by=['subtech', 'mode', 'type', 'component', 'src_ref', 'period'], inplace=True)
-
-        # set default weight to 1
-        table['weight'] = 1.0
-
-        # compile all masks into list
-        masks = masks_other if masks_other is not None else []
-        if masks_database and self._tid in defaultMasks:
-            masks += defaultMasks[self._tid]
-
-        # apply masks and drop entries with zero weight
-        for mask in masks:
-            q = ' & '.join([f"{key}=='{val}'" for key, val in mask['query'].items()])
-            table.loc[table.query(q).index, 'weight'] = mask['weight']
-            table = table.query('weight!=0.0')
-
-        # combine type and flow_type columns
-        table['type'] = table.apply(lambda row: row['type'] if row.isna()['flow_type'] else f"{row['type']}:{row['flow_type']}", axis=1)
-        table.drop(columns=['flow_type'], inplace=True)
+        table = table.sort_values(by=['subtech', 'mode', 'type', 'component', 'src_ref', 'period']).reset_index(drop=True)
 
         # aggregation
         indexCols = ['type'] + (['period'] if len(periods) > 1 else []) + (no_agg if no_agg is not None else [])
         table['value'].fillna(0.0, inplace=True)
-        table['value'] *= table['weight']
         table = table \
             .groupby(['subtech', 'mode', 'type', 'period', 'src_ref'], dropna=False) \
             .agg({'value': 'sum'}) \
@@ -285,7 +269,7 @@ class TEDataSet:
 
 
     # insert missing periods
-    def _insertMissingPeriods(self, table: pd.DataFrame):
+    def _insertMissingPeriods(self, table: pd.DataFrame) -> pd.DataFrame:
         # TODO: insert year of publication instead of current year
         table = table.fillna({'period': 2023})
 
@@ -294,7 +278,7 @@ class TEDataSet:
 
 
     # quick fix function for types not implemented yet
-    def _quickFixes(self, table: pd.DataFrame):
+    def _quickFixes(self, table: pd.DataFrame) -> pd.DataFrame:
         # ---------- 1. Convert fopex_rel entries to fopex_abs ----------
 
         # copy fopex_rel entries to edit them safely
@@ -368,11 +352,11 @@ class TEDataSet:
             entriesToDrop = table.query(f"type.isin({['energy_eff']})")
             table = table.drop(entriesToDrop.index.values)
 
-        return table
+        return table.reset_index(drop=True)
 
 
     # expand based on subtechs, modes, and period
-    def _expandTechs(self, table: pd.DataFrame, expandCols: dict):
+    def _expandTechs(self, table: pd.DataFrame, expandCols: dict) -> pd.DataFrame:
         # loop over affected columns (subtech and mode)
         for colID, colVals in expandCols.items():
             table = pd.concat([
@@ -385,7 +369,7 @@ class TEDataSet:
 
 
     # group by identifying columns and select periods/generate time series
-    def _selectPeriods(self, table: pd.DataFrame, periods: float | list | np.ndarray):
+    def _selectPeriods(self, table: pd.DataFrame, periods: float | list | np.ndarray) -> pd.DataFrame:
         # list of columns to group by
         groupCols = ['subtech', 'mode', 'type', 'component', 'src_ref']
 
@@ -435,3 +419,24 @@ class TEDataSet:
 
         # convert return list to dataframe and return
         return pd.concat(ret).reset_index(drop=True)
+
+
+    # apply masks
+    def _applyMasks(self, table, masks_other, masks_database) -> pd.DataFrame:
+        # compile all masks into list
+        masks = masks_other if masks_other is not None else []
+        if masks_database and self._tid in defaultMasks:
+            masks += defaultMasks[self._tid]
+
+        # set weight from masks
+        table['weight'] = 1.0
+        for mask in masks:
+            q = ' & '.join([f"{key}=='{val}'" for key, val in mask['query'].items()])
+            table.loc[table.query(q).index, 'weight'] = mask['weight']
+
+        # drop entries with zero weight and apply weights to values otherwise
+        table = table.query('weight!=0.0').reset_index(drop=True)
+        table['value'] *= table['weight']
+        table.drop(columns=['weight'], inplace=True)
+
+        return table
