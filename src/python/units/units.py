@@ -72,11 +72,13 @@ def convUnit(unit_from: str, unit_to: str, flow_type: None | str = None):
                 unit_from = elem_split[0]
             else:
                 unit_to = elem_split[0]
-           
+    
      # set defaults specs (LHV, norm) if not set in unit_from
-    if switch_specs['LHV'] not in __convFlowKeys and switch_specs['HHV'] not in __convFlowKeys:
+    #print(switch_specs['LHV'])
+    #print(switch_specs['HHV'] not in __convFlowKeys)
+    if switch_specs['LHV'][0] not in __convFlowKeys and switch_specs['HHV'][0] not in __convFlowKeys:
         __convFlowKeys += switch_specs['LHV']
-    if switch_specs['norm'] not in __convFlowKeys and switch_specs['standard'] not in __convFlowKeys:
+    if switch_specs['norm'][0] not in __convFlowKeys and switch_specs['standard'][0] not in __convFlowKeys:
         __convFlowKeys += switch_specs['norm']
 
     # perform the actual conversion step
