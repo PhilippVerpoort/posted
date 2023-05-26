@@ -1,71 +1,71 @@
 conversion:
-    name: Conversion and production technologies
+    name: Production and conversion technologies
     entry_types:
         lifetime:
           name: Lifetime
           desc: Expected time a facility can be in production for
-          rep_dim: time
-          ref_dim: time
+          rep_dim: '[time]'
         capex:
-          name: CAPEX
-          desc: Capital expenditure
-          rep_dim: currency
-          ref_dim: flow/time
+          name: CAPEX (to ref)
+          desc: CAPital EXpenditure (referring to reference capacity)
+          rep_dim: '[currency]'
+          ref_dim: '[flow]/[time]'
+        fopex:
+          name: Fixed OPEX (to ref)
+          desc: Fixed OPerational EXpenditure (referring to reference capacity)
+          rep_dim: '[currency]/[time]'
+          ref_dim: '[flow]/[time]'
+        fopex_annual:
+          name: Fixed OPEX (annual)
+          desc: Fixed OPerational EXpenditure (per annum)
+          rep_dim: '[currency]'
+          ref_dim: '[flow]/[time]'
+        fopex_spec:
+          name: Fixed OPEX (spec)
+          desc: Fixed OPerational EXpenditure (specific)
+          rep_dim: '[currency]'
+          ref_dim: '[flow]'
         fopex_rel:
           name: Fixed OPEX (rel)
-          desc: Fixed operational expenditure (relative to CAPEX)
-          rep_dim: dimensionless
-          ref_dim: dimensionless
-        fopex_abs:
-          name: Fixed OPEX (abs)
-          desc: Fixed operational expenditure (absolute; referring to primary production capacity)
-          rep_dim: currency
-          ref_dim: flow/time
-        fopex_tot:
-          name: Fixed OPEX (tot)
-          desc: Fixed operational expenditure (total; referring to primary output)
-          rep_dim: currency
-          ref_dim: flow
+          desc: Fixed OPerational EXpenditure (relative to CAPEX)
+          rep_dim: '[dimensionless]'
+        fopex_lev:
+          name: Fixed OPEX (levelised)
+          desc: Fixed OPerational EXpenditure (specific; levelised with OCF)
+          rep_dim: '[currency]'
+          ref_dim: '[flow]'
         vopex:
           name: Variable OPEX
-          desc: Variable operational expenditure
-          rep_dim: currency
-          ref_dim: flow
-        flh:
-          name: FLH
-          desc: Full load hour
-          rep_dim: time
-          ref_dim: time
+          desc: Variable OPerational EXpenditure (non-energy, non-feedstock)
+          rep_dim: '[currency]'
+          ref_dim: '[flow]'
         ocf:
           name: OCF
           desc: Operational capacity factor
-          rep_dim: dimensionless
-          ref_dim: dimensionless
+          rep_dim: '[dimensionless]'
+        flh:
+          name: FLH
+          desc: Full-load hours
+          rep_dim: '[time]'
+        demand:
+          name: Demand
+          desc: Energy and feedstock demand
+          rep_dim: '[flow]'
+          ref_dim: '[flow]'
         energy_eff:
           name: Energy efficiency
           desc: Energy efficiency
-          rep_dim: dimensionless
-          ref_dim: dimensionless
-        energy_dem:
-          name: Energy demand
-          desc: Energy demand
-          rep_dim: flow
-          ref_dim: flow
-        feedstock_dem:
-          name: Feedstock demand
-          desc: Feedstock demand
-          rep_dim: flow
-          ref_dim: flow
-        by_products:
-          name: By-products
-          desc: Other products produced alongside the primary output
-          rep_dim: flow
-          ref_dim: flow
+          rep_dim: '[dimensionless]'
+        product:
+          name: Product
+          desc: Output produced
+          rep_dim: '[flow]'
+          ref_dim: '[flow]'
         total_cost:
           name: Total cost
-          desc: Total cost of the service provided by the technology
-          rep_dim: currency
-          ref_dim: flow
+          desc: Total cost of production
+          rep_dim: '[currency]'
+          ref_dim: '[flow]'
 transport:
     name: Transport technologies
     entry_types: ~
