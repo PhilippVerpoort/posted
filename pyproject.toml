@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "posted"
 version = "0.1.0"
-description = "Potsdam open-source techno-economic database"
+description = "Potsdam Open-Source Techno-Economic Database for climate-mitigation technologies"
 authors = ["Philipp Verpoort <philipp.verpoort@pik-potsdam.de>"]
 
 [tool.poetry.dependencies]
