@@ -28,18 +28,20 @@ def allowedFlowDims(flow_type: None | str):
         flow_type_data = flowTypes[flow_type]
 
         allowed_dims = [str(ureg.Quantity(flow_type_data['default_unit']).dimensionality)] # default units dimension is always accepted
-        if '[mass]' not in allowed_dims: # [mass] is always accepted as dimension
-            allowed_dims += ['[mass]']
 
         if(flow_type_data['energycontent_LHV'] == flow_type_data['energycontent_LHV'] or \
            flow_type_data['energycontent_HHV'] == flow_type_data['energycontent_HHV']):
             if '[length] ** 2 * [mass] / [time] ** 2' not in allowed_dims:
                 allowed_dims += ['[length] ** 2 * [mass] / [time] ** 2']
+            if '[mass]' not in allowed_dims: # [mass] is always accepted when there is a energydensity
+                allowed_dims += ['[mass]']
 
         if(flow_type_data['density_norm'] == flow_type_data['density_norm'] or \
             flow_type_data['density_std'] == flow_type_data['density_std']):
             allowed_dims += ['[volume]']
             allowed_dims += ['[length] ** 3']
+            if '[mass]' not in allowed_dims: # [mass] is always accepted when there is a energydensity
+                allowed_dims += ['[mass]']
 
     return allowed_dims
 
