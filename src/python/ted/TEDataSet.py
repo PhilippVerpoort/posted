@@ -19,7 +19,6 @@ class TEDataSet:
                  tid: str,
                  load_other: None | list = None,
                  load_database: bool = False,
-                 to_default_units: bool = True,
                  skip_checks: bool = False,
                  ):
         # set fields from arguments
@@ -30,15 +29,8 @@ class TEDataSet:
         # read TEDataFiles and combine into dataset
         self._loadFiles(load_other, load_database, skip_checks)
 
-        # set default reference units for all entry types
-        self._setRefUnitsDef()
-
-        # normalise all entries to a unified reference
-        self._normToRef()
-
-        # convert values to default units
-        if to_default_units:
-            self.convertUnits()
+        # adjust units: set default reference and reported units and normalise
+        self._adjustUnits()
 
 
     # load TEDatFiles and compile into dataset
@@ -74,35 +66,55 @@ class TEDataSet:
         self._df = pd.concat([f.data for f in files])
 
 
+    # adjust units: set default reference and reported units and normalise
+    def _adjustUnits(self):
+        # set default reference units for all entry types
+        self._setRefUnitsDef()
+
+        # normalise reference units of all entries
+        self._normRefUnits()
+
+        # set default reported units for all entry types
+        self._setRepUnitsDef()
+
+        # normalise reported units of all entries
+        self._normRepUnits()
+
+
     # determine default reference units of entry types from technology class
     def _setRefUnitsDef(self):
-        self._refUnitsDef = {}
+        self._refUnits = {}
         for typeid in self._tspecs['entry_types']:
-            # get reference dimension
-            refDim = self._tspecs['entry_types'][typeid]['ref_dim']
+            # set to nan if entry type has no reference dimension
+            if 'ref_dim' not in self._tspecs['entry_types'][typeid]:
+                self._refUnits[typeid] = np.nan
+            else:
+                # get reference dimension
+                refDim = self._tspecs['entry_types'][typeid]['ref_dim']
 
-            # create a mapping from dimensions to default units
-            unitMappings = defaultUnits.copy()
-            if 'reference_flow' in self._tspecs:
-                unitMappings |= {'flow': flowTypes[self._tspecs['reference_flow']]['default_unit']}
+                # create a mapping from dimensions to default units
+                unitMappings = defaultUnits.copy()
+                if 'reference_flow' in self._tspecs:
+                    unitMappings |= {'[flow]': flowTypes[self._tspecs['reference_flow']]['default_unit']}
 
-            # map reference dimensions to default reference units
-            self._refUnitsDef[typeid] = refDim
-            for dim, unit in unitMappings.items():
-                self._refUnitsDef[typeid] = re.sub(dim, unit, self._refUnitsDef[typeid])
+                # map reference dimensions to default reference units
+                self._refUnits[typeid] = refDim
+                for dim, unit in unitMappings.items():
+                    self._refUnits[typeid] = self._refUnits[typeid].replace(dim, unit)
+
 
         # override with default reference unit of specific technology
         if 'default-ref-units' in self._tspecs:
-            self._refUnitsDef |= self._tspecs['default-ref-units']
+            self._refUnits |= self._tspecs['default-ref-units']
 
 
-    # apply references to values and units
-    def _normToRef(self):
+    # normalise reference units
+    def _normRefUnits(self):
         # default reference value is 1.0
         self._df['reference_value'].fillna(1.0, inplace=True)
 
         # add default reference unit conversion factor
-        self._df['reference_unit_default'] = self._df['type'].map(self._refUnitsDef).astype(str)
+        self._df['reference_unit_default'] = self._df['type'].map(self._refUnits).astype(str)
         self._df['reference_unit_factor'] = np.where(
             self._df['reference_unit'].notna(),
             convUnitDF(self._df, 'reference_unit', 'reference_unit_default', self._tspecs['reference_flow']),
@@ -130,40 +142,30 @@ class TEDataSet:
         )
 
 
-    # convert values to defined units (use defaults if non provided)
-    def convertUnits(self, type_units: None | dict = None, flow_units: None | dict = None):
-        if type_units is None:
-            type_units = {}
-        if flow_units is None:
-            flow_units = {}
-
-        # set reported units to convert to
-        repUnitsTarget = []
-        for typeid in self._df['type'].unique():
+    # set units of entries
+    def _setRepUnitsDef(self):
+        types = set(self._df['type'].unique().tolist() + ['fopex', 'fopex_spec'])
+        self._repUnits = []
+        for typeid in types:
             # get reported dimension of entry type
             repDim = self._tspecs['entry_types'][typeid]['rep_dim']
 
             # map reported dimensions to target reported units
             repUnit = repDim
             for dim, unit in defaultUnits.items():
-                repUnit = re.sub(dim, unit, repUnit)
-            if 'flow' not in repUnit:
-                repUnitsTarget.append({'type': typeid, 'unit_convert': repUnit})
+                repUnit = repUnit.replace(dim, unit)
+            if '[flow]' not in repUnit:
+                self._repUnits.append({'type': typeid, 'unit': repUnit})
             else:
                 for flowid in self._df.query(f"type=='{typeid}'")['flow_type'].unique():
-                    repUnitFlow = re.sub('flow', flowTypes[flowid]['default_unit'], repUnit)
-                    repUnitsTarget.append({'type': typeid, 'flow_type': flowid, 'unit_convert': repUnitFlow})
+                    repUnitFlow = repUnit.replace('[flow]', flowTypes[flowid]['default_unit'])
+                    self._repUnits.append({'type': typeid, 'flow_type': flowid, 'unit': repUnitFlow})
 
-        # override from function argument
-        for record in repUnitsTarget:
-            if record['type'] in type_units:
-                record['unit_convert'] = type_units[record['type']]
-            elif 'flow_type' in record and record['flow_type'] in flow_units:
-                record['unit_convert'] = flow_units[record['flow_type']]
 
-        # add reported unit conversion factor
+    # normalise reported units
+    def _normRepUnits(self):
         self._df = self._df.merge(
-            pd.DataFrame.from_records(repUnitsTarget),
+            pd.DataFrame.from_records(self._repUnits).rename(columns={'unit': 'unit_convert'}),
             on=['type', 'flow_type'],
         )
         convFactor = convUnitDF(self._df, 'unit', 'unit_convert')
@@ -172,6 +174,23 @@ class TEDataSet:
         self._df['unit'] = self._df['unit_convert']
         self._df.drop(columns=['unit_convert'], inplace=True)
 
+
+    # convert values to defined units (use defaults if non provided)
+    def convertUnits(self, type_units: None | dict = None, flow_units: None | dict = None):
+        # raise exception if no updates to units are provided
+        if type_units is None and flow_units is None:
+            return
+
+        # update reported units of dataset from function argument
+        for record in self._repUnits:
+            if type_units is not None and record['type'] in type_units:
+                record['unit'] = type_units[record['type']]
+            elif flow_units is not None and 'flow_type' in record and record['flow_type'] in flow_units:
+                record['unit'] = flow_units[record['flow_type']]
+
+        # normalise reported units
+        self._normRepUnits()
+
         return self
 
 
@@ -179,6 +198,19 @@ class TEDataSet:
     @property
     def data(self):
         return self._df
+
+
+    # get reported unit for entry type
+    def getRepUnit(self, typeid: str, flowid: str | None = None):
+        if flowid is None:
+            return next(e['unit'] for e in self._repUnits if e['type'] == typeid)
+        else:
+            return next(e['unit'] for e in self._repUnits if e['type'] == typeid and e['flow_type'] == flowid)
+
+
+    # get reference unit for entry type
+    def getRefUnit(self, typeid: str):
+        return self._refUnits[typeid]
 
 
     # select data
@@ -198,13 +230,13 @@ class TEDataSet:
         table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
 
         # apply quick fixes
-        table = self._quickFixes(table)
+        table = self._applyTypeMappings(table)
 
         # combine type, flow_type, and unit columns
         table['type'] = table.apply(lambda row:
             f"{row['type']}"
             f"{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''}"
-            f" [{row['unit']}{'/('+self._refUnitsDef[row['type']]+')' if self._refUnitsDef[row['type']] else ''}]",
+            f" [{row['unit']}{('/(' + self.getRefUnit(row['type']) + ')') if self.getRefUnit(row['type'])==self.getRefUnit(row['type']) else ''}]",
         axis=1)
         table.drop(columns=['flow_type'], inplace=True)
 
@@ -279,9 +311,9 @@ class TEDataSet:
         return table
 
 
-    # quick fix function for types not implemented yet
-    def _quickFixes(self, table: pd.DataFrame) -> pd.DataFrame:
-        # ---------- 1. Convert fopex_rel entries to fopex_abs ----------
+    # apply mappings between entry types
+    def _applyTypeMappings(self, table: pd.DataFrame) -> pd.DataFrame:
+        # ---------- 1a. Convert fopex_rel entries to fopex ----------
 
         # copy fopex_rel entries to edit them safely
         selected_rows = table.query(f"type.isin({['fopex_rel']})").copy()
@@ -300,9 +332,9 @@ class TEDataSet:
             if(len(matching_entries) > 0):
                 selected_rows.at[index,'value'] *= matching_entries['value'].iloc[0]
 
-                selected_rows.at[index,'type'] = 'fopex_abs'
+                selected_rows.at[index,'type'] = 'fopex'
 
-                selected_rows.at[index,'unit'] = matching_entries['unit'].iloc[0]
+                selected_rows.at[index,'unit'] = matching_entries['unit'].iloc[0] + '/a'
             else:
                 # delete the corresponding row cause without fitting CAPEX entry from the same source, this value becomes meaningless
                 table = table.drop([index])
@@ -310,6 +342,15 @@ class TEDataSet:
             
         # override main dataset
         table.loc[table['type'] == 'fopex_rel'] = selected_rows
+
+        # ---------- 1b. Convert fopex to fopex_spec ----------
+        convFacRep = convUnit(self.getRepUnit('fopex') + '*a', self.getRepUnit('fopex_spec'))
+        convFacRef = convUnit(self.getRefUnit('fopex') + '*a', self.getRefUnit('fopex_spec'), self._tspecs['reference_flow'])
+
+        rowsFOPEX = table['type'] == 'fopex'
+        table.loc[rowsFOPEX, 'unit'] = table.loc[rowsFOPEX, 'unit'].apply(lambda u: str(ureg(u + '*a').to_reduced_units().u))
+        table.loc[rowsFOPEX, 'value'] *= convFacRep / convFacRef
+        table.loc[rowsFOPEX, 'type'] = 'fopex_spec'
 
         # ---------- 2. Convert full load hours entries to operational capacity factor ----------
 
@@ -343,7 +384,7 @@ class TEDataSet:
 
                 # convert entry to energy_dem
                 selected_rows.at[index, 'value'] = conversionFactor * (1.0/row['value'])
-                selected_rows.at[index, 'type'] = 'energy_dem'
+                selected_rows.at[index, 'type'] = 'demand'
                 selected_rows.at[index, 'unit'] = unit_from
                 selected_rows.at[index, 'reference_unit'] = unit_to
 

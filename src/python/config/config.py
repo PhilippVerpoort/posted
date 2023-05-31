@@ -2,7 +2,7 @@ from src.python.config.read_config import readYAMLDataFile, readCSVDataFile
 
 
 # load options
-defaultUnits = readYAMLDataFile('default_units')
+defaultUnits = {f"[{key}]": val for key, val in readYAMLDataFile('default_units').items()}
 
 
 # load list of technology classes

@@ -3,40 +3,40 @@ subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,
 ,,capex,,,,,331.2,,EUR,,,"This reference assumes the value provided by Wörtler et al., 2013 but with an additional integration factor of 1.8.","Agora Energiewende, 2022",
 ,,fopex_rel,,,,,3,,percent,,,,"Agora Energiewende, 2022",
 ,,fopex_rel,,Operation and maintenance incl. refractory lining w/o labour,,,3,,percent,,,,"Vogl et al, 2018",Section 2.1
-,,fopex_tot,,Labour,,,53.2,,EUR,,,,"Vogl et al, 2018",Section 2.1
-,,fopex_tot,,Labour,,,3,,EUR,,,,"Ecorys, 2014",Table 3.1
+,,fopex_spec,,Labour,,,53.2,,EUR,,,,"Vogl et al, 2018",Section 2.1
+,,fopex_spec,,Labour,,,3,,EUR,,,,"Ecorys, 2014",Table 3.1
 ,,vopex,,Labour,,,9,,EUR,,,,"Ecorys, 2014",Table 3.1
-,primary,energy_dem,elec,,,,0.594,,MWh,,,,"Agora Energiewende, 2022",
-,primary,energy_dem,elec,,,,2.4,,MJ,,kg,,"Devlin et al, 2022",Section 2.2.2
-,primary,energy_dem,elec,,,,0.525,,MWh,,,,"Hegemann et al, 2020",
-,primary,energy_dem,elec,,,,2.07,,GJ,,,,"Otto et al, 2017",Figure 6
-,primary,energy_dem,elec,,,,475,165,kWh,,,,"Rechberger et al, 2020",Section 4.2.1
-,primary,energy_dem,elec,,,,0.753,,MWh,,,,"Vogl et al, 2018",Section 3.1
-,primary,energy_dem,elec,,,,1.7,,GJ,,,,"Worrell et al, 2007",Table 2.1.5
-,primary,energy_dem,heat,,,,0.6,,GJ,,,,"Worrell et al, 2007",Table 2.1.5
-,primary,energy_dem,ng,,,,0.78,,GJ,,,,"Otto et al, 2017",Figure 6
-,primary,energy_dem,coal,,,,0.284,,MWh,,,"According to the source, additional coal is needed to achieve 2% carbon content in steel and 100% charge of sponge iron in the EAF.","Otto et al, 2017",Figure 6
-,primary w reheating,energy_dem,heat,Reheating of cold DRI,,,0.159,,MWh,,,,"Agora Energiewende, 2022",
-,primary w reheating,energy_dem,heat,Reheating of cold DRI,,,0.159,,MWh,,,,"Vogl et al, 2018",Section 3.1
-,secondary,energy_dem,elec,EAF,,,409,,kWh,,,,"Worrell et al, 2007",Section 2.1.4
-,secondary,energy_dem,elec,Gas cleaning and ladle refining,,,65,,kWh,,,,"Worrell et al, 2007",Section 2.1.4
-,secondary,energy_dem,ng,,,,0.15,,GJ,,,,"Worrell et al, 2007",Section 2.1.4
-,secondary,energy_dem,elec,,,,0.667,,MWh,,,,"Vogl et al, 2018",Section 3.1
-,secondary,energy_dem,elec,,,,0.4,,MWh,,,,"Ecorys, 2014",Table 3.1
-,secondary,energy_dem,heat,,,,0.43,,GJ,,,,"Ecorys, 2014",Table 3.1
-,primary,feedstock_dem,dri,,,,1.1,,t,,,,"Devlin et al, 2022",Section 2.2.2
-,primary,feedstock_dem,dri,,,,1.03,,t,,,,"Otto et al, 2017",Figure 6
-,primary,feedstock_dem,steelscrap,,,,0.17,,t,,,,"Agora Energiewende, 2022",
-,secondary,feedstock_dem,steelscrap,,,,1.09,,t,,,,"Ecorys, 2014",Table 3.1
-,,feedstock_dem,oxygen,,,,0.5,,t,,,,"Agora Energiewende, 2022",
-,,feedstock_dem,oxygen,,,,50,,m³;norm,,,,"Ecorys, 2014",Table 3.1
-,,feedstock_dem,oxygen,,,,0.5,,t,,,,"Otto et al, 2017",Figure 6
-,,feedstock_dem,nitrogen,,,,0.5,,t,,,,"Otto et al, 2017",Figure 6
-,,feedstock_dem,alloys,,,,0.011,,t,,,,"Agora Energiewende, 2022",
-,,feedstock_dem,alloys,,,,0.011,,t,,,,"Ecorys, 2014",Table 3.1
-,,feedstock_dem,alloys,,,,0.011,,t,,,,"Vogl et al, 2018",Section 2.1
-,,feedstock_dem,lime,,,,0.05,,t,,,,"Agora Energiewende, 2022",
-,,feedstock_dem,lime,,,,0.05,,t,,,,"Vogl et al, 2018",Section 2.1
-,,feedstock_dem,graph_electr,,,,0.002,,t,,,,"Agora Energiewende, 2022",
-,,feedstock_dem,graph_electr,,,,0.003,,t,,,,"Ecorys, 2014",Table 3.1
-,,feedstock_dem,graph_electr,,,,0.002,,t,,,,"Vogl et al, 2018",Section 2.1
+,primary,demand,elec,,,,0.594,,MWh,,,,"Agora Energiewende, 2022",
+,primary,demand,elec,,,,2.4,,MJ,,kg,,"Devlin et al, 2022",Section 2.2.2
+,primary,demand,elec,,,,0.525,,MWh,,,,"Hegemann et al, 2020",
+,primary,demand,elec,,,,2.07,,GJ,,,,"Otto et al, 2017",Figure 6
+,primary,demand,elec,,,,475,165,kWh,,,,"Rechberger et al, 2020",Section 4.2.1
+,primary,demand,elec,,,,0.753,,MWh,,,,"Vogl et al, 2018",Section 3.1
+,primary,demand,elec,,,,1.7,,GJ,,,,"Worrell et al, 2007",Table 2.1.5
+,primary,demand,heat,,,,0.6,,GJ,,,,"Worrell et al, 2007",Table 2.1.5
+,primary,demand,ng,,,,0.78,,GJ,,,,"Otto et al, 2017",Figure 6
+,primary,demand,coal,,,,0.284,,MWh,,,"According to the source, additional coal is needed to achieve 2% carbon content in steel and 100% charge of sponge iron in the EAF.","Otto et al, 2017",Figure 6
+,primary w reheating,demand,heat,Reheating of cold DRI,,,0.159,,MWh,,,,"Agora Energiewende, 2022",
+,primary w reheating,demand,heat,Reheating of cold DRI,,,0.159,,MWh,,,,"Vogl et al, 2018",Section 3.1
+,secondary,demand,elec,EAF,,,409,,kWh,,,,"Worrell et al, 2007",Section 2.1.4
+,secondary,demand,elec,Gas cleaning and ladle refining,,,65,,kWh,,,,"Worrell et al, 2007",Section 2.1.4
+,secondary,demand,ng,,,,0.15,,GJ,,,,"Worrell et al, 2007",Section 2.1.4
+,secondary,demand,elec,,,,0.667,,MWh,,,,"Vogl et al, 2018",Section 3.1
+,secondary,demand,elec,,,,0.4,,MWh,,,,"Ecorys, 2014",Table 3.1
+,secondary,demand,heat,,,,0.43,,GJ,,,,"Ecorys, 2014",Table 3.1
+,primary,demand,dri,,,,1.1,,t,,,,"Devlin et al, 2022",Section 2.2.2
+,primary,demand,dri,,,,1.03,,t,,,,"Otto et al, 2017",Figure 6
+,primary,demand,steelscrap,,,,0.17,,t,,,,"Agora Energiewende, 2022",
+,secondary,demand,steelscrap,,,,1.09,,t,,,,"Ecorys, 2014",Table 3.1
+,,demand,oxygen,,,,0.5,,t,,,,"Agora Energiewende, 2022",
+,,demand,oxygen,,,,50,,m³;norm,,,,"Ecorys, 2014",Table 3.1
+,,demand,oxygen,,,,0.5,,t,,,,"Otto et al, 2017",Figure 6
+,,demand,nitrogen,,,,0.5,,t,,,,"Otto et al, 2017",Figure 6
+,,demand,alloys,,,,0.011,,t,,,,"Agora Energiewende, 2022",
+,,demand,alloys,,,,0.011,,t,,,,"Ecorys, 2014",Table 3.1
+,,demand,alloys,,,,0.011,,t,,,,"Vogl et al, 2018",Section 2.1
+,,demand,lime,,,,0.05,,t,,,,"Agora Energiewende, 2022",
+,,demand,lime,,,,0.05,,t,,,,"Vogl et al, 2018",Section 2.1
+,,demand,graph_electr,,,,0.002,,t,,,,"Agora Energiewende, 2022",
+,,demand,graph_electr,,,,0.003,,t,,,,"Ecorys, 2014",Table 3.1
+,,demand,graph_electr,,,,0.002,,t,,,,"Vogl et al, 2018",Section 2.1

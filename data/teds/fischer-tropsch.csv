@@ -8,6 +8,6 @@ subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,
 ,,fopex_rel,,,,,4,,percent,,,"See ""Assumptions"" of the report. Valid from 2019 to 2050",IEA The future of Hydrogen (2019)
 ,,lifetime,,,,,30,,year,,,"See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019)
 ,,lifetime,,,,,25,,percent,,,,Buchenberg et al. (2023), Table 1
-,,energy_dem,elec,,,2019,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA The future of Hydrogen (2019)
-,,energy_dem,elec,,,2030,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA The future of Hydrogen (2019)
+,,demand,elec,,,2019,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA The future of Hydrogen (2019)
+,,demand,elec,,,2030,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA The future of Hydrogen (2019)
 ,,efficiency,,,,,73,,percent,,,"H2 to liquid efficiency",IEA The future of Hydrogen (2019)

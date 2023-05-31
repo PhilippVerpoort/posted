@@ -30,16 +30,16 @@ class LCOX(AbstractCalcRoutine):
         newColumns = {}
 
         # add capital cost data
-        newColumns['cap'] = df['capex'] * _calcAnnuityFactor(self._wacc, self._lifetime) / (self._ocf * ureg('a'))
+        newColumns['cap'] = df['capex'] * (_calcAnnuityFactor(self._wacc, self._lifetime)/ureg('a')) / self._ocf
 
         # add fixed operational cost data
-        newColumns['fo'] = df['fopex_abs'] / (self._ocf * ureg('a'))
+        newColumns['fop'] = df['fopex_spec'] / self._ocf
 
         # add energy and feedstock cost data
-        colsEnF = [colName for colName in df.columns if any(colName.startswith(t) for t in ('energy_dem:', 'feedstock_dem:'))]
+        colsEnF = [colName for colName in df.columns if colName.startswith('demand:')]
         for colName in colsEnF:
             # resulting new column name
-            newColName = re.sub(r"_dem", '', colName)
+            newColName = re.sub(r"^demand:", 'dem:', colName)
 
             # get flow type and associated price
             flow_type = colName.split(':')[1]
@@ -48,11 +48,11 @@ class LCOX(AbstractCalcRoutine):
             price = self._prices[flow_type]
 
             if isinstance(price, float) or isinstance(price, int) or isinstance(price, pint.Quantity):
-                newColumns[newColName] = df[colName] * price
+                newColumns[colName] = df[colName] * price
             elif isinstance(price, dict) or isinstance(price, pd.DataFrame):
                 if isinstance(price, dict):
                     price = pd.DataFrame.from_dict(price, orient='tight')
-                newColumns[newColName] = df.merge(price).apply(lambda col: col['price'] * col[colName])
+                newColumns[newColName] = df.merge(price).apply(lambda col: col[colName] * col['price'])
             else:
                 raise Exception(f"Unknown type in price provided for '{flow_type}'.")
 

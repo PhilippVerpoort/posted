@@ -55,7 +55,7 @@ electrolysis:
     reference_flow: h2
     default-ref-units:
         capex: kW
-        fopex_abs: kW
+        fopex: kW
     subtechs:
         - Alkaline
         - PEM
@@ -84,7 +84,7 @@ low-temp-heat-pump:
     reference_flow: heat
     default-ref-units:
         capex: kW
-        fopex_abs: kW
+        fopex: kW
 methanation:
     name: Methanation
     desc: Industrial plants combining H₂ and CO₂ to yield methane (Sabatier process).
@@ -93,7 +93,7 @@ methanation:
     reference_flow: ch4
     default-ref-units:
         capex: kW
-        fopex_abs: kW
+        fopex: kW
 methane-transport:
     name: Methane transport
     desc: Long-distance transportation of methane

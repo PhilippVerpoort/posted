@@ -15,11 +15,6 @@ conversion:
           desc: Fixed OPerational EXpenditure (referring to reference capacity)
           rep_dim: '[currency]/[time]'
           ref_dim: '[flow]/[time]'
-        fopex_annual:
-          name: Fixed OPEX (annual)
-          desc: Fixed OPerational EXpenditure (per annum)
-          rep_dim: '[currency]'
-          ref_dim: '[flow]/[time]'
         fopex_spec:
           name: Fixed OPEX (spec)
           desc: Fixed OPerational EXpenditure (specific)
@@ -28,12 +23,7 @@ conversion:
         fopex_rel:
           name: Fixed OPEX (rel)
           desc: Fixed OPerational EXpenditure (relative to CAPEX)
-          rep_dim: '[dimensionless]'
-        fopex_lev:
-          name: Fixed OPEX (levelised)
-          desc: Fixed OPerational EXpenditure (specific; levelised with OCF)
-          rep_dim: '[currency]'
-          ref_dim: '[flow]'
+          rep_dim: 'dimensionless'
         vopex:
           name: Variable OPEX
           desc: Variable OPerational EXpenditure (non-energy, non-feedstock)
@@ -42,7 +32,7 @@ conversion:
         ocf:
           name: OCF
           desc: Operational capacity factor
-          rep_dim: '[dimensionless]'
+          rep_dim: 'dimensionless'
         flh:
           name: FLH
           desc: Full-load hours
@@ -55,7 +45,7 @@ conversion:
         energy_eff:
           name: Energy efficiency
           desc: Energy efficiency
-          rep_dim: '[dimensionless]'
+          rep_dim: 'dimensionless'
         product:
           name: Product
           desc: Output produced
