@@ -1,7 +1,7 @@
-subtech,mode,type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
-,,capex,,,,,670,,EUR,,,,"DECHEMA, 2017",Table 35
-,,fopex_spec,,,,,100,,EUR,,,,"DECHEMA, 2017",Table 35
-,,demand,elec,,,,0.3,,GJ,,,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
-,,demand,ng,Feedstock,,,21,,GJ,,,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
-,,demand,ng,Fuel,,,11.1,,GJ,,,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
-,,demand,ng,,,,29.7,2.1,GJ,,,,"European Commission BAT, 2007",Table 2.14
+type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
+capex,,,,,670,,EUR,,,,"DECHEMA, 2017",Table 35
+fopex_spec,,,,,100,,EUR,,,,"DECHEMA, 2017",Table 35
+demand,elec,,,,0.3,,GJ,,,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+demand,ng,Feedstock,,,21,,GJ,,,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+demand,ng,Fuel,,,11.1,,GJ,,,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+demand,ng,,,,29.7,2.1,GJ,,,,"European Commission BAT, 2007",Table 2.14

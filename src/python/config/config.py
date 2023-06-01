@@ -1,3 +1,5 @@
+import copy
+
 from src.python.config.read_config import readYAMLDataFile, readCSVDataFile
 
 
@@ -12,15 +14,23 @@ techClasses = readYAMLDataFile('tech_classes')
 # load list of technologies and specifications and insert info from tech class
 techs = readYAMLDataFile('techs')
 for tspecs in techs.values():
-    tspecs['entry_types'] = techClasses[tspecs['class']]['entry_types']
+    techClass = techClasses[tspecs['class']]
+    tspecs['entry_types'] = techClass['entry_types']
+
+    if 'case_fields' not in tspecs:
+        tspecs['case_fields'] = {}
+    else:
+        caseFields = {}
+        for caseType in tspecs['case_fields']:
+            caseFields[caseType] = copy.deepcopy(techClass['case_fields'][caseType])
+            caseFields[caseType]['dtype'] = 'category'
+            caseFields[caseType]['required'] = False
+            caseFields[caseType]['options'] = tspecs['case_fields'][caseType]
+        tspecs['case_fields'] = caseFields
 
 
 # read data format and dtypes
-dataFormat = readYAMLDataFile('ted_format')
-mapColnamesDtypes = {
-    colname: colspecs['dtype']
-    for colname, colspecs in dataFormat.items()
-}
+baseFormat = readYAMLDataFile('base_format')
 
 
 # read flow types

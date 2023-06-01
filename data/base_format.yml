@@ -1,17 +1,3 @@
-subtech:
-  name: Subtechnology
-  desc:
-    Name of the subtechnology. Leaving this column empty in a row means that this row refers to all 
-    subtechnologies in the technology group.
-  dtype: category
-  required: False
-  allowed: Allowed values are specific to each technology.
-mode:
-  name: Mode
-  desc: Mode of operation of the (sub-)technology that this row refers to.
-  dtype: category
-  required: False
-  allowed: Allowed values are specific to each (sub-)technology.
 type:
   name: Type
   desc: Type of entry that this row contributes.
@@ -27,13 +13,9 @@ flow_type:
   allowed:
     The energy carrier or feedstock if the type of this row is energy or feedstock demand. Otherwise, it is a free 
     text field explaining the component.
-component:
-  name: Component
-  desc: The name of the component if multiple components of this entry type exist.
-  dtype: str
-  required: False
-  allowed:
-    This is a free text field explaining the component. It should be left empty if only one component exists.
+
+# additional case-fields specific to the respective technology will be inserted here
+
 region:
   name: Region
   desc: The region that this value is reported for, if any.
@@ -48,6 +30,13 @@ period:
   dtype: float
   required: False
   allowed: Any integer number referring to a year (e.g. 1995, 2023, 2040, ...)
+component:
+  name: Component
+  desc: The name of the component if multiple components of this entry type exist.
+  dtype: str
+  required: False
+  allowed:
+    This is a free text field explaining the component. It should be left empty if only one component exists.
 reported_value:
   name: Reported value
   desc: The exact number reported by the referenced source, expressed in the original units.

@@ -1,4 +1,5 @@
 import copy
+import datetime
 import re
 from pathlib import Path
 
@@ -8,12 +9,13 @@ from sigfig import round
 
 from src.python.path import pathOfTEDFile
 from src.python.config.config import techs, flowTypes, defaultUnits, defaultMasks
+from src.python.ted.TEBase import TEBase
 from src.python.ted.TEDataFile import TEDataFile
 from src.python.ted.TEDataTable import TEDataTable
 from src.python.units.units import convUnitDF, convUnit, ureg
 
 
-class TEDataSet:
+class TEDataSet(TEBase):
     # initialise
     def __init__(self,
                  tid: str,
@@ -21,9 +23,9 @@ class TEDataSet:
                  load_database: bool = False,
                  skip_checks: bool = False,
                  ):
-        # set fields from arguments
-        self._tid: str = tid
-        self._tspecs: dict = copy.deepcopy(techs[tid])
+        TEBase.__init__(self, tid)
+
+        # initialise object fields
         self._df: None | pd.DataFrame = None
 
         # read TEDataFiles and combine into dataset
@@ -214,15 +216,7 @@ class TEDataSet:
 
 
     # select data
-    def generateTable(self,
-                      periods: int | float | list | np.ndarray,
-                      subtech: None | str | list = None,
-                      mode: None | str | list = None,
-                      src_ref: None | str | list = None,
-                      masks_database: bool = True,
-                      masks_other: None | list = None,
-                      no_agg: None | list = None,
-                      ):
+    def generateTable(self, agg: None | list = None, masks_database: bool = True, masks_other: None | list = None, **kwargs):
         # the dataset it the starting-point for the table
         table = self._df.copy()
 
@@ -238,50 +232,59 @@ class TEDataSet:
             f"{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''}"
             f" [{row['unit']}{('/(' + self.getRefUnit(row['type']) + ')') if self.getRefUnit(row['type'])==self.getRefUnit(row['type']) else ''}]",
         axis=1)
-        table.drop(columns=['flow_type'], inplace=True)
+        table.drop(columns=['flow_type', 'unit'], inplace=True)
 
         # insert missing periods
         table = self._insertMissingPeriods(table)
 
         # query by selected sources
-        if src_ref is None:
+        if 'src_ref' not in kwargs or kwargs['src_ref'] is None:
             pass
-        elif isinstance(src_ref, str):
-            table = table.query(f"src_ref=='{src_ref}'")
-        elif isinstance(src_ref, list):
-            table = table.query(f"src_ref.isin({src_ref})")
+        elif isinstance(kwargs['src_ref'], str):
+            table = table.query(f"src_ref=='{kwargs['src_ref']}'")
+        elif isinstance(kwargs['src_ref'], list):
+            table = table.query(f"src_ref.isin({kwargs['src_ref']})")
 
-        # expand technology specifications for all subtechs and modes
+        # expand all case fields
         expandCols = {}
-        for colID, selectArg in {'subtech': subtech, 'mode': mode}.items():
-            colIDs = f"{colID}s"
-            if selectArg is None and colIDs in self._tspecs and self._tspecs[f"{colID}s"]:
-                expandCols[colID] = self._tspecs[colIDs]
-            elif isinstance(selectArg, str):
-                expandCols[colID] = [selectArg]
-            elif isinstance(selectArg, list):
-                expandCols[colID] = selectArg
+        for colID, colSpecs in self._tspecs['case_fields'].items():
+            if (colID not in kwargs or kwargs[colID] is None) and colSpecs:
+                expandCols[colID] = colSpecs['options']
+            elif colID in kwargs and kwargs[colID] is not None and isinstance(kwargs[colID], str):
+                expandCols[colID] = [kwargs[colID]]
+            elif colID in kwargs and kwargs[colID] is not None and isinstance(kwargs[colID], list):
+                expandCols[colID] = kwargs[colID]
         table = self._expandTechs(table, expandCols)
 
         # group by identifying columns and select periods/generate time series
-        if isinstance(periods, int) | isinstance(periods, float):
-            periods = [periods]
-        table = self._selectPeriods(table, periods)
+        if 'period' not in kwargs or kwargs['period'] is None:
+            period = datetime.date.today().year
+        else:
+            period = kwargs['period']
+        if isinstance(period, int) | isinstance(period, float):
+            period = [period]
+        table = self._selectPeriods(table, period)
 
         # apply masks
         table = self._applyMasks(table, masks_other, masks_database)
 
         # sort table
-        table = table.sort_values(by=['subtech', 'mode', 'type', 'component', 'src_ref', 'period']).reset_index(drop=True)
+        sorting = ['type'] + self._caseFields + ['src_ref', 'period', 'component']
+        table = table.sort_values(by=sorting).reset_index(drop=True)
 
         # aggregation
-        indexCols = ['type'] + (['period'] if len(periods) > 1 else []) + (no_agg if no_agg is not None else [])
+        if agg is None:
+            agg = ['src_ref']
+        if len(period) == 1 and 'period' not in agg:
+            agg += ['period']
+        groupForSum = [c for c in table.columns if c not in ['component', 'value']]
+        groupForAgg = [c for c in groupForSum if c not in agg]
         table['value'].fillna(0.0, inplace=True)
         table = table \
-            .groupby(['subtech', 'mode', 'type', 'period', 'src_ref'], dropna=False) \
+            .groupby(groupForSum, dropna=False) \
             .agg({'value': 'sum'}) \
-            .groupby(indexCols, dropna=False) \
-            .agg({'value': lambda x: sum(x) / len(x)})
+            .groupby(groupForAgg, dropna=False) \
+            .agg({'value': 'mean'})
 
         # unstack type
         table = table['value'].unstack('type')
@@ -325,7 +328,7 @@ class TEDataSet:
             matching_entries = table.query(f"type.isin({['capex']})").copy()
             
             # check that other columns which might be Nan are equal
-            for col in ['subtech', 'mode', 'component', 'src_ref']:
+            for col in self._caseFields + ['component', 'src_ref']:
                 if row[col] == row[col]:
                     matching_entries = matching_entries.query(f"{col}.isin({[row[col]]})")
             
@@ -412,9 +415,9 @@ class TEDataSet:
 
 
     # group by identifying columns and select periods/generate time series
-    def _selectPeriods(self, table: pd.DataFrame, periods: float | list | np.ndarray) -> pd.DataFrame:
+    def _selectPeriods(self, table: pd.DataFrame, period: float | list | np.ndarray) -> pd.DataFrame:
         # list of columns to group by
-        groupCols = ['subtech', 'mode', 'type', 'component', 'src_ref']
+        groupCols = ['type'] + self._caseFields + ['component', 'src_ref']
 
         # perform groupby and do not drop NA values
         grouped = table.groupby(groupCols, dropna=False)
@@ -432,9 +435,9 @@ class TEDataSet:
 
             # create dataframe containing rows for all requested periods
             reqRows = pd.DataFrame.from_dict({
-                'period': periods,
-                'period_upper': [min([ip for ip in periodsExist if ip >= p], default=np.nan) for p in periods],
-                'period_lower': [max([ip for ip in periodsExist if ip <= p], default=np.nan) for p in periods],
+                'period': period,
+                'period_upper': [min([ip for ip in periodsExist if ip >= p], default=np.nan) for p in period],
+                'period_lower': [max([ip for ip in periodsExist if ip <= p], default=np.nan) for p in period],
             })
 
             # set missing columns from group

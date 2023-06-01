@@ -1,126 +1,131 @@
 ammonia-asu:
-    name: Ammonia synthesis with ASU
-    desc:
-        Synthesis of ammonia (NH₃) from hydrogen (H₂) and nitrogen (N₂), where the latter is obtained from ambient air
-        via an air-separation unit.
-    class: conversion
-    sector: chemicals
-    reference_flow: nh3
+  name: Ammonia synthesis with ASU
+  desc:
+    Synthesis of ammonia (NH₃) from hydrogen (H₂) and nitrogen (N₂), where the latter is obtained from ambient air
+    via an air-separation unit.
+  class: conversion
+  sector: chemicals
+  reference_flow: nh3
 ammonia-integrated:
-    name: Integrated ammonia plant (SMR + HB)
-    desc: Steam-methane reforming of natural gas plus Haber-Bosch synthesis
-    class: conversion
-    sector: chemicals
-    reference_flow: nh3
+  name: Integrated ammonia plant (SMR + HB)
+  desc: Steam-methane reforming of natural gas plus Haber-Bosch synthesis
+  class: conversion
+  sector: chemicals
+  reference_flow: nh3
 casting-and-rolling:
-    name: Casting and rolling steel
-    desc: Casting and rolling of liquid steel into semi-finished steel
-    class: conversion
-    sector: steel
-    reference_flow: sfsteel
+  name: Casting and rolling steel
+  desc: Casting and rolling of liquid steel into semi-finished steel
+  class: conversion
+  sector: steel
+  reference_flow: sfsteel
 direct-air-capture:
-    name: Direct-air capture
-    desc: Capturing CO2 directly from ambient air, making it available as a purified gas for captuing or utilisation.
-    class: conversion
-    sector: energy
-    reference_flow: co2
-    subtechs:
-        - HT-DAC
-        - LT-DAC
+  name: Direct-air capture
+  desc: Capturing CO2 directly from ambient air, making it available as a purified gas for captuing or utilisation.
+  class: conversion
+  sector: energy
+  reference_flow: co2
+  case_fields:
+    subtech:
+      - HT-DAC
+      - LT-DAC
 direct-reduction:
-    name: Direct-reduction shaft
-    desc: A furnace/shaft to directly reduce iron ore into DRI/HBI.
-    class: conversion
-    sector: steel
-    reference_flow: dri
-    modes:
-        - h2
-        - ng
+  name: Direct-reduction shaft
+  desc: A furnace/shaft to directly reduce iron ore into DRI/HBI.
+  class: conversion
+  sector: steel
+  reference_flow: dri
+  case_fields:
+    mode:
+      - h2
+      - ng
 electric-arc-furnace:
-    name: Electric-arc furnace
-    desc:
-        An electric-arc furnace, which uses electricity directly to create temperature sufficiently high to melt iron 
-        and other components into liquid steel.
-    class: conversion
-    sector: steel
-    reference_flow: liqsteel
-    modes:
-        - primary
-        - secondary
+  name: Electric-arc furnace
+  desc:
+    An electric-arc furnace, which uses electricity directly to create temperature sufficiently high to melt iron 
+    and other components into liquid steel.
+  class: conversion
+  sector: steel
+  reference_flow: liqsteel
+  case_fields:
+    mode:
+      - primary
+      - secondary
 electrolysis:
-    name: Electrolysis
-    desc: Water electrolysis, which yields hydrogen and oxygen.
-    class: conversion
-    sector: energy
-    reference_flow: h2
-    default-ref-units:
-        capex: kW
-        fopex: kW
-    subtechs:
-        - Alkaline
-        - PEM
-        - Solid Oxide
-        - SOEC
+  name: Electrolysis
+  desc: Water electrolysis, which yields hydrogen and oxygen.
+  class: conversion
+  sector: energy
+  reference_flow: h2
+  default-ref-units:
+    capex: kW
+    fopex: kW
+  case_fields:
+    subtech:
+      - Alkaline
+      - PEM
+      - Solid Oxide
+      - SOEC
 hydrogen-storage:
-    name: Hydrogen storage
-    desc: Long-term storage of hydrogen
-    class: storage
-    sector: energy
-    reference_flow: h2
+  name: Hydrogen storage
+  desc: Long-term storage of hydrogen
+  class: storage
+  sector: energy
+  reference_flow: h2
 integrated-steel-mill-ccs:
-    name: Integrated steel mill with CCS
-    desc: Integrated steel mill with a blast furnace and basic oxygen furnace, equipped with CCS.
-    class: conversion
-    sector: steel
-    reference_flow: sfsteel
-    subtechs:
-        - bf-bof-post-combustion
-        - tgr-bof-post-combustion
+  name: Integrated steel mill with CCS
+  desc: Integrated steel mill with a blast furnace and basic oxygen furnace, equipped with CCS.
+  class: conversion
+  sector: steel
+  reference_flow: sfsteel
+  case_fields:
+    subtech:
+      - bf-bof-post-combustion
+      - tgr-bof-post-combustion
 low-temp-heat-pump:
-    name: Low-temperature industrial heat pump
-    desc: Industrial heat pumps providing heat at a temperature of 80–120°C.
-    class: conversion
-    sector: energy
-    reference_flow: heat
-    default-ref-units:
-        capex: kW
-        fopex: kW
+  name: Low-temperature industrial heat pump
+  desc: Industrial heat pumps providing heat at a temperature of 80–120°C.
+  class: conversion
+  sector: energy
+  reference_flow: heat
+  default-ref-units:
+    capex: kW
+    fopex: kW
 methanation:
-    name: Methanation
-    desc: Industrial plants combining H₂ and CO₂ to yield methane (Sabatier process).
-    class: conversion
-    sector: energy
-    reference_flow: ch4
-    default-ref-units:
-        capex: kW
-        fopex: kW
+  name: Methanation
+  desc: Industrial plants combining H₂ and CO₂ to yield methane (Sabatier process).
+  class: conversion
+  sector: energy
+  reference_flow: ch4
+  default-ref-units:
+    capex: kW
+    fopex: kW
 methane-transport:
-    name: Methane transport
-    desc: Long-distance transportation of methane
-    class: transport
-    sector: energy
-    reference_flow: ch4
+  name: Methane transport
+  desc: Long-distance transportation of methane
+  class: transport
+  sector: energy
+  reference_flow: ch4
 methanol-synthesis:
-    name: Methanol synthesis
-    desc: Synthesis of methanol from H₂ and CO₂.
-    class: conversion
-    sector: energy
-    reference_flow: meoh
+  name: Methanol synthesis
+  desc: Synthesis of methanol from H₂ and CO₂.
+  class: conversion
+  sector: energy
+  reference_flow: meoh
 methanol-integrated:
-    name: Methanol integrated
-    desc: Integrated steam-methane reforming and synthesis of methanol.
-    class: conversion
-    sector: energy
-    reference_flow: meoh
+  name: Methanol integrated
+  desc: Integrated steam-methane reforming and synthesis of methanol.
+  class: conversion
+  sector: energy
+  reference_flow: meoh
 methanol-to-olefine-synthesis:
-    name: Methanol-to-olefine process
-    desc: Synthesis of ethylene, propylene, and by-products from methanol.
-    class: conversion
-    sector: chemicals
-    reference_flow: hvcs
+  name: Methanol-to-olefine process
+  desc: Synthesis of ethylene, propylene, and by-products from methanol.
+  class: conversion
+  sector: chemicals
+  reference_flow: hvcs
 urea-synthesis:
-    name: Urea synthesis
-    desc: Stand-alone synthesis of urea from NH₃ and CO₂ (w/o SMR-based ammonia plant).
-    class: conversion
-    sector: chemicals
-    reference_flow: urea
+  name: Urea synthesis
+  desc: Stand-alone synthesis of urea from NH₃ and CO₂ (w/o SMR-based ammonia plant).
+  class: conversion
+  sector: chemicals
+  reference_flow: urea

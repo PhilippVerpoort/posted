@@ -1,18 +1,18 @@
-import copy
 from pathlib import Path
 
 import pandas as pd
 
 from src.python.path import pathOfTEDFile
-from src.python.config.config import flowTypes, techs, mapColnamesDtypes
+from src.python.ted.TEBase import TEBase
 from src.python.ted.inconsistencies import checkRowConsistency
 
 
-class TEDataFile:
+class TEDataFile(TEBase):
     # initialise
     def __init__(self, tid: str, path: None|Path = None):
-        self._tid: str = tid
-        self._tspecs: dict = copy.deepcopy(techs[tid])
+        TEBase.__init__(self, tid)
+
+        # initialise object fields
         self._path: Path = path or pathOfTEDFile(self._tid)
         self._df: None | pd.DataFrame = None
         self._inconsistencies: dict = {}
@@ -29,7 +29,7 @@ class TEDataFile:
         # read CSV file
         self._df = pd.read_csv(
             self._path,
-            dtype=mapColnamesDtypes,
+            dtype=self._getDtypeMapping(),
             sep=',',
             quotechar='"',
             encoding='utf-8',
@@ -39,7 +39,7 @@ class TEDataFile:
         self._df.index += 1
 
         # make sure the file contains no unknown columns
-        dataFormatColIDs = list(mapColnamesDtypes.keys())
+        dataFormatColIDs = list(self._dataFormat.keys())
         for colID in self._df.columns:
             if colID not in dataFormatColIDs:
                 raise Exception(f"Unknown column '{colID}' in file \"{self._path}\".")

@@ -1,7 +1,7 @@
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMenuBar
 
-from src.python.config.config import dataFormat
+from src.python.config.config import baseFormat
 
 menuDict = {
     'file': {
@@ -69,7 +69,7 @@ class PGEditWindowMenu(QMenuBar):
         # add submenu for viewing/hiding columns
         submenu = menus['view'].addMenu('Show &columns')
         submenu.setStatusTip('Select the columns to show/hide')
-        for colID, colSpecs in dataFormat.items():
+        for colID, colSpecs in baseFormat.items():
             item = QAction(colSpecs['name'], self)
             item.setCheckable(True)
             item.setChecked(True)

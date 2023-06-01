@@ -6,7 +6,7 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
 
-from src.python.config.config import techs, dataFormat, mapColnamesDtypes, flowTypes, techClasses
+from src.python.config.config import techs, baseFormat, mapColnamesDtypes, flowTypes, techClasses
 from src.python.ted.TEDataFile import TEDataFile
 
 
@@ -20,7 +20,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
         self._path: Path = path
         self._dataFile: TEDataFile = TEDataFile(tid, path)
         self._viewConsistency: bool = True
-        self._viewColumns: dict = {colID: True for colID in dataFormat}
+        self._viewColumns: dict = {colID: True for colID in baseFormat}
         self._colIDList = list(self._viewColumns.keys())
 
         # add local triggers
@@ -84,7 +84,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
     # toggle view of column
     def toggleViewColumn(self, colID):
         self._viewColumns[colID] = not self._viewColumns[colID]
-        self._colIDList = list(colID for colID in dataFormat if self._viewColumns[colID])
+        self._colIDList = list(colID for colID in baseFormat if self._viewColumns[colID])
         self.layoutChanged.emit()
 
 
@@ -116,13 +116,13 @@ class PGTableModel(QtCore.QAbstractTableModel):
 
 
     def columnCount(self, index):
-        return sum(1 for colID in dataFormat if self._viewColumns[colID])
+        return sum(1 for colID in baseFormat if self._viewColumns[colID])
 
 
     def headerData(self, index, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             colID = self._colIDList[index]
-            return dataFormat[colID]['name']
+            return baseFormat[colID]['name']
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._data.index[index]
 

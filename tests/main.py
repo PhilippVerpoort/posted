@@ -5,7 +5,7 @@ from src.python.units.units import ureg
 
 # example: direct reduction
 # t = TEDataSet('electrolysis', load_other=['/home/philippv/Documents/4-projects/10-posted/01-vcs/posted/electrolysis-test.csv'])
-t = TEDataSet('direct-reduction').generateTable([2030, 2050], no_agg=['mode'])
+t = TEDataSet('direct-reduction', skip_checks=True).generateTable(period=[2030, 2050])
 print('=== Direct reduction example ===')
 print(t.data)
 
@@ -20,7 +20,7 @@ print(t.calc(LCOX(prices=ps)))
 
 
 # example: electrolysis
-t = TEDataSet('electrolysis', skip_checks=True).generateTable([2030, 2040, 2050], no_agg=['subtech'])
+t = TEDataSet('electrolysis', skip_checks=True).generateTable(period=[2030, 2040, 2050])
 print('=== Electrolysis example ===')
 print(t.data)
 print('=== Unstack ===')
