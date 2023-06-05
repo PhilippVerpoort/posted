@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from src.python.config.config import techs, techClasses, flowTypes
-from src.python.units.units import allowedFlowDims, ureg
+from src.python.units.units import allowedFlowDims, simplifyUnit, ureg
 
 
 class TEInconsistencyException(Exception):
@@ -52,78 +52,81 @@ def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> 
 
     # check whether flow type (if non NaN) is among defined flow types
     cell = row['flow_type']
-    if cell is not np.nan and cell not in flowTypes.keys():
-        ret.append(createException(re, TEInconsistencyException(f"invalid flow type: {cell}", colID='flow_type', **kwargs)))
+    if cell is not np.nan:
+        if cell not in flowTypes.keys():
+            ret.append(createException(re, TEInconsistencyException(f"invalid flow type: {cell}", colID='flow_type', **kwargs)))
+    else:
+        # for entries of type demand or energy_eff, flow_type has to be set
+        if row['type'] in ['demand', 'energy_eff']:
+            ret.append(createException(re, TEInconsistencyException(f"invalid flow type: {cell}. Flow type has to be set for entries of type {row['type']}", colID='flow_type', **kwargs)))
 
-    # check whether subtech and mode is among those defined in the technology specs
+    # check whether subtech and mode are among those defined in the technology specs
     for colID in ['subtech', 'mode']:
-        cell = row[colID]
-        if f"{colID}s" in techs[tid]:
+       
+        # check if subtechs/modes are defined for the technology
+        if colID in techs[tid]['case_fields']:
+            cell = row[colID]
             # NaNs are accepted; only real values can violate consistency here
-            if cell not in techs[tid][f"{colID}s"] and cell is not np.nan:
+            if cell not in techs[tid]['case_fields'][colID]['options'] and cell is not np.nan:
                 ret.append(createException(re, TEInconsistencyException(f"invalid {colID}: {cell}", colID=colID, **kwargs)))
         else:
-            if cell is not np.nan:
+            if colID in row and row[colID] is not np.nan:
                 ret.append(createException(re, TEInconsistencyException(f"{colID} should be empty, but the column contains: {cell}", colID=colID, **kwargs)))
 
     # check whether type is among those types defined in the technology class specs
     cell = row['type']
-    if cell not in techClasses['conversion']['entry_types']:
+    # get technology class
+    tech_class = techs[tid]['class']
+    if cell is np.nan or cell not in techClasses[tech_class]['entry_types']:
         raise TEInconsistencyException(f"invalid entry type: {cell}", colID='type', **kwargs)
 
     # check whether reported unit and reference unit match the entry type and flow type specified
-    switchUnitDims = {
-        'currency': '[currency]',
-        'dimensionless': 'dimensionless',
-        'time': '[time]'
-        # 'flow' is defined in __allowed_flow_dims
-    }
+
     for colID, colDim in [('reported_unit', 'rep_dim'), ('reference_unit', 'ref_dim')]:
-        unit_type = techClasses['conversion']['entry_types'][row['type']][colDim]
+        unit_to_check = row[colID]
+        # if dimensions are not given for rep/ref, the unit cell has to be empty
+        if colDim not in techClasses[tech_class]['entry_types'][cell]:
+            if unit_to_check is not np.nan:
+                ret.append(createException(re, TEInconsistencyException(f"invalid {colID}: {cell} does not allow {colID}, but value was provided", colID=colID, **kwargs)))
+            break
+
+        unit_type = techClasses[tech_class]['entry_types'][cell][colDim]
 
         # --- The following determines the allowed dimensions based on the entry_type.
         # Depending on the type of entry_type different dimensions and their combinations are added to the dimensions variable.
         dimension = []
         formula = unit_type.split('/')
-        if len(formula) > 1:  # unit_type is a composite of two dimensions
-            if (formula[0] == 'flow'):  # if flow is the dimension, the flow_type has to be checked
-                dims_enum = allowedFlowDims(row['flow_type'])
-            else:
-                dims_enum = switchUnitDims[formula[0]]
-            if (formula[1] == 'flow'):  # if flow is the dimension, the flow_type has to be checked
-                dims_denom = allowedFlowDims(row['flow_type'])
-            else:
-                dims_denom = switchUnitDims[formula[1]]
 
-            if type(dims_enum) is list or type(
-                    dims_denom) is list:  # one of the dimensions is quivalent to a list of dimensions
-                if type(dims_enum) is list:  # the first dimension is quivalent to a list of dimensions, iteration is needed
-                    for elem_enum in dims_enum:
-                        if type(dims_denom) is list:  # the second dimension is quivalent to a list of dimensions as well,iteration is needed
-                            for elem_denom in dims_denom:
-                                dimension += [elem_enum + ' / ' + elem_denom]
-                        else:  # the second dimension is not quivalent to a list of dimensions
-                            dimension += [elem_enum + ' / ' + dims_denom]
-                else:  # the first dimension is not quivalent to a list of dimensions
-                    if type(dims_denom) is list:  # the second dimension is quivalent to a list of dimensions, iteration is needed
-                        for elem_denom in dims_denom:
-                            dimension += [dims_enum + ' / ' + elem_denom]
-                    else:  # the second dimension is not quivalent to a list of dimensions
-                        dimension += [dims_enum + ' / ' + dims_denom]
+        # for every element in the formula, the allowed dimensions are determined
+        # After that, every possible combination of the allowed dimensions of each element are added to the dimension variable
+        allowed_dims = []
+        for elem in formula:
+            if elem == '[flow]': # or use reference_flow here!
+                if colID == 'reference_unit':
+                    # for reference_unit, the tech-specific reference_flow is used
+                    allowed_dims.append(allowedFlowDims(techs[tid]['reference_flow']))
+                else:
+                    # for reported_unit, the flow_type cell is used
+                    allowed_dims.append(allowedFlowDims(row['flow_type']))
             else:
-                dimension = [dims_enum + ' / ' + dims_denom]
-        else:  # unit_type is a single dimension
-            if (unit_type == 'flow'):  # if flow is the dimension, the flow_type has to be checked
-                allowed_dims = allowedFlowDims(row['flow_type'])
-            else:
-                allowed_dims = switchUnitDims[unit_type]
-
-            if type(allowed_dims) is list:
-                for dim in allowed_dims:
-                    dimension += [dim]
-            else:
-                dimension = switchUnitDims[unit_type]
-
+                allowed_dims.append([elem])
+        # list of dimension combinations
+        dimension = []
+        # iterate over all dimensions lists in allowed_dims
+        for dim_list in allowed_dims:
+            dimensionNew = []
+            # iterate over all dimensions in the list of dimensions
+            for dim in dim_list:
+                # if dimension is still empty, the first element is added unchanged to the dimension variable
+                if dimension == []:
+                    dimensionNew = dim_list
+                    break
+                else:
+                    # if dimension is not empty, the dimension is combined with the elements of the dimension variable and added to dimensionNew
+                    dimensionNew += [simplifyUnit(x + ' / ' + dim) for x in dimension]
+            # dimension is updated with the new dimensionNew containing one more level of dimension combinations
+            dimension = dimensionNew
+        
         # --- The dimensions variable is now set to all allowed dimensions for this row
 
         if row[colID] is np.nan:
@@ -131,8 +134,6 @@ def checkRowConsistency(tid: str, row: pd.Series, re: bool = True, **kwargs) -> 
             if colID == 'reported_unit':
                 ret.append(createException(re, TEInconsistencyException('invalid reported_unit: NaN value', colID=colID, **kwargs)))
         else:
-            unit_to_check = row[colID]
-
             # check if unit is connected to a variant (LHV, HHV, norm or standard)
             unit_splitted = unit_to_check.split(';')
             if (len(unit_splitted) > 1):  # the unit is connected to a variant

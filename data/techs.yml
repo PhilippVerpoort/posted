@@ -99,6 +99,10 @@ methanation:
   default-ref-units:
     capex: kW
     fopex: kW
+  case_fields:
+    subtech:
+      - Catalytic
+      - Biological
 methane-transport:
   name: Methane transport
   desc: Long-distance transportation of methane

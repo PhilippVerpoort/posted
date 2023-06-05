@@ -1,6 +1,7 @@
 import pandas as pd
 import pint
 import pint_pandas
+import re
 
 from src.python.path import pathOfFile
 from src.python.config.config import flowTypes
@@ -19,6 +20,20 @@ pint_pandas.PintType.ureg.default_format = "~P"
 # load definitions
 ureg.load_definitions(pathOfFile('src/python/units', 'definitions.txt'))
 
+def simplifyUnit(unit: str) -> str:
+    # replace currency manually with UnitContainer object, because manually added dimensions are not recognized by ureg
+    unit = unit.replace('[currency]', 'ureg("USD")')
+
+    # replace every dimension in unit with UnitContainer object of base unit of dimension
+    unit = re.sub(r'\[([^\d\W]+)\]', r'(ureg.get_base_units(list(ureg.get_compatible_units("[\1]"))[0])[1])', unit)
+    # evaluate unit
+    unit = eval('1 * ' + unit)
+
+    # convert unit to reduced units: this simplifies the unit
+    unit_red = unit.to_reduced_units()
+    # get dimensionality of reduced unit
+    unit_dim = str(ureg.Quantity(unit_red).dimensionality)
+    return unit_dim
 
 # check allowed dimensions for a flow type
 def allowedFlowDims(flow_type: None | str):
