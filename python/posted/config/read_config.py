@@ -1,7 +1,7 @@
 import pandas as pd
 import yaml
 
-from src.python.path import pathOfDataFile
+from posted.path import pathOfDataFile
 
 
 # read CSV data file

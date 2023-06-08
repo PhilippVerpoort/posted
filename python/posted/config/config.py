@@ -1,6 +1,6 @@
 import copy
 
-from src.python.config.read_config import readYAMLDataFile, readCSVDataFile
+from posted.config.read_config import readYAMLDataFile, readCSVDataFile
 
 
 # load options

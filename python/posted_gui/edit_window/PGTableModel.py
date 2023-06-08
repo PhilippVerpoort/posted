@@ -6,8 +6,8 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
 
-from src.python.config.config import techs, baseFormat, mapColnamesDtypes, flowTypes, techClasses
-from src.python.ted.TEDataFile import TEDataFile
+from posted.config.config import techs, baseFormat, mapColnamesDtypes
+from posted.ted.TEDataFile import TEDataFile
 
 
 class PGTableModel(QtCore.QAbstractTableModel):

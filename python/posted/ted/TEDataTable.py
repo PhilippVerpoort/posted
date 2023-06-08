@@ -3,7 +3,7 @@ import pandas as pd
 import pint_pandas
 from sigfig import round
 
-from src.python.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
+from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
 
 
 class TEDataTable:

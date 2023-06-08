@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.python.path import pathOfTEDFile
-from src.python.ted.TEBase import TEBase
-from src.python.ted.inconsistencies import checkRowConsistency
+from posted.path import pathOfTEDFile
+from posted.ted.TEBase import TEBase
+from posted.ted.inconsistencies import checkRowConsistency
 
 
 class TEDataFile(TEBase):

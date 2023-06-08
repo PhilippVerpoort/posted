@@ -2,7 +2,14 @@
 name = "posted"
 version = "0.1.0"
 description = "Potsdam Open-Source Techno-Economic Database for climate-mitigation technologies"
-authors = ["Philipp Verpoort <philipp.verpoort@pik-potsdam.de>"]
+authors = ["Philipp C. Verpoort <philipp.verpoort@pik-potsdam.de>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+packages = [
+    {include = "posted", from = "python"},
+    {include = "posted_gui", from = "python"},
+]
+include = ["python/posted/data/**/*"]
 
 [tool.poetry.dependencies]
 python = "~3.10.10"
@@ -23,3 +30,11 @@ pyinstaller = "^5.11.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.build]
+generate-setup-file = false
+script = "build_attach_data.py"
+
+[tool.poetry.scripts]
+posted = 'posted.cmdline:main'
+posted-gui = 'posted_gui.cmdline:main'

@@ -3,8 +3,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from src.python.config.config import techs, techClasses, flowTypes
-from src.python.units.units import allowedFlowDims, simplifyUnit, ureg
+from posted.config.config import techs, techClasses, flowTypes
+from posted.units.units import allowedFlowDims, simplifyUnit, ureg
 
 
 class TEInconsistencyException(Exception):

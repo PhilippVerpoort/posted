@@ -1,7 +1,7 @@
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMenuBar
 
-from src.python.config.config import baseFormat
+from posted.config.config import baseFormat
 
 menuDict = {
     'file': {

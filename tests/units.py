@@ -1,5 +1,4 @@
-from src.python.config.config import flowTypes
-from src.python.units.units import ureg, convUnit
+from posted.units.units import convUnit
 
 
 # test conversion

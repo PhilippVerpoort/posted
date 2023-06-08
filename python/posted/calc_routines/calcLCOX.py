@@ -3,8 +3,8 @@ import re
 import pandas as pd
 import pint
 
-from src.python.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
-from src.python.units.units import ureg
+from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
+from posted.units.units import ureg
 
 
 # calculate annuity factor

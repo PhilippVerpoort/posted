@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QTableView, QMenu, QLineEdit, QInputDialog
 
-from src.gui.edit_window.PGTableModel import PGTableModel
+from posted_gui.edit_window.PGTableModel import PGTableModel
 
 
 class PGTableView(QTableView):

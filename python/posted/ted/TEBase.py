@@ -1,4 +1,4 @@
-from src.python.config.config import techs, baseFormat
+from posted.config.config import techs, baseFormat
 
 
 class TEBase:

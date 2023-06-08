@@ -1,6 +1,6 @@
 from PySide6 import QtWidgets
 
-from src.gui.edit_window.PGEditWindow import PGEditWindow
+from posted_gui.edit_window.PGEditWindow import PGEditWindow
 
 
 def launchPG(tid: str):

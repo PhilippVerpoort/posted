@@ -1,18 +1,16 @@
-import copy
 import datetime
-import re
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from sigfig import round
 
-from src.python.path import pathOfTEDFile
-from src.python.config.config import techs, flowTypes, defaultUnits, defaultMasks
-from src.python.ted.TEBase import TEBase
-from src.python.ted.TEDataFile import TEDataFile
-from src.python.ted.TEDataTable import TEDataTable
-from src.python.units.units import convUnitDF, convUnit, ureg
+from posted.path import pathOfTEDFile
+from posted.config.config import techs, flowTypes, defaultUnits, defaultMasks
+from posted.ted.TEBase import TEBase
+from posted.ted.TEDataFile import TEDataFile
+from posted.ted.TEDataTable import TEDataTable
+from posted.units.units import convUnitDF, convUnit, ureg
 
 
 class TEDataSet(TEBase):

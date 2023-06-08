@@ -1,6 +1,6 @@
-from src.python.calc_routines.calcLCOX import LCOX
-from src.python.ted.TEDataSet import TEDataSet
-from src.python.units.units import ureg
+from posted.calc_routines.calcLCOX import LCOX
+from posted.ted.TEDataSet import TEDataSet
+from posted.units.units import ureg
 
 
 # example: direct reduction

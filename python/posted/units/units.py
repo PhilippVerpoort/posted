@@ -1,10 +1,12 @@
+from pathlib import Path
+
 import pandas as pd
 import pint
 import pint_pandas
 import re
 
-from src.python.path import pathOfFile
-from src.python.config.config import flowTypes
+from posted.path import pathOfFile
+from posted.config.config import flowTypes
 
 
 # define new registry
@@ -18,7 +20,7 @@ pint_pandas.PintType.ureg.default_format = "~P"
 
 
 # load definitions
-ureg.load_definitions(pathOfFile('src/python/units', 'definitions.txt'))
+ureg.load_definitions(pathOfFile(Path(__file__).parent, 'definitions.txt'))
 
 def simplifyUnit(unit: str) -> str:
     # replace currency manually with UnitContainer object, because manually added dimensions are not recognized by ureg

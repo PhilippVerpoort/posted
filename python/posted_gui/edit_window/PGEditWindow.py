@@ -4,10 +4,10 @@ from functools import partial
 from PySide6 import QtWidgets
 from PySide6.QtWidgets import QApplication
 
-from src.gui.edit_window.PGEditWindowMenu import PGEditWindowMenu
-from src.gui.edit_window.PGTableModel import PGTableModel
-from src.gui.edit_window.PGTableView import PGTableView
-from src.python.path import pathOfTEDFile
+from posted_gui.edit_window.PGEditWindowMenu import PGEditWindowMenu
+from posted_gui.edit_window.PGTableModel import PGTableModel
+from posted_gui.edit_window.PGTableView import PGTableView
+from posted.path import pathOfTEDFile
 
 
 class PGEditWindow(QtWidgets.QMainWindow):

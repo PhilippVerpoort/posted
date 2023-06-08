@@ -1,6 +1,8 @@
 .Rprofile
 /renv
 
+/python/posted/data
+
 /.idea
 
 /references.bib~*
