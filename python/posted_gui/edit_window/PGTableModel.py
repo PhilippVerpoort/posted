@@ -6,7 +6,7 @@ from PySide6 import QtCore
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor
 
-from posted.config.config import techs, baseFormat, mapColnamesDtypes
+from posted.config.config import techs, baseFormat
 from posted.ted.TEDataFile import TEDataFile
 
 
@@ -19,8 +19,10 @@ class PGTableModel(QtCore.QAbstractTableModel):
         self._tid: str = tid
         self._path: Path = path
         self._dataFile: TEDataFile = TEDataFile(tid, path)
+        self._dataFormat = self._dataFile.dataFormat
+        self._dtypeMapping = self._dataFile._getDtypeMapping()
         self._viewConsistency: bool = True
-        self._viewColumns: dict = {colID: True for colID in baseFormat}
+        self._viewColumns: dict = {colID: True for colID in self._dataFormat}
         self._colIDList = list(self._viewColumns.keys())
 
         # add local triggers
@@ -84,7 +86,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
     # toggle view of column
     def toggleViewColumn(self, colID):
         self._viewColumns[colID] = not self._viewColumns[colID]
-        self._colIDList = list(colID for colID in baseFormat if self._viewColumns[colID])
+        self._colIDList = list(colID for colID in self._dataFormat if self._viewColumns[colID])
         self.layoutChanged.emit()
 
 
@@ -122,7 +124,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
     def headerData(self, index, orientation, role):
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
             colID = self._colIDList[index]
-            return baseFormat[colID]['name']
+            return self._dataFormat[colID]['name']
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._data.index[index]
 
@@ -135,7 +137,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
             value = np.nan
 
         rowID, colID = self._getIndices(index)
-        dtype = mapColnamesDtypes[colID]
+        dtype = self._dtypeMapping[colID]
         if dtype == 'category':
             if value not in self._data[colID].cat.categories and value is not np.nan:
                 self._data[colID] = self._data[colID].cat.add_categories([value])
@@ -170,10 +172,6 @@ class PGTableModel(QtCore.QAbstractTableModel):
 
 
     def _isEditable(self, colID):
-        if colID == 'subtech' and 'subtechs' not in techs[self._tid]:
-            return False
-        if colID == 'mode' and 'modes' not in techs[self._tid]:
-            return False
         return True
 
 

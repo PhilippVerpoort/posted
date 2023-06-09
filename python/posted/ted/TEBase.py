@@ -1,3 +1,5 @@
+import copy
+
 from posted.config.config import techs, baseFormat
 
 
@@ -26,6 +28,12 @@ class TEBase:
                 self._dataFormat |= self._tspecs['case_fields']
 
         self._caseFields = list(self._tspecs['case_fields'].keys())
+
+
+    # get data format
+    @property
+    def dataFormat(self):
+        return copy.deepcopy(self._dataFormat)
 
 
     # get dtype mapping

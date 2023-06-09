@@ -17,7 +17,6 @@ def main():
 
     # parse arguments
     args = parser.parse_args()
-    cmd = args.command
 
     launchPG(tid=args.tid)
 
