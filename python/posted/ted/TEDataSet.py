@@ -117,7 +117,7 @@ class TEDataSet(TEBase):
         self._df['reference_unit_default'] = self._df['type'].map(self._refUnits).astype(str)
         self._df['reference_unit_factor'] = np.where(
             self._df['reference_unit'].notna(),
-            convUnitDF(self._df, 'reference_unit', 'reference_unit_default', self._tspecs['reference_flow']),
+            convUnitDF(self._df, 'reference_unit', 'reference_unit_default', self.referenceFlow),
             1.0,
         )
 
@@ -214,7 +214,12 @@ class TEDataSet(TEBase):
 
 
     # select data
-    def generateTable(self, agg: None | list = None, masks_database: bool = True, masks_other: None | list = None, **kwargs):
+    def generateTable(self,
+                      agg: None | list = None,
+                      masks_database: bool = True,
+                      masks_other: None | list = None,
+                      keepSingularIndexLevels: bool = False,
+                      **kwargs):
         # the dataset it the starting-point for the table
         table = self._df.copy()
 
@@ -225,11 +230,10 @@ class TEDataSet(TEBase):
         table = self._applyTypeMappings(table)
 
         # combine type, flow_type, and unit columns
-        table['type'] = table.apply(lambda row:
-            f"{row['type']}"
-            f"{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''}"
-            f" [{row['unit']}{('/(' + self.getRefUnit(row['type']) + ')') if self.getRefUnit(row['type'])==self.getRefUnit(row['type']) else ''}]",
-        axis=1)
+        table['type'] = table.apply(
+            lambda row: f"{row['type']}{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''} [{row['unit']}]",
+            axis=1,
+        )
         table.drop(columns=['flow_type', 'unit'], inplace=True)
 
         # insert missing periods
@@ -245,13 +249,13 @@ class TEDataSet(TEBase):
 
         # expand all case fields
         expandCols = {}
-        for colID, colSpecs in self._tspecs['case_fields'].items():
-            if (colID not in kwargs or kwargs[colID] is None) and colSpecs:
-                expandCols[colID] = colSpecs['options']
-            elif colID in kwargs and kwargs[colID] is not None and isinstance(kwargs[colID], str):
-                expandCols[colID] = [kwargs[colID]]
-            elif colID in kwargs and kwargs[colID] is not None and isinstance(kwargs[colID], list):
-                expandCols[colID] = kwargs[colID]
+        for idxName, colSpecs in self._tspecs['case_fields'].items():
+            if (idxName not in kwargs or kwargs[idxName] is None) and colSpecs:
+                expandCols[idxName] = colSpecs['options']
+            elif idxName in kwargs and kwargs[idxName] is not None and isinstance(kwargs[idxName], str):
+                expandCols[idxName] = [kwargs[idxName]]
+            elif idxName in kwargs and kwargs[idxName] is not None and isinstance(kwargs[idxName], list):
+                expandCols[idxName] = kwargs[idxName]
         table = self._expandTechs(table, expandCols)
 
         # group by identifying columns and select periods/generate time series
@@ -287,6 +291,13 @@ class TEDataSet(TEBase):
         # unstack type
         table = table['value'].unstack('type')
 
+        # rename case fields
+        table.index.rename([
+            (f"{idxName}:{self._tid}" if idxName in self._tspecs['case_fields'] else idxName)
+            for idxName in table.index.names],
+            inplace=True,
+        )
+
         # round values
         table = table.apply(lambda col: col.apply(lambda cell:
             cell if cell!=cell else round(cell, sigfigs=4, warn=False)
@@ -299,6 +310,10 @@ class TEDataSet(TEBase):
             unit = tokens[1]
             table.rename(columns={typeName: typeNameNew}, inplace=True)
             table[typeNameNew] = table[typeNameNew].astype(f"pint{unit}")
+
+        # drop index levels representing case fields with precisely one option
+        if not keepSingularIndexLevels:
+            table.index = table.index.droplevel([level.name for level in table.index.levels if len(level)==1])
 
         return TEDataTable(self._tid, table)
 
@@ -404,11 +419,12 @@ class TEDataSet(TEBase):
         # loop over affected columns (subtech and mode)
         for colID, colVals in expandCols.items():
             table = pd.concat([
-                table[table[colID].notna()],
+                table[table[colID].notna() & table[colID].isin(colVals)],
                 table[table[colID].isna()].drop(columns=[colID]).merge(pd.DataFrame.from_dict({colID: colVals}), how='cross'),
             ]) \
             .reset_index(drop=True)
 
+        # return
         return table
 
 

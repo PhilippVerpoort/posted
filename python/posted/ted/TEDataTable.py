@@ -4,11 +4,15 @@ import pint_pandas
 from sigfig import round
 
 from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
+from posted.ted.TEBase import TEBase
 
 
-class TEDataTable:
+class TEDataTable(TEBase):
     # initialise
     def __init__(self, tid: str, datatable: pd.DataFrame):
+        TEBase.__init__(self, tid)
+
+        # initialise object fields
         self._tid: str = tid
         self._df: pd.DataFrame = datatable
 
@@ -17,6 +21,18 @@ class TEDataTable:
     @property
     def data(self):
         return self._df
+
+
+    # access tid
+    @property
+    def tid(self):
+        return self._tid
+
+
+    # check if column has a reference dimension
+    def hasRefDim(self, colID: str):
+        colName = colID.split(':')[0]
+        return ('ref_dim' in self._tspecs['entry_types'][colName])
 
 
     # calculate levelised cost of X

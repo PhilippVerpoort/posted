@@ -1,6 +1,6 @@
 import copy
 
-from posted.config.config import techs, baseFormat
+from posted.config.config import techs, baseFormat, flowTypes
 
 
 class TEBase:
@@ -34,6 +34,18 @@ class TEBase:
     @property
     def dataFormat(self):
         return copy.deepcopy(self._dataFormat)
+
+
+    # get reference flow
+    @property
+    def referenceFlow(self):
+        return self._tspecs['reference_flow']
+
+
+    # get reference unit
+    @property
+    def referenceUnit(self):
+        return flowTypes[self.referenceFlow]['default_unit']
 
 
     # get dtype mapping
