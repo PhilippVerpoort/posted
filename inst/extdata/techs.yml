@@ -1,4 +1,4 @@
-ammonia-asu:
+HBNH3-ASU:
   name: Ammonia synthesis with ASU
   desc:
     Synthesis of ammonia (NH₃) from hydrogen (H₂) and nitrogen (N₂), where the latter is obtained from ambient air
@@ -6,19 +6,19 @@ ammonia-asu:
   class: conversion
   sector: chemicals
   reference_flow: nh3
-ammonia-integrated:
+SMR-HBNH3:
   name: Integrated ammonia plant (SMR + HB)
   desc: Steam-methane reforming of natural gas plus Haber-Bosch synthesis
   class: conversion
   sector: chemicals
   reference_flow: nh3
-casting-and-rolling:
+CAST-ROLL:
   name: Casting and rolling steel
   desc: Casting and rolling of liquid steel into semi-finished steel
   class: conversion
   sector: steel
   reference_flow: sfsteel
-direct-air-capture:
+DAC:
   name: Direct-air capture
   desc: Capturing CO2 directly from ambient air, making it available as a purified gas for captuing or utilisation.
   class: conversion
@@ -28,7 +28,7 @@ direct-air-capture:
     subtech:
       - HT-DAC
       - LT-DAC
-direct-reduction:
+IDR:
   name: Direct-reduction shaft
   desc: A furnace/shaft to directly reduce iron ore into DRI/HBI.
   class: conversion
@@ -38,7 +38,7 @@ direct-reduction:
     mode:
       - h2
       - ng
-electric-arc-furnace:
+EAF:
   name: Electric-arc furnace
   desc:
     An electric-arc furnace, which uses electricity directly to create temperature sufficiently high to melt iron 
@@ -50,9 +50,9 @@ electric-arc-furnace:
     mode:
       - primary
       - secondary
-electrolysis:
+ELH2:
   name: Electrolysis
-  desc: Water electrolysis, which yields hydrogen and oxygen.
+  desc: Water ELH2, which yields hydrogen and oxygen.
   class: conversion
   sector: energy
   reference_flow: h2
@@ -65,13 +65,13 @@ electrolysis:
       - PEM
       - Solid Oxide
       - SOEC
-hydrogen-storage:
+H2-STOR:
   name: Hydrogen storage
   desc: Long-term storage of hydrogen
   class: storage
   sector: energy
   reference_flow: h2
-integrated-steel-mill-ccs:
+BFBOF-CC-INT:
   name: Integrated steel mill with CCS
   desc: Integrated steel mill with a blast furnace and basic oxygen furnace, equipped with CCS.
   class: conversion
@@ -81,7 +81,7 @@ integrated-steel-mill-ccs:
     subtech:
       - bf-bof-post-combustion
       - tgr-bof-post-combustion
-low-temp-heat-pump:
+HEATPUMP-4-DAC:
   name: Low-temperature industrial heat pump
   desc: Industrial heat pumps providing heat at a temperature of 80–120°C.
   class: conversion
@@ -90,7 +90,7 @@ low-temp-heat-pump:
   default-ref-units:
     capex: kW
     fopex: kW
-methanation:
+CH4-SYN:
   name: Methanation
   desc: Industrial plants combining H₂ and CO₂ to yield methane (Sabatier process).
   class: conversion
@@ -103,31 +103,31 @@ methanation:
     subtech:
       - Catalytic
       - Biological
-methane-transport:
+CH4-TRANSP:
   name: Methane transport
   desc: Long-distance transportation of methane
   class: transport
   sector: energy
   reference_flow: ch4
-methanol-synthesis:
+MEOH-SYN:
   name: Methanol synthesis
   desc: Synthesis of methanol from H₂ and CO₂.
   class: conversion
   sector: energy
   reference_flow: meoh
-methanol-integrated:
+SMR-MEOH-SYN:
   name: Methanol integrated
   desc: Integrated steam-methane reforming and synthesis of methanol.
   class: conversion
   sector: energy
   reference_flow: meoh
-methanol-to-olefine-synthesis:
+MEOH-2-OLEF:
   name: Methanol-to-olefine process
   desc: Synthesis of ethylene, propylene, and by-products from methanol.
   class: conversion
   sector: chemicals
   reference_flow: hvcs
-urea-synthesis:
+UREA-SYN:
   name: Urea synthesis
   desc: Stand-alone synthesis of urea from NH₃ and CO₂ (w/o SMR-based ammonia plant).
   class: conversion

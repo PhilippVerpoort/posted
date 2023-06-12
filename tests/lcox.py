@@ -3,7 +3,7 @@ from posted.ted.TEDataSet import TEDataSet
 from posted.units.units import ureg
 
 
-t = TEDataSet('direct-reduction', skip_checks=True).generateTable(period=[2030, 2050])
+t = TEDataSet('IDR', skip_checks=True).generateTable(period=[2030, 2050])
 print(t.data)
 
 ps = {
