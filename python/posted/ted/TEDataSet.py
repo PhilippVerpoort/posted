@@ -277,8 +277,6 @@ class TEDataSet(TEBase):
         # aggregation
         if agg is None:
             agg = ['src_ref']
-        if len(period) == 1 and 'period' not in agg:
-            agg += ['period']
         groupForSum = [c for c in table.columns if c not in ['component', 'value']]
         groupForAgg = [c for c in groupForSum if c not in agg]
         table['value'].fillna(0.0, inplace=True)
@@ -312,7 +310,7 @@ class TEDataSet(TEBase):
 
         # drop index levels representing case fields with precisely one option
         if not keepSingularIndexLevels and table.index.nlevels > 1:
-            table.index = table.index.droplevel([level.name for level in table.index.levels if len(level)==1])
+            table.index = table.index.droplevel([level.name for level in table.index.levels if len(level)==1 and level.name!='period'])
 
         # create TEDataTable object and return
         return TEDataTable(

@@ -4,7 +4,6 @@ import pandas as pd
 import pint
 
 from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
-from posted.units.units import ureg
 
 
 # calculate annuity factor
