@@ -3,8 +3,8 @@ from posted.ted.TEDataSet import TEDataSet
 from posted.units.units import ureg
 
 
-t = TEDataSet('IDR', skip_checks=True).generateTable(period=[2030, 2050])
-print(t.data)
+t1 = TEDataSet('IDR', skip_checks=True).generateTable(period=[2030, 2050])
+print(t1.data)
 
 ps = {
     'elec': 50.0 * ureg('EUR/MWh'),
@@ -13,4 +13,16 @@ ps = {
     'heat': 6.0 * ureg('EUR/GJ'),
     'ironore': 100.0 * ureg('EUR/t'),
 }
-print(t.calc(LCOX(prices=ps)))
+print(t1.calc(LCOX(prices=ps)))
+
+
+
+t2 = TEDataSet('ELH2', skip_checks=True).generateTable(period=[2030, 2050], subtech=['Alkaline', 'PEM'], agg=['subtech', 'src_ref'])
+print(t2.data)
+
+ps = {
+    'elec': 50.0 * ureg('EUR/MWh'),
+    'heat': 50.0 * ureg('EUR/MWh'),
+    'water': 9.0 * ureg('EUR/t'),
+}
+print(t2.calc(LCOX(prices=ps)).pint.dequantify())
