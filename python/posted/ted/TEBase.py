@@ -36,16 +36,16 @@ class TEBase:
         return copy.deepcopy(self._dataFormat)
 
 
-    # get reference flow
-    @property
-    def referenceFlow(self):
-        return self._tspecs['reference_flow']
-
-
     # get reference unit
     @property
-    def referenceUnit(self):
-        return flowTypes[self.referenceFlow]['default_unit']
+    def refUnit(self):
+        return flowTypes[self.refFlow]['default_unit']
+
+
+    # get reference flow
+    @property
+    def refFlow(self):
+        return self._tspecs['reference_flow']
 
 
     # get dtype mapping

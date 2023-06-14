@@ -117,7 +117,7 @@ class TEDataSet(TEBase):
         self._df['reference_unit_default'] = self._df['type'].map(self._refUnits).astype(str)
         self._df['reference_unit_factor'] = np.where(
             self._df['reference_unit'].notna(),
-            convUnitDF(self._df, 'reference_unit', 'reference_unit_default', self.referenceFlow),
+            convUnitDF(self._df, 'reference_unit', 'reference_unit_default', self.refFlow),
             1.0,
         )
 
@@ -315,7 +315,13 @@ class TEDataSet(TEBase):
         if not keepSingularIndexLevels:
             table.index = table.index.droplevel([level.name for level in table.index.levels if len(level)==1])
 
-        return TEDataTable(self._tid, table)
+        # create TEDataTable object and return
+        return TEDataTable(
+            data=table,
+            refQuantity=ureg(self.refUnit),
+            refFlow=self.refFlow,
+            name=self._tid,
+        )
 
 
     # insert missing periods
