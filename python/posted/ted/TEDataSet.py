@@ -94,8 +94,8 @@ class TEDataSet(TEBase):
 
                 # create a mapping from dimensions to default units
                 unitMappings = defaultUnits.copy()
-                if 'reference_flow' in self._tspecs:
-                    unitMappings |= {'[flow]': flowTypes[self._tspecs['reference_flow']]['default_unit']}
+                if self.refFlow is not None:
+                    unitMappings |= {'[flow]': flowTypes[self.refFlow]['default_unit']}
 
                 # map reference dimensions to default reference units
                 self._refUnits[typeid] = refDim
@@ -366,7 +366,7 @@ class TEDataSet(TEBase):
 
         # ---------- 1b. Convert fopex to fopex_spec ----------
         convFacRep = convUnit(self.getRepUnit('fopex') + '*a', self.getRepUnit('fopex_spec'))
-        convFacRef = convUnit(self.getRefUnit('fopex') + '*a', self.getRefUnit('fopex_spec'), self._tspecs['reference_flow'])
+        convFacRef = convUnit(self.getRefUnit('fopex') + '*a', self.getRefUnit('fopex_spec'), self.refFlow)
 
         rowsFOPEX = table['type'] == 'fopex'
         table.loc[rowsFOPEX, 'unit'] = table.loc[rowsFOPEX, 'unit'].apply(lambda u: str(ureg(u + '*a').to_reduced_units().u))
@@ -395,11 +395,13 @@ class TEDataSet(TEBase):
 
         # ---------- 3. Convert energy_eff entries to energy_dem ----------
 
-        if 'reference_flow' in techs[self._tid]:
-
+        # efficiency can only be calculated if technology has a reference flow
+        if self.refFlow is None:
+            # no reference_flow found; energy_eff cannot be converted and has to be dropped
+            table = table.query(f"type!='energy_eff'")
+        else:
             # copy energy_eff entries to edit them safely
-            selected_rows = table.query(f"type.isin({['energy_eff']})").copy()
-            reference_flow = techs[self._tid]['reference_flow']
+            selected_rows = table.query(f"type=='energy_eff'").copy()
 
             # iterate over entries that need editing
             for index, row in selected_rows.iterrows():
@@ -407,8 +409,8 @@ class TEDataSet(TEBase):
 
                 # has to be set to elec here because energy_eff entries dont have flow_type
                 unit_from = flowTypes['elec']['default_unit']
-                unit_to = flowTypes[reference_flow]['default_unit']
-                conversionFactor = convUnit(unit_from=unit_from, unit_to=unit_to, flow_type=reference_flow)
+                unit_to = flowTypes[self.refFlow]['default_unit']
+                conversionFactor = convUnit(unit_from=unit_from, unit_to=unit_to, flow_type=self.refFlow)
 
                 # convert entry to energy_dem
                 selected_rows.at[index, 'value'] = conversionFactor * (1.0/row['value'])
@@ -418,10 +420,6 @@ class TEDataSet(TEBase):
 
             # override main dataset
             table.loc[table['type'] == 'energy_eff'] = selected_rows
-        else:
-            # no reference_flow found; energy_eff cannot be converted and has to be dropped
-            entriesToDrop = table.query(f"type.isin({['energy_eff']})")
-            table = table.drop(entriesToDrop.index.values)
 
         return table.reset_index(drop=True)
 
