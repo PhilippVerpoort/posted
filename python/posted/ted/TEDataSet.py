@@ -292,9 +292,8 @@ class TEDataSet(TEBase):
         table = table['value'].unstack('type')
 
         # rename case fields
-        table.index.rename([
-            (f"{idxName}:{self._tid}" if idxName in self._tspecs['case_fields'] else idxName)
-            for idxName in table.index.names],
+        table.rename(
+            index={idxName: (f"{idxName}:{self._tid}" if idxName in self._tspecs['case_fields'] else idxName) for idxName in table.index.names},
             inplace=True,
         )
 
@@ -312,7 +311,7 @@ class TEDataSet(TEBase):
             table[typeNameNew] = table[typeNameNew].astype(f"pint{unit}")
 
         # drop index levels representing case fields with precisely one option
-        if not keepSingularIndexLevels:
+        if not keepSingularIndexLevels and table.index.nlevels > 1:
             table.index = table.index.droplevel([level.name for level in table.index.levels if len(level)==1])
 
         # create TEDataTable object and return
