@@ -30,7 +30,7 @@ class LCOX(AbstractCalcRoutine):
         newColumns = {}
 
         # add capital cost data
-        newColumns['cap'] = df['capex'] * (_calcAnnuityFactor(self._wacc, self._lifetime)/ureg('a')) / self._ocf
+        newColumns['cap'] = df['capex'] * _calcAnnuityFactor(self._wacc, self._lifetime) / self._ocf
 
         # add fixed operational cost data
         newColumns['fop'] = df['fopex_spec'] / self._ocf

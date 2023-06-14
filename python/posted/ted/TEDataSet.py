@@ -373,6 +373,13 @@ class TEDataSet(TEBase):
         table.loc[rowsFOPEX, 'value'] *= convFacRep / convFacRef
         table.loc[rowsFOPEX, 'type'] = 'fopex_spec'
 
+        # ---------- 1c. Adjust units of capex ----------
+
+        convFacRef = convUnit(self.getRefUnit('capex') + '*a', self.getRefUnit('fopex_spec'), self.refFlow)
+
+        rowsCAPEX = table['type'] == 'capex'
+        table.loc[rowsCAPEX, 'value'] /= convFacRef
+
         # ---------- 2. Convert full load hours entries to operational capacity factor ----------
 
         # copy fopex_rel entries to edit them safely
