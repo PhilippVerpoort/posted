@@ -3,7 +3,7 @@ from posted.ted.TEDataSet import TEDataSet
 from posted.units.units import ureg
 
 
-t1 = TEDataSet('IDR', skip_checks=True).generateTable(period=[2030, 2050])
+t1 = TEDataSet('IDR').generateTable(period=[2030, 2050])
 print(t1.data)
 
 ps = {
@@ -17,7 +17,7 @@ print(t1.calc(LCOX(prices=ps)))
 
 
 
-t2 = TEDataSet('ELH2', skip_checks=True).generateTable(period=[2030, 2050], subtech=['Alkaline', 'PEM'], agg=['subtech', 'src_ref'])
+t2 = TEDataSet('ELH2').generateTable(period=[2030, 2050], subtech=['Alkaline', 'PEM'], agg=['subtech', 'src_ref'])
 print(t2.data)
 
 ps = {

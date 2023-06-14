@@ -19,7 +19,7 @@ class TEDataSet(TEBase):
                  tid: str,
                  load_other: None | list = None,
                  load_database: bool = False,
-                 skip_checks: bool = False,
+                 check_incons: bool = False,
                  ):
         TEBase.__init__(self, tid)
 
@@ -27,14 +27,14 @@ class TEDataSet(TEBase):
         self._df: None | pd.DataFrame = None
 
         # read TEDataFiles and combine into dataset
-        self._loadFiles(load_other, load_database, skip_checks)
+        self._loadFiles(load_other, load_database, check_incons)
 
         # adjust units: set default reference and reported units and normalise
         self._adjustUnits()
 
 
     # load TEDatFiles and compile into dataset
-    def _loadFiles(self, load_other: None | list, load_database: bool, skip_checks: bool):
+    def _loadFiles(self, load_other: None | list, load_database: bool, check_incons: bool):
         files = []
 
         # load default TEDataFile from POSTED database
@@ -56,10 +56,10 @@ class TEDataSet(TEBase):
         if not files:
             raise Exception(f"No TEDataFiles to load for technology '{self._tid}'.")
 
-        # load all TEDataFiles and check consistency
+        # load all TEDataFiles and check consistency if requested
         for f in files:
             f.load()
-            if not skip_checks:
+            if check_incons:
                 f.check()
 
         # compile dataset from the dataframes loaded from the individual files
