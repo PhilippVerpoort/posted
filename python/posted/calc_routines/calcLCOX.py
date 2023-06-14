@@ -48,7 +48,7 @@ class LCOX(AbstractCalcRoutine):
             price = self._prices[flow_type]
 
             if isinstance(price, float) or isinstance(price, int) or isinstance(price, pint.Quantity):
-                newColumns[colName] = df[colName] * price
+                newColumns[newColName] = df[colName] * price
             elif isinstance(price, dict) or isinstance(price, pd.DataFrame):
                 if isinstance(price, dict):
                     price = pd.DataFrame.from_dict(price, orient='tight')
