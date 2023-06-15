@@ -26,34 +26,51 @@ class LCOX(AbstractCalcRoutine):
 
 
     def calc(self, df: pd.DataFrame):
-        newColumns = {}
+        newColumns = []
 
-        # add capital cost data
-        newColumns['cap'] = df['capex'] * _calcAnnuityFactor(self._wacc, self._lifetime) / self._ocf
+        typeLevel = df.columns.names.index('type')
 
-        # add fixed operational cost data
-        newColumns['fop'] = df['fopex_spec'] / self._ocf
+        for colIndex in df:
+            oldType = colIndex[typeLevel] if isinstance(colIndex, tuple) else colIndex
+            oldCol = df[colIndex]
 
-        # add energy and feedstock cost data
-        colsEnF = [colName for colName in df.columns if colName.startswith('demand:')]
-        for colName in colsEnF:
-            # resulting new column name
-            newColName = re.sub(r"^demand:", 'dem:', colName)
+            if oldType == 'capex':
+                newType = 'cap'
+                newCol = oldCol * _calcAnnuityFactor(self._wacc, self._lifetime) / self._ocf
+            elif oldType == 'fopex_spec':
+                newType = 'fop'
+                newCol = oldCol / self._ocf
+            elif oldType.startswith('demand:'):
+                newType = re.sub(r"^demand:", 'dem:', oldType)
 
-            # get flow type and associated price
-            flow_type = colName.split(':')[1]
-            if self._prices is None or flow_type not in self._prices:
-                raise Exception(f"No price information provided for '{colName}'.")
-            price = self._prices[flow_type]
+                # get flow type and associated price
+                flow_type = oldType.split(':')[1]
+                if self._prices is None or flow_type not in self._prices:
+                    raise Exception(f"No price information provided for '{oldType}'.")
+                price = self._prices[flow_type]
 
-            if isinstance(price, float) or isinstance(price, int) or isinstance(price, pint.Quantity):
-                newColumns[newColName] = df[colName] * price
-            elif isinstance(price, dict) or isinstance(price, pd.DataFrame):
-                if isinstance(price, dict):
-                    price = pd.DataFrame.from_dict(price, orient='tight')
-                newColumns[newColName] = df.merge(price).apply(lambda col: col[colName] * col['price'])
+                if isinstance(price, float) or isinstance(price, int) or isinstance(price, pint.Quantity):
+                    newCol = oldCol * price
+                elif isinstance(price, dict) or isinstance(price, pd.DataFrame):
+                    if isinstance(price, dict):
+                        price = pd.DataFrame.from_dict(price, orient='tight')
+                    newCol = oldCol.to_frame().merge(price, left_index=True, right_index=True) \
+                        .apply(lambda col: col[oldType] * col['price'])
+                else:
+                    raise Exception(f"Unknown type in price provided for '{flow_type}'.")
             else:
-                raise Exception(f"Unknown type in price provided for '{flow_type}'.")
+                continue
+
+            # update column name
+            if isinstance(colIndex, tuple):
+                newColIndex = list(colIndex)
+                newColIndex[typeLevel] = newType
+                newCol.name = tuple(newColIndex)
+            else:
+                newCol.name = newType
+
+            # append to list of new columns
+            newColumns.append(newCol)
 
         # return
-        return newColumns
+        return pd.concat(newColumns, axis=1)

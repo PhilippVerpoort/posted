@@ -79,10 +79,10 @@ class TEDataTable:
     # calculate levelised cost of X
     def calc(self, routine: AbstractCalcRoutine, unit: None | str = None) -> pd.DataFrame:
         # call calc routine
-        newColumns = routine.calc(self._df)
+        results = routine.calc(self._df)
 
-        # compile new dataframe from new columns
-        results = pd.DataFrame().assign(**newColumns)
+        # add multicolumn layer names
+        results.columns.names = self._df.columns.names
 
         # adjust units
         results = results.apply(lambda col: col.pint.to(unit) if unit is not None else col.pint.to_reduced_units())

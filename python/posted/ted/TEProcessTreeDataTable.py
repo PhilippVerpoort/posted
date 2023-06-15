@@ -56,17 +56,11 @@ class TEProcessTreeDataTable(TEDataTable):
 
                 data.rename(columns={demandCol: demandColNew}, inplace=True)
 
-        # stack process
-        typeUnits = {c[1]: data[c].pint.units for c in data.columns}
-        data = data.stack('process')
-        for colID in typeUnits:
-            data[colID] = data[colID].astype(f"pint[{typeUnits[colID]}]")
-
         # simplify process names
         if simplifyProcessNames:
-            level = data.index.names.index('process')
-            renamings = {idx: idx.split('/')[-1] for idx in data.index.levels[level]}
-            data.rename(index=renamings, level=level, inplace=True)
+            level = data.columns.names.index('process')
+            renamings = {idx: idx.split('/')[-1] for idx in data.columns.levels[level]}
+            data.rename(columns=renamings, level=level, inplace=True)
 
         # set reference quantity and flow
         t0 = self._tables[p0]

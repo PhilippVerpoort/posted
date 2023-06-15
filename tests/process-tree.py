@@ -3,16 +3,18 @@ from posted.ted.TEDataSet import TEDataSet
 from posted.ted.TEProcessTreeDataTable import TEProcessTreeDataTable
 from posted.units.units import ureg
 
-t1 = TEDataSet('ELH2').generateTable(period=[2030, 2050], subtech=['Alkaline', 'PEM'])
-t2 = TEDataSet('IDR').generateTable(period=[2030, 2050], mode='h2')
-t3 = TEDataSet('EAF').generateTable(period=[2030, 2050], mode='primary')
+t1 = TEDataSet('ELH2').generateTable(period=2040, subtech=['Alkaline', 'PEM'], agg=['subtech', 'src_ref'])
+t2 = TEDataSet('IDR').generateTable(period=2040, mode='h2')
+t3 = TEDataSet('EAF').generateTable(period=2040, mode='primary')
+print(t1.data)
+print(t2.data)
+print(t3.data)
 
 graph = TEProcessTreeDataTable(t3, t2, t1)
 print(graph.data)
 
 ps = {
     'elec': 50.0 * ureg('EUR/MWh'),
-    'h2': 100.0 * ureg('EUR/MWh'),
     'ng': 6.0 * ureg('EUR/GJ'),
     'heat': 6.0 * ureg('EUR/GJ'),
     'ironore': 100.0 * ureg('EUR/t'),
@@ -25,4 +27,5 @@ ps = {
     'steelscrap': 100.0 * ureg('EUR/t'),
     'water': 10.0 * ureg('EUR/t'),
 }
-print(graph.calc(LCOX(prices=ps)))
+x = graph.calc(LCOX(prices=ps))
+print(x)
