@@ -1,4 +1,4 @@
-from posted.calc_routines.calcLCOX import LCOX
+from posted.calc_routines.LCOX import LCOX
 from posted.ted.TEDataSet import TEDataSet
 from posted.units.units import ureg
 
@@ -14,7 +14,6 @@ ps = {
     'ironore': 100.0 * ureg('EUR/t'),
 }
 print(t1.calc(LCOX(prices=ps)))
-
 
 
 t2 = TEDataSet('ELH2').generateTable(period=[2030, 2050], subtech=['Alkaline', 'PEM'], agg=['subtech', 'src_ref'])

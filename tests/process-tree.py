@@ -1,4 +1,4 @@
-from posted.calc_routines.calcLCOX import LCOX
+from posted.calc_routines.LCOX import LCOX
 from posted.ted.TEDataSet import TEDataSet
 from posted.ted.TEProcessTreeDataTable import TEProcessTreeDataTable
 from posted.units.units import ureg
