@@ -25,7 +25,7 @@ Alkaline,demand,elec,,,2030,48.5,,kWh,,kg,"LHV efficiency. Optimistic scenario, 
 Alkaline,demand,elec,,,2030,52.2,,kWh,,kg,"LHV efficiency. Pessimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022)
 Alkaline,demand,elec,,,,53.3,,kWh,,kg,Enapter current electrolyser performance,Enapter(n.d.)
 ,lifetime,,,,,20,,year,,,whole system lifetime,Ueckerdt et al.(2021)
-PEM,lifetime,system,,,2030,20,,year,,,,Hank et al.(2020)
+PEM,lifetime,,,,2030,20,,year,,,,Hank et al.(2020)
 PEM,fopex_rel,,,,2030,2,,percent,,,,Hank et al.(2020)
 PEM,fopex,,,,2020,40,,EUR/a,2,MW,Weird units. Source is here: https://www.enapter.com/newsroom/h2-view-exclusive-calculating-the-cost-of-green-hydrogen and hand conversion is done here,Chrometzka et al.(2020)
 Alkaline,capex,,,,,800,,EUR,,,Optimistic estimation,Tenhumberg et al. (2020)
