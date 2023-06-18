@@ -1,7 +1,4 @@
-import numpy as np
 import pandas as pd
-import pint_pandas
-from sigfig import round
 
 from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
 from posted.config.config import techClasses
@@ -77,20 +74,9 @@ class TEDataTable:
 
 
     # calculate levelised cost of X
-    def calc(self, routine: AbstractCalcRoutine, unit: None | str = None) -> pd.DataFrame:
+    def calc(self, routine: AbstractCalcRoutine, unit: None | str = None) -> 'TEDataTable':
         # call calc routine
-        results = routine.calc(self._df)
-
-        # add multicolumn layer names
-        results.columns.names = self._df.columns.names
-
-        # adjust units
-        results = results.apply(lambda col: col.pint.to(unit) if unit is not None else col.pint.to_reduced_units())
-
-        # round values
-        roundVec = np.vectorize(lambda scalar: round(scalar, sigfigs=4, warn=False) if scalar==scalar else scalar)
-        for colName in results.columns:
-            results[colName] = pint_pandas.PintArray(roundVec(results[colName].values.quantity.m), dtype=results[colName].dtype)
+        results = routine.calc(self._df, unit)
 
         # return
         return results
