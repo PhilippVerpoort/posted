@@ -41,7 +41,7 @@ LT-DAC,lifetime,,,,2050,25,,year,,,,"Lux et al., 2023",
 LT-DAC,demand,elec,,,2050,1685,,kWh,,,,"Lux et al., 2023",
 LT-DAC,demand,elec,,,2050,1339,,kWh,,,,"Lux et al., 2023",
 HT-DAC,demand,elec,,,,0.49,,MWh,,,,"Socolow et al., 2011",
-HT-DAC,demand,ht_heat,,,,8.1,,GJ,,,,"Socolow et al., 2011",
+HT-DAC,demand,heat,,,,8.1,,GJ,,,,"Socolow et al., 2011",
 HT-DAC,flh,,,,,8000,,hour,,,,"Socolow et al., 2011",
 HT-DAC,capex,,,,,2900,,EUR,,t/a,"Used line ""Total Installed capital cost"" for the ""realistic"" column","Socolow et al., 2011",table 2.5
 HT-DAC,vopex,,,,,120,,EUR,,,"Used line ""Maintenance labor and chemicals"" cost for the ""realistic"" column","Socolow et al., 2011",table 2.5
