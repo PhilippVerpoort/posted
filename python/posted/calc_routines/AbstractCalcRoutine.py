@@ -5,24 +5,44 @@ import pandas as pd
 import pint_pandas
 from sigfig import round
 
+from posted.calc_routines.MissingAssumptionsException import MissingAssumptionsException
+
 
 class AbstractCalcRoutine(ABC):
+    def __init__(self, part: str):
+        self._part = part
+
+    @property
+    def part(self):
+        return self._part
+
     @abstractmethod
     def _calcColumn(self, oldType: str, oldCol: pd.Series):
         pass
 
 
-    def calc(self, df: pd.DataFrame, unit: None | str = None):
-        newColumns = []
-
+    def calc(self, df: pd.DataFrame, unit: None | str = None, raise_missing: bool = True):
+        # determin the type column level
         typeLevel = df.columns.names.index('type')
 
+        # loop over columns in dataframe values
+        newColumns = []
+        missingCols = []
         for colIndex in df:
             oldType = colIndex[typeLevel] if isinstance(colIndex, tuple) else colIndex
             oldCol = df[colIndex]
 
-            newType, newCol = self._calcColumn(oldType, oldCol)
-            if newType is None: continue
+            try:
+                r = self._calcColumn(oldType, oldCol)
+                if r is None:
+                    continue
+                else:
+                    newType, newCol = r
+            except MissingAssumptionsException as ex:
+                if raise_missing:
+                    raise ex
+                missingCols.append(colIndex)
+                continue
 
             # update column name
             if isinstance(colIndex, tuple):
@@ -35,18 +55,18 @@ class AbstractCalcRoutine(ABC):
             # append to list of new columns
             newColumns.append(newCol)
 
-        results = pd.concat(newColumns, axis=1)
+        result = pd.concat(newColumns, axis=1)
 
         # add multicolumn layer names
-        results.columns.names = df.columns.names
+        result.columns.names = df.columns.names
 
         # reduce units
-        results = results.apply(lambda col: col.pint.to(unit) if unit is not None else col.pint.to_reduced_units())
+        result = result.apply(lambda col: col.pint.to(unit) if unit is not None else col.pint.to_reduced_units())
 
         # round values
         roundVec = np.vectorize(lambda scalar: round(scalar, sigfigs=4, warn=False) if scalar==scalar else scalar)
-        for colName in results.columns:
-            results[colName] = pint_pandas.PintArray(roundVec(results[colName].values.quantity.m), dtype=results[colName].dtype)
+        for colName in result.columns:
+            result[colName] = pint_pandas.PintArray(roundVec(result[colName].values.quantity.m), dtype=result[colName].dtype)
 
         # return
-        return results
+        return result, missingCols

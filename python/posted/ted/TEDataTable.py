@@ -74,9 +74,48 @@ class TEDataTable:
 
 
     # calculate levelised cost of X
-    def calc(self, routine: AbstractCalcRoutine, unit: None | str = None) -> 'TEDataTable':
-        # call calc routine
-        results = routine.calc(self._df, unit)
+    def calc(self, *routines, unit: None | str = None, keep: str = 'off') -> 'TEDataTable':
+        # determine if the data table has different parts (values, costs, ghgis, etc)
+        hasParts: bool = (self._df.columns.names[0] == 'part')
+
+        # loop over routines provided
+        results = {}
+        keepCols = []
+        for routine in routines:
+            if not isinstance(routine, AbstractCalcRoutine):
+                raise Exception('All calc routines provided have to be subclass of AbstractCalcRoutine.')
+            df = self._df['value'] if hasParts else self._df
+            result, missingCols = routine.calc(
+                df=df,
+                unit=unit,
+                raise_missing=(keep!='missing'),
+            )
+            results[routine.part] = result
+            keepCols.extend(missingCols)
+
+        # keep columns
+        if keep == 'off':
+            data = None
+        elif keep in ['missing', 'all']:
+            if hasParts:
+                data = self._df
+            else:
+                data = pd.concat([self._df], keys=['value'], names=['part'], axis=1)
+            if keep=='missing':
+                data = data[[(('value',) + c) for c in keepCols]]
+        else:
+            raise Exception(f"Illegal value for argument keep: {keep}")
+        for part, result in results.items():
+            add = pd.concat([result], keys=[part], names=['part'], axis=1)
+            if data is None:
+                data = add
+            else:
+                data = data.merge(add, left_index=True, right_index=True)
 
         # return
-        return results
+        return TEDataTable(
+            data=data,
+            refQuantity=self.refQuantity,
+            refFlow=self.refFlow,
+            name=self.name,
+        )

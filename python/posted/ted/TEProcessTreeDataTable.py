@@ -1,8 +1,6 @@
 import pandas as pd
-import pint
 
 from posted.ted.TEDataTable import TEDataTable
-from posted.units.units import convUnit
 
 
 class TEProcessTreeDataTable(TEDataTable):

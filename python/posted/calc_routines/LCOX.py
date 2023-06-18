@@ -4,6 +4,7 @@ import pandas as pd
 import pint
 
 from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
+from posted.calc_routines.MissingAssumptionsException import MissingAssumptionsException
 
 
 # calculate annuity factor
@@ -19,13 +20,17 @@ class LCOX(AbstractCalcRoutine):
                  lifetime: int | float = 18,
                  ocf: int | float = 0.95,
                  ):
+        # set part property via super constructor
+        super().__init__(part='cost')
+
+        # set
         self._prices = prices
         self._wacc = wacc
         self._lifetime = lifetime
         self._ocf = ocf
 
 
-    def _calcColumn(self, oldType: str, oldCol: pd.Series):
+    def _calcColumn(self, oldType: str, oldCol: pd.Series) -> None | tuple:
         if oldType == 'capex':
             return 'cap', oldCol * _calcAnnuityFactor(self._wacc, self._lifetime) / self._ocf
         elif oldType == 'fopex_spec':
@@ -36,7 +41,7 @@ class LCOX(AbstractCalcRoutine):
             # get flow type and associated price
             flow_type = oldType.split(':')[1]
             if self._prices is None or flow_type not in self._prices:
-                raise Exception(f"No price information provided for '{oldType}'.")
+                raise MissingAssumptionsException(f"No price information provided for '{oldType}'.", type=oldType)
             price = self._prices[flow_type]
 
             if isinstance(price, float) or isinstance(price, int) or isinstance(price, pint.Quantity):
@@ -51,4 +56,4 @@ class LCOX(AbstractCalcRoutine):
 
             return newType, newCol
 
-        return None, None
+        return
