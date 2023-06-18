@@ -24,4 +24,4 @@ ps = {
     'heat': 50.0 * ureg('EUR/MWh'),
     'water': 9.0 * ureg('EUR/t'),
 }
-print(t2.calc(LCOX(prices=ps)).pint.dequantify())
+print(t2.calc(LCOX(prices=ps)).data.pint.dequantify())
