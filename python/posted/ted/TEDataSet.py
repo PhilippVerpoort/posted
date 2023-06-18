@@ -31,6 +31,9 @@ class TEDataSet(TEBase):
         # read TEDataFiles and combine into dataset
         self._loadFiles(load_other, load_database, check_incons)
 
+        # check types
+        self._checkTypes()
+
         # adjust units: set default reference and reported units and normalise
         self._adjustUnits()
 
@@ -66,6 +69,15 @@ class TEDataSet(TEBase):
 
         # compile dataset from the dataframes loaded from the individual files
         self._df = pd.concat([f.data for f in files])
+
+
+    # reduce rows to those with types and flow_types within allowed values
+    def _checkTypes(self):
+        # TODO: Create warning and/or combine with TEInconsistencyExceptions/TEIncorrectRowWarnings
+        cond = self._df['type'].isin(list(self._tspecs['entry_types'])) & \
+               (self._df['flow_type'].isin(list(flowTypes.keys())) |
+                self._df['flow_type'].isna())
+        self._df = self._df.loc[cond].reset_index(drop=True)
 
 
     # adjust units: set default reference and reported units and normalise
