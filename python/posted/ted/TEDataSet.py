@@ -371,49 +371,50 @@ class TEDataSet(TEBase):
         # get all FOPEX_REL entries
         rowsFOPEX_REL = table['type'] == 'fopex_rel'
 
-        # get df of all CAPEX entries
-        dfCAPEX = table.query(f"type.isin({['capex']})")
+        if rowsFOPEX_REL.any():
+            # get df of all CAPEX entries
+            dfCAPEX = table.query(f"type.isin({['capex']})")
 
-        # define all possible join cols
-        listCols = self._caseFields + ['component', 'src_ref', 'period']
-        def performJoinNANTolerance(row):
-            # specify join cols for this row (only non NaN cols)
-            listFilledCols = [col for col in listCols if row[col] == row[col]]
+            # define all possible join cols
+            listCols = self._caseFields + ['component', 'src_ref', 'period']
+            def performJoinNANTolerance(row):
+                # specify join cols for this row (only non NaN cols)
+                listFilledCols = [col for col in listCols if row[col] == row[col]]
 
-            # convert row to df
-            row = row.to_frame().transpose()
+                # convert row to df
+                row = row.to_frame().transpose()
 
-            # join row df with dfCAPEX on listFilledCols
-            joinResult = pd.merge(row, dfCAPEX, how='inner', on=listFilledCols)
-            return joinResult
+                # join row df with dfCAPEX on listFilledCols
+                joinResult = pd.merge(row, dfCAPEX, how='inner', on=listFilledCols)
+                return joinResult
 
-        # Apply the join function on all rows in dfA
-        dfMergedCAPEX = table.loc[rowsFOPEX_REL].apply(performJoinNANTolerance, axis=1)
+            # Apply the join function on all rows in dfA
+            dfMergedCAPEX = table.loc[rowsFOPEX_REL].apply(performJoinNANTolerance, axis=1)
 
-        # determine 1 on 1 FOPEX_REL to CAPEX matches (where len(row) == 1)
-        rowsFOPEX_REL_MatchedCAPEX = dfMergedCAPEX.apply(lambda row: True if len(row) == 1 else False)
+            # determine 1 on 1 FOPEX_REL to CAPEX matches (where len(row) == 1)
+            rowsFOPEX_REL_MatchedCAPEX = dfMergedCAPEX.apply(lambda row: True if len(row) == 1 else False)
 
-        if (rowsFOPEX_REL_MatchedCAPEX.size > 0):
-            # convert rowsFOPEX_REL_IncorrectlyMatchedCAPEX bool dataframe to indices of correctly matched rows
-            rowsFOPEX_REL_IncorrectlyMatchedCAPEX = rowsFOPEX_REL_MatchedCAPEX[rowsFOPEX_REL_MatchedCAPEX == False].index
+            if (rowsFOPEX_REL_MatchedCAPEX.size > 0):
+                # convert rowsFOPEX_REL_IncorrectlyMatchedCAPEX bool dataframe to indices of correctly matched rows
+                rowsFOPEX_REL_IncorrectlyMatchedCAPEX = rowsFOPEX_REL_MatchedCAPEX[rowsFOPEX_REL_MatchedCAPEX == False].index
 
-            # iterrate over mismatched rows to aise warnings about these incorrect rows
-            for index, row in table.loc[rowsFOPEX_REL_IncorrectlyMatchedCAPEX].iterrows():
-                # displaying warning
-                warnings.warn(TEIncorrectRowWarning(f"no or too many matching CAPEX entries for FOPEX_REL entry in row {index}", filePath = pathOfTEDFile(self._tid) ))
-        
-        # convert rowsFOPEX_REL_CorrectlyMatchedCAPEX bool dataframe to indices
-        rowsFOPEX_REL_MatchedCAPEX = rowsFOPEX_REL_MatchedCAPEX.index
-        
-        # for invalid (none or too many matching CAPEX entries) rows, set row to an empty match with a dummy unit value
-        dfMergedCAPEX = dfMergedCAPEX.apply(lambda row: row if len(row) == 1 else\
-                                            pd.DataFrame([[np.nan, defaultUnits['[currency]']]], columns=['value_y', 'unit_y']))
+                # iterrate over mismatched rows to aise warnings about these incorrect rows
+                for index, row in table.loc[rowsFOPEX_REL_IncorrectlyMatchedCAPEX].iterrows():
+                    # displaying warning
+                    warnings.warn(TEIncorrectRowWarning(f"no or too many matching CAPEX entries for FOPEX_REL entry in row {index}", filePath = pathOfTEDFile(self._tid) ))
 
-        # convert fopex_rel entries to fopex entries (including the dummies)
-        if (rowsFOPEX_REL_MatchedCAPEX.size > 0):
-            table.loc[rowsFOPEX_REL_MatchedCAPEX, 'value'] *=  table.loc[rowsFOPEX_REL_MatchedCAPEX].apply(lambda row: dfMergedCAPEX[row.name]['value_y'][0], axis=1)
-            table.loc[rowsFOPEX_REL_MatchedCAPEX, 'unit'] = table.loc[rowsFOPEX_REL_MatchedCAPEX].apply(lambda row: str(ureg(dfMergedCAPEX[row.name]['unit_y'][0] + '/a').to_reduced_units().u), axis=1)
-            table.loc[rowsFOPEX_REL_MatchedCAPEX, 'type'] = 'fopex'
+            # convert rowsFOPEX_REL_CorrectlyMatchedCAPEX bool dataframe to indices
+            rowsFOPEX_REL_MatchedCAPEX = rowsFOPEX_REL_MatchedCAPEX.index
+
+            # for invalid (none or too many matching CAPEX entries) rows, set row to an empty match with a dummy unit value
+            dfMergedCAPEX = dfMergedCAPEX.apply(lambda row: row if len(row) == 1 else\
+                                                pd.DataFrame([[np.nan, defaultUnits['[currency]']]], columns=['value_y', 'unit_y']))
+
+            # convert fopex_rel entries to fopex entries (including the dummies)
+            if (rowsFOPEX_REL_MatchedCAPEX.size > 0):
+                table.loc[rowsFOPEX_REL_MatchedCAPEX, 'value'] *=  table.loc[rowsFOPEX_REL_MatchedCAPEX].apply(lambda row: dfMergedCAPEX[row.name]['value_y'][0], axis=1)
+                table.loc[rowsFOPEX_REL_MatchedCAPEX, 'unit'] = table.loc[rowsFOPEX_REL_MatchedCAPEX].apply(lambda row: str(ureg(dfMergedCAPEX[row.name]['unit_y'][0] + '/a').to_reduced_units().u), axis=1)
+                table.loc[rowsFOPEX_REL_MatchedCAPEX, 'type'] = 'fopex'
 
         # ---------- 1b. Convert fopex to fopex_spec ----------
         convFacRep = convUnit(self.getRepUnit('fopex') + '*a', self.getRepUnit('fopex_spec'))
