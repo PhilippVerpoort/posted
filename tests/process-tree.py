@@ -19,19 +19,22 @@ graph = TEProcessTreeDataTable(t3, t2, t1)
 print('===== Graph data =====')
 print(graph.data, "\n\n")
 
-ps = {
-    'ng': 6.0 * ureg('EUR/GJ'),
-    'heat': 6.0 * ureg('EUR/GJ'),
-    'ironore': 100.0 * ureg('EUR/t'),
-    'alloys': 1777.0 * ureg('EUR/t'),
-    'coal': 4.0 * ureg('EUR/GJ'),
-    'graph_electr': 100.0 * ureg('EUR/t'),
-    'lime': 100.0 * ureg('EUR/t'),
-    'nitrogen': 100.0 * ureg('EUR/t'),
-    'oxygen': 100.0 * ureg('EUR/t'),
-    'steelscrap': 100.0 * ureg('EUR/t'),
-    'water': 10.0 * ureg('EUR/t'),
+assump = {
+    'price:ng': 6.0 * ureg('EUR/GJ'),
+    'price:heat': 6.0 * ureg('EUR/GJ'),
+    'price:ironore': 100.0 * ureg('EUR/t'),
+    'price:alloys': 1777.0 * ureg('EUR/t'),
+    'price:coal': 4.0 * ureg('EUR/GJ'),
+    'price:graph_electr': 100.0 * ureg('EUR/t'),
+    'price:lime': 100.0 * ureg('EUR/t'),
+    'price:nitrogen': 100.0 * ureg('EUR/t'),
+    'price:oxygen': 100.0 * ureg('EUR/t'),
+    'price:steelscrap': 100.0 * ureg('EUR/t'),
+    'price:water': 10.0 * ureg('EUR/t'),
+    'wacc': 8.0 * ureg('pct'),
+    'lifetime': 20 * ureg('a'),
+    'ocf': 95.0 * ureg('pct'),
 }
-lcox = graph.calc(LCOX(prices=ps), keep='missing')
+lcox = graph.calc(LCOX, assump=assump, keep='value')
 print('===== LCOX data =====')
 print(lcox.data)

@@ -5,60 +5,41 @@ import pandas as pd
 import pint_pandas
 from sigfig import round
 
-from posted.calc_routines.MissingAssumptionsException import MissingAssumptionsException
-
 
 class AbstractCalcRoutine(ABC):
-    def __init__(self, part: str):
-        self._part = part
+    def __init__(self, df: pd.DataFrame):
+        self._df = df
 
     @property
-    def part(self):
-        return self._part
-
     @abstractmethod
-    def _calcColumn(self, oldType: str, oldCol: pd.Series):
+    def part(self):
         pass
 
+    def calc(self, unit: None | str = None, raise_missing: bool = True):
+        if self._df.columns.nlevels > 1:
+            grouped = self._df.groupby(by=[c for c in self._df.columns.names if c != 'type'], axis=1)
 
-    def calc(self, df: pd.DataFrame, unit: None | str = None, raise_missing: bool = True):
-        # determin the type column level
-        typeLevel = df.columns.names.index('type')
+            newCols = []
+            missingCols = []
+            for idx, group in grouped:
+                old = group.droplevel(level=[l for l in group.columns.names if l != 'type'], axis=1)
+                new, missing = self._calc(old)
 
-        # loop over columns in dataframe values
-        newColumns = []
-        missingCols = []
-        for colIndex in df:
-            oldType = colIndex[typeLevel] if isinstance(colIndex, tuple) else colIndex
-            oldCol = df[colIndex]
+                if missing:
+                    if raise_missing:
+                        raise Exception(f"Missing data for calculations: " + ' '.join([f"No {', '.join(val)} for {key}." for key, val in missing.items()]))
+                    else:
+                        missingCols.extend(missing)
 
-            try:
-                r = self._calcColumn(oldType, oldCol)
-                if r is None:
-                    continue
-                else:
-                    newType, newCol = r
-            except MissingAssumptionsException as ex:
-                if raise_missing:
-                    raise ex
-                missingCols.append(colIndex)
-                continue
+                multiColProd = list([[x] for x in idx])
+                multiColProd.insert(group.columns.names.index('type'), new.columns)
+                new.columns = pd.MultiIndex.from_product(multiColProd)
+                new.columns.names = group.columns.names
 
-            # update column name
-            if isinstance(colIndex, tuple):
-                newColIndex = list(colIndex)
-                newColIndex[typeLevel] = newType
-                newCol.name = tuple(newColIndex)
-            else:
-                newCol.name = newType
-
-            # append to list of new columns
-            newColumns.append(newCol)
-
-        result = pd.concat(newColumns, axis=1)
-
-        # add multicolumn layer names
-        result.columns.names = df.columns.names
+                newCols.append(new)
+            result = pd.concat(newCols, axis=1)
+        else:
+            result, missingCols = self._calc(self._df)
 
         # reduce units
         result = result.apply(lambda col: col.pint.to(unit) if unit is not None else col.pint.to_reduced_units())
@@ -70,3 +51,19 @@ class AbstractCalcRoutine(ABC):
 
         # return
         return result, missingCols
+
+    @abstractmethod
+    def _calc(cls, df: pd.DataFrame) -> (pd.DataFrame, dict):
+        pass
+
+    def _has(self, required: list, df: pd.DataFrame, missing: dict):
+        if required[0] not in df:
+            missing[required[0]] = True
+            return False
+        else:
+            m = [c for c in required[1:] if c not in df]
+            if m:
+                missing[required[0]] = m
+                return False
+            else:
+                return True

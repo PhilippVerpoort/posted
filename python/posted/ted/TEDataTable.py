@@ -5,6 +5,9 @@ from posted.config.config import techClasses
 from posted.units.units import ureg, convUnit
 
 
+allowedKeepTokens = ['', 'off', 'value', 'assump']
+
+
 class TEDataTable:
     # initialise
     def __init__(self, data: pd.DataFrame, refQuantity: ureg.Quantity, refFlow: None | str, name: None | str):
@@ -73,49 +76,108 @@ class TEDataTable:
             )
 
 
+    def assume(self, assump: pd.DataFrame | dict, inplace: bool = False):
+        if isinstance(assump, pd.DataFrame):
+            # ensure all indexes have names
+            if any(n is None for n in assump.index.names):
+                raise Exception(f"Assumption indexes need to have names. Found: {assump.index.names}")
+
+            # extend index of assumptions if no joint index exists
+            if not any(lName == rName for lName in self._df.index.names for rName in assump.index.names):
+                assump = assump.merge(
+                    pd.DataFrame(index=pd.MultiIndex.from_product([self._df.index, assump.index])),
+                    left_index=True, right_index=True,
+                )
+
+            # add part 'assump' as top column level if not present
+            if 'part' in assump.columns.names:
+                parts = assump.index.unique(level='part')
+                if len(parts) > 1 or 'assump' not in parts:
+                    raise Exception(f"Assumption columns should either not contain the part level or only contain part 'assump'. Found: {parts}")
+            else:
+                assump = pd.concat([assump], keys=['assump'], names=['part'], axis=1)
+
+            # reorder column levels
+            assump = assump.reorder_levels(self._df.columns.names, axis=1)
+
+            # drop existing assumptions that will be overwritten
+            self._df.drop(columns=[c for c in self._df if c in assump.columns])
+
+            # merge datatable with assumptions
+            dfNew = self._df.merge(assump, left_index=True, right_index=True)
+        elif isinstance(assump, dict):
+            dfNew = self._df if inplace else self._df.copy()
+            tlev = dfNew['value'].columns.names.index('type')
+            for col in assump:
+                if dfNew['value'].columns.nlevels > 1:
+                    cols = [list(c) for c in dfNew['value'].columns.unique().to_list()]
+                    for c in cols:
+                        c[tlev] = col
+                    cols = list(set(tuple(['assump'] + c) for c in cols))
+                    dfNew[cols] = assump[col]
+                else:
+                    dfNew['assump', col] = assump[col]
+        else:
+            raise Exception(f"Assumptions have to be of type pd.DataFrame or dict. Received: {type(assump)}")
+
+        # update existing instance (inplace) or return new datatable (not inplace)
+        if inplace:
+            self._df = dfNew
+        else:
+            return TEDataTable(
+                data=dfNew,
+                refQuantity=self.refQuantity,
+                refFlow=self.refFlow,
+                name=self.name,
+            )
+
+
     # calculate levelised cost of X
-    def calc(self, *routines, unit: None | str = None, keep: str = 'off') -> 'TEDataTable':
-        # determine if the data table has different parts (values, costs, ghgis, etc)
-        hasParts: bool = (self._df.columns.names[0] == 'part')
+    def calc(self, *routines, assump: None | pd.DataFrame | dict = None, unit: None | str = None,
+             keep: str = 'off', inplace: bool = False) -> 'TEDataTable':
+        # add assumptions to dataframe if provided
+        if assump is not None:
+            r = self.assume(assump=assump, inplace=inplace)
+            df = self._df if inplace else r.data
+        else:
+            df = self._df
+
+        # combine values and assumptions into dataframe for calculations and override values with assumptions
+        calcCols = [('assump', *c) if isinstance(c, tuple) else ('assump', c) for c in df['assump']] \
+                 + [('value', *c) if isinstance(c, tuple) else ('value', c) for c in df['value'] if c not in df['assump']]
+        dfCalc = df[calcCols].droplevel(level='part', axis=1)
 
         # loop over routines provided
-        results = {}
-        keepCols = []
+        results = []
+        keepValues = []
         for routine in routines:
-            if not isinstance(routine, AbstractCalcRoutine):
+            if not issubclass(routine, AbstractCalcRoutine):
                 raise Exception('All calc routines provided have to be subclass of AbstractCalcRoutine.')
-            df = self._df['value'] if hasParts else self._df
-            result, missingCols = routine.calc(
-                df=df,
-                unit=unit,
-                raise_missing=(keep!='missing'),
+            result, missingCols = routine(dfCalc).calc(unit=unit, raise_missing=False)
+            results.append(
+                pd.concat([result], keys=[routine.part], names=['part'], axis=1)
             )
-            results[routine.part] = result
-            keepCols.extend(missingCols)
+
+        # combine results with existing dataframe
+        dfNew = pd.concat([self._df if inplace else self._df.copy()] + results, axis=1)
 
         # keep columns
-        if keep == 'off':
-            data = None
-        elif keep in ['missing', 'all']:
-            if hasParts:
-                data = self._df
-            else:
-                data = pd.concat([self._df], keys=['value'], names=['part'], axis=1)
-            if keep=='missing':
-                data = data[[(('value',) + c) for c in keepCols]]
-        else:
-            raise Exception(f"Illegal value for argument keep: {keep}")
-        for part, result in results.items():
-            add = pd.concat([result], keys=[part], names=['part'], axis=1)
-            if data is None:
-                data = add
-            else:
-                data = data.merge(add, left_index=True, right_index=True)
+        keepTokens = keep.split('+')
+        if not all(t in allowedKeepTokens for t in keepTokens):
+            raise Exception(f"Keyword keep has to be a string containing a '+' separated list of keep tokens."
+                            f"Allowed tokens: {allowedKeepTokens}. Found: {keepTokens}")
+        if 'value' not in keepTokens:
+            dfNew = dfNew.loc[:, dfNew.columns.get_level_values('part') !='value']
+        if 'assump' not in keepTokens:
+            dfNew = dfNew.loc[:, dfNew.columns.get_level_values('part') !='assump']
 
         # return
-        return TEDataTable(
-            data=data,
-            refQuantity=self.refQuantity,
-            refFlow=self.refFlow,
-            name=self.name,
-        )
+        if inplace:
+            self._df = dfNew
+        else:
+            return TEDataTable(
+                data=dfNew,
+                refQuantity=self.refQuantity,
+                refFlow=self.refFlow,
+                name=self.name,
+            )

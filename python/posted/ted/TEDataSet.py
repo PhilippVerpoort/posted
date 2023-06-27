@@ -322,7 +322,7 @@ class TEDataSet(TEBase):
             .agg({'value': 'mean'})
 
         # unstack type
-        table = table['value'].unstack('type')
+        table = table.unstack('type')
 
         # rename case fields
         table.rename(
@@ -336,12 +336,19 @@ class TEDataSet(TEBase):
         ))
 
         # move units from column name to pint column unit
-        for typeName in table.columns:
+        newTable = []
+        for typeName in table['value'].columns:
             tokens = typeName.split(' ')
             typeNameNew = tokens[0]
             unit = tokens[1]
-            table.rename(columns={typeName: typeNameNew}, inplace=True)
-            table[typeNameNew] = table[typeNameNew].astype(f"pint{unit}")
+            newCol = table['value', typeName] \
+                .rename(('value', typeNameNew)) \
+                .astype(f"pint{unit}")
+            newTable.append(newCol)
+        table = pd.concat(newTable, axis=1)
+
+        # update column level names
+        table.columns.names = ['part', 'type']
 
         # drop index levels representing case fields with precisely one option
         if not keepSingularIndexLevels and table.index.nlevels > 1:

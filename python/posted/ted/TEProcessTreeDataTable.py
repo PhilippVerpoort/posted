@@ -36,6 +36,7 @@ class TEProcessTreeDataTable(TEDataTable):
                 data = proc
             else:
                 data = data.merge(proc, left_index=True, right_index=True)
+        data = data.swaplevel(0, 1, axis=1)
 
         # apply demand factors
         for p, pSpecs in self._graph.items():
@@ -45,12 +46,12 @@ class TEProcessTreeDataTable(TEDataTable):
                 demandCol = f"demand:{ftDem}"
                 demandColNew = f"demand_sc:{ftDem}"
 
-                rescale = data[p, demandCol].pint.to(tDem.refQuantity.u) / tDem.refQuantity
+                rescale = data['value', p, demandCol].pint.to(tDem.refQuantity.u) / tDem.refQuantity
 
-                for colID in data[pDem].columns:
-                    if colID in tDem.refTypes:
+                for colID in data['value', pDem].columns:
+                    if colID.split(':')[0] not in tDem.refTypes:
                         continue
-                    data[pDem, colID] *= rescale
+                    data['value', pDem, colID] *= rescale
 
                 data.rename(columns={demandCol: demandColNew}, inplace=True)
 
@@ -73,10 +74,14 @@ class TEProcessTreeDataTable(TEDataTable):
     # append process to process tree
     def _appendProcess(self, p: str, parents: list):
         t = self._tables[p]
+
+        # build process path and name
         procPath = parents + [p]
         procName = '/'.join(procPath)
+
+        # loop over demands in table and see if another process can satisfy this demand
         self._graph[procName] = {}
-        for colID in t.data.columns:
+        for colID in t.data.columns.unique(level='type'):
             if not colID.startswith('demand:'):
                 continue
             ft = colID.split(':')[-1]
