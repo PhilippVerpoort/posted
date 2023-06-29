@@ -12,12 +12,18 @@ SMR-HBNH3:
   class: conversion
   sector: chemicals
   reference_flow: nh3
-CAST-ROLL:
-  name: Casting and rolling steel
-  desc: Casting and rolling of liquid steel into semi-finished steel
+CAST:
+  name: Continuous casting
+  desc: Continuous casting of liquid steel into steel slabs
   class: conversion
   sector: steel
-  reference_flow: sfsteel
+  reference_flow: steelslab
+HOTROLL:
+  name: Hot rolling of steel
+  desc: Hot rolling of steel of cast steel into hot-rolled coils (HRCs)
+  class: conversion
+  sector: steel
+  reference_flow: steelhrc
 DAC:
   name: Direct-air capture
   desc: Capturing CO2 directly from ambient air, making it available as a purified gas for captuing or utilisation.
@@ -45,7 +51,7 @@ EAF:
     and other components into liquid steel.
   class: conversion
   sector: steel
-  reference_flow: liqsteel
+  reference_flow: steelliq
   case_fields:
     mode:
       - primary

@@ -1,7 +1,0 @@
-type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
-demand,elec,Casting,,,0.0103,,MWh,,,,"Devlin et al, 2022",Section 2.2.2
-demand,elec,Casting,,,0.03,,GJ,,,,"Worrell et al, 2007",Table 2.1.5
-demand,heat,Casting,,,0.03,,GJ,,,,"Worrell et al, 2007",Table 2.1.5
-demand,elec,Rolling,,,0.3,,GJ,,,,"Worrell et al, 2007",Table 2.1.5
-demand,heat,Rolling,,,1.6,,GJ,,,,"Worrell et al, 2007",Table 2.1.5
-demand,liqsteel,,,,1,,t,,,,,

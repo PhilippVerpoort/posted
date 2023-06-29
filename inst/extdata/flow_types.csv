@@ -12,12 +12,13 @@ ironore,Iron ore,t,,,,
 dri,Directly reduced iron,t,,,,
 alloys,Alloys,t,,,,
 lime,Lime,t,,,,
-liqsteel,Liquid steel,t,,,,
-sfsteel,Semi-finished steel,t,,,,
+steelliq,Liquid steel,t,,,,
+steelslab,Steel slab,t,,,,
+steelhrc,Hot-rolled coil,t,,,,
+steelscrap,Steel scrap,t,,,,
 hvcs,Higher-value chemicals,t,,,,
 urea,Urea,t,,,1.34 g/cm³,1.34 g/cm³
 water,Water,t,,,1 kg/l,1 kg/l
-steelscrap,Steel scrap,t,,,,
 oxygen,Oxygen,t,,,0.6998 kg/m³,0.6998 kg/m³
 nitrogen,Nitrogen,t,,,,
 graph_electr,Graphite electrodes,t,,,,
