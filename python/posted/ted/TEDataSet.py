@@ -351,8 +351,15 @@ class TEDataSet(TEBase):
         table.columns.names = ['part', 'type']
 
         # drop index levels representing case fields with precisely one option
-        if not keepSingularIndexLevels and table.index.nlevels > 1:
-            table.index = table.index.droplevel([level.name for level in table.index.levels if len(level)==1 and level.name!='period'])
+        if not keepSingularIndexLevels:
+            if table.index.nlevels > 1:
+                singularIndexLevels = [level.name for level in table.index.levels if len(level)==1]
+            else:
+                singularIndexLevels = table.index.names if table.index.nunique() == 1 else []
+            if len(singularIndexLevels) < table.index.nlevels:
+                table.index = table.index.droplevel(singularIndexLevels)
+            else:
+                table = table.reset_index(drop=True)
 
         # create TEDataTable object and return
         return TEDataTable(

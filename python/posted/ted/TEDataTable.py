@@ -3,7 +3,7 @@ import pandas as pd
 from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
 from posted.config.config import techClasses
 from posted.units.units import ureg, convUnit
-
+from posted.utils import utils
 
 allowedKeepTokens = ['', 'off', 'value', 'assump']
 
@@ -96,15 +96,8 @@ class TEDataTable:
             # drop existing assumptions that will be overwritten
             dfNew = self._df.drop(columns=[c for c in self._df if c in assump.columns])
 
-            # determine indexes
-            leftIndexes = self._df.index.names
-            rightIndexes = assump.index.names
-            commonIndexes = [n for n in leftIndexes if n in rightIndexes]
-            allIndexes = list(set(leftIndexes+rightIndexes))
-
             # merge datatable with assumptions
-            mergeMode = dict(on=commonIndexes, how='outer') if commonIndexes else dict(how='cross')
-            dfNew = pd.merge(dfNew.reset_index(), assump.reset_index(), **mergeMode).set_index(allIndexes)
+            dfNew = utils.fullMerge(dfNew, assump)
         elif isinstance(assump, dict):
             dfNew = self._df if inplace else self._df.copy()
             tlev = dfNew['value'].columns.names.index('type')

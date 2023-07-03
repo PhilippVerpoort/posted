@@ -1,6 +1,7 @@
 import pandas as pd
 
 from posted.ted.TEDataTable import TEDataTable
+from posted.utils import utils
 
 
 class TEProcessTreeDataTable(TEDataTable):
@@ -35,7 +36,7 @@ class TEProcessTreeDataTable(TEDataTable):
             if data is None:
                 data = proc
             else:
-                data = data.merge(proc, left_index=True, right_index=True)
+                data = utils.fullMerge(data, proc)
         data = data.swaplevel(0, 1, axis=1)
 
         # apply demand factors
