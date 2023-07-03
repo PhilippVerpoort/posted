@@ -22,9 +22,9 @@ a1 = {
     'price:heat': 80.0 * ureg('EUR/MWh'),
     'price:water': 9.0 * ureg('EUR/t'),
 }
-a2 = pd.Series(
-    index=[2030, 2050],
+a2 = pd.DataFrame(
+    index=pd.Index([2030, 2050], name='period'),
+    columns=pd.Index(['price:elec'], name='type'),
     data=[50.0, 60.0],
-).to_frame('price:elec')
-a2.index.names = ['period']
+)
 print(t2.assume(a1).assume(a2).calc(LCOX).data.pint.dequantify())

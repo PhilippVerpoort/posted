@@ -79,15 +79,8 @@ class TEDataTable:
     def assume(self, assump: pd.DataFrame | dict, inplace: bool = False):
         if isinstance(assump, pd.DataFrame):
             # ensure all indexes have names
-            if any(n is None for n in assump.index.names):
-                raise Exception(f"Assumption indexes need to have names. Found: {assump.index.names}")
-
-            # extend index of assumptions if no joint index exists
-            if not any(lName == rName for lName in self._df.index.names for rName in assump.index.names):
-                assump = assump.merge(
-                    pd.DataFrame(index=pd.MultiIndex.from_product([self._df.index, assump.index])),
-                    left_index=True, right_index=True,
-                )
+            if any(n is None and assump.index.get_level_values(n).nunique() > 1 for n in assump.index.names):
+                raise Exception(f"Assumption indexes need to have names or contain only one value. Found index: {assump.index}")
 
             # add part 'assump' as top column level if not present
             if 'part' in assump.columns.names:
@@ -101,10 +94,17 @@ class TEDataTable:
             assump = assump.reorder_levels(self._df.columns.names, axis=1)
 
             # drop existing assumptions that will be overwritten
-            self._df.drop(columns=[c for c in self._df if c in assump.columns])
+            dfNew = self._df.drop(columns=[c for c in self._df if c in assump.columns])
+
+            # determine indexes
+            leftIndexes = self._df.index.names
+            rightIndexes = assump.index.names
+            commonIndexes = [n for n in leftIndexes if n in rightIndexes]
+            allIndexes = list(set(leftIndexes+rightIndexes))
 
             # merge datatable with assumptions
-            dfNew = self._df.merge(assump, left_index=True, right_index=True)
+            mergeMode = dict(on=commonIndexes, how='outer') if commonIndexes else dict(how='cross')
+            dfNew = pd.merge(dfNew.reset_index(), assump.reset_index(), **mergeMode).set_index(allIndexes)
         elif isinstance(assump, dict):
             dfNew = self._df if inplace else self._df.copy()
             tlev = dfNew['value'].columns.names.index('type')
