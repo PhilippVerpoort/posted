@@ -18,13 +18,13 @@ print(t1.calc(LCOX, assump=assump).data)
 t2 = TEDataSet('ELH2').generateTable(period=[2030, 2050], subtech=['Alkaline', 'PEM'], agg=['subtech', 'src_ref'])
 print(t2.data)
 
-a1 = {
+assump1 = {
     'price:heat': 80.0 * ureg('EUR/MWh'),
     'price:water': 9.0 * ureg('EUR/t'),
 }
-a2 = pd.DataFrame(
+assump2 = pd.DataFrame(
     index=pd.Index([2030, 2050], name='period'),
     columns=pd.Index(['price:elec'], name='type'),
     data=[50.0, 60.0],
 )
-print(t2.assume(a1).assume(a2).calc(LCOX).data.pint.dequantify())
+print(t2.assume(assump1).assume(assump2).calc(LCOX).data.pint.dequantify())

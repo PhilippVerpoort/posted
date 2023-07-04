@@ -1,3 +1,5 @@
+import pandas as pd
+
 from posted.calc_routines.LCOX import LCOX
 from posted.ted.TEDataSet import TEDataSet
 from posted.ted.TEProcessTreeDataTable import TEProcessTreeDataTable
@@ -19,7 +21,7 @@ graph = TEProcessTreeDataTable(t3, t2, t1)
 print('===== Graph data =====')
 print(graph.data, "\n\n")
 
-assump = {
+assump1 = {
     'price:ng': 6.0 * ureg('EUR/GJ'),
     'price:heat': 6.0 * ureg('EUR/GJ'),
     'price:ironore': 100.0 * ureg('EUR/t'),
@@ -35,6 +37,11 @@ assump = {
     'lifetime': 20 * ureg('a'),
     'ocf': 95.0 * ureg('pct'),
 }
-lcox = graph.calc(LCOX, assump=assump, keep='value')
+assump2 = pd.DataFrame(
+    index=pd.Index([2030, 2050], name='period'),
+    columns=pd.Index(['price:elec'], name='type'),
+    data=[50.0, 60.0],
+).astype('pint[EUR/MWh]')
+lcox = graph.assume(assump1).assume(assump2).calc(LCOX)
 print('===== LCOX data =====')
 print(lcox.data)

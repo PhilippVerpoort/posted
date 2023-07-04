@@ -1,4 +1,5 @@
 import pandas as pd
+import pint
 
 from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
 from posted.config.config import techClasses
@@ -79,7 +80,7 @@ class TEDataTable:
     def assume(self, assump: pd.DataFrame | dict, inplace: bool = False):
         if isinstance(assump, pd.DataFrame):
             # ensure all indexes have names
-            if any(n is None and assump.index.get_level_values(n).nunique() > 1 for n in assump.index.names):
+            if any((n is None and assump.index.get_level_values(n).nunique() > 1) for n in assump.index.names):
                 raise Exception(f"Assumption indexes need to have names or contain only one value. Found index: {assump.index}")
 
             # add part 'assump' as top column level if not present
@@ -90,14 +91,29 @@ class TEDataTable:
             else:
                 assump = pd.concat([assump], keys=['assump'], names=['part'], axis=1)
 
+            # stack column levels not present in assumptions
+            stackLevels = [n for n in self._df.columns.names if n not in assump.columns.names]
+            if stackLevels:
+                dfNew = self._df.stack(stackLevels)
+                while None in dfNew.index.names:
+                    dfNew = dfNew.droplevel(None)
+            else:
+                dfNew = self._df
+
             # reorder column levels
-            assump = assump.reorder_levels(self._df.columns.names, axis=1)
+            assump = assump.reorder_levels(dfNew.columns.names, axis=1)
 
             # drop existing assumptions that will be overwritten
-            dfNew = self._df.drop(columns=[c for c in self._df if c in assump.columns])
+            dfNew.drop(columns=[c for c in self._df if c in assump.columns], inplace=True)
 
             # merge datatable with assumptions
             dfNew = utils.fullMerge(dfNew, assump)
+
+            # unstack stacked columns levels
+            if stackLevels:
+                dfNew = dfNew.unstack(stackLevels, fill_value=0.0)
+                if isinstance(dfNew, pd.Series):
+                    dfNew = dfNew.to_frame().T
         elif isinstance(assump, dict):
             dfNew = self._df if inplace else self._df.copy()
             tlev = dfNew['value'].columns.names.index('type')
@@ -113,6 +129,10 @@ class TEDataTable:
         else:
             raise Exception(f"Assumptions have to be of type pd.DataFrame or dict. Received: {type(assump)}")
 
+        # fix pint unit types in dataframe
+        for col in dfNew:
+            dfNew[col] = dfNew[col].astype(f"pint[{dfNew[col].iloc[0].u if isinstance(dfNew[col].iloc[0], pint.Quantity) else 'dimensionless'}]")
+
         # update existing instance (inplace) or return new datatable (not inplace)
         if inplace:
             self._df = dfNew
@@ -126,14 +146,8 @@ class TEDataTable:
 
 
     # calculate levelised cost of X
-    def calc(self, *routines, assump: None | pd.DataFrame | dict = None, unit: None | str = None,
-             keep: str = 'off', inplace: bool = False) -> 'TEDataTable':
-        # add assumptions to dataframe if provided
-        if assump is not None:
-            r = self.assume(assump=assump, inplace=inplace)
-            df = self._df if inplace else r.data
-        else:
-            df = self._df
+    def calc(self, *routines, unit: None | str = None, keep: str = 'off', inplace: bool = False) -> 'TEDataTable':
+        df = self._df if inplace else self._df.copy()
 
         # combine values and assumptions into dataframe for calculations and override values with assumptions
         calcCols = [('assump', *c) if isinstance(c, tuple) else ('assump', c) for c in df['assump']] \
