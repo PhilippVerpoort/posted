@@ -26,11 +26,11 @@ norm_cubic_meter = 1000000 * cubic_centimeters = Nm³
 
 
 # currencies
-USD = [currency]
-EUR = nan USD
-GBP = nan USD
+EUR = [currency]
+USD = nan EUR
+GBP = nan EUR
 
 @context currency_conversion = curcon
-    EUR = 1.11254 USD
-    GBP = 1.16956 EUR
+    USD = 0.9179 EUR
+    GBP = 1.1672 EUR
 @end
