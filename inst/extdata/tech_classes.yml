@@ -70,4 +70,65 @@ transport:
   entry_types: ~
 storage:
   name: Storage technologies
-  entry_types: ~
+  entry_types:
+    lifetime:
+      name: Lifetime
+      desc: Expected time a facility can be in production for
+      rep_dim: '[time]'
+    capex:
+      name: CAPEX (to ref)
+      desc: CAPital EXpenditure (referring to reference capacity)
+      rep_dim: '[currency]'
+      ref_dim: '[flow]/[time]'
+    fopex:
+      name: Fixed OPEX (to ref)
+      desc: Fixed OPerational EXpenditure (referring to reference capacity)
+      rep_dim: '[currency]/[time]'
+      ref_dim: '[flow]/[time]'
+    fopex_spec:
+      name: Fixed OPEX (spec)
+      desc: Fixed OPerational EXpenditure (specific)
+      rep_dim: '[currency]'
+      ref_dim: '[flow]'
+    fopex_rel:
+      name: Fixed OPEX (rel)
+      desc: Fixed OPerational EXpenditure (relative to CAPEX)
+      rep_dim: 'dimensionless'
+    vopex:
+      name: Variable OPEX
+      desc: Variable OPerational EXpenditure (non-energy, non-feedstock)
+      rep_dim: '[currency]'
+      ref_dim: '[flow]'
+    ocf:
+      name: OCF
+      desc: Operational capacity factor
+      rep_dim: 'dimensionless'
+    flh:
+      name: FLH
+      desc: Full-load hours
+      rep_dim: '[time]'
+    demand:
+      name: Demand
+      desc: Energy and feedstock demand
+      rep_dim: '[flow]'
+      ref_dim: '[flow]'
+    energy_eff:
+      name: Energy efficiency
+      desc: Energy efficiency
+      rep_dim: 'dimensionless'
+    product:
+      name: Product
+      desc: Output produced
+      rep_dim: '[flow]'
+      ref_dim: '[flow]'
+    total_cost:
+      name: Total cost
+      desc: Total cost of production
+      rep_dim: '[currency]'
+      ref_dim: '[flow]'
+  case_fields:
+    subtech:
+      name: Subtechnology
+      desc:
+        Name of the subtechnology. Leaving this column empty in a row means that this row refers to all
+        subtechnologies in the technology group.

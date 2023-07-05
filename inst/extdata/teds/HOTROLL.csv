@@ -1,5 +1,5 @@
-type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
-capex,,,,,450,,MUSD,4,Mt/a,,"IEAGHG, 2013",Tables 1 and 5
+type,flow_type,region,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
+capex,,,,,450.0,,MUSD,4.0,Mt/a,,"IEAGHG, 2013",Tables 1 and 5
 demand,elec,,,,105.3,,kWh,,,,"IEAGHG, 2013",Table D-15
 demand,heat,,,,468.33,,kWh,,,Assuming 20MJ/Nm³ for caloric heating value of COG.,"IEAGHG, 2013",Table D-15
 demand,elec,,,,0.3,,GJ,,,,"Worrell et al, 2007",Table 2.1.5

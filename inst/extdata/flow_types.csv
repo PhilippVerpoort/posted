@@ -23,3 +23,5 @@ oxygen,Oxygen,t,,,0.6998 kg/m³,0.6998 kg/m³
 nitrogen,Nitrogen,t,,,,
 graph_electr,Graphite electrodes,t,,,,
 steam,Steam,MWh,,,,
+ft_fuel,Fischer-Tropsch fuel,MWh,
+gasoline,Gasoline,MWh,,

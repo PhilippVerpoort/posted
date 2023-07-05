@@ -1,5 +1,5 @@
-type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
-capex,,,,2015,400,,EUR,,,,"DECHEMA, 2017",Table 35
-fopex_spec,,,,,60,,EUR,,,,"DECHEMA, 2017",Table 35
+type,flow_type,region,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
+capex,,,2015.0,,400.0,,EUR,,,,"DECHEMA, 2017",Table 35
+fopex_spec,,,,,60.0,,EUR,,,,"DECHEMA, 2017",Table 35
 demand,elec,,,,0.6,,GJ,,,,"DECHEMA, 2017",Section 4.4.1
 demand,ng,,,,12.5,,GJ,,,,"DECHEMA, 2017",Section 4.4.1

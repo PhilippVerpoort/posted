@@ -1,8 +1,8 @@
-type,flow_type,component,region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
+type,flow_type,region,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
 capex,,,,,490.2,,EUR,,,"This source states 0.76 MEUR per kt of Propylene produced. We assume that 387 kt of 600 kt output are Propylene (as per Jasper et al, 2015), which yields 760×387/600 EUR/t.","TNO, 2021",Section Costs at the end of page 1.
-capex,,,,,300,,EUR,,,,Dechema (2017),Table 35
-fopex_rel,,,,,3,,percent,,,,"TNO, 2021",Section Costs at the end of page 1.
-fopex_spec,,,,,45,,EUR,,,,Dechema (2017),Table 35
+capex,,,,,300.0,,EUR,,,,Dechema (2017),Table 35
+fopex_rel,,,,,3.0,,percent,,,,"TNO, 2021",Section Costs at the end of page 1.
+fopex_spec,,,,,45.0,,EUR,,,,Dechema (2017),Table 35
 vopex,,,,,0.02,,MEUR,,kilometric_ton,,"TNO, 2021",Section Costs at the end of page 1.
-demand,elec,,,,5,,GJ,,,,Dechema (2017),Section 4.5.3
+demand,elec,,,,5.0,,GJ,,,,Dechema (2017),Section 4.5.3
 demand,meoh,,,,2.28,,t,,,,Dechema (2017),Section 4.5.3

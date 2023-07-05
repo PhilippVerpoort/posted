@@ -44,6 +44,12 @@ IDR:
     mode:
       - h2
       - ng
+MEOH-2-GSLN:
+  name: Methanol-to-gasoline
+  desc: Conversion of methanol to gasoline.
+  class: conversion
+  sector: energy
+  reference_flow: gasoline
 EAF:
   name: Electric-arc furnace
   desc:
@@ -71,12 +77,22 @@ ELH2:
       - PEM
       - Solid Oxide
       - SOEC
+FT:
+  name: Fischer-Tropsch
+  desc: Fischer-Tropsch synthesis of hydrocarbons
+  class: conversion
+  sector: energy
+  reference_flow: ft_fuel
 H2-STOR:
   name: Hydrogen storage
   desc: Long-term storage of hydrogen
   class: storage
   sector: energy
   reference_flow: h2
+  case_fields:
+    subtech:
+      - Above-ground compressed storage
+      - Salt caverns
 BFBOF-CC-INT:
   name: Integrated steel mill with CCS
   desc: Integrated steel mill with a blast furnace and basic oxygen furnace, equipped with CCS.
