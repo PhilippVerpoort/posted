@@ -62,6 +62,9 @@ EAF:
     mode:
       - primary
       - secondary
+    reheating:
+      - w/ reheating
+      - w/o reheating
 ELH2:
   name: Electrolysis
   desc: Water ELH2, which yields hydrogen and oxygen.
