@@ -12,7 +12,7 @@ from posted.ted.TEBase import TEBase
 from posted.ted.TEDataFile import TEDataFile
 from posted.ted.TEDataTable import TEDataTable
 from posted.units.units import convUnitDF, convUnit, ureg
-from posted.ted.warnings import TEIncorrectRowWarning
+from posted.ted.failures import TEGenerationFailure
 
 
 class TEDataSet(TEBase):
@@ -73,7 +73,7 @@ class TEDataSet(TEBase):
 
     # reduce rows to those with types and flow_types within allowed values
     def _checkTypes(self):
-        # TODO: Create warning and/or combine with TEInconsistencyExceptions/TEIncorrectRowWarnings
+        # TODO: Raise TEInconsistencyException
         cond = self._df['type'].isin(list(self._tspecs['entry_types'])) & \
                (self._df['flow_type'].isin(list(flowTypes.keys())) |
                 self._df['flow_type'].isna())
@@ -261,20 +261,7 @@ class TEDataSet(TEBase):
         # drop columns that are not considered
         table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
 
-        # apply quick fixes
-        table = self._applyTypeMappings(table)
-
-        # combine type, flow_type, and unit columns
-        table['type'] = table.apply(
-            lambda row: f"{row['type']}{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''} [{row['unit']}]",
-            axis=1,
-        )
-        table.drop(columns=['flow_type', 'unit'], inplace=True)
-
-        # insert missing periods
-        table = self._insertMissingPeriods(table)
-
-        # query by selected sources
+        # select by sources
         if 'src_ref' not in kwargs or kwargs['src_ref'] is None:
             pass
         elif isinstance(kwargs['src_ref'], str):
@@ -293,7 +280,10 @@ class TEDataSet(TEBase):
                 expandCols[idxName] = kwargs[idxName]
         table = self._expandTechs(table, expandCols)
 
-        # group by identifying columns and select periods/generate time series
+        # insert missing periods
+        table = self._insertMissingPeriods(table)
+
+        # select/interpolate periods
         if 'period' not in kwargs or kwargs['period'] is None:
             period = datetime.date.today().year
         else:
@@ -301,6 +291,16 @@ class TEDataSet(TEBase):
         if isinstance(period, int) | isinstance(period, float):
             period = [period]
         table = self._selectPeriods(table, period)
+
+        # apply quick fixes
+        table = self._applyTypeMappings(table)
+
+        # combine type, flow_type, and unit columns
+        table['type'] = table.apply(
+            lambda row: f"{row['type']}{':'+str(row['flow_type']) if row.notna()['flow_type'] else ''} [{row['unit']}]",
+            axis=1,
+        )
+        table.drop(columns=['flow_type', 'unit'], inplace=True)
 
         # apply masks
         table = self._applyMasks(table, masks_other, masks_database)
@@ -381,123 +381,79 @@ class TEDataSet(TEBase):
 
     # apply mappings between entry types
     def _applyTypeMappings(self, table: pd.DataFrame) -> pd.DataFrame:
-        # ---------- 1a. Convert fopex_rel entries to fopex ----------
-        # get all FOPEX_REL entries
-        rowsFOPEX_REL = table['type'] == 'fopex_rel'
+        # list of columns to group by
+        groupCols = self._caseFields + ['period', 'src_ref']
 
-        if rowsFOPEX_REL.any():
-            # get df of all CAPEX entries
-            dfCAPEX = table.query(f"type.isin({['capex']})")
+        # perform groupby and do not drop NA values
+        grouped = table.groupby(groupCols, dropna=False)
 
-            # define all possible join cols
-            listCols = self._caseFields + ['component', 'src_ref', 'period']
-            def performJoinNANTolerance(row):
-                # specify join cols for this row (only non NaN cols)
-                listFilledCols = [col for col in listCols if row[col] == row[col]]
+        # create return list
+        ret = []
 
-                # convert row to df
-                row = row.to_frame().transpose()
+        # loop over groups
+        for keys, ids in grouped.groups.items():
+            # get rows in group
+            rows = table.loc[ids, [c for c in table if c not in groupCols]].copy()
 
-                # join row df with dfCAPEX on listFilledCols
-                joinResult = pd.merge(row, dfCAPEX, how='inner', on=listFilledCols)
-                return joinResult
+            # 1. convert fopex_rel to fopex
+            capex = rows.query(f"type=='capex'")
+            cond = (rows['type'] == 'fopex_rel')
+            if cond.any():
+                if capex.empty:
+                    warnings.warn(TEGenerationFailure(rows.loc[cond], 'No CAPEX value matching a relative FOPEX value found.'))
+                rows.loc[cond] = rows.loc[cond].assign(value=lambda row:
+                    np.nan if capex.empty else row['value'] *
+                    (capex.query(f"component=='{row['component'].iloc[0]}'")['value'].iloc[0]
+                    if (row['component'].notna().all() and not capex.query(f"component=='{row['component'].iloc[0]}'").empty)
+                    else capex['value'].sum()),
+                )
+                rows.loc[cond, 'unit'] = np.nan if capex.empty else (capex['unit'].iloc[0]+'/a')
+                rows.loc[cond, 'type'] = 'fopex'
 
-            # Apply the join function on all rows in dfA
-            dfMergedCAPEX = table.loc[rowsFOPEX_REL].apply(performJoinNANTolerance, axis=1)
+            # 2. convert fopex to fopex_spec
+            cond = (rows['type'] == 'fopex')
+            if cond.any():
+                convFacRep = convUnit(self.getRepUnit('fopex') + '*a', self.getRepUnit('fopex_spec'))
+                convFacRef = convUnit(self.getRefUnit('fopex') + '*a', self.getRefUnit('fopex_spec'), self.refFlow)
 
-            # determine 1 on 1 FOPEX_REL to CAPEX matches (where len(row) == 1)
-            rowsFOPEX_REL_MatchedCAPEX = dfMergedCAPEX.apply(lambda row: True if len(row) == 1 else False)
+                rows.loc[cond, 'value'] *= convFacRep / convFacRef
+                rows.loc[cond, 'unit'] = rows.loc[cond, 'unit'].apply(lambda u: str(ureg(u + '*a').to_reduced_units().u))
+                rows.loc[cond, 'type'] = 'fopex_spec'
 
-            if (rowsFOPEX_REL_MatchedCAPEX.size > 0):
-                # convert rowsFOPEX_REL_IncorrectlyMatchedCAPEX bool dataframe to indices of correctly matched rows
-                rowsFOPEX_REL_IncorrectlyMatchedCAPEX = rowsFOPEX_REL_MatchedCAPEX[rowsFOPEX_REL_MatchedCAPEX == False].index
+            # 3. convert unit of CAPEX (???)
+            # convFacRef = convUnit(self.getRefUnit('capex') + '*a', self.getRefUnit('fopex_spec'), self.refFlow)
+            #
+            # rowsCAPEX = table['type'] == 'capex'
+            # table.loc[rowsCAPEX, 'value'] /= convFacRef
 
-                # iterrate over mismatched rows to aise warnings about these incorrect rows
-                for index, row in table.loc[rowsFOPEX_REL_IncorrectlyMatchedCAPEX].iterrows():
-                    # displaying warning
-                    warnings.warn(TEIncorrectRowWarning(f"no or too many matching CAPEX entries for FOPEX_REL entry in row {index}", filePath = pathOfTEDFile(self._tid) ))
+            # 4. convert FLH to OCF
+            cond = (rows['type'] == 'flh')
+            if cond.any():
+                convFac = convUnit(self.getRepUnit('flh'), 'a')
+                rows.loc[cond, 'value'] *= convFac
+                rows.loc[cond, 'unit'] = 'dimensionless'
+                rows.loc[cond, 'type'] = 'ocf'
 
-            # convert rowsFOPEX_REL_CorrectlyMatchedCAPEX bool dataframe to indices
-            rowsFOPEX_REL_MatchedCAPEX = rowsFOPEX_REL_MatchedCAPEX.index
+            # 5. convert energy_eff to demand
+            cond = (rows['type'] == 'energy_eff')
+            if cond.any():
+                if 'reference_flow' not in self._tspecs:
+                    warnings.warn(TEGenerationFailure(rows.loc[cond], 'Found efficiency but technology has no reference flow.'))
+                else:
+                    rows.loc[cond, 'value'] = rows.loc[cond, 'value'].assign(
+                        value=lambda row: 1 / row['value'] * convUnit(self.refUnit, self.getRepUnit('demand', row['flow_type'])),
+                        unit=lambda row: self.getRepUnit('demand', row['flow_type']),
+                    )
+                    rows.loc[cond, 'type'] = 'demand'
 
-            # for invalid (none or too many matching CAPEX entries) rows, set row to an empty match with a dummy unit value
-            dfMergedCAPEX = dfMergedCAPEX.apply(lambda row: row if len(row) == 1 else\
-                                                pd.DataFrame([[np.nan, defaultUnits['[currency]']]], columns=['value_y', 'unit_y']))
+            # set missing columns from group
+            rows[groupCols] = keys
 
-            # convert fopex_rel entries to fopex entries (including the dummies)
-            if (rowsFOPEX_REL_MatchedCAPEX.size > 0):
-                table.loc[rowsFOPEX_REL_MatchedCAPEX, 'value'] *=  table.loc[rowsFOPEX_REL_MatchedCAPEX].apply(lambda row: dfMergedCAPEX[row.name]['value_y'][0], axis=1)
-                table.loc[rowsFOPEX_REL_MatchedCAPEX, 'unit'] = table.loc[rowsFOPEX_REL_MatchedCAPEX].apply(lambda row: str(ureg(dfMergedCAPEX[row.name]['unit_y'][0] + '/a').to_reduced_units().u), axis=1)
-                table.loc[rowsFOPEX_REL_MatchedCAPEX, 'type'] = 'fopex'
+            # add to return list
+            ret.append(rows)
 
-        # ---------- 1b. Convert fopex to fopex_spec ----------
-        convFacRep = convUnit(self.getRepUnit('fopex') + '*a', self.getRepUnit('fopex_spec'))
-        convFacRef = convUnit(self.getRefUnit('fopex') + '*a', self.getRefUnit('fopex_spec'), self.refFlow)
-
-        rowsFOPEX = table['type'] == 'fopex'
-        table.loc[rowsFOPEX, 'unit'] = table.loc[rowsFOPEX, 'unit'].apply(lambda u: str(ureg(u + '*a').to_reduced_units().u))
-        table.loc[rowsFOPEX, 'value'] *= convFacRep / convFacRef
-        table.loc[rowsFOPEX, 'type'] = 'fopex_spec'
-
-        # ---------- 1c. Adjust units of capex ----------
-
-        convFacRef = convUnit(self.getRefUnit('capex') + '*a', self.getRefUnit('fopex_spec'), self.refFlow)
-
-        rowsCAPEX = table['type'] == 'capex'
-        table.loc[rowsCAPEX, 'value'] /= convFacRef
-
-        # ---------- 2. Convert full load hours entries to operational capacity factor ----------
-
-        # copy fopex_rel entries to edit them safely
-        selected_rows = table.query(f"type.isin({['flh']})").copy()
-
-        # convert entries to ocf
-        # value doesnt need to be changed because the standard time unit is year, so full load hours will already be converted to years by now
-        selected_rows['type'] = 'ocf'
-        selected_rows['unit'] = "dimensionless"
-
-        # override main dataset
-        table.loc[table['type'] == 'flh'] = selected_rows
-
-        # ---------- 3. Convert energy_eff entries to energy_dem ----------
-
-        if 'reference_flow' in techs[self._tid]:
-
-            # get reference flow
-            reference_flow = techs[self._tid]['reference_flow']
-
-            # get all ENERGY_EFF entries
-            rowsENERGY_EFF = table['type'] == 'energy_eff'
-
-            # define unit_to from reference flows default unit
-            unit_to = flowTypes[reference_flow]['default_unit']
-
-            # determine rows where the flow type is missing
-            rowsENERGY_EFF_MissingFlowType = table.loc[rowsENERGY_EFF].apply(lambda row: True if row['flow_type'] == row['flow_type'] else False, axis=1)
-            rowsENERGY_EFF_MissingFlowType = rowsENERGY_EFF_MissingFlowType[rowsENERGY_EFF_MissingFlowType == False].index
-
-            # iterrate over all rows with missing entry_type to raise warnings about these incorrect rows     
-            for index, row in table.loc[rowsENERGY_EFF_MissingFlowType].iterrows():
-                # displaying warning
-                warnings.warn(TEIncorrectRowWarning(f"no flow_type given for energy_eff entry in row {index}, elec flow type is used", filePath = pathOfTEDFile(self._tid) ))
-                # for missing flow_type, the flow type is set to elec to enable further processing (DUMMY)
-                table.loc[index, 'flow_type'] = 'elec'
-
-            # convert energy_eff entries to energy_dem (including dummies
-            if (rowsENERGY_EFF[rowsENERGY_EFF == True].size > 0):
-                table.loc[rowsENERGY_EFF, 'unit'] = table.loc[rowsENERGY_EFF].apply(lambda row: flowTypes[row['flow_type']]['default_unit'], axis=1)
-                table.loc[rowsENERGY_EFF, 'reference_unit'] = unit_to
-                table.loc[rowsENERGY_EFF, 'value'] = table.loc[rowsENERGY_EFF].apply(lambda row: (1.0/row['value'])*convUnit(unit_from=row['unit'], unit_to=unit_to, flow_type=reference_flow), axis=1)
-                selected_rows2 = table.query(f"type.isin({['energy_eff']})").copy()
-                table.loc[rowsENERGY_EFF, 'type'] = 'demand'
-
-        else:
-            # no reference_flow found; energy_eff cannot be converted, warning has to be raised
-            warnings.warn(TEIncorrectRowWarning(f"no reference flow found, cannot convert energy_eff", filePath = pathOfTEDFile(self._tid) ))
-            # assign demand type to incorrect row to enable further proceesing
-            table.loc[table['type'] == 'energy_eff', 'type'] = 'demand'
-
-        return table.reset_index(drop=True)
+        # convert return list to dataframe and return
+        return pd.concat(ret).reset_index(drop=True)
 
 
     # expand based on subtechs, modes, and period
@@ -517,7 +473,7 @@ class TEDataSet(TEBase):
     # group by identifying columns and select periods/generate time series
     def _selectPeriods(self, table: pd.DataFrame, period: float | list | np.ndarray) -> pd.DataFrame:
         # list of columns to group by
-        groupCols = ['type'] + self._caseFields + ['component', 'src_ref']
+        groupCols = ['type', 'flow_type', 'unit'] + self._caseFields + ['component', 'src_ref']
 
         # perform groupby and do not drop NA values
         grouped = table.groupby(groupCols, dropna=False)
