@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from posted.path import pathOfTEDFile
@@ -44,8 +45,14 @@ class TEDataFile(TEBase):
             if colID not in dataFormatColIDs:
                 raise Exception(f"Unknown column '{colID}' in file \"{self._path}\".")
 
-        # insert missing columns and reorder via reindexing
-        self._df = self._df.reindex(columns=dataFormatColIDs)
+        # insert missing columns and reorder via reindexing and update dtypes
+        dfNew = self._df.reindex(columns=dataFormatColIDs)
+        for col, dtype in self._getDtypeMapping().items():
+            if col in self._df:
+                continue
+            dfNew[col] = np.nan if dtype == 'float' else ''
+            dfNew[col] = dfNew[col].astype(dtype)
+        self._df = dfNew
 
 
     # write TEDataFile to CSV file

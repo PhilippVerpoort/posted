@@ -24,6 +24,8 @@ class TEBase:
         self._dataFormat: dict = {}
         for key, val in baseFormat.items():
             self._dataFormat[key] = val
+
+            # insert case fields after flow_type column
             if key == 'flow_type':
                 self._dataFormat |= self._tspecs['case_fields']
 

@@ -62,9 +62,15 @@ conversion:
       desc:
         Name of the subtechnology. Leaving this column empty in a row means that this row refers to all
         subtechnologies in the technology group.
+      dtype: category
     mode:
       name: Mode
       desc: Mode of operation of the (sub-)technology that this row refers to.
+      dtype: category
+    reheating:
+      name: Reheating
+      desc: Whether or not process inputs are charged cold or hot
+      dtype: category
 transport:
   name: Transport technologies
   entry_types: ~
@@ -132,3 +138,4 @@ storage:
       desc:
         Name of the subtechnology. Leaving this column empty in a row means that this row refers to all
         subtechnologies in the technology group.
+      dtype: category
