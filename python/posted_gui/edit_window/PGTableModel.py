@@ -19,7 +19,6 @@ class PGTableModel(QtCore.QAbstractTableModel):
         self._tid: str = tid
         self._path: Path = path
         self._dataFile: TEDataFile = TEDataFile(tid, path)
-        self._dataFormat = self._dataFile.dataFormat
         self._dtypeMapping = self._dataFile._getDtypeMapping()
         self._viewConsistency: bool = True
         self._viewColumns: dict = {colID: True for colID in self._dataFormat}
@@ -51,6 +50,12 @@ class PGTableModel(QtCore.QAbstractTableModel):
     @property
     def _data(self) -> pd.DataFrame:
         return self._dataFile.data
+
+
+    # get dataformat from TEDataFile object
+    @property
+    def _dataFormat(self) -> dict:
+        return self._dataFile.dataFormat
 
 
     # get inconsistencies from TEDataFile object
@@ -118,7 +123,7 @@ class PGTableModel(QtCore.QAbstractTableModel):
 
 
     def columnCount(self, index):
-        return sum(1 for colID in baseFormat if self._viewColumns[colID])
+        return sum(1 for colID in self._dataFormat if self._viewColumns[colID]) if self._data is not None else 0
 
 
     def headerData(self, index, orientation, role):
