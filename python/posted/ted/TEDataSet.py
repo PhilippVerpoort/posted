@@ -1,5 +1,6 @@
 import datetime
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -19,23 +20,27 @@ class TEDataSet(TEBase):
     # initialise
     def __init__(self,
                  tid: str,
-                 load_other: None | list = None,
+                 data: Optional[pd.DataFrame] = None,
+                 load_other: Optional[list] = None,
                  load_database: bool = False,
                  check_incons: bool = False,
                  ):
         TEBase.__init__(self, tid)
 
-        # initialise object fields
-        self._df: None | pd.DataFrame = None
+        if data is not None:
+            self._df = data
+        else:
+            # initialise object fields
+            self._df: None | pd.DataFrame = None
 
-        # read TEDataFiles and combine into dataset
-        self._loadFiles(load_other, load_database, check_incons)
+            # read TEDataFiles and combine into dataset
+            self._loadFiles(load_other, load_database, check_incons)
 
-        # check types
-        self._checkTypes()
+            # check types
+            self._checkTypes()
 
-        # adjust units: set default reference and reported units and normalise
-        self._adjustUnits()
+            # adjust units: set default reference and reported units and normalise
+            self._adjustUnits()
 
 
     # load TEDatFiles and compile into dataset
@@ -246,6 +251,14 @@ class TEDataSet(TEBase):
     # get reference unit for entry type
     def getRefUnit(self, typeid: str):
         return self._refUnits[typeid]
+
+
+    # query data
+    def query(self, *args, **kwargs):
+        return TEDataSet(
+            tid=self._tid,
+            data=self._df.query(*args, **kwargs),
+        )
 
 
     # select data
