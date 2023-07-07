@@ -1,41 +1,44 @@
 type,flow_type,subtech,region,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
-capex,,Alkaline,,,Full plant,950.0,450.0,USD,,,calculated from range given in report,IEA Electrolyser special report,
-capex,,Alkaline,,,Electrolyser system,400.0,,EUR,,,for a 100 MW(el) electrolyser,Vartiainen et al. (2022),
-capex,,Alkaline,,,Electrolyser system,140.0,,EUR,,,for a 100 MW(el) electrolyser,Vartiainen et al. (2022),
-capex,,Alkaline,,2030.0,Full plant,444.0,,EUR,,,for a 100 MW(el) electrolyser,ISE Fraunhofer (2021),
-capex,,Alkaline,,2030.0,Full plant,726.0,,EUR,,,for a 5 MW(el) electrolyser,ISE Fraunhofer (2021),
-capex,,Alkaline,,2050.0,Full plant,134.0,,USD,,,"optimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022),
-capex,,Alkaline,,2050.0,Full plant,326.0,,USD,,,"pessimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022),
-capex,,PEM,,,Full plant,1450.0,350.0,USD,,,calculated from range given in report,IEA Electrolyser special report,
-capex,,PEM,,2030.0,Full plant,500.0,,EUR,,,for a 100 MW(el) electrolyser,ISE Fraunhofer (2021),
-capex,,PEM,,2030.0,Full plant,730.0,,EUR,,,for a 5 MW(el) electrolyser,ISE Fraunhofer (2021),
-capex,,SOEC,,,Full plant,4200.0,1400.0,USD,,,calculated from range given in report,IEA Electrolyser special report,
-fopex,,Alkaline,,,,20.0,5.0,EUR/a,,kW,electrolyser annual maintenance costs,ISE Fraunhofer (2021),
-fopex_rel,,Alkaline,,,,1.0,,percent,,,"percent of CAPEX, value for a solar PV plant",IRENA Global Hydrogen trade costs (2022),
-fopex_rel,,Alkaline,,,,3.0,,percent,,,"percent of CAPEX, value for onshore wind",IRENA Global Hydrogen trade costs (2022),
-fopex,,PEM,,,,15.0,5.0,EUR/a,,kW,electrolyser annual maintenance costs,ISE Fraunhofer (2021),
-demand,elec,Alkaline,,2050.0,,45.0,,kWh,,kg,"LHV efficiency. Optimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022),
-demand,elec,Alkaline,,2050.0,,48.0,,kWh,,kg,"LHV efficiency. Pessimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022),
-demand,elec,PEM,,,,54.2,,kWh,,kg,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani et al. (2021),
-demand,water,PEM,,,,10.0,,kg,,kg,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani et al. (2021),
-demand,water,,,,,9.0,,kg,,kg,The demand of water amounts to 9kg per kg of hydrogen.,"IEA, 2021",
-fopex_spec,,,Chile,,,13.6,,USD,,kW a,"units actually given in EUR/kW.a , correct later.",Yates et al. (2020),
-fopex_spec,,,Chile,,,20.5,,USD,,kW a,"units actually given in EUR/kW.a , correct later.",Yates et al. (2020),
-demand,elec,Alkaline,,2030.0,,48.5,,kWh,,kg,"LHV efficiency. Optimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022),
-demand,elec,Alkaline,,2030.0,,52.2,,kWh,,kg,"LHV efficiency. Pessimistic scenario, from IRENA report Green Hydrogen cost reduction",IRENA Global Hydrogen trade costs (2022),
+capex,,Alkaline,,2020,,400,0,EUR,0.67,kW,for a 100 MW(el) electrolyser,Vartiainen et al. (2022),"Page 4, Figure 4"
+capex,,Alkaline,,2030,,240,50,EUR,0.7,kW,for a 100 MW(el) electrolyser,Vartiainen et al. (2022),"Page 4, Figure 4"
+capex,,Alkaline,,2040,,140,75,EUR,0.73,kW,for a 100 MW(el) electrolyser,Vartiainen et al. (2022),"Page 4, Figure 4"
+capex,,Alkaline,,2050,,80,75,EUR,0.76,kW,for a 100 MW(el) electrolyser,Vartiainen et al. (2022),"Page 4, Figure 4"
+capex,,Alkaline,,2020,,806,143,EUR,0.69,kW,949 for a 5 MW(elec) and 663 for a 100 MW(elec) plant,ISE Fraunhofer (2021),Appendix A
+capex,,Alkaline,,2030,,585,141,EUR,0.731,kW,726 for a 5 MW(elec) and 444 for a 100 MW(elec) plant,ISE Fraunhofer (2021),Appendix A
+capex,,PEM,,2020,,848,130,EUR,0.654,kW,978 for a 5 MW(elec) and 718 for a 100 MW(elec) plant,ISE Fraunhofer (2021),Appendix A
+capex,,PEM,,2030,,615.5,113.5,EUR,0.729,kW,729 for a 5 MW(elec) and 502 for a 100 MW(elec) plant,ISE Fraunhofer (2021),Appendix A
+capex,,Alkaline,,2030,,536,152,USD,,,,IRENA Global Hydrogen trade costs (2022),Page 23
+capex,,Alkaline,,2050,,230,96,USD,,,,IRENA Global Hydrogen trade costs (2022),Page 23
+capex,,Alkaline,,,,950,450,USD,,,calculated from range given in report,IEA Electrolyser special report,
+capex,,PEM,,,,1450,350,USD,,,calculated from range given in report,IEA Electrolyser special report,
+capex,,SOEC,,,,4200,1400,USD,,,calculated from range given in report,IEA Electrolyser special report,
+capex,,Alkaline,,2020,,1150,350,EUR,,,,Tenhumberg et al. (2020),"Table 2, Page 1588 (3/10)"
+capex,,PEM,,2020,,1750,350,EUR,,,,Tenhumberg et al. (2020),"Table 2, Page 1588 (3/10)"
+capex,,SOEC,,2020,,2000,,EUR,,,Provided as a lower treshold,Tenhumberg et al. (2020),"Table 2, Page 1588 (3/10)"
+fopex,,Alkaline,,2020,,6,,EUR/a,0.67,kW,1.5% of CAPEX; reported in units of electric capacity,Vartiainen et al. (2022),Page 4
+fopex,,Alkaline,,2030,,2.1,,EUR/a,0.7,kW,10% LR decrease,Vartiainen et al. (2022),Page 4
+fopex,,Alkaline,,2040,,0.73,,EUR/a,0.73,kW,10% LR decrease,Vartiainen et al. (2022),Page 4
+fopex,,Alkaline,,2050,,0.25,,EUR/a,0.76,kW,10% LR decrease,Vartiainen et al. (2022),Page 4
+fopex,,Alkaline,,,,20,5,EUR/a,0.69,kW,electrolyser annual maintenance costs,ISE Fraunhofer (2021),"Section 3.4, Page  57"
+fopex,,PEM,,,,15,5,EUR/a,0.654,kW,electrolyser annual maintenance costs,ISE Fraunhofer (2021),"Section 3.4, Page  57"
+fopex,,Alkaline,,,,17,3.5,USD/a,,kW,,Yates et al. (2020),"Table 3, Page 10"
+energy_eff,elec,Alkaline,,2020,,67,,percent,,,1.5% of CAPEX; reported in units of electric capacity; 67% assumes the LHV,Vartiainen et al. (2022),Page 4
+energy_eff,elec,Alkaline,,2030,,70,,percent,,,10% LR decrease,Vartiainen et al. (2022),Page 4
+energy_eff,elec,Alkaline,,2040,,73,,percent,,,10% LR decrease,Vartiainen et al. (2022),Page 4
+energy_eff,elec,Alkaline,,2050,,76,,percent,,,10% LR decrease,Vartiainen et al. (2022),Page 4
+demand,elec,Alkaline,,2020,,48.3,,kWh,,kg,,ISE Fraunhofer (2021),"Table 3-2, Page 42"
+demand,elec,Alkaline,,2030,,45.6,,kWh,,kg,,ISE Fraunhofer (2021),"Table 3-2, Page 42"
+demand,elec,PEM,,2020,,51,,kWh,,kg,,ISE Fraunhofer (2021),"Table 3-7, Page 50"
+demand,elec,PEM,,2030,,45.7,,kWh,,kg,,ISE Fraunhofer (2021),"Table 3-7, Page 50"
+demand,elec,Alkaline,,2030,,50.35,1.85,kWh,,kg,,IRENA Global Hydrogen trade costs (2022),"Footnote 12, Page 21"
+demand,elec,Alkaline,,2050,,46.5,1.5,kWh,,kg,,IRENA Global Hydrogen trade costs (2022),"Footnote 12, Page 21"
+demand,elec,PEM,,,,54.2,,kWh,,kg,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani et al. (2021),"Table 2, Page 3"
 demand,elec,Alkaline,,,,53.3,,kWh,,kg,Enapter current electrolyser performance,Enapter(n.d.),
-lifetime,,,,,,20.0,,year,,,whole system lifetime,Ueckerdt et al.(2021),
-lifetime,,PEM,,2030.0,,20.0,,year,,,,Hank et al.(2020),
-fopex_rel,,PEM,,2030.0,,2.0,,percent,,,,Hank et al.(2020),
-fopex,,PEM,,2020.0,,40.0,,EUR/a,2.0,MW,Weird units. Source is here: https://www.enapter.com/newsroom/h2-view-exclusive-calculating-the-cost-of-green-hydrogen and hand conversion is done here,Chrometzka et al.(2020),
-capex,,Alkaline,,,,800.0,,EUR,,,Optimistic estimation,Tenhumberg et al. (2020),
-capex,,Alkaline,,,,1500.0,,EUR,,,Pessimistic estimation,Tenhumberg et al. (2020),
-capex,,PEM,,,,1400.0,,EUR,,,Optimistic estimation,Tenhumberg et al. (2020),
-capex,,PEM,,,,2100.0,,EUR,,,Pessimistic estimation,Tenhumberg et al. (2020),
-capex,,SOEC,,,,2000.0,,EUR,,,Minimum value,Tenhumberg et al. (2020),
-demand,elec,Alkaline,,,,4.64,,kWh,,,,Tenhumberg et al. (2020),
-demand,elec,PEM,,,,4.83,,kWh,,,,Tenhumberg et al. (2020),
-demand,elec,SOEC,,,,3.7,,kWh,,,,Tenhumberg et al. (2020),
-demand,heat,SOEC,,,,0.7,,kWh,,,,Tenhumberg et al. (2020),
-demand,elec,SOEC,,,,3.25,,kWh,,,,Tenhumberg et al. (2020),
-demand,heat,SOEC,,,,1.27,,kWh,,,,Tenhumberg et al. (2020),
+demand,elec,Alkaline,,,,5.45,0.45,kWh,,m**3;norm,Total system demand,Tenhumberg et al. (2020),"Table 2, Page 1588 (3/10)"
+demand,elec,PEM,,,,5.75,0.75,kWh,,m**3;norm,Total system demand,Tenhumberg et al. (2020),"Table 2, Page 1588 (3/10)"
+demand,elec,SOEC,,,,3.8,0.1,kWh,,m**3;norm,Total system demand,Tenhumberg et al. (2020),"Table 2, Page 1588 (3/10)"
+demand,heat,SOEC,,,,0.7,,kWh,,m**3;norm,Total system demand,Tenhumberg et al. (2020),"Table 3, Page 1590 (5/10)"
+demand,elec,Alkaline,,,,54,4,kWh,,kg,,Yates et al. (2020),"Table 3, Page 10"
+demand,water,PEM,,,,10,,kg,,kg,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani et al. (2021),"Table 2, Page 3"
+demand,water,,,,,9,,kg,,kg,,"IEA, 2021",
+demand,water,Alkaline,,,,10,1,L,,kg,,Yates et al. (2020),"Table 3, Page 10"

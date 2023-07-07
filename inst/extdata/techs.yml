@@ -78,7 +78,6 @@ ELH2:
     subtech:
       - Alkaline
       - PEM
-      - Solid Oxide
       - SOEC
 FT:
   name: Fischer-Tropsch
