@@ -274,14 +274,6 @@ class TEDataSet(TEBase):
         # drop columns that are not considered
         table.drop(columns=['region', 'unc', 'comment', 'src_comment'], inplace=True)
 
-        # select by sources
-        if 'src_ref' not in kwargs or kwargs['src_ref'] is None:
-            pass
-        elif isinstance(kwargs['src_ref'], str):
-            table = table.query(f"src_ref=='{kwargs['src_ref']}'")
-        elif isinstance(kwargs['src_ref'], list):
-            table = table.query(f"src_ref.isin({kwargs['src_ref']})")
-
         # expand all case fields
         expandCols = {}
         for idxName, colSpecs in self._tspecs['case_fields'].items():
@@ -323,16 +315,7 @@ class TEDataSet(TEBase):
         table = table.sort_values(by=sorting).reset_index(drop=True)
 
         # aggregation
-        if agg is None:
-            agg = ['src_ref']
-        groupForSum = [c for c in table.columns if c not in ['component', 'value']]
-        groupForAgg = [c for c in groupForSum if c not in agg]
-        table['value'].fillna(0.0, inplace=True)
-        table = table \
-            .groupby(groupForSum, dropna=False) \
-            .agg({'value': 'sum'}) \
-            .groupby(groupForAgg, dropna=False) \
-            .agg({'value': 'mean'})
+        table = self._aggregate(table, agg)
 
         # unstack type
         table = table.unstack('type')
@@ -356,7 +339,7 @@ class TEDataSet(TEBase):
             unit = tokens[1]
             newCol = table['value', typeName] \
                 .rename(('value', typeNameNew)) \
-                .astype(f"pint{unit}")
+                .astype(f"pint{unit}" if unit!='[nan]' else 'float64')
             newTable.append(newCol)
         table = pd.concat(newTable, axis=1)
 
@@ -392,6 +375,38 @@ class TEDataSet(TEBase):
         return table
 
 
+    def _aggregate(self, table: pd.DataFrame, agg: list) -> pd.DataFrame:
+        # aggregate
+        if agg is None:
+            agg = ['src_ref']
+
+        # list of columns to group by
+        groupCols = [c for c in table.columns if c not in (['component', 'value'] + agg)]
+
+        # perform groupby and do not drop NA values
+        grouped = table.groupby(groupCols, dropna=False)
+
+        # create return list
+        ret = []
+
+        # loop over groups
+        for keys, ids in grouped.groups.items():
+            # get rows in group
+            rows = table.loc[ids]
+
+            out = rows \
+                .groupby(groupCols + agg, dropna=False) \
+                .agg({'value': 'sum'}) \
+                .groupby(groupCols, dropna=False) \
+                .agg({'value': 'mean'})
+
+            # add to return list
+            ret.append(out)
+
+        # convert return list to dataframe and return
+        return pd.concat(ret)
+
+
     # apply mappings between entry types
     def _applyTypeMappings(self, table: pd.DataFrame) -> pd.DataFrame:
         # list of columns to group by
@@ -414,13 +429,17 @@ class TEDataSet(TEBase):
             if cond.any():
                 if capex.empty:
                     warnings.warn(TEGenerationFailure(rows.loc[cond], 'No CAPEX value matching a relative FOPEX value found.'))
+
+                convFacRep = convUnit(self.getRepUnit('capex') + '/a', self.getRepUnit('fopex'))
+                convFacRef = convUnit(self.getRefUnit('capex'), self.getRefUnit('fopex'), self.refFlow)
+
                 rows.loc[cond] = rows.loc[cond].assign(value=lambda row:
-                    np.nan if capex.empty else row['value'] *
+                    np.nan if capex.empty else row['value'] * convFacRep / convFacRef *
                     (capex.query(f"component=='{row['component'].iloc[0]}'")['value'].iloc[0]
                     if (row['component'].notna().all() and not capex.query(f"component=='{row['component'].iloc[0]}'").empty)
                     else capex['value'].sum()),
                 )
-                rows.loc[cond, 'unit'] = np.nan if capex.empty else (capex['unit'].iloc[0]+'/a')
+                rows.loc[cond, 'unit'] = self.getRepUnit('fopex')
                 rows.loc[cond, 'type'] = 'fopex'
 
             # 2. convert fopex to fopex_spec
@@ -430,7 +449,7 @@ class TEDataSet(TEBase):
                 convFacRef = convUnit(self.getRefUnit('fopex') + '*a', self.getRefUnit('fopex_spec'), self.refFlow)
 
                 rows.loc[cond, 'value'] *= convFacRep / convFacRef
-                rows.loc[cond, 'unit'] = rows.loc[cond, 'unit'].apply(lambda u: str(ureg(u + '*a').to_reduced_units().u))
+                rows.loc[cond, 'unit'] = self.getRepUnit('fopex_spec')
                 rows.loc[cond, 'type'] = 'fopex_spec'
 
             # 3. convert unit of CAPEX (???)
@@ -453,9 +472,9 @@ class TEDataSet(TEBase):
                 if 'reference_flow' not in self._tspecs:
                     warnings.warn(TEGenerationFailure(rows.loc[cond], 'Found efficiency but technology has no reference flow.'))
                 else:
-                    rows.loc[cond, 'value'] = rows.loc[cond, 'value'].assign(
-                        value=lambda row: 1 / row['value'] * convUnit(self.refUnit, self.getRepUnit('demand', row['flow_type'])),
-                        unit=lambda row: self.getRepUnit('demand', row['flow_type']),
+                    rows.loc[cond] = rows.loc[cond].assign(
+                        value=lambda row: 1 / row['value'] * convUnit(self.refUnit, self.getRepUnit('demand', row['flow_type'].iloc[0])) if row['flow_type'].notna().all() else np.nan,
+                        unit=lambda row: self.getRepUnit('demand', row['flow_type'].iloc[0]) if row['flow_type'].notna().all() else row['flow_type'],
                     )
                     rows.loc[cond, 'type'] = 'demand'
 
