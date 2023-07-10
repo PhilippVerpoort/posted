@@ -1,6 +1,6 @@
 import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Callable
 
 import numpy as np
 import pandas as pd
@@ -9,6 +9,7 @@ import warnings
 
 from posted.path import pathOfTEDFile
 from posted.config.config import techs, flowTypes, defaultUnits, defaultMasks
+from posted.ted.Mask import Mask
 from posted.ted.TEBase import TEBase
 from posted.ted.TEDataFile import TEDataFile
 from posted.ted.TEDataTable import TEDataTable
@@ -263,9 +264,9 @@ class TEDataSet(TEBase):
 
     # select data
     def generateTable(self,
-                      agg: None | list = None,
+                      agg: Optional[list[str]] = None,
                       masks_database: bool = True,
-                      masks_other: None | list = None,
+                      masks: Optional[list[Mask]] = None,
                       keepSingularIndexLevels: bool = False,
                       **kwargs):
         # the dataset it the starting-point for the table
@@ -307,15 +308,17 @@ class TEDataSet(TEBase):
         )
         table.drop(columns=['flow_type', 'unit'], inplace=True)
 
-        # apply masks
-        table = self._applyMasks(table, masks_other, masks_database)
-
         # sort table
         sorting = ['type'] + self._caseFields + ['src_ref', 'period', 'component']
         table = table.sort_values(by=sorting).reset_index(drop=True)
 
+        # compile all masks into list
+        masks = masks if masks is not None else []
+        if masks_database and self._tid in defaultMasks:
+            masks += [Mask(**maskDict) for maskDict in defaultMasks[self._tid]]
+
         # aggregation
-        table = self._aggregate(table, agg)
+        table = self._aggregate(table, agg, masks)
 
         # unstack type
         table = table.unstack('type')
@@ -375,7 +378,7 @@ class TEDataSet(TEBase):
         return table
 
 
-    def _aggregate(self, table: pd.DataFrame, agg: list) -> pd.DataFrame:
+    def _aggregate(self, table: pd.DataFrame, agg: list, masks: list[Mask]) -> pd.DataFrame:
         # aggregate
         if agg is None:
             agg = ['src_ref']
@@ -390,9 +393,10 @@ class TEDataSet(TEBase):
         ret = []
 
         # loop over groups
-        for keys, ids in grouped.groups.items():
-            # get rows in group
-            rows = table.loc[ids]
+        for keys, rows in grouped:
+            for mask in masks:
+                if mask.matches(rows):
+                    rows = mask.applyWeights(rows)
 
             out = rows \
                 .groupby(groupCols + agg, dropna=False) \
@@ -560,24 +564,3 @@ class TEDataSet(TEBase):
 
         # convert return list to dataframe and return
         return pd.concat(ret).reset_index(drop=True)
-
-
-    # apply masks
-    def _applyMasks(self, table, masks_other, masks_database) -> pd.DataFrame:
-        # compile all masks into list
-        masks = masks_other if masks_other is not None else []
-        if masks_database and self._tid in defaultMasks:
-            masks += defaultMasks[self._tid]
-
-        # set weight from masks
-        table['weight'] = 1.0
-        for mask in masks:
-            q = ' & '.join([f"{key}=='{val}'" for key, val in mask['query'].items()])
-            table.loc[table.query(q).index, 'weight'] = mask['weight']
-
-        # drop entries with zero weight and apply weights to values otherwise
-        table = table.query('weight!=0.0').reset_index(drop=True)
-        table['value'] *= table['weight']
-        table.drop(columns=['weight'], inplace=True)
-
-        return table
