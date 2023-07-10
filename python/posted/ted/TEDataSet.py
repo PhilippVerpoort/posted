@@ -514,9 +514,9 @@ class TEDataSet(TEBase):
         ret = []
 
         # loop over groups
-        for keys, ids in grouped.groups.items():
+        for keys, rows in grouped:
             # get rows in group
-            rows = table.loc[ids, ['period', 'value']]
+            rows = rows[['period', 'value']]
 
             # get a list of periods that exist
             periodsExist = rows['period'].unique()
@@ -531,21 +531,28 @@ class TEDataSet(TEBase):
             # set missing columns from group
             reqRows[groupCols] = keys
 
-            # extrapolate
+            # check case
+            condMatch = reqRows['period'].isin(periodsExist)
             condExtrapolate = (reqRows['period_upper'].isna() | reqRows['period_lower'].isna())
-            rowsExtrapolate = reqRows.loc[condExtrapolate] \
+
+            # match
+            rowsMatch = reqRows.loc[condMatch] \
+                .merge(rows, on='period')
+
+            # extrapolate
+            rowsExtrapolate = reqRows.loc[~condMatch & condExtrapolate] \
                 .assign(period_combined=lambda x: np.where(x.notna()['period_upper'], x['period_upper'], x['period_lower'])) \
                 .merge(rows.rename(columns={'period': 'period_combined'}), on='period_combined')
 
             # interpolate
-            rowsInterpolate = reqRows.loc[~condExtrapolate] \
+            rowsInterpolate = reqRows.loc[~condMatch & ~condExtrapolate] \
                 .merge(rows.rename(columns={c: f"{c}_upper" for c in rows.columns}), on='period_upper') \
                 .merge(rows.rename(columns={c: f"{c}_lower" for c in rows.columns}), on='period_lower') \
                 .assign(value=lambda row: row['value_lower'] + (row['period_upper'] - row['period']) /
                        (row['period_upper'] - row['period_lower']) * (row['value_upper'] - row['value_lower']))
 
             # combine into one dataframe and drop unused columns
-            rowsAppend = pd.concat([rowsExtrapolate, rowsInterpolate]) \
+            rowsAppend = pd.concat([rowsMatch, rowsExtrapolate, rowsInterpolate]) \
                 .drop(columns=['period_upper', 'period_lower', 'period_combined', 'value_upper', 'value_lower'])
 
             # add to return list
