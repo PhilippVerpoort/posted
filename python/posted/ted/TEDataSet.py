@@ -432,7 +432,7 @@ class TEDataSet(TEBase):
             cond = (rows['type'] == 'fopex_rel')
             if cond.any():
                 if capex.empty:
-                    warnings.warn(TEGenerationFailure(rows.loc[cond], 'No CAPEX value matching a relative FOPEX value found.'))
+                    warnings.warn(TEGenerationFailure(rows.loc[cond], self._tid, 'No CAPEX value matching a relative FOPEX value found.'))
 
                 convFacRep = convUnit(self.getRepUnit('capex') + '/a', self.getRepUnit('fopex'))
                 convFacRef = convUnit(self.getRefUnit('capex'), self.getRefUnit('fopex'), self.refFlow)
@@ -474,7 +474,7 @@ class TEDataSet(TEBase):
             cond = (rows['type'] == 'energy_eff')
             if cond.any():
                 if 'reference_flow' not in self._tspecs:
-                    warnings.warn(TEGenerationFailure(rows.loc[cond], 'Found efficiency but technology has no reference flow.'))
+                    warnings.warn(TEGenerationFailure(rows.loc[cond], self._tid, 'Found efficiency but technology has no reference flow.'))
                 else:
                     rows.loc[cond] = rows.loc[cond].assign(
                         value=lambda row: 1 / row['value'] * convUnit(self.refUnit, self.getRepUnit('demand', row['flow_type'].iloc[0])) if row['flow_type'].notna().all() else np.nan,
