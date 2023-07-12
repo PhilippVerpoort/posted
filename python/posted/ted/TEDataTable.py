@@ -18,10 +18,12 @@ class TEDataTable:
         self._name: None | str = name
 
 
-    # access dataframe
-    @property
-    def data(self) -> pd.DataFrame:
+    # get and set dataframe and define property data
+    def get_data(self) -> pd.DataFrame:
         return self._df
+    def set_data(self, data: pd.DataFrame):
+        self._df = data
+    data = property(get_data, set_data)
 
 
     # access reference flowtype
