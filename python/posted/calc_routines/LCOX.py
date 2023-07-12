@@ -28,12 +28,20 @@ class LCOX(AbstractCalcRoutine):
         if self._has(['fopex_spec', 'ocf'], old, missing):
             new['fop'] = old['fopex_spec'] / old['ocf']
 
-        # demand
+        # demand cost = demand * price
         for oldType in [c for c in old if c.startswith('demand:')]:
-            newType = re.sub(r"^demand:", 'dem:', oldType)
+            newType = re.sub(r"^demand:", 'dem_cost:', oldType)
             priceType = re.sub(r"^demand:", 'price:', oldType)
 
             if self._has([oldType, priceType], old, missing):
                 new[newType] = old[oldType] * old[priceType]
+
+        # transport cost = demand * specific transport cost
+        for oldType in [c for c in old if re.match(r'transp_cost:', c)]:
+            newType = re.sub(r"^demand(_sc)?:", 'transp_cost:', oldType)
+            transpType = re.sub(r"^demand(_sc)?:", 'price:', oldType)
+
+            if self._has([transpType, oldType], old, missing):
+                new[newType] = old[oldType] * old[transpType]
 
         return new, missing
