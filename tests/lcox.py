@@ -12,7 +12,7 @@ assump = {
     'price:h2': 100.0 * ureg('EUR/MWh'),
     'price:heat': 6.0 * ureg('EUR/GJ'),
 }
-print(t1.calc(LCOX, assump=assump).data)
+print(t1.assume(assump).calc(LCOX).data)
 
 
 t2 = TEDataSet('ELH2').generateTable(period=[2030, 2050], subtech=['Alkaline', 'PEM'], agg=['subtech', 'src_ref'])
