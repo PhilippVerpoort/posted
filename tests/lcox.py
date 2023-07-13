@@ -26,5 +26,5 @@ assump2 = pd.DataFrame(
     index=pd.Index([2030, 2050], name='period'),
     columns=pd.Index(['price:elec'], name='type'),
     data=[50.0, 60.0],
-)
+).astype('pint[EUR/MWh]')
 print(t2.assume(assump1).assume(assump2).calc(LCOX).data.pint.dequantify())
