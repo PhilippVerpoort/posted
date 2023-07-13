@@ -6,8 +6,8 @@ from posted.config.config import techClasses
 from posted.units.units import ureg, convUnit
 from posted.utils import utils
 
-allowedKeepTokens = ['', 'off', 'value', 'assump']
 
+allowedKeepTokens = ['', 'off', 'value', 'assump']
 
 class TEDataTable:
     # initialise

@@ -37,9 +37,9 @@ class LCOX(AbstractCalcRoutine):
                 new[newType] = old[oldType] * old[priceType]
 
         # transport cost = demand * specific transport cost
-        for oldType in [c for c in old if re.match(r'transp_cost:', c)]:
+        for oldType in [c for c in old if re.match(r"^demand(_sc)?:", c)]:
             newType = re.sub(r"^demand(_sc)?:", 'transp_cost:', oldType)
-            transpType = re.sub(r"^demand(_sc)?:", 'price:', oldType)
+            transpType = re.sub(r"^demand(_sc)?:", 'transp:', oldType)
 
             if self._has([transpType, oldType], old, missing):
                 new[newType] = old[oldType] * old[transpType]
