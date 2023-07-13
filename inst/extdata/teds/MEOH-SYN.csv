@@ -23,6 +23,6 @@ demand,co2,,,,1.397,,t,,,,Nyari (2020),Table 6
 demand,h2,,,,0.199,,t,,,,Pérez-Fortes (2015),Table 1
 demand,h2,,,,0.193,,t,,,,Soler 2022,Table 3
 demand,h2,,,,189.0,,kg,,,,DECHEMA (2017),Section 4.4.3
-demand,h2,,,,0.129,,t,,,,Nyari (2020),Table 6
+demand,h2,,,,0.192,,t,,,,Nyari (2020),Table 6
 lifetime,,,,,25.0,,year,,,"See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019),
 emission,co2,,,,0.023,,kg,,kg,,Nyari (2020),Table 6
