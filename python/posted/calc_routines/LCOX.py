@@ -1,14 +1,19 @@
 import re
 
+import numpy as np
 import pandas as pd
+from pint.errors import DimensionalityError
 
 from posted.calc_routines.AbstractCalcRoutine import AbstractCalcRoutine
 
 
 # calculate annuity factor
 def _calcAnnuityFactor(ir, n):
-    n = n.astype('pint[a]').pint.m
-    ir = ir.astype('pint[dimensionless]').pint.m
+    try:
+        n = n.astype('pint[a]').pint.m
+        ir = ir.astype('pint[dimensionless]').pint.m
+    except DimensionalityError:
+        return np.nan
 
     return ir * (1 + ir) ** n / ((1 + ir) ** n - 1)
 
