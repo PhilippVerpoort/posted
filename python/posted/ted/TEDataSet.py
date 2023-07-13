@@ -1,6 +1,6 @@
 import datetime
 from pathlib import Path
-from typing import Optional, Callable
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -456,11 +456,11 @@ class TEDataSet(TEBase):
                 rows.loc[cond, 'unit'] = self.getRepUnit('fopex_spec')
                 rows.loc[cond, 'type'] = 'fopex_spec'
 
-            # 3. convert unit of CAPEX (???)
-            # convFacRef = convUnit(self.getRefUnit('capex') + '*a', self.getRefUnit('fopex_spec'), self.refFlow)
-            #
-            # rowsCAPEX = table['type'] == 'capex'
-            # table.loc[rowsCAPEX, 'value'] /= convFacRef
+            # 3. convert capex to units of annual flow capacity
+            cond = (rows['type'] == 'capex')
+            if cond.any():
+                convFacRef = convUnit(self.getRefUnit('capex'), self.refUnit + '/a', self.refFlow)
+                rows.loc[cond, 'value'] /= convFacRef
 
             # 4. convert FLH to OCF
             cond = (rows['type'] == 'flh')
