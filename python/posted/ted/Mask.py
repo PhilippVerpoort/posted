@@ -16,22 +16,23 @@ def applyCond(df: pd.DataFrame, cond: MaskCondition):
         return df.apply(cond)
 
 class Mask:
-    def __init__(self, when: MaskCondition | list[MaskCondition], use: MaskCondition | list[MaskCondition],
-                 weight: None | float | list[float] = None, other: float = np.nan):
+    def __init__(self,
+                 when: MaskCondition | list[MaskCondition] = None,
+                 use: MaskCondition | list[MaskCondition] = None,
+                 weight: None | float | list[float] = None,
+                 other: float = np.nan):
         # set fields from constructor arguments
-        self._when: list[MaskCondition] = when if isinstance(when, list) else [when]
-        self._use: list[MaskCondition] = use if isinstance(use, list) else [use]
+        self._when: list[MaskCondition] = [] if when is None else when if isinstance(when, list) else [when]
+        self._use: list[MaskCondition] = [] if use is None else use if isinstance(use, list) else [use]
         self._weight: list[float] = weight if isinstance(weight, list) or weight is None else [weight]
         self._other = other
 
         # perform consistency checks on fields
-        if not when or not use:
-            raise Exception(f"Arguments 'when' and 'use' must not be empty.")
-        if weight is not None and len(use) != len(weight):
+        if use and weight is not None and len(use) != len(weight):
             raise Exception(f"Must provide same length of 'use' conditions as 'weight' values.")
 
         # set default weight to 1 if not set otherwise
-        if self._weight is None:
+        if use and self._weight is None:
             self._weight = len(self._use) * [1.0]
 
     # check if a mask matches a dataframe (all 'when' conditions match across all rows)
