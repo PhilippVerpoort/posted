@@ -8,7 +8,7 @@ from sigfig import round
 import warnings
 
 from posted.path import pathOfTEDFile
-from posted.config.config import techs, flowTypes, defaultUnits, defaultMasks
+from posted.config.config import flowTypes, defaultUnits, defaultMasks
 from posted.ted.Mask import Mask
 from posted.ted.TEBase import TEBase
 from posted.ted.TEDataFile import TEDataFile
@@ -45,7 +45,7 @@ class TEDataSet(TEBase):
 
 
     # load TEDatFiles and compile into dataset
-    def _loadFiles(self, load_other: None | list, load_database: bool, check_incons: bool):
+    def _loadFiles(self, load_other: Optional[list], load_database: bool, check_incons: bool):
         files = []
 
         # load default TEDataFile from POSTED database

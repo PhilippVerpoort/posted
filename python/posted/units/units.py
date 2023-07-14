@@ -73,7 +73,7 @@ switch_specs = {
 
 
 # get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m³;norm"
-def convUnit(unit_from: str, unit_to: str, flow_type: None | str = None):
+def convUnit(unit_from: str | float, unit_to: str | float, flow_type: None | str = None):
     # return None if unit_from is None
     if unit_from != unit_from: return unit_from
 
