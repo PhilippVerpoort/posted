@@ -50,8 +50,8 @@ class TEDataFile(TEBase):
         for col, dtype in self._getDtypeMapping().items():
             if col in self._df:
                 continue
-            dfNew[col] = np.nan if dtype == 'float' else ''
             dfNew[col] = dfNew[col].astype(dtype)
+            dfNew[col] = np.nan
         self._df = dfNew
 
 
