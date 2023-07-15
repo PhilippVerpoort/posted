@@ -43,20 +43,12 @@ class Mask:
         return True
 
     # return a dataframe with weights applied
-    def applyWeights(self, df: pd.DataFrame):
-        # set default weight for all rows
-        ret = df.assign(weight=self._other)
+    def getWeights(self, df: pd.DataFrame):
+        ret = pd.Series(index=df.index, data=np.nan)
 
         # apply weights where the use condition matches
         for u, w in zip(self._use, self._weight):
-            ret.loc[applyCond(df, u), 'weight'] = w
-
-        # drop all rows with weights equal to nan
-        ret.dropna(subset='weight', inplace=True)
-
-        # apply weight
-        ret['value'] *= ret['weight']
-        ret.drop(columns='weight', inplace=True)
+            ret.loc[applyCond(df, u)] = w
 
         # return
         return ret

@@ -394,18 +394,32 @@ class TEDataSet(TEBase):
 
         # loop over groups
         for keys, rows in grouped:
+            # set default weights to 1.0
+            rows = rows.copy().assign(weight=1.0)
+
+            # update weights by applying masks
             for mask in masks:
                 if mask.matches(rows):
-                    rows = mask.applyWeights(rows)
+                    rows['weight'] *= mask.getWeights(rows)
 
-            out = rows \
-                .groupby(groupCols + agg, dropna=False) \
-                .agg({'value': 'sum'}) \
-                .groupby(groupCols, dropna=False) \
-                .agg({'value': 'mean'})
+            # drop all rows with weights equal to nan
+            rows.dropna(subset='weight', inplace=True)
 
-            # add to return list
-            ret.append(out)
+            if not rows.empty:
+                # aggregate with weights
+                out = rows \
+                    .groupby(groupCols + agg, dropna=False) \
+                    .apply(lambda cols: pd.Series({
+                        'value': cols['value'].sum(),
+                        'weight': np.average(cols['weight'], weights=cols['value']),
+                    })) \
+                    .groupby(groupCols, dropna=False) \
+                    .apply(lambda cols: pd.Series({
+                        'value': np.average(cols['value'], weights=cols['weight']),
+                    }))
+
+                # add to return list
+                ret.append(out)
 
         # convert return list to dataframe and return
         return pd.concat(ret)
