@@ -32,7 +32,7 @@ class Mask:
             raise Exception(f"Must provide same length of 'use' conditions as 'weight' values.")
 
         # set default weight to 1 if not set otherwise
-        if use and self._weight is None:
+        if self._weight is None:
             self._weight = len(self._use) * [1.0]
 
     # check if a mask matches a dataframe (all 'when' conditions match across all rows)
