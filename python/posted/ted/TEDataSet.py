@@ -386,16 +386,18 @@ class TEDataSet(TEBase):
         # list of columns to group by
         groupCols = [c for c in table.columns if c not in (['component', 'value'] + agg)]
 
-        # perform groupby and do not drop NA values
-        grouped = table.groupby(groupCols, dropna=False)
+        # sum over components
+        table = table \
+            .groupby(groupCols + agg, dropna=False) \
+            .agg({'value': 'sum'})
 
         # create return list
         ret = []
 
         # loop over groups
-        for keys, rows in grouped:
+        for keys, rows in table.groupby(groupCols, dropna=False):
             # set default weights to 1.0
-            rows = rows.copy().assign(weight=1.0)
+            rows = rows.assign(weight=1.0)
 
             # update weights by applying masks
             for mask in masks:
@@ -408,11 +410,6 @@ class TEDataSet(TEBase):
             if not rows.empty:
                 # aggregate with weights
                 out = rows \
-                    .groupby(groupCols + agg, dropna=False) \
-                    .apply(lambda cols: pd.Series({
-                        'value': cols['value'].sum(),
-                        'weight': np.average(cols['weight'], weights=cols['value']),
-                    })) \
                     .groupby(groupCols, dropna=False) \
                     .apply(lambda cols: pd.Series({
                         'value': np.average(cols['value'], weights=cols['weight']),
