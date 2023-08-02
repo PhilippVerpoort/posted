@@ -7,7 +7,6 @@ source("R/path.R")
 source("R/ted/TEDataFile.R")
 source("R/units/units.R")
 
-#' @export
 TEDataSet <- R6Class("TEDataSet",
     inherit = TEBase,
     private = list(
