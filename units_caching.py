@@ -12,8 +12,8 @@ compatible_units = []
 appended_data = pd.DataFrame()
 
 # Loop through all ted files
-for filename in os.listdir('data/teds/'):
-    filepath = os.path.join('data/teds/', filename)
+for filename in os.listdir('inst/extdata/teds/'):
+    filepath = os.path.join('inst/extdata//teds/', filename)
     # Check if the file is a CSV file
     if filename.endswith(".csv"):
         # Read the ted file and extract only columns "reported_unit" and "reference_unit"
@@ -73,6 +73,8 @@ for unit_from in other_units:
             conversion = dict(unit_from=unit_from, unit_to=unit_to, flow_type = '')
             conversions.append(conversion)
 
+# for reference_unit, all combinations disregarding the flow_type limitations are added
+
 # iterate over all flow types
 for flow_type in flowTypes.keys():
     # get allowed dimensions for the flow type
@@ -95,6 +97,9 @@ for flow_type in flowTypes.keys():
                 conversion = dict(unit_from=unit_from, unit_to=unit_to, flow_type = flow_type)
                 conversions.append(conversion)
 
+# ----- Add combinations of units that are not contained in the data
+conversions.append(dict(unit_from="percent", unit_to="dimensionless", flow_type = ''))
+conversions.append(dict(unit_from="dimensionless", unit_to="percent", flow_type = ''))
 
 # ----- Call convUnit for each of the conversions and save the result in the cache dataframe 
 

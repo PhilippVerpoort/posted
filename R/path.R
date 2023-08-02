@@ -1,5 +1,4 @@
-BASE_PATH <- "."
-
+BASE_PATH <- "./inst/extdata"
 
 pathOfFile <- function(dname, fname) {
   return(file.path(BASE_PATH, dname, fname))
@@ -7,15 +6,14 @@ pathOfFile <- function(dname, fname) {
 
 
 pathOfDataFile <- function(fname) {
-  return(file.path(BASE_PATH, "data", fname))
+  return(file.path(BASE_PATH, fname))
 }
 
 
 pathOfTEDFile <- function(tid) {
-  return(file.path(BASE_PATH, "data", "teds", paste0(tid, ".csv")))
+  return(file.path(BASE_PATH, "teds", paste0(tid, ".csv")))
 }
 
-
-getPath <- function() {
-  return(here::here())
+pathOfOutputFile <- function(fname) {
+  return(file.path(BASE_PATH, "output", fname))
 }
