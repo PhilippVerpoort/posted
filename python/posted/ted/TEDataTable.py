@@ -79,7 +79,7 @@ class TEDataTable:
             )
 
 
-    def assume(self, assump: pd.DataFrame | dict, inplace: bool = False):
+    def assume(self, assump: pd.DataFrame | dict):
         if isinstance(assump, pd.DataFrame):
             # ensure all indexes have names
             if any((n is None and assump.index.get_level_values(n).nunique() > 1) for n in assump.index.names):
@@ -106,7 +106,7 @@ class TEDataTable:
             assump = assump.reorder_levels(dfNew.columns.names, axis=1)
 
             # drop existing assumptions that will be overwritten
-            dfNew.drop(columns=[c for c in self._df if c in assump.columns], inplace=True)
+            dfNew = dfNew.drop(columns=[c for c in self._df if c in assump.columns])
 
             # merge datatable with assumptions
             dfNew = utils.fullMerge(dfNew, assump)
@@ -117,7 +117,7 @@ class TEDataTable:
                 if isinstance(dfNew, pd.Series):
                     dfNew = dfNew.to_frame().T
         elif isinstance(assump, dict):
-            dfNew = self._df if inplace else self._df.copy()
+            dfNew = self._df.copy()
             tlev = dfNew['value'].columns.names.index('type')
             for col in assump:
                 if dfNew['value'].columns.nlevels > 1:
@@ -136,15 +136,12 @@ class TEDataTable:
             dfNew[col] = dfNew[col].astype(f"pint[{dfNew[col].iloc[0].u if isinstance(dfNew[col].iloc[0], pint.Quantity) else 'dimensionless'}]")
 
         # update existing instance (inplace) or return new datatable (not inplace)
-        if inplace:
-            self._df = dfNew
-        else:
-            return TEDataTable(
-                data=dfNew,
-                refQuantity=self.refQuantity,
-                refFlow=self.refFlow,
-                name=self.name,
-            )
+        return TEDataTable(
+            data=dfNew,
+            refQuantity=self.refQuantity,
+            refFlow=self.refFlow,
+            name=self.name,
+        )
 
 
     # calculate levelised cost of X
