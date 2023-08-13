@@ -54,7 +54,7 @@ class TEProcessTreeDataTable(TEDataTable):
                         continue
                     data['value', pDem, colID] *= rescale
 
-                data.rename(columns={demandCol: demandColNew}, inplace=True)
+                data.columns = data.columns.map({col: ('value', p, demandColNew) if col[1] == p and col[2] == demandCol else col for col in data.columns})
 
         # simplify process names
         if simplifyProcessNames:
