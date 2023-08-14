@@ -87,7 +87,7 @@ class TEDataTable:
 
             # add part 'assump' as top column level if not present
             if 'part' in assump.columns.names:
-                parts = assump.index.unique(level='part')
+                parts = assump.columns.unique(level='part')
                 if len(parts) > 1 or 'assump' not in parts:
                     raise Exception(f"Assumption columns should either not contain the part level or only contain part 'assump'. Found: {parts}")
             else:
