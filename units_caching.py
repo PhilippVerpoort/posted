@@ -49,11 +49,19 @@ for unit_str in unique_values:
                     energy_units.append(unit_str)
                     energy_units.append(unit_str + ';LHV')
                     energy_units.append(unit_str + ';HHV')
+                # add power units here
+                elif unit.dimensionality == '[length] ** 2 * [mass] / [time] ** 3':
+                    energy_units.append(unit_str)
+                    energy_units.append(unit_str + ';LHV')
+                    energy_units.append(unit_str + ';HHV')
                 elif unit.dimensionality == '[length] ** 3' or unit.dimensionality == '[volume]':
                     # volume units are appened with norm and standard
                     volume_units.append(unit_str)
                     volume_units.append(unit_str + ';norm')
                     volume_units.append(unit_str + ';standard')
+                elif unit.dimensionality == '[mass] / [time]':
+                    # mass units are not augmented
+                    mass_units.append(unit_str)
                 elif unit.dimensionality == '[mass]':
                     # mass units are not augmented
                     mass_units.append(unit_str)

@@ -1,13 +1,19 @@
-library(dplyr)
 library(magrittr)
-library(tibble)
 
-source("R/config/read_config.R")
+source("R/config_read_config.R")
 source("R/path.R")
-source("R/ted/TEDataFile.R")
-source("R/units/units.R")
+source("R/ted_TEDataFile.R")
+#source("R/units_units.R")
 
-TEDataSet <- R6Class("TEDataSet",
+#' The class that implements a fully usable TE data set.
+#' 
+#' @description This class implements a fully usable TE data set.
+#' It enables to generate aggregated tables to analize the underlying data.
+#' @examples
+#' elh2 <- TEDataSet$new("elh2")
+#' elh2$data()
+#' @export TEDataSet
+TEDataSet <- R6::R6Class("TEDataSet",
     inherit = TEBase,
     private = list(
         tid = NULL,
@@ -17,6 +23,8 @@ TEDataSet <- R6Class("TEDataSet",
         df = NULL,
         refUnits = NULL,
         repUnits = NULL,
+        # Description
+        # Load the data files from the POSTED database. Check consistency if required.
         loadFiles = function(load_other = list(), load_database, check_incons) {
             files <- list()
 
@@ -56,6 +64,9 @@ TEDataSet <- R6Class("TEDataSet",
 
             # compile dataset from the dataframes loaded from the individual files
             private$df <- do.call(rbind, lapply(files, function(f) f$data()))
+        # Description
+        # Check that the entry type and flow type are valid.
+        # Filter out invalid entries.
         },
         checkTypes = function() {
             cond <- private$df$type %in% names(private$tspecs$entry_types) &
@@ -64,6 +75,8 @@ TEDataSet <- R6Class("TEDataSet",
             private$df <- private$df[cond,]
             rownames(private$df) <- NULL
         },
+        # Description
+        # Set default reference and reported units and normalise.
         adjustUnits = function() {
             # set default reference units for all entry types
             private$setRefUnitsDef()
@@ -74,6 +87,11 @@ TEDataSet <- R6Class("TEDataSet",
             # normalise reported units of all entries
             private$normRepUnits()
         },
+        # Description
+        # Set default reference units for all entry types.
+        # Create mapping from default reference dimension to default reference unit where possible.
+        # Apply mapping to all entry types.
+        # Override with default reference unit if given.
         setRefUnitsDef = function() {
             private$refUnits <- list()
             for (typeid in names(private$tspecs$entry_types)) {
@@ -102,7 +120,12 @@ TEDataSet <- R6Class("TEDataSet",
                 private$refUnits[names(private$tspecs[["default-ref-units"]])] <- private$tspecs[["default-ref-units"]]
                 #private$refUnits <- c(private$refUnits, private$tspecs[["default-ref-units"]])
             }
-        },  
+        },
+        # Description
+        # Normalise reference units of all entries.
+        # Calculate conversion factor from current reference unit to default reference unit.
+        # Apply conversion factor to all entries.
+        # Set converted value, uncertainty and unit.
         normRefUnits = function() {
             # default reference value is 1.0
             private$df$reference_value[is.na(private$df$reference_value)] <- 1.0
@@ -115,13 +138,17 @@ TEDataSet <- R6Class("TEDataSet",
                 convUnitDF(private$df[!is.na(private$df["reference_unit"]), ], 'reference_unit', 'reference_unit_default', self$refFlow())
 
             # set converted value and unit
-            private$df <- add_column(private$df, value=private$df$reported_value / private$df$reference_value / private$df$reference_unit_factor, .after=colnames(private$df)[7])
-            private$df <- add_column(private$df, unc=private$df$reported_unc / private$df$reference_value / private$df$reference_unit_factor, .after='value')
-            private$df <- add_column(private$df, unit=private$df$reported_unit, .after='unc')
+            private$df <- tibble::add_column(private$df, value=private$df$reported_value / private$df$reference_value / private$df$reference_unit_factor, .after=colnames(private$df)[7])
+            private$df <- tibble::add_column(private$df, unc=private$df$reported_unc / private$df$reference_value / private$df$reference_unit_factor, .after='value')
+            private$df <- tibble::add_column(private$df, unit=private$df$reported_unit, .after='unc')
 
             # drop old unit and value columns
             private$df <- private$df[, -grep("^(reported|reference)_(value|unc|unit).*$", colnames(private$df))]
         },
+        # Description
+        # Set default reported units for all entry types.
+        # Create mapping from default reported dimension to default reported unit where possible.
+        # Apply mapping to all entry type and assign a tuple of type, flow type and unit
         setRepUnitsDef = function() {
             types <- unique(c(names(private$tspecs$entry_types), 'fopex', 'fopex_spec'))
             private$repUnits <- list()
@@ -144,6 +171,12 @@ TEDataSet <- R6Class("TEDataSet",
                 }
             }
         },
+        # Description
+        # Normalise reported units of all entries.
+        # Calculate conversion factor from current reported unit to default reported unit.
+        # This is done by joining with the default reported unit for the type and flow type.
+        # Apply conversion factor to all entries.
+        # Set converted value, uncertainty and unit.
         normRepUnits = function() {
 
             dfRepUnitsList <- list()
@@ -184,6 +217,10 @@ TEDataSet <- R6Class("TEDataSet",
             private$df$unit <- private$df$unit_convert
             private$df <- private$df[, !grepl('unit_convert', colnames(private$df))]
         },
+        # Description
+        # Convert values to defined units.
+        # @param type_units A list of units for entry types that are not of type flow.
+        # @param flow_units A list of units for entry types that are of type flow.
         convertUnits = function(type_units = NULL, flow_units = NULL) {
             # raise exception if no updates to units are provided
             if (is.null(type_units) && is.null(flow_units)) {
@@ -203,6 +240,13 @@ TEDataSet <- R6Class("TEDataSet",
         }
     ),
     public = list( 
+        #' @description
+        #' Create a TEDataSet object.
+        #' @param tid The technology ID.
+        #' @param data The data frame.
+        #' @param load_other Other data files to load.
+        #' @param load_database Whether to load the default data file from the POSTED database.
+        #' @param check_incons Whether to check for inconsistencies in the data.
         initialize = function(tid, data = NULL, load_other=list(), load_database=FALSE, check_incons=FALSE) {
             # initialise TEBase fields
             super$initialize(tid)
@@ -223,10 +267,16 @@ TEDataSet <- R6Class("TEDataSet",
                 private$adjustUnits()
             }
         },
+        #' @description
+        #' Get the data frame.
+        #' @return The data frame.
         data = function() {
             private$df
         },
-        # get reported unit for entry type
+        #' @description
+        #' Get the reported unit of an entry type.
+        #' @param typeid The entry type ID.
+        #' @param flowid The flow type ID. NULL if not applicable.
         getRepUnit = function(typeid, flowid = NULL) {
             if (is.null(flowid)) {
                 filtered <- private$repUnits[private$repUnits$type == typeid]
@@ -236,10 +286,16 @@ TEDataSet <- R6Class("TEDataSet",
                 return(filtered[[1]]$unit)
             }
         },
-        # get reference unit for entry type
+        #' @description
+        #' Get the reference unit of an entry type.
+        #' @param typeid The entry type ID.
+        #' @param flowid The flow type ID. NULL if not applicable.
         getRefUnit = function(typeid, flowid = NULL) {
             private$refUnits[[typeid]]
         },
+        #' @description
+        #' Query the data frame
+        #' @param ... The query parameters.
         query = function(...) {
             TEDataSet$new(
                 tid=private$tid,

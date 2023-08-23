@@ -1,45 +1,36 @@
-source("R/ted/TEDataFile.R")
-source("R/ted/TEDataSet.R")
+library("diffobj")
+library(dplyr)
+library(posted)
 
 
-test <- TEDataSet$new(tid="ELH2")
-print(test$data()) # this should give 40 rows (right now its only 13 and lots of them are missing values)
+datasets_to_be_tested <- list("ELH2", "IDR", "EAF", "MEOH-SYN", "HBNH3-ASU", "HOTROLL", "CAST", "DAC")
+results <- list()
 
-write.csv(
-    test$data(),
-    file="ELH2WithR2.csv",
-    #quote=FALSE,
-    row.names=FALSE,
-    #sep=",",
-    #qmethod="escape",
-    fileEncoding="UTF-8",
-    na=""
-)
+for (dataset in datasets_to_be_tested) {
+    d <- TEDataSet$new(tid=dataset)
+    write.csv(
+        d$data(),
+        file=paste0(paste0("./tests/comparison/", dataset), "R.csv"),
+        #quote=FALSE,
+        row.names=FALSE,
+        #sep=",",
+        #qmethod="escape",
+        fileEncoding="UTF-8",
+        na=""
+    )
+    # compare the output of the R implementation with the output of the Python implementation
+    f1 <- paste0(paste0("./tests/comparison/", dataset), "R.csv")
+    f2 <- paste0(paste0("./tests/comparison/", dataset), "Python.csv")
+    
+    results[[dataset]] <- summary(diffCsv(f1, f2, pager="off"))@all.eq
+}
 
-test <- TEDataSet$new(tid="IDR")
-
-write.csv(
-    test$data(),
-    file="IDRWithR2.csv",
-    #quote=FALSE,
-    row.names=FALSE,
-    #sep=",",
-    #qmethod="escape",
-    fileEncoding="UTF-8",
-    na=""
-)
-
-test <- TEDataSet$new(tid="EAF")
-
-write.csv(
-    test$data(),
-    file="EAFWithR2.csv",
-    #quote=FALSE,
-    row.names=FALSE,
-    #sep=",",
-    #qmethod="escape",
-    fileEncoding="UTF-8",
-    na=""
-)
-
-
+# print the results
+for (dataset in datasets_to_be_tested) {
+    result <- results[[dataset]]
+    # check if result is of length zero
+    if (length(result) == 0) {
+        result <- "OK"
+    }
+    print(paste0(dataset, ": ", result))
+}
