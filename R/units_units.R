@@ -23,7 +23,6 @@ cachedUnits <- read.csv(
 #' convUnit("MWh;LHV", "m³;norm")
 #' @export
 #' @return The conversion factor.
-# get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m³;norm"
 convUnit <- function(unit_from, unit_to, flow_type=NULL) {
     # if unit_from and unit_to are the same, the conversion rate is 1
     if (unit_from == unit_to) {

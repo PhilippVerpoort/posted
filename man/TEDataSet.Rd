@@ -12,7 +12,7 @@ elh2 <- TEDataSet$new("elh2")
 elh2$data()
 }
 \section{Super class}{
-\code{posted::TEBase} -> \code{TEDataSet}
+\code{\link[posted:TEBase]{posted::TEBase}} -> \code{TEDataSet}
 }
 \section{Methods}{
 \subsection{Public methods}{

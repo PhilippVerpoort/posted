@@ -17,7 +17,76 @@ from posted.units.units import convUnitDF, convUnit, ureg
 from posted.ted.failures import TEGenerationFailure
 
 
+
 class TEDataSet(TEBase):
+    # write class docu in epytext format based on the r documentation
+    """ The class that implements a fully usable TE data set.
+
+    This class implements a fully usable TE data set.
+    It enables to generate aggregated tables to analize the underlying data.
+    It also is a subclass fo TEBase.
+
+    Attributes
+    ----------
+    _tid : str
+        The technology ID.
+    _tspecs : dict
+        The technology specifications.
+    _dataFormat : dict
+        The data format.
+    _caseFields : list
+        The case fields.
+    _dtypeMapping : None | dict
+        The dtype mapping.
+    _df : None | pd.DataFrame
+        The data frame.
+    _refUnits : dict
+        The reference units.
+    _repUnits : list
+        The reported units.
+
+    Methods
+    -------
+    __init__(tid: str)
+        Create a TEDataSet object.
+    _loadFiles(load_other: list, load_database: bool, check_incons: bool)
+        Load the data files from the POSTED database. Check consistency if required.
+    _checkTypes()
+        Check that the entry type and flow type are valid.
+        Filter out invalid entries.
+    _adjustUnits()
+        Set default reference and reported units and normalise.
+    _setRefUnitsDef()
+        Set default reference units for all entry types.
+        Create mapping from default reference dimension to default reference unit where possible.
+        Apply mapping to all entry types.
+        Override with default reference unit if given.
+    _normRefUnits()
+        Normalise reference units of all entries.
+        Calculate conversion factor from current reference unit to default reference unit.
+        Apply conversion factor to all entries.
+        Set converted value, uncertainty and unit.
+    _setRepUnitsDef()
+        Set default reported units for all entry types.
+        Create mapping from default reported dimension to default reported unit where possible.
+        Apply mapping to all entry type and assign a tuple of type, flow type and unit
+    _normRepUnits()
+        Normalise reported units of all entries.
+        Calculate conversion factor from current reported unit to default reported unit.
+        This is done by joining with the default reported unit for the type and flow type.
+        Apply conversion factor to all entries.
+        Set converted value, uncertainty and unit.
+    convertUnits(type_units: None | dict, flow_units: None | dict)
+        Convert values to defined units.
+    data()
+        Get the data frame.
+    getRepUnit(typeid: str, flowid: None | str)
+        Get the reported unit of an entry type.
+    getRefUnit(typeid: str, flowid: None | str)
+        Get the reference unit of an entry type.
+    query(...)
+        Query the data frame.
+    """ 
     # initialise
     def __init__(self,
                  tid: str,
@@ -26,6 +95,21 @@ class TEDataSet(TEBase):
                  load_database: bool = False,
                  check_incons: bool = False,
                  ):
+        """ Create a TEDataSet object.
+
+        Parameters
+        ----------
+        tid : str
+            The technology ID.
+        data : None | pd.DataFrame
+            The data frame.
+        load_other : None | list
+            Other data files to load.
+        load_database : bool
+            Whether to load the default data file from the POSTED database.
+        check_incons : bool
+            Whether to check for inconsistencies in the data.
+        """
         TEBase.__init__(self, tid)
 
         if data is not None:
@@ -46,6 +130,17 @@ class TEDataSet(TEBase):
 
     # load TEDatFiles and compile into dataset
     def _loadFiles(self, load_other: Optional[list], load_database: bool, check_incons: bool):
+        """ Load the data files from the POSTED database. Check consistency if required.
+        
+        Parameters
+        ----------
+        load_other : None | list
+            Other data files to load.
+        load_database : bool
+            Whether to load the default data file from the POSTED database.
+        check_incons : bool
+            Whether to check for inconsistencies in the data.
+        """
         files = []
 
         # load default TEDataFile from POSTED database
@@ -79,6 +174,9 @@ class TEDataSet(TEBase):
 
     # reduce rows to those with types and flow_types within allowed values
     def _checkTypes(self):
+        """ Check that the entry type and flow type are valid.
+        Filter out invalid entries.
+        """
         # TODO: Raise TEInconsistencyException
         cond = self._df['type'].isin(list(self._tspecs['entry_types'])) & \
                (self._df['flow_type'].isin(list(flowTypes.keys())) |
@@ -88,6 +186,8 @@ class TEDataSet(TEBase):
 
     # adjust units: set default reference and reported units and normalise
     def _adjustUnits(self):
+        """ Set default reference and reported units and normalise.
+        """
         # set default reference units for all entry types
         self._setRefUnitsDef()
 
@@ -103,6 +203,11 @@ class TEDataSet(TEBase):
 
     # determine default reference units of entry types from technology class
     def _setRefUnitsDef(self):
+        """ Set default reference units for all entry types.
+        Create mapping from default reference dimension to default reference unit where possible.
+        Apply mapping to all entry types.
+        Override with default reference unit if given.
+        """
         self._refUnits = {}
         for typeid in self._tspecs['entry_types']:
             # set to nan if entry type has no reference dimension
@@ -130,6 +235,11 @@ class TEDataSet(TEBase):
 
     # normalise reference units
     def _normRefUnits(self):
+        """ Normalise reference units of all entries.
+        Calculate conversion factor from current reference unit to default reference unit.
+        Apply conversion factor to all entries.
+        Set converted value, uncertainty and unit.
+        """
         # default reference value is 1.0
         self._df['reference_value'].fillna(1.0, inplace=True)
 
@@ -164,6 +274,10 @@ class TEDataSet(TEBase):
 
     # set units of entries
     def _setRepUnitsDef(self):
+        """ Set default reported units for all entry types.
+        Create mapping from default reported dimension to default reported unit where possible.
+        Apply mapping to all entry type and assign a tuple of type, flow type and unit
+        """
         types = set(self._df['type'].unique().tolist() + ['fopex', 'fopex_spec'])
         self._repUnits = []
         for typeid in types:
@@ -184,10 +298,12 @@ class TEDataSet(TEBase):
 
     # normalise reported units
     def _normRepUnits(self):
-        testi = self._df.merge(
-            pd.DataFrame.from_records(self._repUnits).rename(columns={'unit': 'unit_convert'}),
-            on=['type', 'flow_type'],
-        )
+        """ Normalise reported units of all entries.
+        Calculate conversion factor from current reported unit to default reported unit.
+        This is done by joining with the default reported unit for the type and flow type.
+        Apply conversion factor to all entries.
+        Set converted value, uncertainty and unit.
+        """
 
         dfRepUnits = pd.DataFrame.from_records(self._repUnits).rename(columns={'unit': 'unit_convert'})
         def performJoinFlowTypeTolerance(row):
@@ -218,6 +334,15 @@ class TEDataSet(TEBase):
 
     # convert values to defined units (use defaults if non provided)
     def convertUnits(self, type_units: None | dict = None, flow_units: None | dict = None):
+        """ Convert values to defined units.
+
+        Parameters
+        ----------
+        type_units : None | dict
+            A list of units for entry types that are not of type flow.
+        flow_units : None | dict
+            A list of units for entry types that are of type flow.
+        """
         # raise exception if no updates to units are provided
         if type_units is None and flow_units is None:
             return
@@ -238,11 +363,32 @@ class TEDataSet(TEBase):
     # access dataframe
     @property
     def data(self):
+        """ Get the data frame.
+
+        Returns
+        -------
+        pd.DataFrame
+            The data frame.
+        """
         return self._df
 
 
     # get reported unit for entry type
     def getRepUnit(self, typeid: str, flowid: str | None = None):
+        """ Get the reported unit of an entry type.
+
+        Parameters
+        ----------
+        typeid : str
+            The entry type ID.
+        flowid : str | None
+            The flow type ID. None if not applicable.
+
+        Returns
+        -------
+        str
+            The reported unit.
+        """
         if flowid is None:
             return next(e['unit'] for e in self._repUnits if e['type'] == typeid)
         else:
@@ -251,11 +397,37 @@ class TEDataSet(TEBase):
 
     # get reference unit for entry type
     def getRefUnit(self, typeid: str):
+        """ Get the reference unit of an entry type.
+
+        Parameters
+        ----------
+        typeid : str
+            The entry type ID.
+
+        Returns
+        -------
+        str
+            The reference unit.
+        """
         return self._refUnits[typeid]
 
 
     # query data
     def query(self, *args, **kwargs):
+        """ Query the data frame.
+
+        Parameters
+        ----------
+        *args
+            The query parameters.
+        **kwargs
+            The query parameters.
+
+        Returns
+        -------
+        TEDataSet
+            The queried data set.
+        """
         return TEDataSet(
             tid=self._tid,
             data=self._df.query(*args, **kwargs),

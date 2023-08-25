@@ -10,7 +10,7 @@
 This abstract class defines the basic structure of a TE data file class.
 }
 \section{Super class}{
-\code{posted::TEBase} -> \code{TEDataFile}
+\code{\link[posted:TEBase]{posted::TEBase}} -> \code{TEDataFile}
 }
 \section{Methods}{
 \subsection{Public methods}{

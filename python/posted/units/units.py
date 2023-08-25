@@ -71,9 +71,24 @@ switch_specs = {
     'standard': [('density', 'density_std')]
 }
 
-
 # get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m³;norm"
 def convUnit(unit_from: str | float, unit_to: str | float, flow_type: None | str = None):
+    """ Get conversion factor between units.
+
+    Parameters
+    ----------
+    unit_from : str | float
+        The unit to convert from.
+    unit_to : str | float  
+        The unit to convert to.
+    flow_type : None | str, optional
+        The flow type, by default None.
+
+    Returns
+    -------
+    float
+        The conversion factor.
+    """
     # return None if unit_from is None
     if unit_from != unit_from: return unit_from
 
@@ -107,6 +122,25 @@ def convUnit(unit_from: str | float, unit_to: str | float, flow_type: None | str
 
 # vectorised versions
 def convUnitDF(df: pd.DataFrame, unit_from_col: str, unit_to_col: str, flow_type: None | str = None):
+    # write epytext docu
+    """ Convert a dataframe column from one unit to another.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The dataframe.
+    unit_from_col : str
+        The column with the unit to convert from.
+    unit_to_col : str
+        The column with the unit to convert to.
+    flow_type : None | str, optional
+        The flow type, by default None.
+
+    Returns
+    -------
+    pd.DataFrame
+        A one column data frame that contains the conversion factors
+    """
     return df.apply(
         lambda row:
         convUnit(row[unit_from_col], row[unit_to_col], flow_type or (row['flow_type'] if not pd.isnull(row['flow_type']) else None)),
