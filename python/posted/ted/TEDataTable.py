@@ -62,7 +62,8 @@ class TEDataTable:
                / self._refQuantity.m \
                * convUnit(str(self._refQuantity.u), str(refQuantityNew.u), self._refFlow)
 
-        colsRef = [c for c in self.data.columns if c in self.refTypes]
+        typeLevel = self._df.columns.names.index('type')
+        colsRef = [c for c in self._df.columns if c[typeLevel] in self.refTypes or c[typeLevel].startswith('demand_sc:')]
 
         if inplace:
             self._refQuantity = refQuantityNew
