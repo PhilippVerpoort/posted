@@ -60,7 +60,7 @@ class TEDataTable:
     def rescale(self, refQuantityNew: ureg.Quantity, inplace: bool = False):
         factor = refQuantityNew.m \
                / self._refQuantity.m \
-               * convUnit(str(self._refQuantity.u), str(refQuantityNew.m), self._refFlow)
+               * convUnit(str(self._refQuantity.u), str(refQuantityNew.u), self._refFlow)
 
         colsRef = [c for c in self.data.columns if c in self.refTypes]
 
