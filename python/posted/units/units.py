@@ -1,114 +1,149 @@
-from pathlib import Path
-
+import numpy as np
 import pandas as pd
-import pint
 import pint_pandas
-import re
+import iam_units
 
-from posted.path import pathOfFile
-from posted.config.config import flowTypes
+from posted.path import BASE_PATH
+from posted.config import flows
 
 
-# define new registry
-ureg = pint.UnitRegistry()
+# set up pint unit registry: use iam_units as a basis, load custom definitions, add pint_pandas, set display format,
+ureg = iam_units.registry
+ureg.load_definitions(BASE_PATH / 'units' / 'definitions.txt')
 pint_pandas.PintType.ureg = ureg
-
-
-# display format
 ureg.Unit.default_format = "~P"
 pint_pandas.PintType.ureg.default_format = "~P"
 
 
-# load definitions
-ureg.load_definitions(pathOfFile(Path(__file__).parent, 'definitions.txt'))
-
-def simplifyUnit(unit: str) -> str:
-    # replace currency manually with UnitContainer object, because manually added dimensions are not recognized by ureg
-    unit = unit.replace('[currency]', 'ureg("USD")')
-
-    # replace every dimension in unit with UnitContainer object of base unit of dimension
-    unit = re.sub(r'\[([^\d\W]+)\]', r'(ureg.get_base_units(list(ureg.get_compatible_units("[\1]"))[0])[1])', unit)
-    # evaluate unit
-    unit = eval('1 * ' + unit)
-
-    # convert unit to reduced units: this simplifies the unit
-    unit_red = unit.to_reduced_units()
-    # get dimensionality of reduced unit
-    unit_dim = str(ureg.Quantity(unit_red).dimensionality)
-    return unit_dim
-
-# check allowed dimensions for a flow type
-def allowedFlowDims(flow_type: None | str):
-    if flow_type != flow_type:
-        allowed_dims = ['[currency]']
-    else:
-        flow_type_data = flowTypes[flow_type]
-
-        allowed_dims = [str(ureg.Quantity(flow_type_data['default_unit']).dimensionality)] # default units dimension is always accepted
-
-        if(flow_type_data['energycontent_LHV'] == flow_type_data['energycontent_LHV'] or \
-           flow_type_data['energycontent_HHV'] == flow_type_data['energycontent_HHV']):
-            if '[length] ** 2 * [mass] / [time] ** 2' not in allowed_dims:
-                allowed_dims += ['[length] ** 2 * [mass] / [time] ** 2']
-            if '[mass]' not in allowed_dims: # [mass] is always accepted when there is a energydensity
-                allowed_dims += ['[mass]']
-
-        if(flow_type_data['density_norm'] == flow_type_data['density_norm'] or \
-            flow_type_data['density_std'] == flow_type_data['density_std']):
-            allowed_dims += ['[volume]']
-            allowed_dims += ['[length] ** 3']
-            if '[mass]' not in allowed_dims: # [mass] is always accepted when there is a energydensity
-                allowed_dims += ['[mass]']
-
-    return allowed_dims
-
-
-# convert units based on currency and flow type; test for exceptions, rethrow pint exceptions as own exceptions
-switch_specs = {
-    'LHV': [('energycontent', 'energycontent_LHV')],
-    'HHV': [('energycontent', 'energycontent_HHV')],
-    'norm': [('density', 'density_norm')],
-    'standard': [('density', 'density_std')]
+# define unit variants
+unit_variants = {
+    'LHV': {'param': 'energycontent', 'value': 'energycontent_LHV', 'dimension': 'energy',},
+    'HHV': {'param': 'energycontent', 'value': 'energycontent_HHV', 'dimension': 'energy',},
+    'norm': {'param': 'density', 'value': 'density_norm', 'dimension': 'volume',},
+    'std': {'param': 'density', 'value': 'density_std', 'dimension': 'volume',},
 }
 
 
-# get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m³;norm"
-def convUnit(unit_from: str | float, unit_to: str | float, flow_type: None | str = None):
-    # return None if unit_from is None
-    if unit_from != unit_from: return unit_from
+# check if unit is allowed for variable
+def unit_allowed(unit: str, flow_id: None | str, dimension: str):
+    if not isinstance(unit, str):
+        raise Exception('Unit to check must be string.')
 
-    # skip flow conversion if not flow type specs are provided
-    if flow_type is None:
-        return ureg(f"1 {unit_from}").to(unit_to, 'curcon').magnitude
+    # split unit into pure unit and variant
+    try:
+        unit, variant = split_off_variant(unit)
+    except:
+        return False, f"Inconsistent unit variant format in '{unit}'."
 
-    # set convFlowKeys according to chosen specs
-    __convFlowKeys = []
-    for elem in [unit_from, unit_to]:
-        elem_split = elem.split(";")
-        if len(elem_split) > 1:
-            __convFlowKeys += switch_specs[elem_split[1]]
-            if elem == unit_from:
-                unit_from = elem_split[0]
-            else:
-                unit_to = elem_split[0]
-    
-     # set defaults specs (LHV, norm) if not set in unit_from
-    #print(switch_specs['LHV'])
-    #print(switch_specs['HHV'] not in __convFlowKeys)
-    if switch_specs['LHV'][0] not in __convFlowKeys and switch_specs['HHV'][0] not in __convFlowKeys:
-        __convFlowKeys += switch_specs['LHV']
-    if switch_specs['norm'][0] not in __convFlowKeys and switch_specs['standard'][0] not in __convFlowKeys:
-        __convFlowKeys += switch_specs['norm']
+    try:
+        unit_registered = ureg(unit)
+    except:
+        return False, f"Unknown unit '{unit}'."
 
-    # perform the actual conversion step
-    ft_specs = flowTypes[flow_type]
-    return ureg(f"1 {unit_from}").to(unit_to, 'curcon', 'flocon', **{k[0]: ft_specs[k[1]] for k in __convFlowKeys}).magnitude
+    if flow_id is None:
+        if '[flow]' in dimension:
+            return False, f"No flow_id provided even though [flow] is in dimension."
+        if variant is not None:
+            return False, f"Unexpected unit variant '{variant}' for dimension [{dimension}]."
+        if (dimension == 'dimensionless' and unit_registered.dimensionless) or unit_registered.check(dimension):
+            return True, ''
+        else:
+            return False, f"Unit '{unit}' does not match expected dimension [{dimension}]."
+    else:
+        if '[flow]' not in dimension:
+            if (dimension == 'dimensionless' and unit_registered.dimensionless) or unit_registered.check(dimension):
+                return True, ''
+        else:
+            check_dimensions = [
+                (dimension.replace('[flow]', f"[{dimension_base}]"), dimension_base, base_unit)
+                for dimension_base, base_unit in [('mass', 'kg'), ('energy', 'kWh'), ('volume', 'm**3')]
+            ]
+            for check_dimension, check_dimension_base, check_base_unit in check_dimensions:
+                if unit_registered.check(check_dimension):
+                    if variant is None:
+                        if any(
+                            (check_dimension_base == variant_specs['dimension']) and
+                            flows[flow_id][variant_specs['value']] is not np.nan
+                            for variant, variant_specs in unit_variants.items()
+                        ):
+                            return False, f"Missing unit variant for dimension [{check_dimension_base}] for unit '{unit}'."
+                    elif unit_variants[variant]['dimension'] != check_dimension_base:
+                        return False, f"Variant '{variant}' incompatible with unit '{unit}'."
+
+                    default_unit, default_variant = split_off_variant(flows[flow_id]['default_unit'])
+                    ctx_kwargs = ctx_kwargs_for_variants([variant, default_variant], flow_id)
+
+                    if ureg(check_base_unit).is_compatible_with(default_unit, 'flocon', **ctx_kwargs):
+                        return True, ''
+                    else:
+                        return False, f"Unit '{unit}' not compatible with flow '{flow_id}'."
+
+        return False, f"Unit '{unit}' is not compatible with dimension [{dimension}]."
 
 
-# vectorised versions
-def convUnitDF(df: pd.DataFrame, unit_from_col: str, unit_to_col: str, flow_type: None | str = None):
-    return df.apply(
-        lambda row:
-        convUnit(row[unit_from_col], row[unit_to_col], flow_type or (row['flow_type'] if not pd.isnull(row['flow_type']) else None)),
-        axis=1,
-    )
+# get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m**3;norm"
+def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | str = None) -> float:
+    # return nan if unit_from or unit_to is nan
+    if unit_from is np.nan or unit_to is np.nan: return np.nan
+
+    # skip flow conversion if no flow_id specified
+    if flow_id is None or pd.isna(flow_id):
+        return ureg(unit_from).to(unit_to).magnitude
+
+    # get variants from units
+    pure_units = []
+    variants = []
+    for u in (unit_from, unit_to):
+        pure_unit, variant = split_off_variant(u)
+        pure_units.append(pure_unit)
+        variants.append(variant)
+
+    unit_from, unit_to = pure_units
+
+    # if no variants a specified, we may proceed without a flow context
+    if not any(variants):
+        return ureg(unit_from).to(unit_to).magnitude
+
+    # if both variants refer to the same dimension, we need to manually calculate the conversion factor and proceed without a flow context
+    if len(variants) == 2:
+        variant_params = {unit_variants[v]['param'] if v is not None else None for v in variants}
+        if len(variant_params) == 1:
+            param = next(iter(variant_params))
+            value_from, value_to = (flows[flow_id][unit_variants[v]['value']] for v in variants)
+
+            conv_factor = (ureg(value_from) / ureg(value_to)
+                           if param == 'energycontent' else
+                           ureg(value_to) / ureg(value_from))
+
+            return conv_factor.magnitude * ureg(unit_from).to(unit_to).magnitude
+
+    # perform the actual conversion step with all required variants
+    ctx_kwargs = ctx_kwargs_for_variants(variants, flow_id)
+    return ureg(unit_from).to(unit_to, 'flocon', **ctx_kwargs).magnitude
+
+
+# get key-word arguments for unit conversion for context from flow specs
+def ctx_kwargs_for_variants(variants: list[str | None], flow_id: str):
+    # set default conversion parameters to NaN, such that conversion fails with a meaningful error message in their
+    # absence. when this is left out, the conversion fails will throw a division-by-zero error message.
+    ctx_kwargs = {'energycontent': np.nan, 'density': np.nan}
+    ctx_kwargs |= {
+        unit_variants[v]['param']: flows[flow_id][unit_variants[v]['value']]
+        for v in variants if v is not None
+    }
+    return ctx_kwargs
+
+
+# split unit into pure unit and variant, e.g. MWh;LHV into MWh and LHV
+def split_off_variant(unit: str):
+    tokens = unit.split(';')
+    if len(tokens) == 1:
+        pure_unit = unit
+        variant = None
+    elif len(tokens) > 2:
+        raise Exception(f"Too many semi-colons in unit '{unit}'.")
+    else:
+        pure_unit, variant = tokens
+    if variant is not None and variant not in unit_variants:
+        raise Exception(f"Cannot find unit variant '{variant}'.")
+    return pure_unit, variant

@@ -1,0 +1,9 @@
+region,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,src_ref,src_comment
+EUR,2020,30,,EUR,,t,,"Pietzker, 2021",
+EUR,2025,134,,EUR,,t,,"Pietzker, 2021",
+EUR,2030,201,,EUR,,t,,"Pietzker, 2021",
+EUR,2035,268,,EUR,,t,,"Pietzker, 2021",
+EUR,2040,335,,EUR,,t,,"Pietzker, 2021",
+EUR,2045,402,,EUR,,t,,"Pietzker, 2021",
+EUR,2050,469,,EUR,,t,,"Pietzker, 2021",
+EUR,2055,536,,EUR,,t,,"Pietzker, 2021",

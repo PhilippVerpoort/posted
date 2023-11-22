@@ -1,0 +1,7 @@
+variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,,,670,,EUR,1,t/a,,"DECHEMA, 2017",Table 35
+FOPEX Specific,,,100,,EUR,1,t,,"DECHEMA, 2017",Table 35
+Demand|elec,,,0.3,,GJ,1,t,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+Demand|ng,,Feedstock,21,,GJ,1,t,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+Demand|ng,,Fuel,11.1,,GJ,1,t,,"IEA Ammonia Tech Roadmap, 2021",Table 1.2
+Demand|ng,,,29.7,2.1,GJ,1,t,,"European Commission BAT, 2007",Table 2.14

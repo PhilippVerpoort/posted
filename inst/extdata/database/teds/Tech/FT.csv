@@ -1,0 +1,13 @@
+variable,component,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,,2019,890,,USD,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA The future of Hydrogen (2019),
+CAPEX,,2020,1011,,EUR,,kW,,Buchenberg et al. (2023), Table 1
+CAPEX,,2030,864,,EUR,,kW,,Buchenberg et al. (2023), Table 1
+CAPEX,,2050,642,,EUR,,kW,,Buchenberg et al. (2023), Table 1
+CAPEX,,2030,760,,USD,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA The future of Hydrogen (2019),
+FOPEX Relative,,,4,,percent,,,,Buchenberg et al. (2023), Table 1
+FOPEX Relative,,,4,,percent,,,"See ""Assumptions"" of the report. Valid from 2019 to 2050",IEA The future of Hydrogen (2019),
+Lifetime,,,30,,year,,,"See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019),
+Lifetime,,,25,,percent,,,,Buchenberg et al. (2023), Table 1
+Demand|elec,,2019,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA The future of Hydrogen (2019),
+Demand|elec,,2030,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA The future of Hydrogen (2019),
+Efficiency|h2,,,73,,percent,,,H2 to liquid efficiency,IEA The future of Hydrogen (2019),

@@ -1,0 +1,10 @@
+variable,reported_value,reported_unit,reference_value,reference_unit,source,source_detail
+ironore,102.21,EUR,1,t,"World Bank, 2022",
+steelscrap,180,EUR,1,t,"Agora Energiewende, 2022",
+oxygen,0.09,EUR,1,m**3;norm,"Ecorys, 2014",
+oxygen,60.8,EUR,1,t,"Agora Energiewende, 2022",
+alloys,1777,EUR,1,t,"Vogl et al, 2018",
+alloys,1662,EUR,1,t,"Ecorys, 2014",
+lime,100,EUR,1,t,"Agora Energiewende, 2022",
+graphite_electrodes,4000,EUR,1,t,"Agora Energiewende, 2022",
+water,1,EUR,1,kg,"Keith et al., 2018",

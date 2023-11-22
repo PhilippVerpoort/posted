@@ -4,8 +4,6 @@ ppm = 1e-6
 
 year = 8760 * hour = a
 
-norm_cubic_meter = 1000000 * cubic_centimeters = Nm³
-
 # flows
 @context(energycontent=0,density=0) flow_conversion = flocon
     # energycontent is the energy content per mass
@@ -22,15 +20,4 @@ norm_cubic_meter = 1000000 * cubic_centimeters = Nm³
 
     [length] ** 3 -> [energy]: value * density * energycontent
     [energy] -> [length] ** 3: value / density / energycontent
-@end
-
-
-# currencies
-EUR = [currency]
-USD = nan EUR
-GBP = nan EUR
-
-@context currency_conversion = curcon
-    USD = 0.9179 EUR
-    GBP = 1.1672 EUR
 @end

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 
-from posted.units.units import convUnit
+from posted.units.units import unit_convert
 
 
 # main execution function
@@ -27,7 +27,7 @@ def main():
 
     # switch between different commands
     if cmd == 'conv':
-        convFactor = convUnit(args.fromUnit, args.toUnit, args.flow)
+        convFactor = unit_convert(args.fromUnit, args.toUnit, args.flow)
         print(f"{convFactor*args.value:.2f} {args.toUnit}")
 
     return

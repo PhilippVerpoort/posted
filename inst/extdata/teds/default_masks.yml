@@ -1,6 +1,0 @@
-direct-air-capture:
-  - for: "type.str.startswith('capex')"
-    use: "src_ref=='Ozkan et al. (2022)'"
-    weight: nan
-    def: 1.0
-    comment: All CAPEX data given is misquoted from a paper by Fuss et al (2018).

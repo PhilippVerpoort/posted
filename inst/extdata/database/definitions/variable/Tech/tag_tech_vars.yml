@@ -1,0 +1,65 @@
+Tech Variables wo Flows:
+  CAPEX:
+    description: CAPital EXpenditure (referring to reference capacity)
+    reported_dim: '[currency]'
+    reference_dim: '[flow]/[time]'
+    reported_unit_default: '{default currency}'
+    reference_unit_default: '{default reference flow unit raw}/a{default reference flow unit variant}'
+  FOPEX:
+    description: Fixed OPerational EXpenditure (referring to reference capacity)
+    reported_dim: '[currency]/[time]'
+    reference_dim: '[flow]/[time]'
+    reported_unit_default: '{default currency}/a'
+    reference_unit_default: '{default reference flow unit raw}/a{default reference flow unit variant}'
+  FOPEX Specific:
+    description: Fixed OPerational EXpenditure (specific)
+    reported_dim: '[currency]'
+    reference_dim: '[flow]'
+    reported_unit_default: '{default currency}'
+    reference_unit_default: '{default reference flow unit full}'
+  FOPEX Relative:
+    description: Fixed OPerational EXpenditure (relative to CAPEX)
+    reported_dim: 'dimensionless'
+    reported_unit_default: 'pct'
+  VOPEX:
+    description: Variable OPerational EXpenditure (non-energy, non-feedstock)
+    reported_dim: '[currency]'
+    reference_dim: '[flow]'
+    reported_unit_default: '{default currency}'
+    reference_unit_default: '{default reference flow unit full}'
+  Lifetime:
+    description: Expected time a facility can be in production for
+    reported_dim: '[time]'
+    reported_unit_default: 'a'
+  OCF:
+    description: Operational capacity factor
+    reported_dim: 'dimensionless'
+    reported_unit_default: 'pct'
+  FLH:
+    description: Full-load hours
+    reported_dim: '[time]'
+    reported_unit_default: 'h'
+  Total Cost:
+    description: Total cost of production
+    reported_dim: '[currency]'
+    reference_dim: '[flow]'
+    reported_unit_default: '{default currency}'
+    reference_unit_default: '{default reference flow unit full}'
+
+Tech Variables w Flows:
+  Input:
+    description: Energy and feedstock demand
+    reported_dim: '[flow]'
+    reference_dim: '[flow]'
+    reported_unit_default: '{default reported flow unit full}'
+    reference_unit_default: '{default reference flow unit full}'
+  Efficiency:
+    description: Energy or material efficiency
+    reported_dim: 'dimensionless'
+    reported_unit_default: 'pct'
+  Output:
+    description: Output produced
+    reported_dim: '[flow]'
+    reference_dim: '[flow]'
+    reported_unit_default: '{default reported flow unit full}'
+    reference_unit_default: '{default reference flow unit full}'

@@ -1,4 +1,0 @@
-type,flow_type,period,reported_value,reported_unit,src_ref
-capex,,2030,900,EUR,own
-capex,,2050,450,EUR,own
-energy_eff,elec,,70,percent,own

@@ -1,0 +1,9 @@
+subtech,variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+Above-ground compressed storage,Total Cost,,,0.33,,USD,,kg,,Abdin et al. (2021),
+Above-ground compressed storage,Total Cost,,,25.2,,USD,,kg,,Abdin et al. (2021),
+Salt caverns,Total Cost,,,0.14,,USD,,kg,,Abdin et al. (2021),
+Above-ground compressed storage,CAPEX,2017,,100,,EUR,,m³;norm,"here, H2 is stored at 500 bar. ""under standard conditions, (atmospheric pressure and 0°C), at 500 bar, H2 has a density of 33kg/m^3"" ",Gorre et al. (2019),
+Above-ground compressed storage,FOPEX Relative,2017,,1.5,,percent,,,,Gorre et al. (2019),
+Above-ground compressed storage,CAPEX,2030,,75,,EUR,,m³;norm,"here, H2 is stored at 500 bar. ""under standard conditions, (atmospheric pressure and 0°C), at 500 bar, H2 has a density of 33kg/m^3"" ",Gorre et al. (2019),
+Above-ground compressed storage,FOPEX Relative,2030,,1.5,,percent,,,,Gorre et al. (2019),
+Salt caverns,Total Cost,2020,,0.24,,EUR,,kWh,40 days average storage duration,Michalski et al. (2017),

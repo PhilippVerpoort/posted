@@ -1,0 +1,7 @@
+Price|{Flow IDs}:
+  description: A market price for {Flow IDs}
+  reported_dim: '[currency]'
+  reference_dim: '[flow]'
+  reference_flow: '{Flow IDs}'
+  reported_unit_default: '{default currency}'
+  reference_unit_default: '{default reference flow unit full}'

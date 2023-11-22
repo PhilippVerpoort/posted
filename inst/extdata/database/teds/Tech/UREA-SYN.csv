@@ -1,0 +1,10 @@
+variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,,,348,,MUSD,1.5,Mt/a,,"Jarvis and Samsatli, 2018",Section 2.1.1
+Demand|elec,,,173.7,27.2,kWh,1,t,,"Fiamelda et al, 2020",
+Demand|elec,,,91.5,68.5,kWh,1,t,,"Jarvis and Samsatli, 2018",Section 2.1.2
+Demand|heat,,,3.29,,GJ,1,t,Heat required for steam production.,"DECHEMA, 2017",Section 4.3.1
+Demand|nh3,,,0.57,,t,1,t,,"DECHEMA, 2017",Section 4.3.1
+Demand|nh3,,,0.58,,t,1,t,,"Riegel's Handbook of Ind. Chem., 1974",
+Demand|co2,,,0.7425,0.0075,t,1,t,,"Jarvis and Samsatli, 2018",Section 2.1.2
+Demand|co2,,,0.73,,t,1,t,,"DECHEMA, 2017",Section 4.3.1
+Demand|co2,,,0.76,,t,1,t,Prozess-Output: Wasser (0.34 t/t); CO2 und Ammonia werden teilweise im Kreis geführt (überstöchiometrischer Bedarf),"Riegel's Handbook of Ind. Chem., 1974",
