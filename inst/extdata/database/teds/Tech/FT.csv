@@ -1,13 +1,13 @@
 variable,component,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,,2019,890,,USD,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA The future of Hydrogen (2019),
-CAPEX,,2020,1011,,EUR,,kW,,Buchenberg et al. (2023), Table 1
-CAPEX,,2030,864,,EUR,,kW,,Buchenberg et al. (2023), Table 1
-CAPEX,,2050,642,,EUR,,kW,,Buchenberg et al. (2023), Table 1
-CAPEX,,2030,760,,USD,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA The future of Hydrogen (2019),
-FOPEX Relative,,,4,,percent,,,,Buchenberg et al. (2023), Table 1
-FOPEX Relative,,,4,,percent,,,"See ""Assumptions"" of the report. Valid from 2019 to 2050",IEA The future of Hydrogen (2019),
-Lifetime,,,30,,year,,,"See ""Assumptions"" of the report.",IEA The future of Hydrogen (2019),
-Lifetime,,,25,,percent,,,,Buchenberg et al. (2023), Table 1
-Demand|elec,,2019,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA The future of Hydrogen (2019),
-Demand|elec,,2030,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA The future of Hydrogen (2019),
-Efficiency|h2,,,73,,percent,,,H2 to liquid efficiency,IEA The future of Hydrogen (2019),
+CAPEX,,2019.0,890.0,,USD,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA-FOH19,
+CAPEX,,2020.0,1011.0,,EUR,,kW,,Buchenberg23, Table 1
+CAPEX,,2030.0,864.0,,EUR,,kW,,Buchenberg23, Table 1
+CAPEX,,2050.0,642.0,,EUR,,kW,,Buchenberg23, Table 1
+CAPEX,,2030.0,760.0,,USD,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA-FOH19,
+FOPEX Relative,,,4.0,,percent,,,,Buchenberg23, Table 1
+FOPEX Relative,,,4.0,,percent,,,"See ""Assumptions"" of the report. Valid from 2019 to 2050",IEA-FOH19,
+Lifetime,,,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH19,
+Lifetime,,,25.0,,percent,,,,Buchenberg23, Table 1
+Demand|elec,,2019.0,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA-FOH19,
+Demand|elec,,2030.0,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA-FOH19,
+Efficiency|h2,,,73.0,,percent,,,H2 to liquid efficiency,IEA-FOH19,
