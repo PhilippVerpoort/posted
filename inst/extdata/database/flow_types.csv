@@ -1,12 +1,12 @@
 flow_id,name,default_unit,energycontent_LHV,energycontent_HHV,density_norm,density_std
 elec,Electricity,MWh,,,,
 heat,Heat,MWh,,,,
-h2,Hydrogen,MWh;LHV,33.33 kWh/kg,39.41 kWh/kg,0.0899 kg/m³,0.0899 kg/m³
+h2,Hydrogen,MWh,33.33 kWh/kg,39.41 kWh/kg,0.0899 kg/m³,0.0899 kg/m³
 nh3,Ammonia,t,18.6 MJ/kg,22.5 MJ/kg,0.771 kg/m³,0.771 kg/m³
-ch4,Methane,MWh;LHV,13.9 kWh/kg,13.9 kWh/kg,0.716 kg/m³,0.716 kg/m³
+ch4,Methane,MWh,13.9 kWh/kg,13.9 kWh/kg,0.716 kg/m³,0.716 kg/m³
 meoh,Methanol,t,5.54 kWh/kg,5.54 kWh/kg,0.791 kg/l,0.791 kg/l
-ng,Natural gas,MWh;LHV,13.1 kWh/kg,13.1 kWh/kg,0.777 kg/m³,0.777 kg/m³
-coal,Coal,MWh;LHV,8 kWh/kg,8 kWh/kg,,
+ng,Natural gas,MWh,13.1 kWh/kg,13.1 kWh/kg,0.777 kg/m³,0.777 kg/m³
+coal,Coal,MWh,8 kWh/kg,8 kWh/kg,,
 co2,Purified CO2,t,,,1.977 kg/m³,1.977 kg/m³
 ironore,Iron ore,t,,,,
 dri,Directly reduced iron,t,,,,
@@ -23,5 +23,5 @@ oxygen,Oxygen,t,,,0.6998 kg/m³,0.6998 kg/m³
 nitrogen,Nitrogen,t,,,,
 graph_electr,Graphite electrodes,t,,,,
 steam,Steam,MWh,,,,
-ft_fuel,Fischer-Tropsch fuel,MWh;LHV,,,,
-gasoline,Gasoline,MWh;LHV,,,,
+ft_fuel,Fischer-Tropsch fuel,MWh,,,,
+gasoline,Gasoline,MWh,,,,
