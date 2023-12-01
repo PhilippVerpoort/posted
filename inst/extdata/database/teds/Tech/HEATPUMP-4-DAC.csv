@@ -1,10 +1,10 @@
 variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,2020,,660,,EUR,,,,"Fasihi et al., 2019",Table 8
-CAPEX,2030,,590,,EUR,,,,"Fasihi et al., 2020",Table 8
-CAPEX,2040,,554,,EUR,,,,"Fasihi et al., 2021",Table 8
-CAPEX,2050,,530,,EUR,,,,"Fasihi et al., 2022",Table 8
-FOPEX Relative,,,2,,percent,,,,"Fasihi et al., 2022",Table 8
-Demand|elec,2020,,0.333,,MWh,,,,"Fasihi et al., 2019",Table 8
-Demand|elec,2030,,0.307,,MWh,,,,"Fasihi et al., 2020",Table 8
-Demand|elec,2040,,0.293,,MWh,,,,"Fasihi et al., 2021",Table 8
-Demand|elec,2050,,0.285,,MWh,,,,"Fasihi et al., 2022",Table 8
+CAPEX,2020.0,,660.0,,EUR,,,,Fasihi19,Table 8
+CAPEX,2030.0,,590.0,,EUR,,,,Fasihi19,Table 8
+CAPEX,2040.0,,554.0,,EUR,,,,Fasihi19,Table 8
+CAPEX,2050.0,,530.0,,EUR,,,,Fasihi19,Table 8
+FOPEX Relative,,,2.0,,percent,,,,Fasihi19,Table 8
+Demand|elec,2020.0,,0.333,,MWh,,,,Fasihi19,Table 8
+Demand|elec,2030.0,,0.307,,MWh,,,,Fasihi19,Table 8
+Demand|elec,2040.0,,0.293,,MWh,,,,Fasihi19,Table 8
+Demand|elec,2050.0,,0.285,,MWh,,,,Fasihi19,Table 8

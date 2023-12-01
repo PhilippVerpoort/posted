@@ -1,14 +1,14 @@
 variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,,,312.5,,EUR,1,kW,,"Schemme, 2019",Table 3
-CAPEX,,,600,,EUR,1,kW,,"Grahn, 2022",Table 3
-CAPEX,2020,,307,,EUR,1,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-CAPEX,2030,,269,,EUR,1,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-CAPEX,2050,,200,,EUR,1,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-FOPEX Relative,,,4.5,,percent,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-VOPEX,,,1350,,EUR,1,GWh,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
-Demand|elec,,,0.2,,MWh,1,MWh,data given in the table as 0.71 MJ/kg. Converted manually by C.B to MWh/t. ,"Soler, 2022",Table 5
-Demand|elec,,,0.229,,MWh,1,MWh,,"Takunju, 2021",Table 4.13
-Demand|meoh,,,2.29,,t,1,MWh,,"Soler, 2022",Table 5
-Demand|meoh,,,2.564,,t,1,MWh,,"Takunju, 2021",Table 4.13
-Demand|h2,,,0.001,,t,1,MWh,,"Soler, 2022",Table 5
-Lifetime,,,30,,year,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.","Soler, 2022",Table 94
+CAPEX,,,312.5,,EUR,1.0,kW,,Schemme20,Table 3
+CAPEX,,,600.0,,EUR,1.0,kW,,Grahn22,Table 3
+CAPEX,2020.0,,307.0,,EUR,1.0,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94
+CAPEX,2030.0,,269.0,,EUR,1.0,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94
+CAPEX,2050.0,,200.0,,EUR,1.0,kW,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94
+FOPEX Relative,,,4.5,,percent,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94
+VOPEX,,,1350.0,,EUR,1.0,GWh,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94
+Demand|elec,,,0.2,,MWh,1.0,MWh,data given in the table as 0.71 MJ/kg. Converted manually by C.B to MWh/t. ,Soler22,Table 5
+Demand|elec,,,0.229,,kWh,1.0,kg,,Takunju21,Table 4.13
+Demand|meoh,,,2.29,,t,1.0,MWh,,Soler22,Table 5
+Demand|meoh,,,2.564,,kg,1.0,kg,,Takunju21,Table 4.13
+Demand|h2,,,0.001,,t,1.0,MWh,,Soler22,Table 5
+Lifetime,,,30.0,,year,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94

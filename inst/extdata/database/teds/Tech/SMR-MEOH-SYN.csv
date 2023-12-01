@@ -1,5 +1,5 @@
 variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,2015,,400,,EUR,1,t/a,,"DECHEMA, 2017",Table 35
-FOPEX Specific,,,60,,EUR,1,t,,"DECHEMA, 2017",Table 35
-Demand|elec,,,0.6,,GJ,1,t,,"DECHEMA, 2017",Section 4.4.1
-Demand|ng,,,12.5,,GJ,1,t,,"DECHEMA, 2017",Section 4.4.1
+CAPEX,2015.0,,400.0,,EUR,1,t/a,,Bazzanella17,Table 35
+FOPEX Specific,,,60.0,,EUR,1,t,,Bazzanella17,Table 35
+Demand|elec,,,0.6,,GJ,1,t,,Bazzanella17,Section 4.4.1
+Demand|ng,,,12.5,,GJ,1,t,,Bazzanella17,Section 4.4.1

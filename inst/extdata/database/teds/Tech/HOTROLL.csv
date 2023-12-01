@@ -1,7 +1,7 @@
 variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,,,450,,MUSD,4,Mt/a,,"IEAGHG, 2013",Tables 1 and 5
-Demand|elec,,,105.3,,kWh,1,t,,"IEAGHG, 2013",Table D-15
-Demand|heat,,,468.33,,kWh,1,t,Assuming 20MJ/Nm³ for caloric heating value of COG.,"IEAGHG, 2013",Table D-15
-Demand|elec,,,0.3,,GJ,1,t,,"Worrell et al, 2007",Table 2.1.5
-Demand|heat,,,1.3,,GJ,1,t,,"Worrell et al, 2007",Table 2.1.5
-Demand|steelslab,,,1052.6,,kg,1,t,,"IEAGHG, 2013",Table D-15
+CAPEX,,,450.0,,MUSD,4,Mt/a,,IEA-GHG13,Tables 1 and 5
+Demand|elec,,,105.3,,kWh,1,t,,IEA-GHG13,Table D-15
+Demand|heat,,,468.33,,kWh,1,t,Assuming 20MJ/Nm³ for caloric heating value of COG.,IEA-GHG13,Table D-15
+Demand|elec,,,0.3,,GJ,1,t,,Worell2007,Table 2.1.5
+Demand|heat,,,1.3,,GJ,1,t,,Worell2007,Table 2.1.5
+Demand|steelslab,,,1052.6,,kg,1,t,,IEA-GHG13,Table D-15
