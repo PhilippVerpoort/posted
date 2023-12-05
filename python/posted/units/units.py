@@ -10,6 +10,7 @@ from posted.config import flows
 # set up pint unit registry: use iam_units as a basis, load custom definitions, add pint_pandas, set display format,
 ureg = iam_units.registry
 ureg.load_definitions(BASE_PATH / 'units' / 'definitions.txt')
+iam_units.currency.configure_currency()
 pint_pandas.PintType.ureg = ureg
 ureg.Unit.default_format = "~P"
 pint_pandas.PintType.ureg.default_format = "~P"
@@ -17,10 +18,10 @@ pint_pandas.PintType.ureg.default_format = "~P"
 
 # define unit variants
 unit_variants = {
-    'LHV': {'param': 'energycontent', 'value': 'energycontent_LHV', 'dimension': 'energy',},
-    'HHV': {'param': 'energycontent', 'value': 'energycontent_HHV', 'dimension': 'energy',},
-    'norm': {'param': 'density', 'value': 'density_norm', 'dimension': 'volume',},
-    'std': {'param': 'density', 'value': 'density_std', 'dimension': 'volume',},
+    'LHV': {'param': 'energycontent', 'value': 'energycontent_LHV', 'dimension': 'energy', },
+    'HHV': {'param': 'energycontent', 'value': 'energycontent_HHV', 'dimension': 'energy', },
+    'norm': {'param': 'density', 'value': 'density_norm', 'dimension': 'volume', },
+    'std': {'param': 'density', 'value': 'density_std', 'dimension': 'volume', },
 }
 
 
@@ -55,7 +56,8 @@ def unit_allowed(unit: str, flow_id: None | str, dimension: str):
                 return True, ''
         else:
             check_dimensions = [
-                (dimension.replace('[flow]', f"[{dimension_base}]"), dimension_base, base_unit)
+                (dimension.replace(
+                    '[flow]', f"[{dimension_base}]"), dimension_base, base_unit)
                 for dimension_base, base_unit in [('mass', 'kg'), ('energy', 'kWh'), ('volume', 'm**3')]
             ]
             for check_dimension, check_dimension_base, check_base_unit in check_dimensions:
@@ -70,8 +72,10 @@ def unit_allowed(unit: str, flow_id: None | str, dimension: str):
                     elif unit_variants[variant]['dimension'] != check_dimension_base:
                         return False, f"Variant '{variant}' incompatible with unit '{unit}'."
 
-                    default_unit, default_variant = split_off_variant(flows[flow_id]['default_unit'])
-                    ctx_kwargs = ctx_kwargs_for_variants([variant, default_variant], flow_id)
+                    default_unit, default_variant = split_off_variant(
+                        flows[flow_id]['default_unit'])
+                    ctx_kwargs = ctx_kwargs_for_variants(
+                        [variant, default_variant], flow_id)
 
                     if ureg(check_base_unit).is_compatible_with(default_unit, 'flocon', **ctx_kwargs):
                         return True, ''
@@ -84,7 +88,8 @@ def unit_allowed(unit: str, flow_id: None | str, dimension: str):
 # get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m**3;norm"
 def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | str = None) -> float:
     # return nan if unit_from or unit_to is nan
-    if unit_from is np.nan or unit_to is np.nan: return np.nan
+    if unit_from is np.nan or unit_to is np.nan:
+        return np.nan
 
     # skip flow conversion if no flow_id specified
     if flow_id is None or pd.isna(flow_id):
@@ -106,10 +111,12 @@ def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | s
 
     # if both variants refer to the same dimension, we need to manually calculate the conversion factor and proceed without a flow context
     if len(variants) == 2:
-        variant_params = {unit_variants[v]['param'] if v is not None else None for v in variants}
+        variant_params = {unit_variants[v]['param']
+                          if v is not None else None for v in variants}
         if len(variant_params) == 1:
             param = next(iter(variant_params))
-            value_from, value_to = (flows[flow_id][unit_variants[v]['value']] for v in variants)
+            value_from, value_to = (
+                flows[flow_id][unit_variants[v]['value']] for v in variants)
 
             conv_factor = (ureg(value_from) / ureg(value_to)
                            if param == 'energycontent' else
