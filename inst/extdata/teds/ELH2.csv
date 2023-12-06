@@ -7,8 +7,8 @@ capex,,Alkaline,,2020,,806,143,EUR,0.69,kW,949 for a 5 MW(elec) and 663 for a 10
 capex,,Alkaline,,2030,,585,141,EUR,0.731,kW,726 for a 5 MW(elec) and 444 for a 100 MW(elec) plant,ISE Fraunhofer (2021),Appendix A
 capex,,PEM,,2020,,848,130,EUR,0.654,kW,978 for a 5 MW(elec) and 718 for a 100 MW(elec) plant,ISE Fraunhofer (2021),Appendix A
 capex,,PEM,,2030,,615.5,113.5,EUR,0.729,kW,729 for a 5 MW(elec) and 502 for a 100 MW(elec) plant,ISE Fraunhofer (2021),Appendix A
-capex,,Alkaline,,2030,,536,152,USD,,,,IRENA Global Hydrogen trade costs (2022),Page 23
-capex,,Alkaline,,2050,,230,96,USD,,,,IRENA Global Hydrogen trade costs (2022),Page 23
+capex,,Alkaline,,2030,,536,152,USD,0.662,kW,,IRENA Global Hydrogen trade costs (2022),Page 23
+capex,,Alkaline,,2050,,230,96,USD,0.717,kW,,IRENA Global Hydrogen trade costs (2022),Page 23
 capex,,Alkaline,,,,950,450,USD,,,calculated from range given in report,IEA Electrolyser special report,
 capex,,PEM,,,,1450,350,USD,,,calculated from range given in report,IEA Electrolyser special report,
 capex,,SOEC,,,,4200,1400,USD,,,calculated from range given in report,IEA Electrolyser special report,
