@@ -17,7 +17,9 @@ flows = {}
 techs = {}
 for database_path in databases.values():
     # read flow types
-    flows |= read_csv_file(database_path / 'flow_types.csv').set_index('flow_id').to_dict('index')
+    flows |= {flow_id: dict(zip(group['attribute'], group['value'])) 
+              for flow_id, group in read_csv_file(database_path /
+                                    'flow_types.csv').groupby('flow_id')}
 
     # read technologies
     techs |= read_yml_file(database_path / 'tech_types.yml')
