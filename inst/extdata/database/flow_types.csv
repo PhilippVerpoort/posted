@@ -1,358 +1,358 @@
-flow_id,attribute,value,source
-elec,name,Electricity,
-elec,default_unit,MWh,
-heat,default_unit,MWh,
-h2,name,Hydrogen,
-h2,default_unit,MWh;LHV,
-h2,energycontent_LHV,290 Btu/ft^3,GREET2008
-h2,energycontent_HHV,343 Btu/ft^3,GREET2008
-h2,density_norm,0.083752 kg/m³,Lemmon2023
-h2,density_std,0.089883 kg/m³,Lemmon2023
-lh2,name,Liquid hydrogen,
-lh2,default_unit,MWh;LHV,
-lh2,energycontent_LHV,30500 Btu/gal,GREET2008
-lh2,energycontent_HHV,36020 Btu/gal,GREET2008
-lh2,density_norm,,
-lh2,density_std,,
-nh3,name,Ammonia,
-nh3,default_unit,t,
-nh3,energycontent_LHV,18.90 MJ/kg,H2tools2023
-nh3,energycontent_HHV,22.50 MJ/kg,H2tools2023
-nh3,density_norm,0.71606  kg/m³,Lemmon2023
-nh3,density_std,0.77155  kg/m³,Lemmon2023
-ch4,name,Methane,
-ch4,default_unit,MWh;LHV,
-ch4,energycontent_LHV,962 Btu/ft³,GREET2008
-ch4,energycontent_HHV,1068 Btu/ft³,GREET2008
-ch4,density_norm,0.66816 kg/m³,Lemmon2023
-ch4,density_std,0.71746 kg/m³,Lemmon2023
-meoh,name,Methanol,
-meoh,default_unit,MWh;LHV,
-meoh,energycontent_LHV,57250 Btu/gal,GREET2008
-meoh,energycontent_HHV,65200 Btu/gal,GREET2008
-meoh,density_norm,791.01 kg/m³,Lemmon2023
-meoh,density_std,809.73 kg/m³,Lemmon2023
-etoh,name,Ethanol,
-etoh,default_unit,MWh;LHV,
-etoh,energycontent_LHV,76330 Btu/gal,GREET2008
-etoh,energycontent_HHV,84530 Btu/gal,GREET2008
-etoh,density_norm,,
-etoh,density_std,,
-buoh,name,Butanol,
-buoh,default_unit,MWh;LHV,
-buoh,energycontent_LHV,99837 Btu/gal,GREET2008
-buoh,energycontent_HHV,108458 Btu/gal,GREET2008
-buoh,density_norm,,
-buoh,density_std,,
-ng,name,Natural gas,
-ng,default_unit,MWh;LHV,
-ng,energycontent_LHV,983 Btu/ft^3,GREET2008
-ng,energycontent_HHV,1089 Btu/ft^3,GREET2008
-ng,density_norm,0.777 kg/m³,
-ng,density_std,0.777 kg/m³,
-coal,name,Coal,
-coal,default_unit,MWh;LHV,
-coal,energycontent_LHV,22732 MJ/kg,Boundy2011
-coal,energycontent_HHV,23968 MJ/kg,Boundy2011
-coal,density_norm,,
-coal,density_std,,
-co2,name,Purified CO2,
-co2,default_unit,t,
-co2,energycontent_LHV,,
-co2,energycontent_HHV,,
-co2,density_norm,1.8393 kg/m³,Lemmon2023
-co2,density_std,1.9768 kg/m³,Lemmon2023
-ironore,name,Iron ore,
-ironore,default_unit,t,
-ironore,energycontent_LHV,,
-ironore,energycontent_HHV,,
-ironore,density_norm,,
-ironore,density_std,,
-dri,name,Directly reduced iron,
-dri,default_unit,t,
-dri,energycontent_LHV,,
-dri,energycontent_HHV,,
-dri,density_norm,,
-dri,density_std,,
-alloys,name,Alloys,
-alloys,default_unit,t,
-alloys,energycontent_LHV,,
-alloys,energycontent_HHV,,
-alloys,density_norm,,
-alloys,density_std,,
-lime,name,Lime,
-lime,default_unit,t,
-lime,energycontent_LHV,,
-lime,energycontent_HHV,,
-lime,density_norm,,
-lime,density_std,,
-steelliq,name,Liquid steel,
-steelliq,default_unit,t,
-steelliq,energycontent_LHV,,
-steelliq,energycontent_HHV,,
-steelliq,density_norm,,
-steelliq,density_std,,
-steelslab,name,Steel slab,
-steelslab,default_unit,t,
-steelslab,energycontent_LHV,,
-steelslab,energycontent_HHV,,
-steelslab,density_norm,,
-steelslab,density_std,,
-steelhrc,name,Hot-rolled coil,
-steelhrc,default_unit,t,
-steelhrc,energycontent_LHV,,
-steelhrc,energycontent_HHV,,
-steelhrc,density_norm,,
-steelhrc,density_std,,
-steelscrap,name,Steel scrap,
-steelscrap,default_unit,t,
-steelscrap,energycontent_LHV,,
-steelscrap,energycontent_HHV,,
-steelscrap,density_norm,,
-steelscrap,density_std,,
-hvcs,name,Higher-value chemicals,
-hvcs,default_unit,t,
-hvcs,energycontent_LHV,,
-hvcs,energycontent_HHV,,
-hvcs,density_norm,,
-hvcs,density_std,,
-urea,name,Urea,
-urea,default_unit,t,
-urea,energycontent_LHV,,
-urea,energycontent_HHV,,
-urea,density_norm,1.34 g/cm³,
-urea,density_std,1.34 g/cm³,
-water,name,Water,
-water,default_unit,t,
-water,energycontent_LHV,,
-water,energycontent_HHV,,
-water,density_norm,998.21  kg/m³,Lemmon2023
-water,density_std,999.84 kg/l,Lemmon2023
-oxygen,name,Oxygen,
-oxygen,default_unit,t,
-oxygen,energycontent_LHV,,
-oxygen,energycontent_HHV,,
-oxygen,density_norm,1.3312 kg/m³,Lemmon2023
-oxygen,density_std,1.4290 kg/m³,Lemmon2023
-nitrogen,name,Nitrogen,
-nitrogen,default_unit,t,
-nitrogen,energycontent_LHV,,
-nitrogen,energycontent_HHV,,
-nitrogen,density_norm,1.1648 kg/m³,Lemmon2023
-nitrogen,density_std,1.2505 kg/m³,Lemmon2023
-graph_electr,name,Graphite electrodes,
-graph_electr,default_unit,t,
-graph_electr,energycontent_LHV,,
-graph_electr,energycontent_HHV,,
-graph_electr,density_norm,,
-graph_electr,density_std,,
-steam,name,Steam,
-steam,default_unit,MWh,
-steam,energycontent_LHV,,
-steam,energycontent_HHV,,
-steam,density_norm,,
-steam,density_std,,
-ft_fuel,name,Fischer-Tropsch diesel,
-ft_fuel,default_unit,MWh;LHV,
-ft_fuel,energycontent_LHV,123670 Btu/gal,GREET2008
-ft_fuel,energycontent_HHV,130030 Btu/gal,GREET2008
-ft_fuel,density_norm,,
-ft_fuel,density_std,,
-gasoline,name,Gasoline,
-gasoline,default_unit,MWh;LHV,
-gasoline,energycontent_LHV,112194 Btu/gal,GREET2008
-gasoline,energycontent_HHV,120439 Btu/gal,GREET2008
-gasoline,density_norm,702.61 kg/m³,Lemmon2023
-gasoline,density_std,718.61  kg/m³,Lemmon2023
-crude_oil,name,Crude oil,
-crude_oil,default_unit,MWh;LHV,
-crude_oil,energycontent_LHV,129670 Btu/gal,GREET2008
-crude_oil,energycontent_HHV,138350 Btu/gal,GREET2008
-crude_oil,density_norm,,
-crude_oil,density_std,,
-bitumen,name,Bitumen,
-bitumen,default_unit,MWh;LHV,
-bitumen,energycontent_LHV,152371 Btu/gal,GREET2008
-bitumen,energycontent_HHV,162964 Btu/gal,GREET2008
-bitumen,density_norm,,
-bitumen,density_std,,
-diesel,name,diesel,
-diesel,default_unit,MWh;LHV,
-diesel,energycontent_LHV,128450 Btu/gal,GREET2008
-diesel,energycontent_HHV,137380 MWh;LHV,GREET2008
-diesel,density_norm,,
-diesel,density_std,,
-bunker_fuel,name,Bunker fuel for ocean tanker,
-bunker_fuel,default_unit,MWh;LHV,
-bunker_fuel,energycontent_LHV,140353 Btu/gal,GREET2008
-bunker_fuel,energycontent_HHV,150110 Btu/gal,GREET2008
-bunker_fuel,density_norm,,
-bunker_fuel,density_std,,
-lpg,name,Liquefied petroleum gas,
-lpg,default_unit,MWh;LHV,
-lpg,energycontent_LHV,84950 Btu/gal,GREET2008
-lpg,energycontent_HHV,91410 Btu/gal,GREET2008
-lpg,density_norm,,
-lpg,density_std,,
-lng,name,Liquefied natural gas,
-lng,default_unit,MWh;LHV,
-lng,energycontent_LHV,74.720 Btu/gal,GREET2008
-lng,energycontent_HHV,84.820 Btu/gal,GREET2008
-lng,density_norm,,
-lng,density_std,,
-dme,name,Dimethyl ether,
-dme,default_unit,MWh;LHV,
-dme,energycontent_LHV,68930 Btu/gal,GREET2008
-dme,energycontent_HHV,75610 Btu/gal,GREET2008
-dme,density_norm,,
-dme,density_std,,
-butane,name,Butane,
-butane,default_unit,MWh;LHV,
-butane,energycontent_LHV,94.970 Btu/gal,GREET2008
-butane,energycontent_HHV,193.220 Btu/gal,GREET2008
-butane,density_norm,2.4958 kg/m^3,Lemmon2023
-butane,density_std,2.7027 kg/m^3,Lemmon2023
-isobutane,name,Isobutane,
-isobutane,default_unit,MWh;LHV,
-isobutane,energycontent_LHV,90060 Btu/gal,GREET2008
-isobutane,energycontent_HHV,98560 Btu/gal,GREET2008
-isobutane,density_norm,2.4858 kg/m^3,Lemmon2023
-isobutane,density_std,2.6887 kg/m^3,Lemmon2023
-isobutylene,name,Isobutylene,
-isobutylene,default_unit,MWh;LHV,
-isobutylene,energycontent_LHV,95720 Btu/gal,GREET2008
-isobutylene,energycontent_HHV,103010 Btu/gal,GREET2008
-isobutylene,density_norm,,
-isobutylene,density_std,,
-propane,name,Propane,
-propane,default_unit,MWh;LHV,
-propane,energycontent_LHV,84250 Btu/gal,GREET2008
-propane,energycontent_HHV,91420 Btu/gal,GREET2008
-propane,density_norm,1.8650 kg/m^3,Lemmon2023
-propane,density_std,2.0105 kg/m^3,Lemmon2023
-coal_el,name,Coal mix for Electricity Generation,
-coal_el,default_unit,MWh;LHV,
-coal_el,energycontent_LHV,19474168 Btu/short_ton,GREET2008
-coal_el,energycontent_HHV,20673610 Btu/short_ton,GREET2008
-coal_el,density_norm,,
-coal_el,density_std,,
-coal_li,name,Lignite Coal,
-coal_li,default_unit,MWh;LHV,
-coal_li,energycontent_LHV,10805183 Btu/short_ton,GREET2008
-coal_li,energycontent_HHV,12992302 Btu/short_ton,GREET2008
-coal_li,density_norm,,
-coal_li,density_std,,
-switchgrass,name,Switchgrass,
-switchgrass,default_unit,MWh;LHV,
-switchgrass,energycontent_LHV,14447000 Btu/short_ton,GREET2008
-switchgrass,energycontent_HHV,15583000 Btu/short_ton,GREET2008
-switchgrass,density_norm,,
-switchgrass,density_std,,
-miscanthus,name,Miscanthus,
-miscanthus,default_unit,MWh;LHV,
-miscanthus,energycontent_LHV,15342000 Btu/short_ton,GREET2008
-miscanthus,energycontent_HHV,16377000 Btu/short_ton,GREET2008
-miscanthus,density_norm,,
-miscanthus,density_std,,
-bio-char,name,Bio-Char,
-bio-char,default_unit,MWh;LHV,
-bio-char,energycontent_LHV,18916911 Btu/short_ton,GREET2008
-bio-char,energycontent_HHV,18916911 Btu/short_ton,GREET2008
-bio-char,density_norm,,
-bio-char,density_std,,
-ethyne,name,Ethyne,
-ethyne,default_unit,t,
-ethyne,energycontent_LHV,45935 Btu/kg,GREET2008
-ethyne,energycontent_HHV,,
-ethyne,density_norm,,
-ethyne,density_std,,
-propyne,name,Propyne,
-propyne,default_unit,t,
-propyne,energycontent_LHV,43400 Btu/kg,GREET2008
-propyne,energycontent_HHV,,
-propyne,density_norm,1.6959 kg/m^3,Lemmon2023
-propyne,density_std,1.8300 kg/m^3,Lemmon2023
-butadiene,name,Butadiene,
-butadiene,default_unit,t,
-butadiene,energycontent_LHV,42285 Btu/kg,GREET2008
-butadiene,energycontent_HHV,,
-butadiene,density_norm,,
-butadiene,density_std,,
-benzene,name,Benzene,
-benzene,default_unit,t,
-benzene,energycontent_LHV,38470 Btu/kg,GREET2008
-benzene,energycontent_HHV,,
-benzene,density_norm,878.92 kg/m^3,Lemmon2023
-benzene,density_std,,
-toulene,name,Toulene,
-toulene,default_unit,t,
-toulene,energycontent_LHV,38957 Btu/kg,GREET2008
-toulene,energycontent_HHV,,
-toulene,density_norm,866.89 kg/m^3,Lemmon2023
-toulene,density_std,886.42 kg/m^3,Lemmon2023
-styrene,name,Styrene,
-styrene,default_unit,t,
-styrene,energycontent_LHV,37913 Btu/kg,GREET2008
-styrene,energycontent_HHV,,
-styrene,density_norm,,
-styrene,density_std,,
-xylene,name,Xylene,
-xylene,default_unit,t,
-xylene,energycontent_LHV,39151 Btu/kg,GREET2008
-xylene,energycontent_HHV,,
-xylene,density_norm,,
-xylene,density_std,,
-o-xylene,name,O-Xylene,
-o-xylene,default_unit,t,
-o-xylene,energycontent_LHV,39151 Btu/kg,GREET2008
-o-xylene,energycontent_HHV,,
-o-xylene,density_norm,,
-o-xylene,density_std,,
-m-xylene,name,M-Xylene,
-m-xylene,default_unit,t,
-m-xylene,energycontent_LHV,39151 Btu/kg,GREET2008
-m-xylene,energycontent_HHV,,
-m-xylene,density_norm,,
-m-xylene,density_std,,
-p-xylene,name,P-Xylene,
-p-xylene,default_unit,t,
-p-xylene,energycontent_LHV,39151 Btu/kg,GREET2008
-p-xylene,energycontent_HHV,,
-p-xylene,density_norm,,
-p-xylene,density_std,,
-ethane,name,Ethane,
-ethane,default_unit,t,
-ethane,energycontent_LHV,45011 Btu/kg,GREET2008
-ethane,energycontent_HHV,,
-ethane,density_norm,1.2601 kg/m^3,Lemmon2023
-ethane,density_std,1.3550 kg/m^3,Lemmon2023
-ethylene,name,Ethylene,
-ethylene,default_unit,t,
-ethylene,energycontent_LHV,44695 Btu/kg,GREET2008
-ethylene,energycontent_HHV,,
-ethylene,density_norm,1.1733 kg/m^3,Lemmon2023
-ethylene,density_std,1.2611 kg/m^3,Lemmon2023
-propylene,name,Propylene,
-propylene,default_unit,t,
-propylene,energycontent_LHV,43400 Btu/kg,GREET2008
-propylene,energycontent_HHV,,
-propylene,density_norm,1.7763 kg/m^3,Lemmon2023
-propylene,density_std,1.9139 kg/m^3,Lemmon2023
-butatriene,name,Butatriene,
-butatriene,default_unit,t,
-butatriene,energycontent_LHV,42629 Btu/kg,GREET2008
-butatriene,energycontent_HHV,,
-butatriene,density_norm,,
-butatriene,density_std,,
-butene,name,Butene,
-butene,default_unit,t,
-butene,energycontent_LHV,42972 Btu/kg,GREET2008
-butene,energycontent_HHV,,
-butene,density_norm,,
-butene,density_std,,
-asphalt,name,Asphalt,
-asphalt,default_unit,t,
-asphalt,energycontent_LHV,152371 Btu/gal,GREET2008
-asphalt,energycontent_HHV,162964 Btu/gal,GREET2008
-asphalt,density_norm,,
-asphalt,density_std,,
+ ,attribute,value,source,comment
+elec,name,Electricity,,
+elec,default_unit,MWh,,
+heat,default_unit,MWh,,
+h2,name,Hydrogen,,
+h2,default_unit,MWh;LHV,,
+h2,energycontent_LHV,0.7395 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+h2,energycontent_HHV,0.87465 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+h2,density_norm,0.083752 kg/m³,Lemmon2023,
+h2,density_std,0.089883 kg/m³,Lemmon2023,
+lh2,name,Liquid hydrogen,,
+lh2,default_unit,MWh;LHV,,
+lh2,energycontent_LHV,8174 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lh2,energycontent_HHV,9653.36 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lh2,density_norm,,,
+lh2,density_std,,,
+nh3,name,Ammonia,,
+nh3,default_unit,t,,
+nh3,energycontent_LHV,18.90 MJ/kg,H2tools2023,
+nh3,energycontent_HHV,22.50 MJ/kg,H2tools2023,
+nh3,density_norm,0.71606  kg/m³,Lemmon2023,
+nh3,density_std,0.77155  kg/m³,Lemmon2023,
+ch4,name,Methane,,
+ch4,default_unit,MWh;LHV,,
+ch4,energycontent_LHV,19.53541557 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ch4,energycontent_HHV,21.68431129 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ch4,density_norm,0.66816 kg/m³,Lemmon2023,
+ch4,density_std,0.71746 kg/m³,Lemmon2023,
+meoh,name,Methanol,,
+meoh,default_unit,MWh;LHV,,
+meoh,energycontent_LHV,172093.5 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+meoh,energycontent_HHV,195991.2 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+meoh,density_norm,791.01 kg/m³,Lemmon2023,
+meoh,density_std,809.73 kg/m³,Lemmon2023,
+etoh,name,Ethanol,,
+etoh,default_unit,MWh;LHV,,
+etoh,energycontent_LHV,228074.04 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+etoh,energycontent_HHV,252575.64 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+etoh,density_norm,2988 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+etoh,density_std,2988 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+buoh,name,Butanol,,
+buoh,default_unit,MWh;LHV,,
+buoh,energycontent_LHV,306000.405 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+buoh,energycontent_HHV,332423.77 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+buoh,density_norm,3065 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+buoh,density_std,3065 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+ng,name,Natural gas,,
+ng,default_unit,MWh;LHV,,
+ng,energycontent_LHV,21.626 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ng,energycontent_HHV,23.958 Btu/kg ,GREET2008,calculated from values Energy/volume and density given in the source
+ng,density_norm,22 g/ft^3,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+ng,density_std,22 g/ft^3,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+coal,name,Coal,,
+coal,default_unit,MWh;LHV,,
+coal,energycontent_LHV,22732 MJ/kg,Boundy2011,
+coal,energycontent_HHV,23968 MJ/kg,Boundy2011,
+coal,density_norm,,,
+coal,density_std,,,
+co2,name,Purified CO2,,
+co2,default_unit,t,,
+co2,energycontent_LHV,,,
+co2,energycontent_HHV,,,
+co2,density_norm,1.8393 kg/m³,Lemmon2023,
+co2,density_std,1.9768 kg/m³,Lemmon2023,
+ironore,name,Iron ore,,
+ironore,default_unit,t,,
+ironore,energycontent_LHV,,,
+ironore,energycontent_HHV,,,
+ironore,density_norm,,,
+ironore,density_std,,,
+dri,name,Directly reduced iron,,
+dri,default_unit,t,,
+dri,energycontent_LHV,,,
+dri,energycontent_HHV,,,
+dri,density_norm,,,
+dri,density_std,,,
+alloys,name,Alloys,,
+alloys,default_unit,t,,
+alloys,energycontent_LHV,,,
+alloys,energycontent_HHV,,,
+alloys,density_norm,,,
+alloys,density_std,,,
+lime,name,Lime,,
+lime,default_unit,t,,
+lime,energycontent_LHV,,,
+lime,energycontent_HHV,,,
+lime,density_norm,,,
+lime,density_std,,,
+steelliq,name,Liquid steel,,
+steelliq,default_unit,t,,
+steelliq,energycontent_LHV,,,
+steelliq,energycontent_HHV,,,
+steelliq,density_norm,,,
+steelliq,density_std,,,
+steelslab,name,Steel slab,,
+steelslab,default_unit,t,,
+steelslab,energycontent_LHV,,,
+steelslab,energycontent_HHV,,,
+steelslab,density_norm,,,
+steelslab,density_std,,,
+steelhrc,name,Hot-rolled coil,,
+steelhrc,default_unit,t,,
+steelhrc,energycontent_LHV,,,
+steelhrc,energycontent_HHV,,,
+steelhrc,density_norm,,,
+steelhrc,density_std,,,
+steelscrap,name,Steel scrap,,
+steelscrap,default_unit,t,,
+steelscrap,energycontent_LHV,,,
+steelscrap,energycontent_HHV,,,
+steelscrap,density_norm,,,
+steelscrap,density_std,,,
+hvcs,name,Higher-value chemicals,,
+hvcs,default_unit,t,,
+hvcs,energycontent_LHV,,,
+hvcs,energycontent_HHV,,,
+hvcs,density_norm,,,
+hvcs,density_std,,,
+urea,name,Urea,,
+urea,default_unit,t,,
+urea,energycontent_LHV,,,
+urea,energycontent_HHV,,,
+urea,density_norm,1.34 g/cm³,,
+urea,density_std,1.34 g/cm³,,
+water,name,Water,,
+water,default_unit,t,,
+water,energycontent_LHV,,,
+water,energycontent_HHV,,,
+water,density_norm,998.21  kg/m³,Lemmon2023,
+water,density_std,999.84 kg/l,Lemmon2023,
+oxygen,name,Oxygen,,
+oxygen,default_unit,t,,
+oxygen,energycontent_LHV,,,
+oxygen,energycontent_HHV,,,
+oxygen,density_norm,1.3312 kg/m³,Lemmon2023,
+oxygen,density_std,1.4290 kg/m³,Lemmon2023,
+nitrogen,name,Nitrogen,,
+nitrogen,default_unit,t,,
+nitrogen,energycontent_LHV,,,
+nitrogen,energycontent_HHV,,,
+nitrogen,density_norm,1.1648 kg/m³,Lemmon2023,
+nitrogen,density_std,1.2505 kg/m³,Lemmon2023,
+graph_electr,name,Graphite electrodes,,
+graph_electr,default_unit,t,,
+graph_electr,energycontent_LHV,,,
+graph_electr,energycontent_HHV,,,
+graph_electr,density_norm,,,
+graph_electr,density_std,,,
+steam,name,Steam,,
+steam,default_unit,MWh,,
+steam,energycontent_LHV,,,
+steam,energycontent_HHV,,,
+steam,density_norm,,,
+steam,density_std,,,
+ft_fuel,name,Fischer-Tropsch diesel,,
+ft_fuel,default_unit,MWh;LHV,,
+ft_fuel,energycontent_LHV,373112.39 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ft_fuel,energycontent_HHV,392300.51 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ft_fuel,density_norm,3017 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+ft_fuel,density_std,3017 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+gasoline,name,Gasoline,,
+gasoline,default_unit,MWh;LHV,,
+gasoline,energycontent_LHV,318131.682 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+gasoline,energycontent_HHV,341511.1742 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+gasoline,density_norm,702.61 kg/m³,Lemmon2023,
+gasoline,density_std,718.61  kg/m³,Lemmon2023,
+crude_oil,name,Crude oil,,
+crude_oil,default_unit,MWh;LHV,,
+crude_oil,energycontent_LHV,415592.35 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+crude_oil,energycontent_HHV,443411.75 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+crude_oil,density_norm,3205 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+crude_oil,density_std,3205 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+bitumen,name,Bitumen,,
+bitumen,default_unit,MWh;LHV,,
+bitumen,energycontent_LHV,"585055,8263 Btu/kg",GREET2008,calculated from values Energy/volume and density given in the source
+bitumen,energycontent_HHV,625728.1565 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+bitumen,density_norm,3830.682125 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+bitumen,density_std,3830.682125 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+diesel,name,diesel,,
+diesel,default_unit,MWh;LHV,,
+diesel,energycontent_LHV,406801.15 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+diesel,energycontent_HHV,435082.46 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+diesel,density_norm,3167 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+diesel,density_std,3167 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+bunker_fuel,name,Bunker fuel for ocean tanker,,
+bunker_fuel,default_unit,MWh;LHV,,
+bunker_fuel,energycontent_LHV,526602.6633 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+bunker_fuel,energycontent_HHV,563212.72 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+bunker_fuel,density_norm,3752 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+bunker_fuel,density_std,3752 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+lpg,name,Liquefied petroleum gas,,
+lpg,default_unit,MWh;LHV,,
+lpg,energycontent_LHV,163358.85 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lpg,energycontent_HHV,172093.5 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lpg,density_norm,,,
+lpg,density_std,,,
+lng,name,Liquefied natural gas,,
+lng,default_unit,MWh;LHV,,
+lng,energycontent_LHV,121121.12 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lng,energycontent_HHV,1375781.43 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lng,density_norm,,,
+lng,density_std,,,
+dme,name,Dimethyl ether,,
+dme,default_unit,MWh;LHV,,
+dme,energycontent_LHV,173567.74 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+dme,energycontent_HHV,190385.98 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+dme,density_norm,,,
+dme,density_std,,,
+butane,name,Butane,,
+butane,default_unit,MWh;LHV,,
+butane,energycontent_LHV,210168.61 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+butane,energycontent_HHV,228425.86 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+butane,density_norm,2.4958 kg/m^3,Lemmon2023,
+butane,density_std,2.7027 kg/m^3,Lemmon2023,
+isobutane,name,Isobutane,,
+isobutane,default_unit,MWh;LHV,,
+isobutane,energycontent_LHV,190747.08 Btu/kg,GREET2008,
+isobutane,energycontent_HHV,208750.08 Btu/kg,GREET2008,
+isobutane,density_norm,2.4858 kg/m^3,Lemmon2023,
+isobutane,density_std,2.6887 kg/m^3,Lemmon2023,
+isobutylene,name,Isobutylene,,
+isobutylene,default_unit,MWh;LHV,,
+isobutylene,energycontent_LHV,215657.16 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+isobutylene,energycontent_HHV,232081.53 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+isobutylene,density_norm,,,
+isobutylene,density_std,,,
+propane,name,Propane,,
+propane,default_unit,MWh;LHV,,
+propane,energycontent_LHV,171760 Btu/kg,GREET2008,
+propane,energycontent_HHV,175526.4 Btu/kg,GREET2008,
+propane,density_norm,1.8650 kg/m^3,Lemmon2023,
+propane,density_std,2.0105 kg/m^3,Lemmon2023,
+coal_el,name,Coal mix for Electricity Generation,,
+coal_el,default_unit,MWh;LHV,,
+coal_el,energycontent_LHV,19474168 Btu/short_ton,GREET2008,
+coal_el,energycontent_HHV,20673610 Btu/short_ton,GREET2008,
+coal_el,density_norm,,,
+coal_el,density_std,,,
+coal_li,name,Lignite Coal,,
+coal_li,default_unit,MWh;LHV,,
+coal_li,energycontent_LHV,10805183 Btu/short_ton,GREET2008,
+coal_li,energycontent_HHV,12992302 Btu/short_ton,GREET2008,
+coal_li,density_norm,,,
+coal_li,density_std,,,
+switchgrass,name,Switchgrass,,
+switchgrass,default_unit,MWh;LHV,,
+switchgrass,energycontent_LHV,14447000 Btu/short_ton,GREET2008,
+switchgrass,energycontent_HHV,15583000 Btu/short_ton,GREET2008,
+switchgrass,density_norm,,,
+switchgrass,density_std,,,
+miscanthus,name,Miscanthus,,
+miscanthus,default_unit,MWh;LHV,,
+miscanthus,energycontent_LHV,15342000 Btu/short_ton,GREET2008,
+miscanthus,energycontent_HHV,16377000 Btu/short_ton,GREET2008,
+miscanthus,density_norm,,,
+miscanthus,density_std,,,
+bio-char,name,Bio-Char,,
+bio-char,default_unit,MWh;LHV,,
+bio-char,energycontent_LHV,18916911 Btu/short_ton,GREET2008,
+bio-char,energycontent_HHV,18916911 Btu/short_ton,GREET2008,
+bio-char,density_norm,,,
+bio-char,density_std,,,
+ethyne,name,Ethyne,,
+ethyne,default_unit,t,,
+ethyne,energycontent_LHV,45935 Btu/kg,GREET2008,
+ethyne,energycontent_HHV,,,
+ethyne,density_norm,,,
+ethyne,density_std,,,
+propyne,name,Propyne,,
+propyne,default_unit,t,,
+propyne,energycontent_LHV,43400 Btu/kg,GREET2008,
+propyne,energycontent_HHV,,,
+propyne,density_norm,1.6959 kg/m^3,Lemmon2023,
+propyne,density_std,1.8300 kg/m^3,Lemmon2023,
+butadiene,name,Butadiene,,
+butadiene,default_unit,t,,
+butadiene,energycontent_LHV,42285 Btu/kg,GREET2008,
+butadiene,energycontent_HHV,,,
+butadiene,density_norm,,,
+butadiene,density_std,,,
+benzene,name,Benzene,,
+benzene,default_unit,t,,
+benzene,energycontent_LHV,38470 Btu/kg,GREET2008,
+benzene,energycontent_HHV,,,
+benzene,density_norm,878.92 kg/m^3,Lemmon2023,
+benzene,density_std,,,
+toulene,name,Toulene,,
+toulene,default_unit,t,,
+toulene,energycontent_LHV,38957 Btu/kg,GREET2008,
+toulene,energycontent_HHV,,,
+toulene,density_norm,866.89 kg/m^3,Lemmon2023,
+toulene,density_std,886.42 kg/m^3,Lemmon2023,
+styrene,name,Styrene,,
+styrene,default_unit,t,,
+styrene,energycontent_LHV,37913 Btu/kg,GREET2008,
+styrene,energycontent_HHV,,,
+styrene,density_norm,,,
+styrene,density_std,,,
+xylene,name,Xylene,,
+xylene,default_unit,t,,
+xylene,energycontent_LHV,39151 Btu/kg,GREET2008,
+xylene,energycontent_HHV,,,
+xylene,density_norm,,,
+xylene,density_std,,,
+o-xylene,name,O-Xylene,,
+o-xylene,default_unit,t,,
+o-xylene,energycontent_LHV,39151 Btu/kg,GREET2008,
+o-xylene,energycontent_HHV,,,
+o-xylene,density_norm,,,
+o-xylene,density_std,,,
+m-xylene,name,M-Xylene,,
+m-xylene,default_unit,t,,
+m-xylene,energycontent_LHV,39151 Btu/kg,GREET2008,
+m-xylene,energycontent_HHV,,,
+m-xylene,density_norm,,,
+m-xylene,density_std,,,
+p-xylene,name,P-Xylene,,
+p-xylene,default_unit,t,,
+p-xylene,energycontent_LHV,39151 Btu/kg,GREET2008,
+p-xylene,energycontent_HHV,,,
+p-xylene,density_norm,,,
+p-xylene,density_std,,,
+ethane,name,Ethane,,
+ethane,default_unit,t,,
+ethane,energycontent_LHV,45011 Btu/kg,GREET2008,
+ethane,energycontent_HHV,,,
+ethane,density_norm,1.2601 kg/m^3,Lemmon2023,
+ethane,density_std,1.3550 kg/m^3,Lemmon2023,
+ethylene,name,Ethylene,,
+ethylene,default_unit,t,,
+ethylene,energycontent_LHV,44695 Btu/kg,GREET2008,
+ethylene,energycontent_HHV,,,
+ethylene,density_norm,1.1733 kg/m^3,Lemmon2023,
+ethylene,density_std,1.2611 kg/m^3,Lemmon2023,
+propylene,name,Propylene,,
+propylene,default_unit,t,,
+propylene,energycontent_LHV,43400 Btu/kg,GREET2008,
+propylene,energycontent_HHV,,,
+propylene,density_norm,1.7763 kg/m^3,Lemmon2023,
+propylene,density_std,1.9139 kg/m^3,Lemmon2023,
+butatriene,name,Butatriene,,
+butatriene,default_unit,t,,
+butatriene,energycontent_LHV,42629 Btu/kg,GREET2008,
+butatriene,energycontent_HHV,,,
+butatriene,density_norm,,,
+butatriene,density_std,,,
+butene,name,Butene,,
+butene,default_unit,t,,
+butene,energycontent_LHV,42972 Btu/kg,GREET2008,
+butene,energycontent_HHV,,,
+butene,density_norm,,,
+butene,density_std,,,
+asphalt,name,Asphalt,,
+asphalt,default_unit,t,,
+asphalt,energycontent_LHV,152371 Btu/kg,GREET2008,
+asphalt,energycontent_HHV,162964 Btu/kg,GREET2008,
+asphalt,density_norm,,,
+asphalt,density_std,,,
