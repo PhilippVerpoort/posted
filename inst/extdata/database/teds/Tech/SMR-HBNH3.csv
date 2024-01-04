@@ -1,7 +1,7 @@
-variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,,,670.0,,EUR,1,t/a,,Bazzanella17,Table 35
-FOPEX Specific,,,100.0,,EUR,1,t,,Bazzanella17,Table 35
-Demand|elec,,,0.3,,GJ,1,t,,IEA-Ammonia21,Table 1.2
-Demand|ng,,Feedstock,21.0,,GJ,1,t,,IEA-Ammonia21,Table 1.2
-Demand|ng,,Fuel,11.1,,GJ,1,t,,IEA-Ammonia21,Table 1.2
-Demand|ng,,,29.7,2.1,GJ,1,t,,EuroComm07,Table 2.14
+reported_variable,reference_variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|nh3,,,670,,EUR,1,t/a,,Bazzanella17,Table 35
+FOPEX Specific,Output|nh3,,,100,,EUR,1,t,,Bazzanella17,Table 35
+Input|elec,Output|nh3,,,0.3,,GJ,1,t,,IEA-Ammonia21,Table 1.2
+Input|ng,Output|nh3,,Feedstock,21,,GJ;LHV,1,t,,IEA-Ammonia21,Table 1.2
+Input|ng,Output|nh3,,Fuel,11.1,,GJ;LHV,1,t,,IEA-Ammonia21,Table 1.2
+Input|ng,Output|nh3,,,29.7,2.1,GJ;LHV,1,t,,EuroComm07,Table 2.14

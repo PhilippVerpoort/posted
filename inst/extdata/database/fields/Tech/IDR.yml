@@ -1,0 +1,11 @@
+mode:
+  name: Operation mode
+  type: cases
+  coded: True
+  codes:
+    h2: Operated with hydrogen
+    ng: Operated with natural gas
+component:
+  name: Component
+  type: components
+  coded: False

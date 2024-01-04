@@ -7,6 +7,14 @@ from posted.config import variables, base_format
 from posted.units.units import unit_allowed
 
 
+def is_float(string: str) -> bool:
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+
+
 class TEInconsistencyException(Exception):
     """Exception raised for inconsistencies in the input data.
 
@@ -50,40 +58,80 @@ def new_inconsistency(raise_exception: bool, **kwargs) -> TEInconsistencyExcepti
         return exception
 
 
-def check_row_consistency(main_variable: str, row: pd.Series, row_id: int, file_path: Path,
+def check_row_consistency(parent_variable: str, fields: dict, row: pd.Series, row_id: int, file_path: Path,
                           raise_exception: bool) -> list[TEInconsistencyException]:
     ikwargs = {'row_id': row_id, 'file_path': file_path, 'raise_exception': raise_exception}
     ret = []
 
+    # check whether fields are among those defined in the technology specs
+    for col_id in (c for c in row.index if c not in base_format):
+        if col_id not in fields:
+            ret.append(new_inconsistency(
+                message=f"Invalid field {col_id}.", col_id=col_id, **ikwargs,
+            ))
+        else:
+            cell = row[col_id]
+            if fields[col_id]['type'] == 'cases':
+                if pd.isnull(cell) or (fields[col_id]['coded'] and cell not in fields[col_id]['codes'] and cell != '*'):
+                    ret.append(new_inconsistency(
+                        message=f"Invalid case field value '{cell}'.", col_id=col_id, **ikwargs,
+                    ))
+            if fields[col_id]['type'] == 'components':
+                if pd.isnull(cell) or (fields[col_id]['coded'] and cell not in fields[col_id]['codes'] and cell != '*'):
+                    ret.append(new_inconsistency(
+                        message=f"Invalid component field value '{cell}'.", col_id=col_id, **ikwargs,
+                    ))
+
+    # period may not be empty
+    if pd.isnull(row['period']):
+        ret.append(new_inconsistency(
+            message=f"Period cell is empty.", col_id='period', **ikwargs,
+        ))
+    elif (not isinstance(row['period'], float) and
+          not isinstance(row['period'], int) and
+          not (isinstance(row['period'], str) and (is_float(row['period']) or row['period'] == '*'))):
+        ret.append(new_inconsistency(
+            message=f"Period is not a valid entry: {row['period']}", col_id='period', **ikwargs,
+        ))
+
     # variable may not be empty
-    sub_variable = row['variable']
-    if sub_variable is np.nan:
-        ret.append(new_inconsistency(message=f"Empty subvariable.", col_id='variable', **ikwargs))
+    reported_subvariable = row['reported_variable']
+    reference_subvariable = row['reference_variable']
+    if not isinstance(reported_subvariable, str):
+        ret.append(new_inconsistency(message=f"Empty reported variable.", col_id='reported_variable', **ikwargs))
         return ret
 
     # if the variable is not empty, check whether variable is among the allowed variables
-    variable = f"{main_variable}|{sub_variable}"
-    var_specs = variables[variable]
-    if variable not in variables:
-        ret.append(new_inconsistency(message=f"Invalid subvariable {variable}.", col_id='variable', **ikwargs))
-
-    # check whether case columns are among those defined in the technology specs
-    for col_id in (c for c in row.index if c not in base_format):
-        cell = row[col_id]
-        if col_id in variables[variable]['case_fields'] and cell != '*' and cell not in variables[variable]['case_fields'][col_id]:
-            ret.append(new_inconsistency(message=f"Invalid case field value {cell}.", col_id=col_id, **ikwargs))
+    reported_variable = f"{parent_variable}|{reported_subvariable}"
+    reference_variable = f"{parent_variable}|{reference_subvariable}"
+    if reported_variable not in variables:
+        ret.append(new_inconsistency(
+            message=f"Invalid reported variable '{reported_variable}'.", col_id='reported_variable', **ikwargs,
+        ))
+        return ret
+    if reference_variable not in variables and 'default_reference' in variables[reported_variable]:
+        ret.append(new_inconsistency(
+            message=f"Invalid reference variable '{reference_variable}'.", col_id='reference_variable', **ikwargs,
+        ))
+        return ret
 
     # check that reported and reference units match variable definition
-    for level in ('reported', 'reference'):
+    for level, variable in [('reported', reported_variable),
+                             ('reference', reference_variable),]:
+        if not isinstance(reference_subvariable, str):
+            continue
+        var_specs = variables[variable]
         col_id = f"{level}_unit"
         unit = row[col_id]
-        if f"{level}_dim" not in var_specs:
+        if 'dimension' not in var_specs:
             if unit is not np.nan:
-                ret.append(new_inconsistency(message=f"Unexpected unit '{unit}' for {col_id}.", col_id=col_id, **ikwargs))
+                ret.append(new_inconsistency(
+                    message=f"Unexpected unit '{unit}' for {col_id}.", col_id=col_id, **ikwargs,
+                ))
             continue
-        dimension = var_specs[f"{level}_dim"]
+        dimension = var_specs['dimension']
 
-        flow_id = var_specs[f"{level}_flow_id"] if f"{level}_flow_id" in var_specs else None
+        flow_id = var_specs['flow_id'] if 'flow_id' in var_specs else None
         allowed, message = unit_allowed(unit=unit, flow_id=flow_id, dimension=dimension)
         if not allowed:
             ret.append(new_inconsistency(message=message, col_id=col_id, **ikwargs))

@@ -1,0 +1,26 @@
+subtech:
+  name: Subtechnology
+  type: cases
+  coded: True
+  codes:
+    Shipping: Maritime transport in liquified form
+    Pipeline: Transported in pipelines in gaseous form
+refrigeration:
+  name: Refrigeration
+  type: cases
+  coded: True
+  codes:
+    Cascade: Cascade
+    Mixed Refrigerant: Mixed Refrigerant
+distance:
+  name: Transported distance
+  type: cases
+  coded: False
+component:
+  name: Component
+  type: components
+  coded: True
+  codes:
+    Liquefaction: Liquifying gas before maritime transport
+    Regasification: Regasifying gas after maritime transport
+    Transportation: Actual long-distance transportation

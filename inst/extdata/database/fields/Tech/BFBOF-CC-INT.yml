@@ -1,0 +1,7 @@
+subtech:
+  name: Subtechnology
+  type: cases
+  coded: True
+  codes:
+    BF-BOF-POST: BF-BOF post-combustion capture
+    TGR-BOF-POST: BF-BOF post top-gas recycling capture

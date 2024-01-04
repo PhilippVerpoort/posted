@@ -1,4 +1,4 @@
-- for: "variable=='CAPEX'"
+- when: "variable=='CAPEX'"
   use: "src_ref=='Ozkan et al. (2022)'"
   weight: nan
   def: 1.0

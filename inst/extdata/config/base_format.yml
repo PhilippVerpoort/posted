@@ -1,8 +1,14 @@
-variable:
-  name: Variable
-  desc: Name of the variable contributed by this row.
+reported_variable:
+  name: Reported variable
+  desc: Name of the variable contributed by this entry.
   dtype: category
   required: True
+  allowed: Any variable in accordance with the variable definitions.
+reference_variable:
+  name: Reference variable
+  desc: The reference to which this entry relates.
+  dtype: category
+  required: False
   allowed: Any variable in accordance with the variable definitions.
 region:
   name: Region
@@ -18,13 +24,6 @@ period:
   dtype: float
   required: False
   allowed: Any integer number referring to a year (e.g. 1995, 2023, 2040, ...)
-component:
-  name: Component
-  desc: The name of the component if multiple components of this entry type exist.
-  dtype: str
-  required: False
-  allowed:
-    This is a free text field explaining the component. It should be left empty if only one component exists.
 reported_value:
   name: Reported value
   desc: The exact number reported by the referenced source, expressed in the original units.

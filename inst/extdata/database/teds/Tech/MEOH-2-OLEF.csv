@@ -1,8 +1,19 @@
-variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,,,490.2,,EUR,1,t,"This source states 0.76 MEUR per kt of Propylene produced. We assume that 387 kt of 600 kt output are Propylene (as per Jasper et al, 2015), which yields 760×387/600 EUR/t.",Oliviera21,Section Costs at the end of page 1.
-CAPEX,,,300.0,,EUR,1,t,,Bazzanella17,Table 35
-FOPEX Relative,,,3.0,,percent,1,t,,Oliviera21,Section Costs at the end of page 1.
-FOPEX Specific,,,45.0,,EUR,1,t,,Bazzanella17,Table 35
-VOPEX,,,0.02,,MEUR,1,kilometric_ton,,Oliviera21,Section Costs at the end of page 1.
-Demand|elec,,,5.0,,GJ,1,t,,Bazzanella17,Section 4.5.3
-Demand|meoh,,,2.28,,t,1,t,,Bazzanella17,Section 4.5.3
+reported_variable,reference_variable,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|propylene,2021,0.76,,MEUR_2015,1,kilometric_ton/a,,Oliveira21,"Page 1, Section Costs"
+CAPEX Annualised,Output Capacity|All Products Mass,2017,300,,EUR_2015,1,metric_ton,Depreciated over 10 years with an interest rate of 10%.,Bazzanella17,Table 35
+FOPEX Relative,,2021,3,,percent,,,,Oliveira21,"Page 1, Section Costs"
+FOPEX Specific,Output Capacity|All Products Mass,2017,45,,EUR_2015,1,metric_ton,,Bazzanella17,Table 35
+VOPEX,Output|propylene,2021,0.02,,MEUR_2015,1,kilometric_ton,,Oliveira21,"Page 1, Section Costs"
+Input|elec,Output|All Products,2017,5,,GJ,1,metric_ton,The source only reports “energy demand” and does not specify it this is heat or electricity.,Bazzanella17,Section 4.5.3
+Input|meoh,Output|All Products,2017,2.28,,metric_ton,1,metric_ton,,Bazzanella17,Section 4.5.3
+Input|meoh,Output|ethylene,2015,1560,,kilometric_ton,214,kilometric_ton,,Jasper15,"Table 1, Page 689"
+Output|propylene,Output|ethylene,2015,386,,kilometric_ton,214,kilometric_ton,,Jasper15,"Table 1, Page 689"
+Output|propylene,Input|methanol,2021,0.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
+Output|ethylene,Input|methanol,2021,0.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
+Output|residual_gas,Input|methanol,2021,0.3,,metric_ton,2.9,metric_ton,C4 fraction and LPG,Zhao21,"Figure 2, Page 196"
+Input|elec,Input|methanol,2021,50.6,,kWh,2.9,metric_ton,C4 fraction and LPG,Zhao21,"Figure 2, Page 196"
+Input|steam,Input|methanol,2021,4.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
+Input|cooling_water,Input|methanol,2021,93.3,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
+FLH,,2021,8550,,hour,,,,Oliveira21,Page 1
+Lifetime,,2021,20,,year,,,,Oliveira21,Page 1
+Emissions|CO2,Output|propylene,2021,0.06,,kilometric_ton,1,kilometric_ton,Corrected unit.,Oliveira21,"Page 2, Section Emissions"

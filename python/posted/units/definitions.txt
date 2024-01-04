@@ -20,12 +20,15 @@ year = 8760 * hour = a
 
     [length] ** 3 -> [energy]: value * density * energycontent
     [energy] -> [length] ** 3: value / density / energycontent
+
+    [length] ** 3 / [time] -> [power]: value * density * energycontent
+    [power] -> [length] ** 3 / [time]: value / density / energycontent
 @end
 
 # Currency 
 
-USD_2005 = [currency] = USD
-EUR_2005 = [currency_EUR] = EUR
+USD_2005 = [currency]
+EUR_2005 = [currency_EUR]
 # works right now only with exchange rate from 2005 and 2005 as base year. 
 # Other years yet to be implemented
 

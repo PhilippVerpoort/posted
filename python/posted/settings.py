@@ -1,2 +1,2 @@
 # define default currency
-default_currency = 'EUR'
+default_currency = 'USD_2005'

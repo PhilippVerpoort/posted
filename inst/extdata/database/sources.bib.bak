@@ -1,10 +1,12 @@
+@comment{x-kbibtex-encoding=utf-8}
+
 @article{Vogl18,
-	author = {Vogl, Valentin and {\AA}hman, Max and Nilsson, Lars J.},
+	author = {Vogl, Valentin and Åhman, Max and Nilsson, Lars J.},
 	doi = {10.1016/j.jclepro.2018.08.279},
 	issn = {0959-6526},
 	journal = {Journal of Cleaner Production},
 	month = {Dec},
-	pages = {736--745},
+	pages = {736–745},
 	publisher = {Elsevier BV},
 	title = {Assessment of hydrogen direct reduction for fossil-free steelmaking},
 	url = {http://dx.doi.org/10.1016/j.jclepro.2018.08.279},
@@ -57,13 +59,13 @@
 }
 
 @article{Sasiain20,
-	author = {Sasiain, A. and Rechberger, K. and Spanlang, A. and Kofler, I. and Wolfmeir, H. and Harris, C. and B{\"u}rgler, T.},
+	author = {Sasiain, A. and Rechberger, K. and Spanlang, A. and Kofler, I. and Wolfmeir, H. and Harris, C. and Bürgler, T.},
 	doi = {10.1007/s00501-020-00968-1},
 	issn = {1613-7531},
-	journal = {BHM Berg- und H{\"u}ttenm{\"a}nnische Monatshefte},
+	journal = {BHM Berg- und Hüttenmännische Monatshefte},
 	month = {Mar},
 	number = {5},
-	pages = {232--236},
+	pages = {232–236},
 	publisher = {Springer Science and Business Media LLC},
 	title = {Green Hydrogen as Decarbonization Element for the Steel Industry},
 	url = {http://dx.doi.org/10.1007/s00501-020-00968-1},
@@ -73,22 +75,21 @@
 }
 
 @article{Schemme20,
-	author = {Schemme, Steffen and Breuer, Janos Lucian  and Köller, Maximilian  and Meschede,  Sven  and  Walman, Fiona and Samsun, Remzi Can and Peters, Ralf and Stolten, Detlef},
-	doi = {https://doi.org/10.1016/j.ijhydene.2019.05.028},
-	journal = {International Journal of Hydrogen Energy},
+	author = {Schemme, Steffen and Breuer, Janos Lucian and Köller, Maximilian and Meschede, Sven and Walman, Fiona and Samsun, Remzi Can and Peters, Ralf and Stolten, Detlef},
+	doi = {10.1016/j.ijhydene.2019.05.028},
 	issn = {0360-3199},
+	journal = {International Journal of Hydrogen Energy},
 	number = {8},
-	pages = {5395-5414},
+	pages = {5395–5414},
 	title = {H2-based synthetic fuels: A techno-economic comparison of alcohol, ether and hydrocarbon production},
 	url = {https://www.sciencedirect.com/science/article/pii/S0360319919318580},
 	volume = {45},
 	x-fetchedfrom = {DOI},
-	year = {2020},
-	
+	year = {2020}
 }
 
 @article{Brandle21,
-	author = {Br{\"a}ndle, Gregor and Sch{\"o}nfisch, Max and Schulte, Simon},
+	author = {Brändle, Gregor and Schönfisch, Max and Schulte, Simon},
 	doi = {10.1016/j.apenergy.2021.117481},
 	issn = {0306-2619},
 	journal = {Applied Energy},
@@ -108,7 +109,7 @@
 	issn = {0959-6526},
 	journal = {Journal of Cleaner Production},
 	month = {Oct},
-	pages = {687--704},
+	pages = {687–704},
 	publisher = {Elsevier BV},
 	title = {A comparative analysis of electricity generation costs from renewable, fossil fuel and nuclear sources in G20 countries for the period 2015-2030},
 	url = {http://dx.doi.org/10.1016/j.jclepro.2018.07.159},
@@ -132,9 +133,9 @@
 	issn = {0960-1481},
 	journal = {Renewable Energy},
 	month = {Feb},
-	pages = {525--537},
+	pages = {525–537},
 	publisher = {Elsevier BV},
-	title = {Capital expenditure and levelized cost of electricity of photovoltaic plants and wind turbines -- Development by 2050},
+	title = {Capital expenditure and levelized cost of electricity of photovoltaic plants and wind turbines – Development by 2050},
 	url = {http://dx.doi.org/10.1016/j.renene.2021.12.042},
 	volume = {185},
 	x-fetchedfrom = {DOI},
@@ -178,7 +179,7 @@
 	issn = {1364-0321},
 	journal = {Renewable and Sustainable Energy Reviews},
 	month = {Apr},
-	pages = {46--68},
+	pages = {46–68},
 	publisher = {Elsevier BV},
 	title = {Technologies and infrastructures underpinning future CO 2 value chains: A comprehensive review and comparative analysis},
 	url = {http://dx.doi.org/10.1016/j.rser.2018.01.007},
@@ -194,7 +195,7 @@
 	journal = {Nature Energy},
 	month = {Oct},
 	number = {11},
-	pages = {1035--1044},
+	pages = {1035–1044},
 	publisher = {Springer Science and Business Media LLC},
 	title = {Understanding environmental trade-offs and resource demand of direct air capture technologies through comparative life-cycle assessment},
 	url = {http://dx.doi.org/10.1038/s41560-021-00922-6},
@@ -204,7 +205,7 @@
 }
 
 @article{Vartiainen22,
-	author = {Vartiainen, Eero and Breyer, Christian and Moser, David and {Rom{\'a}n Medina}, Eduardo and Busto, Chiara and Masson, Ga{\"e}tan and Bosch, Elina and J{\"a}ger-Waldau, Arnulf},
+	author = {Vartiainen, Eero and Breyer, Christian and Moser, David and {Román Medina}, Eduardo and Busto, Chiara and Masson, Gaëtan and Bosch, Elina and Jäger-Waldau, Arnulf},
 	doi = {10.1002/solr.202100487},
 	issn = {2367-198X},
 	journal = {Solar RRL},
@@ -241,7 +242,7 @@
 	journal = {Joule},
 	month = {Aug},
 	number = {8},
-	pages = {1573--1594},
+	pages = {1573–1594},
 	publisher = {Elsevier BV},
 	title = {A Process for Capturing CO2 from the Atmosphere},
 	url = {http://dx.doi.org/10.1016/j.joule.2018.05.006},
@@ -250,14 +251,7 @@
 	year = {2018}
 }
 
-@inproceedings{Fasihi15,
-	author = {Fasihi, Mahdi and Bogdanov, Dmitrii},
-	year = {2015},
-	month = {09},
-	pages = {},
-	title = {Economics of Global LNG Trading Based on Hybrid PV-Wind Power Plants},
-	doi = {10.4229/EUPVSEC20152015-7DO.15.6}
-}
+uthor = {Fasihi, Mahdi and Bogdanov, Dmitrii},	year = {2015},	month = {09},	pages = {},	title = {Economics of Global LNG Trading Based on Hybrid PV-Wind Power Plants},	doi = {10.4229/EUPVSEC20152015-7DO.15.6}}
 
 @article{Fasihi19,
 	author = {Fasihi, Mahdi and Efimova, Olga and Breyer, Christian},
@@ -265,7 +259,7 @@
 	issn = {0959-6526},
 	journal = {Journal of Cleaner Production},
 	month = {Jul},
-	pages = {957--980},
+	pages = {957–980},
 	publisher = {Elsevier BV},
 	title = {Techno-economic assessment of CO2 direct air capture plants},
 	url = {http://dx.doi.org/10.1016/j.jclepro.2019.03.086},
@@ -320,12 +314,12 @@
 }
 
 @article{Perez-Fortes16,
-	author = {P{\'e}rez-Fortes, Mar and Sch{\"o}neberger, Jan C. and Boulamanti, Aikaterini and Tzimas, Evangelos},
+	author = {Pérez-Fortes, Mar and Schöneberger, Jan C. and Boulamanti, Aikaterini and Tzimas, Evangelos},
 	doi = {10.1016/j.apenergy.2015.07.067},
 	issn = {0306-2619},
 	journal = {Applied Energy},
 	month = {Jan},
-	pages = {718--732},
+	pages = {718–732},
 	publisher = {Elsevier BV},
 	title = {Methanol synthesis using captured CO2 as raw material: Techno-economic and environmental assessment},
 	url = {http://dx.doi.org/10.1016/j.apenergy.2015.07.067},
@@ -341,7 +335,7 @@
 	journal = {Processes},
 	month = {Sep},
 	number = {3},
-	pages = {684--698},
+	pages = {684–698},
 	publisher = {MDPI AG},
 	title = {A Techno-Economic Comparison between Two Methanol-to-Propylene Processes},
 	url = {http://dx.doi.org/10.3390/pr3030684},
@@ -351,10 +345,10 @@
 }
 
 @techreport{Holst21,
-	author = {Holst, Marius and Aschbrenner, Stefan and Smolinka, Tom and Voglst{\"a}tter, Christopher and Grimm, Gunter},
+	author = {Holst, Marius and Aschbrenner, Stefan and Smolinka, Tom and Voglstätter, Christopher and Grimm, Gunter},
 	institution = {Fraunhofer Institute for Solar Energy Systems ISE},
 	location = {Germany},
-	title = {Cost forecast for low temperature electrolysis -- technology driven bottom-up prognosis for PEM and Alkaline water electrolysis systems},
+	title = {Cost forecast for low temperature electrolysis – technology driven bottom-up prognosis for PEM and Alkaline water electrolysis systems},
 	url = {https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/cost-forecast-for-low-temperature-electrolysis.pdf},
 	year = {2021}
 }
@@ -363,7 +357,7 @@
 	author = {IRENA},
 	institution = {International Renewable Energy Agency},
 	location = {Abu Dhabi},
-	title = {Global hydrogen trade to meet the 1.5°C climate goal: Part III -- Green hydrogen cost and potential},
+	title = {Global hydrogen trade to meet the 1.5°C climate goal: Part III – Green hydrogen cost and potential},
 	url = {https://www.irena.org/publications/2022/May/Global-hydrogen-trade-Cost},
 	year = {2022}
 }
@@ -379,35 +373,29 @@
 @techreport{IEA-DAC22,
 	author = {IEA},
 	institution = {International Energy Agency},
-	title = {Direct Air Capture -- A key technology for net zero},
+	title = {Direct Air Capture – A key technology for net zero},
 	url = {https://www.iea.org/reports/direct-air-capture-2022},
 	year = {2022}
 }
 
-@techreport{IEA-FOH19,
-	author  = {IEA},
-	institution = {International Energy Agency},
-	title =  {The Future of Hydrogen},
-	url = {https://www.iea.org/reports/the-future-of-hydrogen},
-	year = {2019}
-}
+rl = {https://www.iea.org/reports/the-future-of-hydrogen}	year = {2019}}
 
 @techreport{IEA-GHG13,
 	author = {IEA},
 	institution = {International Energy Agency},
 	title = {Iron and Steel CCS Study (Techno-Economics Integrated Steel Mill)},
 	url = {https://ieaghg.org/publications/technical-reports/reports-list/9-technical-reports/1001-2013-04-iron-and-steel-ccs-study-techno-economics-integrated-steel-mill},
-	year = {2013},
+	year = {2013}
 }
 
 @article{Ozkan22,
 	abstract = {Summary
-Climate change calls for adaptation of negative emission technologies such as direct air capture (DAC) of carbon dioxide (CO2) to lower the global warming impacts of greenhouse gases. Recently, elevated global interests to the DAC technologies prompted implementation of new tax credits and new policies worldwide that motivated the existing DAC companies and prompted the startup boom. There are presently 19 DAC plants operating worldwide, capturing more than 0.01 Mt CO2/year. DAC active plants capturing in average 10,000 tons of CO2 annually are still in their infancy and are expensive. DAC technologies still need to improve in three areas: 1) Contactor, 2) Sorbent, and 3) Regeneration to drive down the costs. Technology-based economic development in all three areas are required to achieve <$100/ton of CO2 which makes DAC economically viable. Current DAC cost is about 2--6 times higher than the desired cost and depends highly on the source of energy used. In this review, we present the current status of commercial DAC technologies and elucidate the five pillars of technology including capture technologies, their energy demand, final costs, environmental impacts, and political support. We explain processing steps for liquid and solid carbon capture technologies and indicate their specific energy requirements. DAC capital and operational cost based on plant power energy sources, land and water needs of DAC are discussed in detail. At 0.01 Mt CO2/year capture capacity, DAC alone faces a challenge to meet the rates of carbon capture described in the goals of the Paris Agreement with 1.5--2°C of global warming. However, DAC may partially help to offset difficult to avoid annual emissions from concrete (∼8\%), transportation (∼24\%), iron-steel industry (∼11\%), and wildfires (∼0.8\%).},
+Climate change calls for adaptation of negative emission technologies such as direct air capture (DAC) of carbon dioxide (CO2) to lower the global warming impacts of greenhouse gases. Recently, elevated global interests to the DAC technologies prompted implementation of new tax credits and new policies worldwide that motivated the existing DAC companies and prompted the startup boom. There are presently 19 DAC plants operating worldwide, capturing more than 0.01 Mt CO2/year. DAC active plants capturing in average 10,000 tons of CO2 annually are still in their infancy and are expensive. DAC technologies still need to improve in three areas: 1) Contactor, 2) Sorbent, and 3) Regeneration to drive down the costs. Technology-based economic development in all three areas are required to achieve <$100/ton of CO2 which makes DAC economically viable. Current DAC cost is about 2–6 times higher than the desired cost and depends highly on the source of energy used. In this review, we present the current status of commercial DAC technologies and elucidate the five pillars of technology including capture technologies, their energy demand, final costs, environmental impacts, and political support. We explain processing steps for liquid and solid carbon capture technologies and indicate their specific energy requirements. DAC capital and operational cost based on plant power energy sources, land and water needs of DAC are discussed in detail. At 0.01 Mt CO2/year capture capacity, DAC alone faces a challenge to meet the rates of carbon capture described in the goals of the Paris Agreement with 1.5–2°C of global warming. However, DAC may partially help to offset difficult to avoid annual emissions from concrete (∼8\%), transportation (∼24\%), iron-steel industry (∼11\%), and wildfires (∼0.8\%).},
 	author = {Ozkan, Mihrimah and Nayak, Saswat Priyadarshi and Ruiz, Anthony D. and Jiang, Wenmei},
 	doi = {10.1016/j.isci.2022.103990},
 	issn = {2589-0042},
 	journal = {iScience},
-	keywords = {Chemical engineering; Energy sustainability; Environmental technology; Mechanical engineering},
+	keywords = {Chemical engineering, Energy sustainability, Environmental technology, Mechanical engineering},
 	number = {4},
 	pages = {103990},
 	title = {Current status and pillars of direct air capture technologies},
@@ -417,7 +405,7 @@ Climate change calls for adaptation of negative emission technologies such as di
 }
 
 @techreport{Wortler13,
-	author = {W{\"o}rtler, Martin and Schuler, Felix and Voigt, Nicole and Schmidt, Torben and Dahlmann, Peter and L{\"u}ngen, Hans Bodo and Ghenda, Jean-Theo},
+	author = {Wörtler, Martin and Schuler, Felix and Voigt, Nicole and Schmidt, Torben and Dahlmann, Peter and Lüngen, Hans Bodo and Ghenda, Jean-Theo},
 	institution = {The Boston Consulting Group},
 	title = {Steel's Contribution to a Low-Carbon Europe 2050},
 	url = {https://www.bcg.com/publications/2013/metals-mining-environment-steels-contribution-low-carbon-europe-2050},
@@ -425,9 +413,9 @@ Climate change calls for adaptation of negative emission technologies such as di
 }
 
 @techreport{Hauser21,
-	author = {Hauser, Philipp D. and Burmeister, Helen and M{\"u}nnich, Paul J. and Witecka, Wido K. and M{\"u}hlpointner, Thomas},
+	author = {Hauser, Philipp D. and Burmeister, Helen and Münnich, Paul J. and Witecka, Wido K. and Mühlpointner, Thomas},
 	institution = {Agora Energiewende},
-	title = {Klimaschutzvertr{\"a}ge f{\"u}r die Industrietransformation. Analyse zur Stahlbranche.},
+	title = {Klimaschutzverträge für die Industrietransformation. Analyse zur Stahlbranche.},
 	year = {2021}
 }
 
@@ -447,10 +435,10 @@ Climate change calls for adaptation of negative emission technologies such as di
 }
 
 @article{Holling17,
-	author = {H{\"o}lling, Marc and Weng, Matthias and Gellert, Sebastian},
+	author = {Hölling, Marc and Weng, Matthias and Gellert, Sebastian},
 	journal = {Stahl und Eisen},
 	number = {6},
-	pages = {47--53},
+	pages = {47–53},
 	title = {Bewertung der Herstellung von Eisenschwamm unter Verwendung von Wasserstoff},
 	volume = {137},
 	year = {2017}
@@ -483,7 +471,7 @@ Climate change calls for adaptation of negative emission technologies such as di
 @techreport{IEA-Ammonia21,
 	author = {IEA},
 	institution = {International Energy Agency},
-	title = {Ammonia Technology Roadmap -- Towards more sustainable nitrogen fertiliser production},
+	title = {Ammonia Technology Roadmap – Towards more sustainable nitrogen fertiliser production},
 	url = {https://www.iea.org/reports/ammonia-technology-roadmap},
 	year = {2021}
 }
@@ -491,7 +479,7 @@ Climate change calls for adaptation of negative emission technologies such as di
 @techreport{EuroComm07,
 	author = {Commission, European},
 	institution = {European Commission},
-	title = {Reference Document on Best Available Techniques for the Manufacture of Large Volume Inorganic Chemicals --- Ammonia, Acids and Fertilisers},
+	title = {Reference Document on Best Available Techniques for the Manufacture of Large Volume Inorganic Chemicals — Ammonia, Acids and Fertilisers},
 	url = {https://eippcb.jrc.ec.europa.eu/reference/large-volume-inorganic-chemicals-ammonia-acids-and-fertilisers},
 	year = {2007}
 }
@@ -512,13 +500,13 @@ Climate change calls for adaptation of negative emission technologies such as di
 }
 
 @article{Tenhumberg20,
-	author = {Tenhumberg, Nils and B{\"u}ker, Karsten},
+	author = {Tenhumberg, Nils and Büker, Karsten},
 	doi = {10.1002/cite.202000090},
 	issn = {1522-2640},
 	journal = {Chemie Ingenieur Technik},
 	month = {Aug},
 	number = {10},
-	pages = {1586--1595},
+	pages = {1586–1595},
 	publisher = {Wiley},
 	title = {Ecological and Economic Evaluation of Hydrogen Production by Different Water Electrolysis Technologies},
 	url = {http://dx.doi.org/10.1002/cite.202000090},
@@ -544,13 +532,13 @@ Climate change calls for adaptation of negative emission technologies such as di
 }
 
 @article{Ikaheimo18,
-	author = {Ik{\"a}heimo, Jussi and Kiviluoma, Juha and Weiss, Robert and Holttinen, Hannele},
+	author = {Ikäheimo, Jussi and Kiviluoma, Juha and Weiss, Robert and Holttinen, Hannele},
 	doi = {10.1016/j.ijhydene.2018.06.121},
 	issn = {0360-3199},
 	journal = {International Journal of Hydrogen Energy},
 	month = {Sep},
 	number = {36},
-	pages = {17295--17308},
+	pages = {17295–17308},
 	publisher = {Elsevier BV},
 	title = {Power-to-ammonia in future North European 100 \% renewable power and heat system},
 	url = {http://dx.doi.org/10.1016/j.ijhydene.2018.06.121},
@@ -560,23 +548,22 @@ Climate change calls for adaptation of negative emission technologies such as di
 }
 
 @article{Grahn22,
-	author = {Grahn, Maria and Malmgren, Elin and Korberg,  Andrei D and Taljegard, Maria  and Anderson, James E and Brynolf,  Selma  and Hansson, Julia  and Skov, Iva Ridjan  and Wallington, Timothy J },
+	author = {Grahn, Maria and Malmgren, Elin and Korberg, Andrei D and Taljegard, Maria and Anderson, James E and Brynolf, Selma and Hansson, Julia and Skov, Iva Ridjan and Wallington, Timothy J},
 	doi = {10.1088/2516-1083/ac7937},
-	url = {https://dx.doi.org/10.1088/2516-1083/ac7937},
-	year = {2022},
+	journal = {Progress in Energy},
 	month = {jun},
-	publisher = {IOP Publishing},
-	volume = {4},
 	number = {3},
 	pages = {032010},
-	
+	publisher = {IOP Publishing},
 	title = {Review of electrofuel feasibility—cost and environmental impact},
-	journal = {Progress in Energy},
-	x-fetchedfrom = {DOI}
+	url = {https://dx.doi.org/10.1088/2516-1083/ac7937},
+	volume = {4},
+	x-fetchedfrom = {DOI},
+	year = {2022}
 }
 
 @article{Jacobasch21,
-	author = {Jacobasch, Eric and Herz, Gregor and Rix, Christopher and M{\"u}ller, Nils and Reichelt, Erik and Jahn, Matthias and Michaelis, Alexander},
+	author = {Jacobasch, Eric and Herz, Gregor and Rix, Christopher and Müller, Nils and Reichelt, Erik and Jahn, Matthias and Michaelis, Alexander},
 	doi = {10.1016/j.jclepro.2021.129502},
 	issn = {0959-6526},
 	journal = {Journal of Cleaner Production},
@@ -590,287 +577,193 @@ Climate change calls for adaptation of negative emission technologies such as di
 	year = {2021}
 }
 
-@article{Soler22,
-	author = {Soler, Alba and Gordillo, Victor and Liley, William and Schmidt, Patrick and Weindorf, Werner and Houghton, Tom and Dell'Orco, Stefano},
-	institution = {Concawe, Aramco},
-	month = {Nov},
-	title = {E-Fuels: A techno-economic assessment of European domestic production and imports towards 2050},
-	url = {https://www.concawe.eu/publication/e-fuels-a-techno-economic-assessment-of-european-domestic-production-and-imports-towards-2050/},
-}
+nstitution = {Concawe, Aramco}	month = {Nov}	title = {E-Fuels: A techno-economic assessment of European domestic production and imports towards 2050}	url = {https://www.concawe.eu/publication/e-fuels-a-techno-economic-assessment-of-european-domestic-production-and-imports-towards-2050/},}
 
 @mastersthesis{Takunju21,
-	school = {Ruhr-Universit{\"a}t Bochum},
-	year = {2021},
 	author = {Takunju, Roy Tarh},
-	title = {Life cycle assessment of the production of a solar MTG fuel based on electrochemical hydrogen production with energy supply by a PV/CSP hybrid solar power plant},
-	month = {Dezember},
 	keywords = {atmospheric CO2, global warming impact, regenerative energy},
-	url = {https://elib.dlr.de/146704/}
+	month = {Dezember},
+	school = {Ruhr-Universität Bochum},
+	title = {Life cycle assessment of the production of a solar MTG fuel based on electrochemical hydrogen production with energy supply by a PV/CSP hybrid solar power plant},
+	url = {https://elib.dlr.de/146704/},
+	year = {2021}
 }
 
 @article{Lux23,
-	title = {Potentials of direct air capture and storage in a greenhouse gas-neutral European energy system},
-	journal = {Energy Strategy Reviews},
-	volume = {45},
-	pages = {101012},
-	year = {2023},
+	author = {Lux, Benjamin and Schneck, Niklas and Pfluger, Benjamin and Männer, Wolfgang and Sensfuß, Frank},
+	doi = {10.1016/j.esr.2022.101012},
 	issn = {2211-467X},
-	doi = {https://doi.org/10.1016/j.esr.2022.101012},
-	url = {https://www.sciencedirect.com/science/article/pii/S2211467X22002061},
-	author = {Benjamin Lux and Niklas Schneck and Benjamin Pfluger and Wolfgang Männer and Frank Sensfuß},
+	journal = {Energy Strategy Reviews},
 	keywords = {Direct air capture and storage (DACCS), Carbon dioxide removal (CDR), Negative emission technology (NET), Energy system modeling, GHG neutrality},
+	pages = {101012},
+	title = {Potentials of direct air capture and storage in a greenhouse gas-neutral European energy system},
+	url = {https://www.sciencedirect.com/science/article/pii/S2211467X22002061},
+	volume = {45},
 	x-fetchedfrom = {DOI},
+	year = {2023}
 }
 
-@book{Socolow11,,
-	author = {Socolow, Robert and Desmond, Michael and Aines, Roger and Blackstock, Jason and Bolland, Olav and Kaarsberg, Tina and Lewis, Nathan and Mazzotti, Marco and Pfeffer, Allen and Sawyer, Karma and Siirola, Jeffrey and Smit, Berend and Wilcox, Jennifer},
-	year = {2011},
-	month = {01},
-	pages = {},
-	title = {Direct Air Capture of CO2 with Chemicals: A Technology Assessment for the APS Panel on Public Affairs}
-}
+author = {Socolow, Robert and Desmond, Michael and Aines, Roger and Blackstock, Jason and Bolland, Olav and Kaarsberg, Tina and Lewis, Nathan and Mazzotti, Marco and Pfeffer, Allen and Sawyer, Karma and Siirola, Jeffrey and Smit, Berend and Wilcox, Jennifer},	year = {2011},	month = {01},	pages = {},	title = {Direct Air Capture of CO2 with Chemicals: A Technology Assessment for the APS Panel on Public Affairs}}
 
 @article{Realmonte19,
-	title={An inter-model assessment of the role of direct air capture in deep mitigation pathways},
-	author={Realmonte, Giulia and Drouet, Laurent and Gambhir, Ajay and Glynn, James and Hawkes, Adam and K{\"o}berle, Alexandre C and Tavoni, Massimo},
-	journal={Nature communications},
-	volume={10},
-	number={1},
-	pages={3277},
-	year={2019},
-	publisher={Nature Publishing Group UK London}
+	author = {Realmonte, Giulia and Drouet, Laurent and Gambhir, Ajay and Glynn, James and Hawkes, Adam and Köberle, Alexandre C and Tavoni, Massimo},
+	journal = {Nature communications},
+	number = {1},
+	pages = {3277},
+	publisher = {Nature Publishing Group UK London},
+	title = {An inter-model assessment of the role of direct air capture in deep mitigation pathways},
+	volume = {10},
+	year = {2019}
 }
 
 @article{Lux21,
-	title = {Supply curves of electricity-based gaseous fuels in the MENA region},
-	journal = {Computers & Industrial Engineering},
-	volume = {162},
-	pages = {107647},
-	year = {2021},
+	author = {Lux, Benjamin and Gegenheimer, Johanna and Franke, Katja and Sensfuß, Frank and Pfluger, Benjamin},
+	doi = {10.1016/j.cie.2021.107647},
 	issn = {0360-8352},
-	doi = {https://doi.org/10.1016/j.cie.2021.107647},
-	url = {https://www.sciencedirect.com/science/article/pii/S0360835221005519},
-	author = {Benjamin Lux and Johanna Gegenheimer and Katja Franke and Frank Sensfuß and Benjamin Pfluger},
+	journal = {Computers \& Industrial Engineering},
 	keywords = {E-Fuels, Power-to-Gas, MENA region, Energy system modeling, Cost of hydrogen, Cost of synthetic methane},
+	pages = {107647},
+	title = {Supply curves of electricity-based gaseous fuels in the MENA region},
+	url = {https://www.sciencedirect.com/science/article/pii/S0360835221005519},
+	volume = {162},
 	x-fetchedfrom = {DOI},
+	year = {2021}
 }
 
 @article{Gorre19,
 	author = {Gorre, Jachin and Ruoss, Fabian and Karjunen, Hannu and Tynjälä, Tero and Schaffert, Johannes},
-	year = {2019},
+	doi = {10.1016/j.apenergy.2019.113967},
+	journal = {Applied Energy},
 	month = {10},
 	pages = {},
 	title = {Cost benefits of optimizing hydrogen storage and methanation capacities for Power-to-Gas plants in dynamic operation},
 	volume = {257},
-	journal = {Applied Energy},
-	doi = {10.1016/j.apenergy.2019.113967}
+	year = {2019}
 }
 
 @article{Michalski17,
-	title = {Hydrogen generation by electrolysis and storage in salt caverns: Potentials, economics and systems aspects with regard to the German energy transition},
-	journal = {International Journal of Hydrogen Energy},
-	volume = {42},
-	number = {19},
-	pages = {13427-13443},
-	year = {2017},
-	note = {Special Issue on The 21st World Hydrogen Energy Conference (WHEC 2016), 13-16 June 2016, Zaragoza, Spain},
+	author = {Michalski, Jan and Bünger, Ulrich and Crotogino, Fritz and Donadei, Sabine and Schneider, Gregor-Sönke and Pregger, Thomas and Cao, Karl-Kiên and Heide, Dominik},
+	doi = {10.1016/j.ijhydene.2017.02.102},
 	issn = {0360-3199},
-	doi = {https://doi.org/10.1016/j.ijhydene.2017.02.102},
-	url = {https://www.sciencedirect.com/science/article/pii/S0360319917306109},
-	author = {Jan Michalski and Ulrich Bünger and Fritz Crotogino and Sabine Donadei and Gregor-Sönke Schneider and Thomas Pregger and Karl-Kiên Cao and Dominik Heide},
+	journal = {International Journal of Hydrogen Energy},
 	keywords = {Energy storage system, Energy transition, Hydrogen production, Hydrogen storage, Salt cavern},
+	note = {Special Issue on The 21st World Hydrogen Energy Conference (WHEC 2016), 13-16 June 2016, Zaragoza, Spain},
+	number = {19},
+	pages = {13427–13443},
+	title = {Hydrogen generation by electrolysis and storage in salt caverns: Potentials, economics and systems aspects with regard to the German energy transition},
+	url = {https://www.sciencedirect.com/science/article/pii/S0360319917306109},
+	volume = {42},
+	year = {2017}
 }
 
-@Article{Buchenberg23,
-	AUTHOR = {Buchenberg, Patrick and Addanki, Thushara and Franzmann, David and Winkler, Christoph and Lippkau, Felix and Hamacher, Thomas and Kuhn, Philipp and Heinrichs, Heidi and Blesl, Markus},
-	TITLE = {Global Potentials and Costs of Synfuels via Fischer&ndash;Tropsch Process},
-	JOURNAL = {Energies},
-	VOLUME = {16},
-	YEAR = {2023},
-	NUMBER = {4},
-	ARTICLE-NUMBER = {1976},
-	URL = {https://www.mdpi.com/1996-1073/16/4/1976},
-	ISSN = {1996-1073},
+@article{Buchenberg23,
+	article-number = {1976},
+	author = {Buchenberg, Patrick and Addanki, Thushara and Franzmann, David and Winkler, Christoph and Lippkau, Felix and Hamacher, Thomas and Kuhn, Philipp and Heinrichs, Heidi and Blesl, Markus},
+	issn = {1996-1073},
+	journal = {Energies},
+	number = {4},
+	title = {Global Potentials and Costs of Synfuels via Fischer\&ndash;Tropsch Process},
+	url = {https://www.mdpi.com/1996-1073/16/4/1976},
+	volume = {16},
+	year = {2023}
 }
 
 @article{Nyari20,
-	title = {Techno-economic barriers of an industrial-scale methanol CCU-plant},
-	journal = {Journal of CO2 Utilization},
-	volume = {39},
-	pages = {101166},
-	year = {2020},
+	author = {Nyári, Judit and Magdeldin, Mohamed and Larmi, Martti and Järvinen, Mika and Santasalo-Aarnio, Annukka},
+	doi = {10.1016/j.jcou.2020.101166},
 	issn = {2212-9820},
-	doi = {https://doi.org/10.1016/j.jcou.2020.101166},
-	url = {https://www.sciencedirect.com/science/article/pii/S2212982020300688},
-	author = {Judit Nyári and Mohamed Magdeldin and Martti Larmi and Mika Järvinen and Annukka Santasalo-Aarnio},
+	journal = {Journal of CO2 Utilization},
 	keywords = {COhydrogenation, Methanol synthesis, Carbon capture and utilization (CCU), Power-to-X (PtX), Techno-economic analysis},
+	pages = {101166},
+	title = {Techno-economic barriers of an industrial-scale methanol CCU-plant},
+	url = {https://www.sciencedirect.com/science/article/pii/S2212982020300688},
+	volume = {39},
+	year = {2020}
 }
 
 @article{Bos20,
-	title = {Wind power to methanol: Renewable methanol production using electricity, electrolysis of water and CO2 air capture},
-	journal = {Applied Energy},
-	volume = {264},
-	pages = {114672},
-	year = {2020},
+	author = {Bos, M.J. and Kersten, S.R.A. and Brilman, D.W.F.},
+	doi = {10.1016/j.apenergy.2020.114672},
 	issn = {0306-2619},
-	doi = {https://doi.org/10.1016/j.apenergy.2020.114672},
+	journal = {Applied Energy},
+	keywords = {Wind power, Electrolysis, CO air capture, Solid amine sorbent, CO hydrogenation, Methanol},
+	pages = {114672},
+	title = {Wind power to methanol: Renewable methanol production using electricity, electrolysis of water and CO2 air capture},
 	url = {https://www.sciencedirect.com/science/article/pii/S0306261920301847},
-	author = {M.J. Bos and S.R.A. Kersten and D.W.F. Brilman},
-	keywords = {Wind power, Electrolysis, CO air capture, Solid amine sorbent, CO hydrogenation, Methanol}
+	volume = {264},
+	year = {2020}
 }
 
 @article{Thema19,
-	title = {Power-to-Gas: Electrolysis and methanation status review},
-	journal = {Renewable and Sustainable Energy Reviews},
-	volume = {112},
-	pages = {775-787},
-	year = {2019},
+	author = {Thema, M. and Bauer, F. and Sterner, M.},
+	doi = {10.1016/j.rser.2019.06.030},
 	issn = {1364-0321},
-	doi = {https://doi.org/10.1016/j.rser.2019.06.030},
+	journal = {Renewable and Sustainable Energy Reviews},
+	keywords = {Power-to-Gas, Cost-development, Electrolysis, Biological CO-Methanation, Chemical CO-Methanation, Project overview, Sector coupling},
+	pages = {775–787},
+	title = {Power-to-Gas: Electrolysis and methanation status review},
 	url = {https://www.sciencedirect.com/science/article/pii/S136403211930423X},
-	author = {M. Thema and F. Bauer and M. Sterner},
-	keywords = {Power-to-Gas, Cost-development, Electrolysis, Biological CO-Methanation, Chemical CO-Methanation, Project overview, Sector coupling}
+	volume = {112},
+	year = {2019}
 }
 
 @article{Ueckerdt21,
 	author = {Ueckerdt, Falko and Bauer, Christian and Dirnaichner, Alois and Everall, Jordan and Sacchi, Romain and Luderer, Gunnar},
-	year = {2021},
+	doi = {10.1038/s41558-021-01032-7},
+	journal = {Nature Climate Change},
 	month = {05},
-	pages = {1-10},
+	pages = {1–10},
 	title = {Potential and risks of hydrogen-based e-fuels in climate change mitigation},
 	volume = {11},
-	journal = {Nature Climate Change},
-	doi = {10.1038/s41558-021-01032-7}
+	year = {2021}
 }
 
-@article{Milanzi18,
-	author = {Milanzi, S., Spiller, C., Grosse, B., Hermann, L., & Müller-Kirchenbauer, J},
-	title =  {Technischer Stand und Flexibilität des Power-to-Gas-Verfahrens (Version V01)}, 
-	doi = {https://doi.org/10.5281/zenodo.2620254},
-	url = {https://zenodo.org/records/2620254},
-	year = {2019}
-}
+rl = {https://zenodo.org/records/2620254},	year = 2019}}
 
 @article{Graf14,
-	title={Techno{\"o}konomische Studie von Power-to-Gas-Konzepten},
-	author={Graf, Frank and G{\"o}tz, Manuel and Henel, Marco and Schaaf, Tanja and Tichler, Robert},
-	journal={DVGW: Bonn, Germany},
-	year={2014}
+	author = {Graf, Frank and Götz, Manuel and Henel, Marco and Schaaf, Tanja and Tichler, Robert},
+	journal = {DVGW: Bonn, Germany},
+	title = {Technoökonomische Studie von Power-to-Gas-Konzepten},
+	year = {2014}
 }
 
 @article{Kiani19,
-	title = {Liquefied synthetic methane from ambient CO2 and renewable H2 - A technoeconomic study},
-	journal = {Journal of Natural Gas Science and Engineering},
-	volume = {94},
-	pages = {104079},
-	year = {2021},
+	author = {Kiani, Ali and Lejeune, Michael and Li, Chaoen and Patel, Jim and Feron, Paul},
+	doi = {10.1016/j.jngse.2021.104079},
 	issn = {1875-5100},
-	doi = {https://doi.org/10.1016/j.jngse.2021.104079},
-	url = {https://www.sciencedirect.com/science/article/pii/S1875510021002845},
-	author = {Ali Kiani and Michael Lejeune and Chaoen Li and Jim Patel and Paul Feron},
+	journal = {Journal of Natural Gas Science and Engineering},
 	keywords = {Liquefied synthetic methane, Liquefied hydrogen, Direct air capture, Levelised cost},
+	pages = {104079},
+	title = {Liquefied synthetic methane from ambient CO2 and renewable H2 - A technoeconomic study},
+	url = {https://www.sciencedirect.com/science/article/pii/S1875510021002845},
+	volume = {94},
+	year = {2021}
 }
 
-@BOOK{NASEM19,
-	author    = {National Academies of Sciences, Engineering, and Medicine},
-	title     = {Negative Emissions Technologies and Reliable Sequestration: A Research Agenda},
-	isbn      = {978-0-309-48452-7},
-	doi       = {10.17226/25259},
-	url       = {https://nap.nationalacademies.org/catalog/25259/negative-emissions-technologies-and-reliable-sequestration-a-research-agenda},
-	year      = {2019},
+@book{NASEM19,
+	address = {Washington, DC},
+	author = {{National Academies of Sciences}, Engineering and Medicine},
+	doi = {10.17226/25259},
+	isbn = {978-0-309-48452-7},
 	publisher = {The National Academies Pres},
-	address   = {Washington, DC},
+	title = {Negative Emissions Technologies and Reliable Sequestration: A Research Agenda},
+	url = {https://nap.nationalacademies.org/catalog/25259/negative-emissions-technologies-and-reliable-sequestration-a-research-agenda},
+	year = {2019}
 }
 
-@article{Worell2007,
-	title={World best practice energy intensity values for selected industrial sectors},
-	author={Worrell, Ernst and Price, Lynn and Neelis, Maarten and Galitsky, Christina and Zhou, Nan},
-	institution = {Lawrence Berkeley National Laboratory},
-	url =  {https://escholarship.org/uc/item/77n9d4sp},
-	year={2007}
-}
+rl =  {https://escholarship.org/uc/item/77n9d4sp}	year={2007}}
 
 @article{Zhang2020,
-	title = {Comprehensive review of current natural gas liquefaction processes on technical and economic performance},
-	journal = {Applied Thermal Engineering},
-	volume = {166},
-	pages = {114736},
-	year = {2020},
+	author = {Zhang, Jinrui and Meerman, Hans and Benders, René and Faaij, André},
+	doi = {10.1016/j.applthermaleng.2019.114736},
 	issn = {1359-4311},
-	doi = {https://doi.org/10.1016/j.applthermaleng.2019.114736},
+	journal = {Applied Thermal Engineering},
+	keywords = {LNG, Optimization, Energy efficiency, CAPEX, OPEX, Harmonization},
+	pages = {114736},
+	title = {Comprehensive review of current natural gas liquefaction processes on technical and economic performance},
 	url = {https://www.sciencedirect.com/science/article/pii/S1359431119358399},
-	author = {Jinrui Zhang and Hans Meerman and René Benders and André Faaij},
-	keywords = {LNG, Optimization, Energy efficiency, CAPEX, OPEX, Harmonization}
-}
-
-@incollection{Lemmon2023,
-	title = {Thermophysical Properties of Fluid System},
-	author = {Eric W. Lemmon, Ian H. Bell, Marcia L. Huber, and Mark O. McLinden},
-	booktitle = {NIST Chemistry WebBook, NIST Standard Reference Database Number 69},
-	editor= {Eds. P.J. Linstrom and W.G. Mallard},
-	publisher = {National Institute of Standards and Technology},
-	adress = {Gaithersburg MD, 20899},
-	doi = {https://doi.org/10.18434/T4D303},
-	url = {https://webbook.nist.gov/chemistry/fluid/},
-	urldate = {December 9, 2023}
-}
-
-@article{Boundy2011,
-	title = {Biomass Energy Data Book: Edition 4},
-	author = {Boundy, Robert Gary and Diegel, Susan W and Wright, Lynn L and Davis, Stacy Cagle},
-	doi = {10.2172/1050890},
-	url = {https://www.osti.gov/biblio/1050890},
-	journal = {},
-	number = ,
-	volume = ,
-	place = {United States},
-	year = {2011},
-}
-
-@article{H2tools2023,
-	title = {Hydrogen Tools},
-	author = {Pacific Northwest National Laboratory},
-	url = {https://h2tools.org/hyarc/calculator-tools/lower-and-higher-heating-values-fuels},
-	year = {2023}
-}
-
-@article{Franz2009,
-	title={1 x 1 der Gase},
-	author={Franz, Berit and Franz, Stefan},
-	journal={Physikalische Daten f{\"u}r Wissenschaft und Praxis},
-	volume={4},
-	year={2009}
-}
-
-@misc{Wang2023,
-	title = {Greenhouse gases, Regulated Emissions, and Energy use in Technologies Model ® (2023 Excel)},
-	author = {Wang, Michael and Elgowainy, Amgad and Lee, Uisung and Baek, Kwang H. and Balchandani, Sweta and Benavides, Pahola T. and Burnham, Andrew and Cai, Hao and Chen, Peter and Gan, Yu and Gracida-Alvarez, Ulises R. and Hawkins, Troy R. and Huang, Tai-Yuan and Iyer, Rakesh K. and Kar, Saurajyoti and Kelly, Jarod C. and Kim, Taemin and Kolodziej, Christopher and Lee, Kyuha and Liu, Xinyu and Lu, Zifeng and Masum, Farhad and Morales, Michele and Ng, Clarence and Ou, Longwen and Poddar, Tuhin and Reddi, Krishna and Shukla, Siddharth and Singh, Udayan and Sun, Lili and Sun, Pingping and Sykora, Tom and Vyawahare, Pradeep and Zhang, Jingyi},
-	doi = {10.11578/GREET-Excel-2023/dc.20230907.1},
-	url = {https://doi.org/10.11578/GREET-Excel-2023/dc.20230907.1},
-	howpublished = {[Computer Software] \url{https://doi.org/10.11578/GREET-Excel-2023/dc.20230907.1}},
-	year = {2023},
-	month = {oct}
-}
-
-@InProceedings{Molarne1991,
-	author={Molnarne, M.},
-	editor={Gmehling, J{\"u}rgen},
-	title={CHEMSAFE --- A Database for Safety Characteristic Data},
-	booktitle={Software Development in Chemistry 5},
-	year={1991},
-	publisher={Springer Berlin Heidelberg},
-	address={Berlin, Heidelberg},
-	pages={45--48},
-	abstract={CHEMSAFE is a factual database for flammable substances. The database consists of rated information about safety characteristics of pure compounds and mixtures of gases, liquids, dusts. The critical evaluation is carried out by the experts of two federal institutions of Germany. The database is available for online recherche at the INKADAT host through FIZ Chemie or can be installed as inhouse version.},
-	isbn={978-3-642-76325-0}
-}
-
-@book{Haynes2014,
-	author={Haynes, W.M. (Ed.)},
-	year = {2014},
-	title = {CRC Handbook of Chemistry and Physics (95th ed.).},
-	publisher= {CRC Press},
-	doi= {https://doi.org/10.1201/b17118}
+	volume = {166},
+	year = {2020}
 }
 
 @techreport{DEARF23,
@@ -883,28 +776,16 @@ Climate change calls for adaptation of negative emission technologies such as di
 }
 
 @article{Zhao21,
+	abstract = {A comprehensive economic analysis of twenty light olefin production pathways has been performed, covering current and promising processes from fossil (petroleum, coal and natural gas) and renewable resources (biomass and CO2). Taking steam cracking of naphtha as the benchmark, this study gives an economic perspective and points out the bottleneck in different olefin production pathways. The assessment indicates that nearly all renewable pathways are economically unattractive currently and the raw material cost accounts for dominant contribution in most pathways, especially in the oil-, natural gas- and CO2-derived pathways. For the ways of methanol-to-olefins and methanol-to-propylene, fossil pathways are cost-competitive according to the date of current Chinese market prices. However, the price of feedstock hydrogen needs to be lowered by 55\% to fill the cost gap between CO2-derived pathways and the benchmark. For the ways of oxidative coupling of methane and Fischer-Tropsch synthesis to olefins, fossil pathways enable cost-competitive processes by feedstock price fall, but further process improvement is required to approach benchmark in renewable pathways. Conditionally, a decrease in ethanol price by 45\% can make ethanol dehydration pathway profitable. In addition, costs can reduce by 4\%–23\% in different pathways as the production scales expand from 100 to 1000 kt/a, resulting in a change from high cost to economic profit for some of the pathways. The results quantify the need for improvements on feedstock price, scale size and process improvement to achieve competitive production costs.},
 	author = {Zhao, Zhitong and Jiang, Jingyang and Wang, Feng},
 	doi = {10.1016/j.jechem.2020.04.021},
-	issn = {2095--4956},
+	issn = {2095-4956},
 	journal = {Journal of Energy Chemistry},
 	keywords = {Ethylene, Propylene, Olefin, Techno-economic, Conceptual design},
-	pages = {193--202},
+	pages = {193–202},
 	title = {An economic analysis of twenty light olefin production pathways},
 	url = {https://www.sciencedirect.com/science/article/pii/S2095495620302606},
 	volume = {56},
 	year = {2021}
 }
 
-@article{Palys23,
-	doi = {10.1088/2515-7655/ad0ee6},
-	url = {https://dx.doi.org/10.1088/2515-7655/ad0ee6},
-	year = {2023},
-	month = {dec},
-	publisher = {IOP Publishing},
-	volume = {6},
-	number = {1},
-	pages = {015013},
-	author = {Matthew J Palys and Prodromos Daoutidis},
-	title = {Techno-economic optimization of renewable urea production for sustainable agriculture and CO2 utilization},
-	journal = {Journal of Physics: Energy}
-}

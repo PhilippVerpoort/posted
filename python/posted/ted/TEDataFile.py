@@ -6,47 +6,22 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from posted.config import base_format, base_dtypes, variables
+from posted.config import base_format, base_dtypes
 from posted.path import databases
-from posted.ted.TEBase import TEBase
+from posted.ted.TEBase import TEBase, read_fields
 from posted.ted.inconsistencies import check_row_consistency
-
-
-def expand_cases(row: pd.Series, main_variable: str) -> pd.DataFrame:
-    variable = main_variable + '|' + row['variable']
-    var_specs = variables[variable]
-
-    rows = [row]
-    if 'case_fields' in var_specs:
-        for case_field_id, case_field_options in var_specs['case_fields'].items():
-            new_rows = []
-            for row in rows:
-                if case_field_id not in row or row[case_field_id] == '*':
-                    for option in case_field_options:
-                        new_row = row.copy()
-                        new_row.loc[case_field_id] = option
-                        new_rows.append(new_row)
-                else:
-                    new_rows.append(row)
-            rows = new_rows
-    return pd.DataFrame(data=rows)
-
-def combine_variable(row: pd.Series, main_variable: str) -> str:
-    variable = main_variable + '|' + row['variable']
-    var_specs = variables[variable]
-
-    return ' '.join([main_variable] + row[list(var_specs['case_fields'].keys())].tolist()) + '|' + row['variable']
+from posted.utils.read import read_yml_file
 
 
 class TEDataFile(TEBase):
     # initialise
     def __init__(self,
-                 main_variable: str,
+                 parent_variable: str,
                  database_id: str = 'public',
                  file_path: Optional[Path] = None,
                  data: Optional[pd.DataFrame] = None,
                  ):
-        TEBase.__init__(self, main_variable)
+        TEBase.__init__(self, parent_variable)
 
         # initialise object fields
         self._df: None | pd.DataFrame = data
@@ -54,8 +29,9 @@ class TEDataFile(TEBase):
         self._file_path: None | Path = (
             None if data is not None else
             file_path if file_path is not None else
-            databases[database_id] / 'teds' / ('/'.join(self._main_variable.split('|')) + '.csv')
+            databases[database_id] / 'teds' / ('/'.join(self._parent_variable.split('|')) + '.csv')
         )
+        self._fields = read_fields(self._parent_variable)
 
     @property
     def file_path(self) -> Path:
@@ -143,23 +119,10 @@ class TEDataFile(TEBase):
     def check_row(self, row_id: int, raise_exception: bool = True):
         row = self._df.loc[row_id]
         self._inconsistencies[row_id] = check_row_consistency(
-            main_variable=self._main_variable,
+            parent_variable=self._parent_variable,
+            fields=self._fields,
             row=row,
             row_id=row_id,
             file_path=self._file_path,
             raise_exception=raise_exception,
         )
-
-    def expand_data(self) -> pd.DataFrame:
-        data = self._df
-
-        # expand case fields
-        data = pd.concat([expand_cases(row, self._main_variable) for _, row in data.iterrows()]).reset_index(drop=True)
-
-        # combine variable identifiers
-        data['variable'] = data.apply(lambda row: combine_variable(row, self._main_variable), axis=1)
-
-        # drop fields that are not in the base format
-        data = data.filter(list(base_format.keys()))
-
-        return data

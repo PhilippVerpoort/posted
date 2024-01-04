@@ -1,15 +1,15 @@
-variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,,,643.0,,EUR,,kW,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.",ArnaizdelPozo22,"Supplementary Information, Table 2"
-CAPEX,,,870.0,,EUR,,kW,,Ikahelmo18,"Page 7, Table 3"
-FOPEX Relative,,,3.0,,percent,,,,ArnaizdelPozo22,"Supplementary Information, Table 2"
-FOPEX,,,17.0,,EUR/a,,kW,,Ikahelmo18,"Page 7, Table 3"
-VOPEX,,,0.6,,EUR,,kWh,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.",ArnaizdelPozo22,"Supplementary Information, Table 2"
-Demand|h2,,,0.178,,t,1.0,t,,Matzen15,Page 9 / Table 13
-Demand|elec,,Air-separation unit,3.1,,MJ,1.19,kg,"This source claims 3.1 MJ/kg electricity denand for the ASU. Assuming a nitrogen demand of 0.84 tonnes per tonne of ammonia, this amounts of an electricity demand of 3.1×0.85 GJ per tonne of ammonia.",Matzen15,Page 8 / Table 9
-Demand|elec,,Air-separation unit,61.0,,kWh,1.19,t,,Dana et al.,
-Demand|elec,,Synthesis process,0.44,,MWh,1.0,t,,Dana et al.,
-Demand|elec,,Air-separation unit,108.0,,kWh,1.19,t,,Morgan,
-Demand|elec,,Synthesis process,0.4,,MWh,1.0,t,,Morgan,
-Demand|elec,,,0.64,,MWh,1.0,t,,Ikahelmo18,Page 4
-Demand|elec,,Compressors,5.2,1.3,GJ,1.0,t,,Bazzanella17,"Page 56, Section 4.2.2"
-Demand|elec,,Air-separation unit,0.33,,MWh,1.0,t,,Bazzanella17,"Page 57, Section 4.2.3"
+reported_variable,reference_variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|nh3,,,643,,EUR,1,kW,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.",ArnaizdelPozo22,"Supplementary Information, Table 2"
+CAPEX,Output Capacity|nh3,,,870,,EUR,1,kW,,Ikahelmo18,"Page 7, Table 3"
+FOPEX Relative,,,,3,,percent,,,,ArnaizdelPozo22,"Supplementary Information, Table 2"
+FOPEX,Output Capacity|nh3,,,17,,EUR/a,1,kW,,Ikahelmo18,"Page 7, Table 3"
+VOPEX,Output|nh3,,,0.6,,EUR,1,kWh,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.",ArnaizdelPozo22,"Supplementary Information, Table 2"
+Input|h2,Output|nh3,,,0.178,,t,1,t,,Matzen15,Page 9 / Table 13
+Input|elec,Output|nh3,,Air-separation unit,3.1,,MJ,1.19,kg,"This source claims 3.1 MJ/kg electricity denand for the ASU. Assuming a nitrogen demand of 0.84 tonnes per tonne of ammonia, this amounts of an electricity demand of 3.1×0.85 GJ per tonne of ammonia.",Matzen15,Page 8 / Table 9
+Input|elec,Output|nh3,,Air-separation unit,61,,kWh,1.19,t,,Dana et al.,
+Input|elec,Output|nh3,,Synthesis process,0.44,,MWh,1,t,,Dana et al.,
+Input|elec,Output|nh3,,Air-separation unit,108,,kWh,1.19,t,,Morgan,
+Input|elec,Output|nh3,,Synthesis process,0.4,,MWh,1,t,,Morgan,
+Input|elec,Output|nh3,,,0.64,,MWh,1,t,,Ikahelmo18,Page 4
+Input|elec,Output|nh3,,Compressors,5.2,1.3,GJ,1,t,,Bazzanella17,"Page 56, Section 4.2.2"
+Input|elec,Output|nh3,,Air-separation unit,0.33,,MWh,1,t,,Bazzanella17,"Page 57, Section 4.2.3"

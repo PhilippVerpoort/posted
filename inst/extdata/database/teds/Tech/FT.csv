@@ -1,13 +1,13 @@
-variable,component,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,,2019.0,890.0,,USD,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA-FOH19,
-CAPEX,,2020.0,1011.0,,EUR,,kW,,Buchenberg23, Table 1
-CAPEX,,2030.0,864.0,,EUR,,kW,,Buchenberg23, Table 1
-CAPEX,,2050.0,642.0,,EUR,,kW,,Buchenberg23, Table 1
-CAPEX,,2030.0,760.0,,USD,,kW,"See ""Assumptions"" of the report. Given in kW_liquid",IEA-FOH19,
-FOPEX Relative,,,4.0,,percent,,,,Buchenberg23, Table 1
-FOPEX Relative,,,4.0,,percent,,,"See ""Assumptions"" of the report. Valid from 2019 to 2050",IEA-FOH19,
-Lifetime,,,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH19,
-Lifetime,,,25.0,,percent,,,,Buchenberg23, Table 1
-Demand|elec,,2019.0,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA-FOH19,
-Demand|elec,,2030.0,0.018,,GJ,,GJ,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA-FOH19,
-Efficiency|h2,,,73.0,,percent,,,H2 to liquid efficiency,IEA-FOH19,
+reported_variable,reference_variable,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|ft_fuel,2019,890,,USD,1,kW;LHV,"See ""Assumptions"" of the report. Given in kW_liquid",IEA-FOH19,
+CAPEX,Output Capacity|ft_fuel,2020,1011,,EUR,1,kW;LHV,,Buchenberg23, Table 1
+CAPEX,Output Capacity|ft_fuel,2030,864,,EUR,1,kW;LHV,,Buchenberg23, Table 1
+CAPEX,Output Capacity|ft_fuel,2050,642,,EUR,1,kW;LHV,,Buchenberg23, Table 1
+CAPEX,Output Capacity|ft_fuel,2030,760,,USD,1,kW;LHV,"See ""Assumptions"" of the report. Given in kW_liquid",IEA-FOH19,
+FOPEX Relative,,,4,,percent,,,,Buchenberg23, Table 1
+FOPEX Relative,,,4,,percent,,,"See ""Assumptions"" of the report. Valid from 2019 to 2050",IEA-FOH19,
+Lifetime,,,30,,year,,,"See ""Assumptions"" of the report.",IEA-FOH19,
+Lifetime,,,25,,year,,,,Buchenberg23, Table 1
+Input|elec,Output|ft_fuel,2019,0.018,,GJ,1,GJ;LHV,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA-FOH19,
+Input|elec,Output|ft_fuel,2030,0.018,,GJ,1,GJ;LHV,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA-FOH19,
+Output|ft_fuel,Input|h2,,73,,pct MWh;LHV,100,pct MWh;LHV,H2 to liquid efficiency,IEA-FOH19,

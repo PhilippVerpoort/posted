@@ -1,0 +1,20 @@
+tech_id,description,description_long,class,sector,primary_output
+HBNH3-ASU,Ammonia synthesis with ASU,"Synthesis of ammonia (NH₃) from hydrogen (H₂) and nitrogen (N₂), where the latter is obtained from ambient air via an air-separation unit.",conversion,chemicals,nh3
+SMR-HBNH3,Integrated ammonia plant (SMR + HB),Steam-methane reforming of natural gas plus Haber-Bosch synthesis,conversion,chemicals,nh3
+CAST,Continuous casting,Continuous casting of liquid steel into steel slabs,conversion,steel,steelslab
+HOTROLL,Hot rolling of steel,Hot rolling of steel of cast steel into hot-rolled coils (HRCs),conversion,steel,steelhrc
+DAC,Direct-air capture,"Capturing CO2 directly from ambient air, making it available as a purified gas for sequestration or utilisation.",conversion,energy,co2
+IDR,Direct-reduction shaft,A furnace/shaft to directly reduce iron ore into DRI/HBI.,conversion,steel,dri
+MEOH-2-GSLN,Methanol-to-gasoline,Conversion of methanol to gasoline.,conversion,energy,gasoline
+EAF,Electric-arc furnace,"An electric-arc furnace, which uses electricity directly to create temperature sufficiently high to melt iron and other components into liquid steel.",conversion,steel,steelliq
+ELH2,Electrolysis,"Water ELH2, which yields hydrogen and oxygen.",conversion,energy,h2
+FT,Fischer-Tropsch,Fischer-Tropsch synthesis of hydrocarbons,conversion,energy,gasoline
+H2-STOR,Hydrogen storage,Long-term storage of hydrogen,storage,energy,h2
+BFBOF-CC-INT,Integrated steel mill with CCS,"Integrated steel mill with a blast furnace and basic oxygen furnace, equipped with CCS.",conversion,steel,steelliq
+HEATPUMP-4-DAC,Low-temperature industrial heat pump,Industrial heat pumps providing heat at a temperature of 80–120°C.,conversion,energy,heat
+CH4-SYN,Methanation,Industrial plants combining H₂ and CO₂ to yield methane (Sabatier process).,conversion,energy,ch4
+CH4-TRANSP,Methane transport,Long-distance transportation of methane,transport,energy,ch4
+MEOH-SYN,Methanol synthesis,Synthesis of methanol from H₂ and CO₂.,conversion,energy,meoh
+SMR-MEOH-SYN,Methanol integrated,Integrated steam-methane reforming and synthesis of methanol.,conversion,energy,meoh
+MEOH-2-OLEF,Methanol-to-olefine process,"Synthesis of ethylene, propylene, and by-products from methanol.",conversion,chemicals,hvcs
+UREA-SYN,Urea synthesis,Stand-alone synthesis of urea from NH₃ and CO₂ (w/o SMR-based ammonia plant).,conversion,chemicals,urea

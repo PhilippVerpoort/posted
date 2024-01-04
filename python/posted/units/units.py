@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import pint_pandas
 import iam_units
 
 from posted.path import BASE_PATH
@@ -11,9 +10,7 @@ from posted.config import flows
 ureg = iam_units.registry
 ureg.load_definitions(BASE_PATH / 'units' / 'definitions.txt')
 iam_units.currency.configure_currency("EXC", "2005")
-pint_pandas.PintType.ureg = ureg
 ureg.Unit.default_format = "~P"
-pint_pandas.PintType.ureg.default_format = "~P"
 
 
 # define unit variants

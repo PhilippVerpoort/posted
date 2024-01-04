@@ -1,6 +1,6 @@
-Tech|{Tech IDs}|{Tech Variables wo Flows}:
-    description: '{Tech Variables wo Flows} for technology {Tech IDs}'
+Tech|{Tech IDs}|{Tech Variables w/o Flows}:
+    description: '{Tech Variables w/o Flows} for technology {Tech IDs}'
 
-Tech|{Tech IDs}|{Tech Variables w Flows}|{Flow IDs}:
-    description: '{Tech Variables w Flows} of {Flow IDs} for technology {Tech IDs}'
-    reported_flow_id: '{Flow IDs}'
+Tech|{Tech IDs}|{Tech Variables w/ Flows}|{Flow IDs}:
+    description: '{Tech Variables w/ Flows} of {Flow IDs} for technology {Tech IDs}'
+    flow_id: '{Flow IDs}'

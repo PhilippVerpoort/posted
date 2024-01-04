@@ -1,0 +1,7 @@
+subtech:
+  name: Subtechnology
+  type: cases
+  coded: True
+  codes:
+    AGCS: Above-ground compressed storage
+    SC: Salt caverns

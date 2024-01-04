@@ -1,0 +1,18 @@
+mode:
+  name: Operation mode
+  type: cases
+  coded: True
+  codes:
+    primary: Producing primary steel from iron ore
+    secondary: Producing secondary steel from scrap
+reheating:
+  name: Reheating
+  type: cases
+  coded: True
+  codes:
+    w/ reheating: With reheating of DRI inputs
+    w/o reheating: Without reheating of DRI inputs
+component:
+  name: Component
+  type: components
+  coded: False

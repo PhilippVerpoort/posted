@@ -1,0 +1,14 @@
+subtech:
+  name: Subtechnology
+  type: cases
+  coded: True
+  codes:
+    HT-DAC: High-temperature DAC
+    LT-DAC: Low-temperature DAC
+component:
+  name: Component
+  type: components
+  coded: False
+comment2:
+  name: Comment 2
+  type: comment
