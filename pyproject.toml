@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "posted"
-version = "0.2.0"
+version = "0.3.0"
 description = "POSTED: Potsdam Open-Source Techno-Economic Database"
 authors = [
     "Philipp C. Verpoort <philipp.verpoort@pik-potsdam.de>",
