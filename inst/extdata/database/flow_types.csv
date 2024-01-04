@@ -4,16 +4,17 @@ elec,default_unit,MWh,,
 heat,default_unit,MWh,,
 h2,name,Hydrogen,,
 h2,default_unit,MWh;LHV,,
-h2,energycontent_LHV,0.7395 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-h2,energycontent_HHV,0.87465 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+h2,energycontent_LHV,113725.490196078 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+h2,energycontent_HHV,134509.803921569 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 h2,density_norm,0.083752 kg/m³,Lemmon2023,
 h2,density_std,0.089883 kg/m³,Lemmon2023,
 lh2,name,Liquid hydrogen,,
 lh2,default_unit,MWh;LHV,,
-lh2,energycontent_LHV,8174 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-lh2,energycontent_HHV,9653.36 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lh2,energycontent_LHV,113805.970149254 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lh2,energycontent_HHV,134402.985074627 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 lh2,density_norm,,,
 lh2,density_std,,,
+lh2,density_boil,,,
 nh3,name,Ammonia,,
 nh3,default_unit,t,,
 nh3,energycontent_LHV,18.90 MJ/kg,H2tools2023,
@@ -22,32 +23,32 @@ nh3,density_norm,0.71606  kg/m³,Lemmon2023,
 nh3,density_std,0.77155  kg/m³,Lemmon2023,
 ch4,name,Methane,,
 ch4,default_unit,MWh;LHV,,
-ch4,energycontent_LHV,19.53541557 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-ch4,energycontent_HHV,21.68431129 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ch4,energycontent_LHV,47390.8561333507 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ch4,energycontent_HHV,52603.8503080192 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 ch4,density_norm,0.66816 kg/m³,Lemmon2023,
 ch4,density_std,0.71746 kg/m³,Lemmon2023,
 meoh,name,Methanol,,
 meoh,default_unit,MWh;LHV,,
-meoh,energycontent_LHV,172093.5 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-meoh,energycontent_HHV,195991.2 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+meoh,energycontent_LHV,19045.2428476381 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+meoh,energycontent_HHV,21689.9534264804 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 meoh,density_norm,791.01 kg/m³,Lemmon2023,
 meoh,density_std,809.73 kg/m³,Lemmon2023,
 etoh,name,Ethanol,,
 etoh,default_unit,MWh;LHV,,
-etoh,energycontent_LHV,228074.04 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-etoh,energycontent_HHV,252575.64 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+etoh,energycontent_LHV,25545.515394913 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+etoh,energycontent_HHV,28289.8259705489 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 etoh,density_norm,2988 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 etoh,density_std,2988 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 buoh,name,Butanol,,
 buoh,default_unit,MWh;LHV,,
-buoh,energycontent_LHV,306000.405 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-buoh,energycontent_HHV,332423.77 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-buoh,density_norm,3065 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
-buoh,density_std,3065 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+buoh,energycontent_LHV,32573.2463295269,GREET2008,calculated from values Energy/volume and density given in the source
+buoh,energycontent_HHV,35385.9706362153,GREET2008,calculated from values Energy/volume and density given in the source
+buoh,density_norm,32573.2463295269 Btu/kg,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+buoh,density_std,35385.9706362153 Btu/kg,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 ng,name,Natural gas,,
 ng,default_unit,MWh;LHV,,
-ng,energycontent_LHV,21.626 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-ng,energycontent_HHV,23.958 Btu/kg ,GREET2008,calculated from values Energy/volume and density given in the source
+ng,energycontent_LHV,44681.8181818182 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ng,energycontent_HHV,49500 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 ng,density_norm,22 g/ft^3,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 ng,density_std,22 g/ft^3,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 coal,name,Coal,,
@@ -127,7 +128,7 @@ water,default_unit,t,,
 water,energycontent_LHV,,,
 water,energycontent_HHV,,,
 water,density_norm,998.21  kg/m³,Lemmon2023,
-water,density_std,999.84 kg/l,Lemmon2023,
+water,density_std,999.84 kg/m^3,Lemmon2023,
 oxygen,name,Oxygen,,
 oxygen,default_unit,t,,
 oxygen,energycontent_LHV,,,
@@ -154,80 +155,86 @@ steam,density_norm,,,
 steam,density_std,,,
 ft_fuel,name,Fischer-Tropsch diesel,,
 ft_fuel,default_unit,MWh;LHV,,
-ft_fuel,energycontent_LHV,373112.39 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-ft_fuel,energycontent_HHV,392300.51 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ft_fuel,energycontent_LHV,40991.0507126284 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+ft_fuel,energycontent_HHV,43099.1050712628 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 ft_fuel,density_norm,3017 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 ft_fuel,density_std,3017 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 gasoline,name,Gasoline,,
 gasoline,default_unit,MWh;LHV,,
-gasoline,energycontent_LHV,318131.682 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-gasoline,energycontent_HHV,341511.1742 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+gasoline,energycontent_LHV,39566.5903267148 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+gasoline,energycontent_HHV,42474.3384203907 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 gasoline,density_norm,702.61 kg/m³,Lemmon2023,
 gasoline,density_std,718.61  kg/m³,Lemmon2023,
 crude_oil,name,Crude oil,,
 crude_oil,default_unit,MWh;LHV,,
-crude_oil,energycontent_LHV,415592.35 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-crude_oil,energycontent_HHV,443411.75 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+crude_oil,energycontent_LHV,40458.6583463339 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+crude_oil,energycontent_HHV,43166.9266770671 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 crude_oil,density_norm,3205 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 crude_oil,density_std,3205 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 bitumen,name,Bitumen,,
 bitumen,default_unit,MWh;LHV,,
-bitumen,energycontent_LHV,"585055,8263 Btu/kg",GREET2008,calculated from values Energy/volume and density given in the source
-bitumen,energycontent_HHV,625728.1565 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+bitumen,energycontent_LHV,39683.207193278 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+bitumen,energycontent_HHV,42441.9328270353 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 bitumen,density_norm,3830.682125 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 bitumen,density_std,3830.682125 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 diesel,name,diesel,,
 diesel,default_unit,MWh;LHV,,
-diesel,energycontent_LHV,406801.15 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-diesel,energycontent_HHV,435082.46 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+diesel,energycontent_LHV,40558.8885380486 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+diesel,energycontent_HHV,43378.5917271866 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 diesel,density_norm,3167 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 diesel,density_std,3167 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+residual_oil,name,residual oil,,
+residual_oil,default_unit,MWh;LHV,,
+residual_oil,energycontent_LHV,37407.3886463736 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+residual_oil,energycontent_HHV,40007.9957356077 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+residual_oil,density_norm,3752 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
+residual_oil,density_std,3752 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 bunker_fuel,name,Bunker fuel for ocean tanker,,
 bunker_fuel,default_unit,MWh;LHV,,
-bunker_fuel,energycontent_LHV,526602.6633 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-bunker_fuel,energycontent_HHV,563212.72 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+bunker_fuel,energycontent_LHV,37407.3886463736 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+bunker_fuel,energycontent_HHV,40007.9957356077 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 bunker_fuel,density_norm,3752 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 bunker_fuel,density_std,3752 g/gal,GREET2008,"not explicitly given if NTP or STP, assumed that value does not change muchh in this temperature range"
 lpg,name,Liquefied petroleum gas,,
 lpg,default_unit,MWh;LHV,,
-lpg,energycontent_LHV,163358.85 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-lpg,energycontent_HHV,172093.5 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lpg,energycontent_LHV,44175.7670306812 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lpg,energycontent_HHV,47535.1014040562 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 lpg,density_norm,,,
 lpg,density_std,,,
 lng,name,Liquefied natural gas,,
 lng,default_unit,MWh;LHV,,
-lng,energycontent_LHV,121121.12 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-lng,energycontent_HHV,1375781.43 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lng,energycontent_LHV,46095.0030845157 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+lng,energycontent_HHV,52325.7248611968 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 lng,density_norm,,,
 lng,density_std,,,
 dme,name,Dimethyl ether,,
 dme,default_unit,MWh;LHV,,
-dme,energycontent_LHV,173567.74 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-dme,energycontent_HHV,190385.98 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-dme,density_norm,,,
+dme,energycontent_LHV,27374.9007148531 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+dme,energycontent_HHV,30027.7998411438 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+,,,,
 dme,density_std,,,
 butane,name,Butane,,
 butane,default_unit,MWh;LHV,,
-butane,energycontent_LHV,210168.61 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-butane,energycontent_HHV,228425.86 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+butane,energycontent_LHV,42914.5955716222 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+butane,energycontent_HHV,46642.5666516042 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 butane,density_norm,2.4958 kg/m^3,Lemmon2023,
 butane,density_std,2.7027 kg/m^3,Lemmon2023,
 isobutane,name,Isobutane,,
 isobutane,default_unit,MWh;LHV,,
-isobutane,energycontent_LHV,190747.08 Btu/kg,GREET2008,
-isobutane,energycontent_HHV,208750.08 Btu/kg,GREET2008,
+isobutane,energycontent_LHV,42521.2464589235 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+isobutane,energycontent_HHV,46534.4664778093 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 isobutane,density_norm,2.4858 kg/m^3,Lemmon2023,
 isobutane,density_std,2.6887 kg/m^3,Lemmon2023,
 isobutylene,name,Isobutylene,,
 isobutylene,default_unit,MWh;LHV,,
-isobutylene,energycontent_LHV,215657.16 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
-isobutylene,energycontent_HHV,232081.53 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+isobutylene,energycontent_LHV,42485.57478917 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+isobutylene,energycontent_HHV,45721.2605415002 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 isobutylene,density_norm,,,
 isobutylene,density_std,,,
 propane,name,Propane,,
 propane,default_unit,MWh;LHV,,
-propane,energycontent_LHV,171760 Btu/kg,GREET2008,
-propane,energycontent_HHV,175526.4 Btu/kg,GREET2008,
+propane,energycontent_LHV,43880.2083333333 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
+propane,energycontent_HHV,47614.5833333333 Btu/kg,GREET2008,calculated from values Energy/volume and density given in the source
 propane,density_norm,1.8650 kg/m^3,Lemmon2023,
 propane,density_std,2.0105 kg/m^3,Lemmon2023,
 coal_el,name,Coal mix for Electricity Generation,,
@@ -265,7 +272,7 @@ ethyne,default_unit,t,,
 ethyne,energycontent_LHV,45935 Btu/kg,GREET2008,
 ethyne,energycontent_HHV,,,
 ethyne,density_norm,,,
-ethyne,density_std,,,
+ethyne,density_std,1.1772 kg/m^2,Franz2009,
 propyne,name,Propyne,,
 propyne,default_unit,t,,
 propyne,energycontent_LHV,43400 Btu/kg,GREET2008,
@@ -277,7 +284,7 @@ butadiene,default_unit,t,,
 butadiene,energycontent_LHV,42285 Btu/kg,GREET2008,
 butadiene,energycontent_HHV,,,
 butadiene,density_norm,,,
-butadiene,density_std,,,
+butadiene,density_std,2.4982 kg/m^3,Franz2009,
 benzene,name,Benzene,,
 benzene,default_unit,t,,
 benzene,energycontent_LHV,38470 Btu/kg,GREET2008,
@@ -294,7 +301,7 @@ styrene,name,Styrene,,
 styrene,default_unit,t,,
 styrene,energycontent_LHV,37913 Btu/kg,GREET2008,
 styrene,energycontent_HHV,,,
-styrene,density_norm,,,
+styrene,density_norm,0.91 g/cm^3,GESTIS,
 styrene,density_std,,,
 xylene,name,Xylene,,
 xylene,default_unit,t,,
