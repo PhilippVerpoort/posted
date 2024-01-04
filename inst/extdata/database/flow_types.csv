@@ -1,4 +1,4 @@
-flow_id,attribute,value,source,comment
+xr,attribute,value,source,comment
 elec,name,Electricity,,
 elec,default_unit,MWh,,
 heat,default_unit,MWh,,
@@ -34,14 +34,14 @@ etoh,name,Ethanol,,
 etoh,default_unit,MWh;LHV,,
 etoh,energycontent_LHV,25545.515394913 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
 etoh,energycontent_HHV,28289.8259705489 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
-etoh,density_norm,2988 g/gal,Wang2023,"not explicitly given if NTP or STP, assumed that value does not change much in this temperature range"
-etoh,density_std,2988 g/gal,Wang2023,"not explicitly given if NTP or STP, assumed that value does not change much in this temperature range"
+etoh,density_norm,0.78945 g/cm^3,Speight2017,
+etoh,density_std,0.80625 g/cm^3,Speight2017,
 buoh,name,Butanol,,
 buoh,default_unit,MWh;LHV,,
 buoh,energycontent_LHV,32573.2463295269,Wang2023,calculated from values Energy/volume and density given in the source
 buoh,energycontent_HHV,35385.9706362153,Wang2023,calculated from values Energy/volume and density given in the source
-buoh,density_norm,32573.2463295269 Btu/kg,Wang2023,"not explicitly given if NTP or STP, assumed that value does not change much in this temperature range"
-buoh,density_std,35385.9706362153 Btu/kg,Wang2023,"not explicitly given if NTP or STP, assumed that value does not change much in this temperature range"
+buoh,density_norm,0.8095 g/cm^3,Haynes204,
+,,,,
 ng,name,Natural gas,,
 ng,default_unit,MWh;LHV,,
 ng,energycontent_LHV,44681.8181818182 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
