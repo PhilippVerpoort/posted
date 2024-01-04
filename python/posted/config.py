@@ -17,7 +17,7 @@ flows = {}
 techs = {}
 for database_path in databases.values():
     # read flow types
-    flows |= read_csv_file(database_path / 'flow_types.csv').set_index('flow_id').to_dict('index')
+    flows |= read_csv_file(database_path / 'flow_types.csv').pivot(index='flow_id', columns='attribute', values='value').to_dict('index')
 
     # read technologies
     techs |= read_yml_file(database_path / 'tech_types.yml')

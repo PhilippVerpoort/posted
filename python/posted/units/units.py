@@ -10,7 +10,7 @@ from posted.config import flows
 # set up pint unit registry: use iam_units as a basis, load custom definitions, add pint_pandas, set display format,
 ureg = iam_units.registry
 ureg.load_definitions(BASE_PATH / 'units' / 'definitions.txt')
-iam_units.currency.configure_currency()
+iam_units.currency.configure_currency("EXC", "2005")
 pint_pandas.PintType.ureg = ureg
 ureg.Unit.default_format = "~P"
 pint_pandas.PintType.ureg.default_format = "~P"
