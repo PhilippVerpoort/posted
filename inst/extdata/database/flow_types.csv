@@ -1,4 +1,4 @@
-xr,attribute,value,source,comment
+flow_id,attribute,value,source,comment
 elec,name,Electricity,,
 elec,default_unit,MWh,,
 heat,default_unit,MWh,,
