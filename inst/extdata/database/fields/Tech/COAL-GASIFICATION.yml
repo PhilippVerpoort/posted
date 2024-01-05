@@ -1,0 +1,4 @@
+capture_rate:
+  name: CO2 capture rate
+  type: cases
+  coded: False

@@ -52,6 +52,10 @@ Tech Variables w/o Flows:
     description: Capacity per mass of all outputs produced
     dimension: '[mass]/[time]'
     default_unit: 't'
+  Capture Rate:
+    description: Share of CO2 emissions captured
+    dimension: 'dimensionless'
+    default_unit: 'pct'
 
 Tech Variables w/ Flows:
   Input:
