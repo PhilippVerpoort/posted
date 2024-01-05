@@ -41,7 +41,6 @@ buoh,default_unit,MWh;LHV,,
 buoh,energycontent_LHV,32573.2463295269,Wang2023,calculated from values Energy/volume and density given in the source
 buoh,energycontent_HHV,35385.9706362153,Wang2023,calculated from values Energy/volume and density given in the source
 buoh,density_norm,0.8095 g/cm^3,Haynes204,
-,,,,
 ng,name,Natural gas,,
 ng,default_unit,MWh;LHV,,
 ng,energycontent_LHV,44681.8181818182 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
