@@ -1,4 +1,4 @@
 Price|{Flow IDs}:
   description: A market price for {Flow IDs}
-  reported_dim: '[currency]'
-  reported_unit_default: '{default currency}'
+  dimension: '[currency]/[flow]'
+  default_unit: '{default currency}/{default flow unit}'
