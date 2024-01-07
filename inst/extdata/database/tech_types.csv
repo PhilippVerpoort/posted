@@ -18,3 +18,5 @@ MEOH-SYN,Methanol synthesis,Synthesis of methanol from H₂ and CO₂.,conversio
 SMR-MEOH-SYN,Methanol integrated,Integrated steam-methane reforming and synthesis of methanol.,conversion,energy,meoh
 MEOH-2-OLEF,Methanol-to-olefine process,"Synthesis of ethylene, propylene, and by-products from methanol.",conversion,chemicals,hvcs
 UREA-SYN,Urea synthesis,Stand-alone synthesis of urea from NH₃ and CO₂ (w/o SMR-based ammonia plant).,conversion,chemicals,urea
+NG-REFORMING,Reforming of natural gas to produce hydrogen,Reforming of natural gas via steam-methane reforming (SMR) or auto-thermal reforming (ATR) w/ or w/o carbon capture to produce purified hydrogen.,conversion,energy,h2
+COAL-GASIFICATION,Gasification of coal to produce hydrogen,Gasification of coal w/ or w/o carbon capture to produce purified hydrogen.,conversion,energy,h2
