@@ -1,6 +1,6 @@
 from posted.path import DATA_PATH, databases
-from posted.utils.definitions import read_definitions
-from posted.utils.read import read_yml_file, read_csv_file
+from posted.definitions import read_definitions
+from posted.read import read_yml_file, read_csv_file
 
 
 # read data format and dtypes
@@ -13,7 +13,7 @@ base_dtypes = {
 
 
 # default selection options
-default_period = [2030, 2040, 2050]
+default_periods = [2030, 2040, 2050]
 
 
 # loop over databases

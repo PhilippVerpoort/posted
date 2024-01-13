@@ -1,11 +1,10 @@
 import copy
-import itertools
 import warnings
 from pathlib import Path
 from typing import Literal
 
 from posted.settings import default_currency
-from posted.utils.read import read_yml_file
+from posted.read import read_yml_file
 
 
 def read_definitions(definitions_dir: Path, flows: dict, techs: dict):

@@ -1,4 +1,3 @@
-import copy
 import re
 import warnings
 from pathlib import Path
@@ -8,16 +7,15 @@ import numpy as np
 import pandas as pd
 from sigfig import round
 
-from posted.config import default_period
+from posted.config import default_periods
+from posted.fields import AbstractFieldDefinition, SourceFieldDefinition, PeriodFieldDefinition, CustomFieldDefinition
 from posted.path import databases
-from posted.ted.Mask import Mask
-from posted.ted.TEBase import TEBase, read_fields, read_masks
-from posted.ted.TEDataFile import TEDataFile
-from posted.ted.failures import TEMappingFailure
-from posted.units.units import unit_convert, ureg
+from posted.masking import Mask
+from posted.tedf import TEBase, read_fields, read_masks, TEDF
+from posted.units import unit_convert, ureg
 
 
-# get list of TEDs potentially containing variable
+# get list of TEDFs potentially containing variable
 def collect_files(parent_variable: str, include_databases: Optional[list[str]] = None):
     if not parent_variable:
         raise Exception('Variable may not me empty.')
@@ -35,8 +33,8 @@ def collect_files(parent_variable: str, include_databases: Optional[list[str]] =
 
         # find top-level file and directory
         top_path = '/'.join(parent_variable.split('|'))
-        top_file = database_path / 'teds' / (top_path + '.csv')
-        top_directory = database_path / 'teds' / top_path
+        top_file = database_path / 'tedfs' / (top_path + '.csv')
+        top_directory = database_path / 'tedfs' / top_path
 
         # add top-level file if it exists
         if top_file.exists() and top_file.is_file():
@@ -53,7 +51,7 @@ def collect_files(parent_variable: str, include_databases: Optional[list[str]] =
         for l in range(0, len(levels)):
             # find top-level file and directory
             top_path = '/'.join(levels[:l])
-            parent_file = database_path / 'teds' / (top_path + '.csv')
+            parent_file = database_path / 'tedfs' / (top_path + '.csv')
 
             # add parent file if it exists
             if parent_file.exists() and parent_file.is_file():
@@ -113,8 +111,29 @@ def normalise_values(df: pd.DataFrame):
     return df.assign(reported_value=reported_value_new, reference_value=reference_value_new)
 
 
-class TEDataSet(TEBase):
+class HarmoniseMappingFailure(Warning):
+    """Warning raised for rows in TEDataSets where mappings fail.
+
+    Attributes:
+        row_data -- the data of the row that causes the failure
+        message -- explanation of the error
+    """
+    def __init__(self, row_data: pd.DataFrame, message: str = "Failure when selecting from dataset."):
+        # save constructor arguments as public fields
+        self.row_data: pd.DataFrame = row_data
+        self.message: str = message
+
+        # compose warning message
+        warning_message: str = message + f"\n{row_data}"
+
+        # call super constructor
+        super().__init__(warning_message)
+
+
+class NSHADataSet(TEBase):
     _df: None | pd.DataFrame
+    _fields: list[AbstractFieldDefinition]
+    _masks: list[Mask]
 
     # initialise
     def __init__(self,
@@ -123,50 +142,53 @@ class TEDataSet(TEBase):
                  file_paths: Optional[list[Path]] = None,
                  check_inconsistencies: bool = False,
                  data: Optional[pd.DataFrame] = None,
-                 normalise: bool = False,
                  ):
         TEBase.__init__(self, parent_variable)
 
-        self._fields: dict = {}
-        self._masks: list = []
+        # initialise fields
+        self._df = None
+        self._fields = []
+        self._masks = []
 
         if data is not None:
             self._df = data
         else:
-            # initialise object fields
-            self._df = None
-
             # read TEDataFiles and combine into dataset
             include_databases = list(include_databases) if include_databases is not None else list(databases.keys())
             self._df = self._load_files(include_databases, file_paths or [], check_inconsistencies)
 
-            # normalise units and reference value unless told to skip
-            if normalise:
-                self.normalise()
+    # access dataframe
+    @property
+    def data(self):
+        return self._df
 
+    def set_data(self, df: pd.DataFrame):
+        self._df = df
 
-    # load TEDatFiles and compile into dataset
+    # load TEDFs and compile into NSHADataSet
     def _load_files(self, include_databases: list[str], file_paths: list[Path], check_inconsistencies: bool):
-        files: list[TEDataFile] = []
+        files: list[TEDF] = []
 
-        # collect TEDataFiles and append to list
+        # collect TEDF and append to list
         collected_files = collect_files(parent_variable=self._parent_variable, include_databases=include_databases)
         for file_variable, file_database_id in collected_files:
-            files.append(TEDataFile(parent_variable=file_variable, database_id=file_database_id))
+            files.append(TEDF(parent_variable=file_variable, database_id=file_database_id))
         for file_path in file_paths:
-            files.append(TEDataFile(parent_variable=self._parent_variable, file_path=file_path))
+            files.append(TEDF(parent_variable=self._parent_variable, file_path=file_path))
 
-        # raise exception if no TEDataFiles can be loaded
+        # raise exception if no TEDF can be loaded
         if not files:
-            raise Exception(f"No TEDataFiles to load for variable '{self._parent_variable}'.")
+            raise Exception(f"No TEDF to load for variable '{self._parent_variable}'.")
 
         # get fields and masks from files
         files_vars: set[str] = {f.parent_variable for f in files}
         for v in files_vars:
-            if v in self._fields:
-                raise Exception(f"Cannot load TEDataFiles with equally named fields: '{v}'")
-            self._fields |= read_fields(v)
+            self._fields += read_fields(v)
             self._masks += read_masks(v)
+        self._fields += [SourceFieldDefinition(), PeriodFieldDefinition()]
+        field_ids = [field.id for field in self._fields]
+        if len(field_ids) > len(set(field_ids)):
+            raise Exception(f"Cannot load TEDFs due to multiple fields defined with equal name: {field_ids}")
 
         # load all TEDataFiles: load from file, check for inconsistencies (if requested), expand cases and variables
         file_dfs: list[pd.DataFrame] = []
@@ -195,7 +217,16 @@ class TEDataSet(TEBase):
         return data
 
     # normalise reference values, reference units, and reported units
-    def _normalise(self, override: Optional[dict[str, str]], split_off_units: bool):
+    def normalise(self, override: Optional[dict[str, str]] = None, inplace: bool = False) -> pd.DataFrame:
+        normalised, _ = self._normalise(override)
+
+        if inplace:
+            self._df = normalised
+            return
+        else:
+            return normalised
+
+    def _normalise(self, override: Optional[dict[str, str]]) -> tuple[pd.DataFrame, dict[str, str]]:
         if override is None:
             override = {}
 
@@ -210,114 +241,108 @@ class TEDataSet(TEBase):
         } | override
 
         # normalise reference units, normalise reference values, and normalise reported units
-        df_tmp = self._df \
+        normalised = self._df \
             .pipe(normalise_units, level='reference', var_units=var_units, var_flow_ids=var_flow_ids) \
             .pipe(normalise_values) \
             .pipe(normalise_units, level='reported', var_units=var_units, var_flow_ids=var_flow_ids)
 
-        # split off units if requested
-        if split_off_units:
-            return df_tmp.drop(columns=['reported_unit', 'reference_unit']), var_units
-        else:
-            return df_tmp
-
-    def normalise(self, override: Optional[dict[str, str]] = None, inplace: bool = False):
-        df_tmp = self._normalise(override, split_off_units=False)
-
-        if inplace:
-            self._df = df_tmp
-            return
-        else:
-            new_self = copy.copy(self)
-            new_self.set_data(df_tmp)
-            return new_self
-
-    # access dataframe
-    @property
-    def data(self):
-        return self._df
-
-    def set_data(self, df: pd.DataFrame):
-        self._df = df
-
-    # query data
-    def query(self, *args, **kwargs):
-        return TEDataSet(
-            parent_variable=self._parent_variable,
-            data=self._df.query(*args, **kwargs),
-        )
-
-    def prepare(self,
-                override: Optional[dict[str, str]] = None,
-                **kwargs):
-        selection, var_units_final = self._prepare(override, **kwargs)
-        selection.insert(selection.columns.tolist().index('value'), 'unit', np.nan)
-        selection['unit'] = selection['variable'].map(var_units_final)
-        return selection
+        # return dataframe and variable units
+        return normalised, var_units
 
     # prepare data for selection
-    def _prepare(self,
-                 override: Optional[dict[str, str]],
-                 **kwargs):
+    def select(self,
+               override: Optional[dict[str, str]] = None,
+               drop_singular_fields: bool = True,
+               **field_vals_select) -> pd.DataFrame:
+        selected, var_units_final = self._select(override, drop_singular_fields, **field_vals_select)
+        selected[['reported_unit', 'reference_unit']] = (selected[['reported_variable', 'reference_variable']]
+                                                         .apply(lambda col: col.map(var_units_final)))
 
+        return selected
+
+    def _select(self,
+                override: Optional[dict[str, str]],
+                drop_singular_fields: bool,
+                **field_vals_select) -> tuple[pd.DataFrame, dict[str, str]] :
         # normalise before selection; the resulting dataframe is the starting point
-        selection, var_units = self._normalise(override, split_off_units=True)
-
-        # drop reference value field
-        selection.drop(columns=['reference_value'], inplace=True)
-        selection.rename(columns={'reported_value': 'value'}, inplace=True)
+        selected, var_units = self._normalise(override)
+        selected.drop(columns=['reported_unit', 'reference_value', 'reference_unit'], inplace=True)
+        selected.rename(columns={'reported_value': 'value'}, inplace=True)
 
         # add parent variable
-        selection['reported_variable'] = selection['parent_variable'] + '|' + selection['reported_variable']
-        selection['reference_variable'] = selection['parent_variable'] + '|' + selection['reference_variable']
-        selection.drop(columns=['parent_variable'], inplace=True)
+        selected['reported_variable'] = selected['parent_variable'] + '|' + selected['reported_variable']
+        selected['reference_variable'] = selected['parent_variable'] + '|' + selected['reference_variable']
+        selected.drop(columns=['parent_variable'], inplace=True)
 
         # drop columns that are not used (at the moment)
-        selection.drop(
+        selected.drop(
             columns=['region', 'reported_unc', 'comment', 'source_detail'] +
-                    [c for c in self._fields if self._fields[c]['type'] == 'comment'],
+                    [field.id for field in self._fields if field.type == 'comment'],
             inplace=True,
         )
 
-        # expand source field
-        all_sources = [v for v in selection['source'].unique() if v != '*']
-        selection = pd.concat([
-            selection[selection['source'] != '*'],
-            selection[selection['source'] == '*']
-            .drop(columns=['source'])
-            .merge(pd.DataFrame.from_dict({'source': all_sources}), how='cross'),
-        ])
+        # raise exception if fields listed in arguments that are unknown
+        for field_id in field_vals_select:
+            if not any(field_id == field.id for field in self._fields):
+                raise Exception(f"Field '{field_id}' does not exist and cannot be used for selection.")
+            if next(field for field in self._fields if field_id == field.id).type == 'comment':
+                raise Exception(f"Cannot select by comment field: {field_id}")
 
-        # expand all case fields
-        expand_cols = {}
-        for idx_name, col_specs in self._fields.items():
-            if col_specs['type'] != 'cases':
+        # select and expand fields
+        for field in self._fields:
+            if field.type == 'comment':
                 continue
-            if (idx_name not in kwargs or kwargs[idx_name] is None):
-                if col_specs['coded']:
-                    expand_cols[idx_name] = list(col_specs['codes'].keys())
+            if field.id not in field_vals_select or field_vals_select[field.id] is None:
+                if field.is_coded:
+                    field_vals = field.codes
+                elif field.id == 'period':
+                    field_vals = default_periods
                 else:
-                    expand_cols[idx_name] = [v for v in selection[idx_name].unique() if v != '*']
-            elif idx_name in kwargs and kwargs[idx_name] is not None and isinstance(kwargs[idx_name], str):
-                expand_cols[idx_name] = [kwargs[idx_name]]
-            elif idx_name in kwargs and kwargs[idx_name] is not None and isinstance(kwargs[idx_name], list):
-                expand_cols[idx_name] = kwargs[idx_name]
-        selection = self._expand_fields(selection, expand_cols)
+                    field_vals = [v for v in selected[field.id].unique() if v != '*']
+            else:
+                field_vals = field_vals_select[field.id]
+                # ensure that field values is a list of elements (not tuple, not single value)
+                if isinstance(field_vals, tuple):
+                    field_vals = list(field_vals)
+                elif not isinstance(field_vals, list):
+                    field_vals = [field_vals]
+                # check that every element is a suitable value
+                if any(not isinstance(v, field.allowed_types) for v in field_vals):
+                    raise Exception(f"Selected value(s) for field '{field.id}' must be type: {field.allowed_types}")
+                elif '*' in field_vals:
+                    raise Exception(f"Selected value(s) for field '{field.id}' must not be the asterisk."
+                                    f"Omit the '{field.id}' argument to select all.")
+            selected = field.select_and_expand(selected, field_vals)
 
-        # insert missing periods
-        selection = self._insert_missing_periods(selection)
+        # drop fields with only one value if specified in method argument
+        if drop_singular_fields:
+            selected.drop(columns=[
+                field.id for field in self._fields
+                if isinstance(field, CustomFieldDefinition) and
+                   field.type != 'comment' and
+                   selected[field.id].nunique() < 2
+            ])
 
-        # select/interpolate periods
-        if 'period' not in kwargs or kwargs['period'] is None:
-            period = default_period
-        else:
-            period = kwargs['period']
-        if isinstance(period, int) | isinstance(period, float):
-            period = [period]
-        selection = self._select_periods(selection, period)
+        return selected, var_units
+
+    def harmonise(self,
+                  override: Optional[dict[str, str]] = None,
+                  drop_singular_fields: bool = True,
+                  **field_vals_select) -> pd.DataFrame:
+        harmonised, var_units_final = self._harmonise(override, drop_singular_fields, **field_vals_select)
+        harmonised.insert(harmonised.columns.tolist().index('value'), 'unit', np.nan)
+        harmonised['unit'] = harmonised['variable'].map(var_units_final)
+
+        return harmonised
+
+    def _harmonise(self,
+                   override: Optional[dict[str, str]],
+                   drop_singular_fields,
+                   **field_vals_select) -> tuple[pd.DataFrame, dict[str, str]]:
+        selected, var_units = self._select(override, drop_singular_fields, **field_vals_select)
 
         # apply mappings
-        selection = self._apply_mappings(selection, var_units)
+        selected = self._apply_mappings(selected, var_units)
 
         # add unit column, drop reference variable, reorder columns, sort rows
         def combine_units(numerator: str, denominator: str):
@@ -328,7 +353,7 @@ class TEDataSet(TEBase):
                 return (f"{numerator}/({denominator})"
                         if '/' in denominator else
                         f"{numerator}/{denominator}")
-        selection_units = selection.apply(
+        selection_units = selected.apply(
             lambda row: {
                 'variable': row['reported_variable'],
                 'unit': combine_units(
@@ -343,113 +368,27 @@ class TEDataSet(TEBase):
         if not selection_units.index.is_unique:
             raise Exception('Multiple combined units per reported variable found.')
         var_units_final = selection_units.to_dict()
-        selection.drop(columns=['reference_variable'], inplace=True)
-        selection.rename(columns={'reported_variable': 'variable'}, inplace=True)
+        selected.drop(columns=['reference_variable'], inplace=True)
+        selected.rename(columns={'reported_variable': 'variable'}, inplace=True)
+        custom_fields = [field.id for field in self._fields if isinstance(field, CustomFieldDefinition)]
         cols_sorted = [
-            c for c in (list(self._fields.keys()) + ['source', 'variable', 'period', 'unit', 'value'])
-            if c in selection.columns
+            c for c in (custom_fields + ['source', 'variable', 'period', 'unit', 'value'])
+            if c in selected.columns
         ]
-        selection = selection[cols_sorted]
-        selection = selection \
-            .sort_values(by=[c for c in cols_sorted if c not in ('unit', 'value')]) \
+        selected = selected[cols_sorted]
+        selected = selected \
+            .sort_values(by=[c for c in cols_sorted if c in selected and c not in ('unit', 'value')]) \
             .reset_index(drop=True)
 
-        return selection, var_units_final
-
-    # select data
-    def select(self,
-               agg: Optional[list[str]] = None,
-               masks: Optional[list[Mask]] = None,
-               masks_database: bool = True,
-               override: Optional[dict[str, str]] = None,
-               **kwargs):
-        # prepare selection
-        selection, var_units_final = self._prepare(override, split_off_units=True, **kwargs)
-
-        # compile all masks into list
-        masks = masks if masks is not None else []
-        if masks_database:
-            masks += [Mask(**mask_dict) for mask_dict in self._masks]
-
-        # aggregation
-        selection = self._aggregate(selection, agg, masks)
-
-        # round values
-        selection = selection.apply(lambda col: col.apply(
-            lambda cell: cell if not isinstance(cell, float) or np.isnan(cell) else round(cell, sigfigs=4, warn=False)
-        ))
-
-        # add units
-        selection.insert(selection.columns.tolist().index('value'), 'unit', np.nan)
-        selection['unit'] = selection['variable'].map(var_units_final)
-
-        # return dataframe
-        return selection
-
-    # insert missing periods
-    def _insert_missing_periods(self, selection: pd.DataFrame) -> pd.DataFrame:
-        # TODO: insert year of publication instead of current year
-        selection = selection.fillna({'period': 2023})
-
-        # return
-        return selection
-
-    def _aggregate(self, selection: pd.DataFrame, agg: list, masks: list[Mask]) -> pd.DataFrame:
-        # aggregate
-        if agg is None:
-            agg = [
-                field_name
-                for field_name, field_specs in self._fields.items()
-                if field_specs['type'] == 'components'
-            ] + ['source']
-
-        # aggregate over component fields
-        group_cols = [
-            c for c in selection.columns
-            if c != 'value' and (c not in agg or c not in self._fields or self._fields[c]['type'] != 'components')
-        ]
-        selection = selection \
-            .groupby(group_cols, dropna=False) \
-            .agg({'value': 'sum'}) \
-            .reset_index()
-
-        # aggregate over cases fields
-        group_cols = [
-            c for c in selection.columns
-            if c != 'value' and c not in agg
-        ]
-        ret = []
-        for keys, rows in selection.groupby(group_cols, dropna=False):
-            # set default weights to 1.0
-            rows = rows.assign(weight=1.0)
-
-            # update weights by applying masks
-            for mask in masks:
-                if mask.matches(rows):
-                    rows['weight'] *= mask.get_weights(rows)
-
-            # drop all rows with weights equal to nan
-            rows.dropna(subset='weight', inplace=True)
-
-            if not rows.empty:
-                # aggregate with weights
-                out = rows \
-                    .groupby(group_cols, dropna=False) \
-                    .apply(lambda cols: pd.Series({
-                        'value': np.average(cols['value'], weights=cols['weight']),
-                    }))
-
-                # add to return list
-                ret.append(out)
-
-        # convert return list to dataframe and return
-        return pd.concat(ret).reset_index()
+        return selected, var_units_final
 
     # apply mappings between entry types
     def _apply_mappings(self, selection: pd.DataFrame, var_units: dict) -> pd.DataFrame:
         # list of columns to group by
-        group_cols = [c for c in self._fields if self._fields[c]['type'] != 'comment'] + \
-                     ['period', 'source']
+        group_cols = [
+            c for c in selection.columns
+            if c not in ['reported_variable', 'reference_variable', 'value']
+        ]
 
         # perform groupby and do not drop NA values
         grouped = selection.groupby(group_cols, dropna=False)
@@ -497,7 +436,7 @@ class TEDataSet(TEBase):
                     axis=1,
                 )
                 if (cond & rows['value'].isnull()).any():
-                    warnings.warn(TEMappingFailure(
+                    warnings.warn(HarmoniseMappingFailure(
                         selection.loc[ids].loc[cond & rows['value'].isnull()],
                         'No CAPEX value matching a FOPEX Relative value found.',
                     ))
@@ -526,7 +465,7 @@ class TEDataSet(TEBase):
                     lambda cell: re.sub(r'(Input|Output)', r'\1 Capacity', cell),
                 )
                 if (cond & rows['value'].isnull()).any():
-                    warnings.warn(TEMappingFailure(
+                    warnings.warn(HarmoniseMappingFailure(
                         selection.loc[ids].loc[cond & rows['value'].isnull()],
                         'No OCF value matching a FOPEX Specific value found.',
                     ))
@@ -567,7 +506,7 @@ class TEDataSet(TEBase):
                 rows.loc[cond, 'reference_variable'] = rows.loc[cond, 'reference_variable_new']
                 rows.drop(columns=['reference_variable_new'], inplace=True)
                 if (cond & rows['value'].isnull()).any():
-                    warnings.warn(TEMappingFailure(
+                    warnings.warn(HarmoniseMappingFailure(
                         selection.loc[ids].loc[cond & rows['value'].isnull()],
                         'No appropriate mapping found to convert row reference to primary output.',
                     ))
@@ -581,89 +520,90 @@ class TEDataSet(TEBase):
         # convert return list to dataframe and return
         return pd.concat(ret).reset_index(drop=True)
 
-    # expand based on subtechs, modes, and period
-    def _expand_fields(self, selection: pd.DataFrame, expand_cols: dict) -> pd.DataFrame:
-        # loop over affected columns
-        for field_id, field_vals in expand_cols.items():
-            if '*' in field_vals:
-                raise Exception(f"Asterisk may not be among expand values for column '{field_id}': {field_vals}")
-            if self._fields[field_id]['type'] == 'cases':
-                selection = pd.concat([
-                        selection[selection[field_id].isin(field_vals)],
-                        selection[selection[field_id] == '*']
-                        .drop(columns=[field_id])
-                        .merge(pd.DataFrame.from_dict({field_id: field_vals}), how='cross'),
-                    ])
-            elif self._fields[field_id]['type'] == 'components':
-                selection = selection.query(f"{field_id}.isin({field_vals})")
+    # select data
+    def aggregate(self,
+                  override: Optional[dict[str, str]] = None,
+                  drop_singular_fields: bool = True,
+                  agg: Optional[str | list[str] | tuple[str]] = None,
+                  masks: Optional[list[Mask]] = None,
+                  masks_database: bool = True,
+                  **field_vals_select) -> pd.DataFrame:
+        # get selection
+        harmonised, var_units_final = self._harmonise(override, drop_singular_fields, **field_vals_select)
 
-        # return
-        return selection.reset_index(drop=True)
+        # compile masks from databases and function argument into one list
+        if masks is not None and any(not isinstance(m, Mask) for m in masks):
+            raise Exception("Function argument 'masks' must contain a list of posted.masking.Mask objects.")
+        masks = (self._masks if masks_database else []) + (masks or [])
 
-    # group by identifying columns and select periods/generate time series
-    def _select_periods(self, selection: pd.DataFrame, period: float | list | np.ndarray) -> pd.DataFrame:
-        # expands asterisk values
-        selection = pd.concat([
-                selection[selection['period'] != '*'],
-                selection[selection['period'] == '*']
-                .drop(columns=['period'])
-                .merge(pd.DataFrame.from_dict({'period': period}), how='cross'),
-            ]).astype({'period': 'float'})
+        # aggregation
+        component_fields = [
+            field.id for field in self._fields
+            if field.type == 'components'
+        ]
+        if agg is None:
+            agg = component_fields + ['source']
+        else:
+            if isinstance(agg, tuple):
+                agg = list(agg)
+            elif not isinstance(agg, list):
+                agg = [agg]
+            for a in agg:
+                if not isinstance(a, str):
+                    raise Exception(f"Field ID in argument 'agg' must be a string but found: {a}")
+                if not any(a == field.id for field in self._fields):
+                    raise Exception(f"Field ID in argument 'agg' is not a valid field: {a}")
 
-        # get list of groupable columns
-        group_cols = [c for c in self._fields if self._fields[c]['type'] != 'comment'] + \
-                     ['reported_variable', 'reference_variable', 'source']
+        # aggregate over component fields
+        group_cols = [
+            c for c in harmonised.columns
+            if not (c == 'value' or (c in agg and c in component_fields))
+        ]
+        aggregated = harmonised \
+            .groupby(group_cols, dropna=False) \
+            .agg({'value': 'sum'}) \
+            .reset_index()
 
-        # perform groupby and do not drop NA values
-        grouped = selection.groupby(group_cols, dropna=False)
-
-        # create return list
+        # aggregate over cases fields
+        group_cols = [
+            c for c in aggregated.columns
+            if not (c == 'value' or c in agg)
+        ]
         ret = []
+        for keys, rows in aggregated.groupby(group_cols, dropna=False):
+            # set default weights to 1.0
+            rows = rows.assign(weight=1.0)
 
-        # loop over groups
-        for keys, rows in grouped:
-            # get rows in group
-            rows = rows[['period', 'value']]
+            # update weights by applying masks
+            for mask in masks:
+                if mask.matches(rows):
+                    rows['weight'] *= mask.get_weights(rows)
 
-            # get a list of periods that exist
-            periods_exist = rows['period'].unique()
+            # drop all rows with weights equal to nan
+            rows.dropna(subset='weight', inplace=True)
 
-            # create dataframe containing rows for all requested periods
-            req_rows = pd.DataFrame.from_dict({
-                'period': period,
-                'period_upper': [min([ip for ip in periods_exist if ip >= p], default=np.nan) for p in period],
-                'period_lower': [max([ip for ip in periods_exist if ip <= p], default=np.nan) for p in period],
-            })
+            if not rows.empty:
+                # aggregate with weights
+                out = rows \
+                    .groupby(group_cols, dropna=False) \
+                    .apply(lambda cols: pd.Series({
+                    'value': np.average(cols['value'], weights=cols['weight']),
+                }))
 
-            # set missing columns from group
-            req_rows[group_cols] = keys
+                # add to return list
+                ret.append(out)
 
-            # check case
-            cond_match = req_rows['period'].isin(periods_exist)
-            cond_extrapolate = (req_rows['period_upper'].isna() | req_rows['period_lower'].isna())
+        # convert return list to dataframe and reset index
+        aggregated = pd.concat(ret).reset_index()
 
-            # match
-            rows_match = req_rows.loc[cond_match] \
-                .merge(rows, on='period')
+        # round values
+        aggregated['value'] = aggregated['value'].apply(
+            lambda cell: cell if pd.isnull(cell) else round(cell, sigfigs=4, warn=False)
+        )
 
-            # extrapolate
-            rows_extrapolate = req_rows.loc[~cond_match & cond_extrapolate] \
-                .assign(period_combined=lambda x: np.where(x.notna()['period_upper'], x['period_upper'], x['period_lower'])) \
-                .merge(rows.rename(columns={'period': 'period_combined'}), on='period_combined')
+        # add units
+        aggregated.insert(aggregated.columns.tolist().index('value'), 'unit', np.nan)
+        aggregated['unit'] = aggregated['variable'].map(var_units_final)
 
-            # interpolate
-            rows_interpolate = req_rows.loc[~cond_match & ~cond_extrapolate] \
-                .merge(rows.rename(columns={c: f"{c}_upper" for c in rows.columns}), on='period_upper') \
-                .merge(rows.rename(columns={c: f"{c}_lower" for c in rows.columns}), on='period_lower') \
-                .assign(value=lambda row: row['value_lower'] + (row['period_upper'] - row['period']) /
-                       (row['period_upper'] - row['period_lower']) * (row['value_upper'] - row['value_lower']))
-
-            # combine into one dataframe and drop unused columns
-            rows_append = pd.concat([rows_match, rows_extrapolate, rows_interpolate]) \
-                .drop(columns=['period_upper', 'period_lower', 'period_combined', 'value_upper', 'value_lower'])
-
-            # add to return list
-            ret.append(rows_append)
-
-        # convert return list to dataframe and return
-        return pd.concat(ret).reset_index(drop=True)
+        # return dataframe
+        return aggregated

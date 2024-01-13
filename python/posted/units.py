@@ -2,13 +2,14 @@ import numpy as np
 import pandas as pd
 import iam_units
 
-from posted.path import BASE_PATH
+from posted.path import databases
 from posted.config import flows
 
 
 # set up pint unit registry: use iam_units as a basis, load custom definitions, add pint_pandas, set display format,
 ureg = iam_units.registry
-ureg.load_definitions(BASE_PATH / 'units' / 'definitions.txt')
+for database_path in databases.values():
+    ureg.load_definitions(database_path / 'unit_definitions.txt')
 iam_units.currency.configure_currency("EXC", "2005")
 ureg.Unit.default_format = "~P"
 
@@ -65,7 +66,8 @@ def unit_allowed(unit: str, flow_id: None | str, dimension: str):
                             flows[flow_id][variant_specs['value']] is not np.nan
                             for variant, variant_specs in unit_variants.items()
                         ):
-                            return False, f"Missing unit variant for dimension [{check_dimension_base}] for unit '{unit}'."
+                            return False, (f"Missing unit variant for dimension [{check_dimension_base}] for unit "
+                                           f"'{unit}'.")
                     elif unit_variants[variant]['dimension'] != check_dimension_base:
                         return False, f"Variant '{variant}' incompatible with unit '{unit}'."
 
@@ -106,10 +108,13 @@ def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | s
     if not any(variants):
         return ureg(unit_from).to(unit_to).magnitude
 
-    # if both variants refer to the same dimension, we need to manually calculate the conversion factor and proceed without a flow context
+    # if both variants refer to the same dimension, we need to manually calculate the conversion factor and proceed
+    # without a flow context
     if len(variants) == 2:
-        variant_params = {unit_variants[v]['param']
-                          if v is not None else None for v in variants}
+        variant_params = {
+            unit_variants[v]['param'] if v is not None else None
+            for v in variants
+        }
         if len(variant_params) == 1:
             param = next(iter(variant_params))
             value_from, value_to = (

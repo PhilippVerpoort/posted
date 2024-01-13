@@ -4,11 +4,11 @@ import unittest
 class Units(unittest.TestCase):
     # importing all components of the units module
     def test_import(self):
-        import posted.units.units
+        pass
 
     # using the unit registry to create some standard units
     def test_ureg(self):
-        from posted.units.units import ureg
+        from posted.units import ureg
         ureg('kg')
         ureg('MWh')
         ureg('m**3')
@@ -16,7 +16,7 @@ class Units(unittest.TestCase):
 
     # check which units are allowed in the context of dimensions and flowIDs
     def test_allowed(self):
-        from posted.units.units import unit_allowed
+        from posted.units import unit_allowed
 
         # mass flows are allowed without variant for all materials but not for electricity or heat
         self.assertTrue(unit_allowed('t', 'h2', '[flow]')[0])
@@ -33,7 +33,7 @@ class Units(unittest.TestCase):
         self.assertTrue(unit_allowed('MW;HHV', 'h2', '[flow]/[time]')[0])
 
     def test_convert(self):
-        from posted.units.units import unit_convert
+        from posted.units import unit_convert
         self.assertEqual(unit_convert('kWh', 'MWh', 'elec'), 0.001)
         self.assertAlmostEqual(unit_convert('MWh;HHV', 'm**3;std', 'h2'), 282.24994983007144, 5)
         self.assertAlmostEqual(unit_convert('MWh/a;HHV', 'kg/a', 'h2'), 25.374270489723422, 5)

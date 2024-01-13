@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 
-from posted.units.units import unit_convert
+from posted.units import unit_convert
 
 
 # main execution function
