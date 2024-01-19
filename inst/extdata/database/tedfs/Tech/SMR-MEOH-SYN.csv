@@ -1,5 +1,5 @@
-reported_variable,reference_variable,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAPEX Annualised,Output Capacity|meoh,2017,400,,EUR_2015,1,metric_ton,Depreciated over 10 years with an interest rate of 10%.,Bazzanella17,Table 35
-FOPEX Specific,Output|meoh,2017,60,,EUR_2015,1,metric_ton,,Bazzanella17,Table 35
+OPEX Fixed Specific,Output|meoh,2017,60,,EUR_2015,1,metric_ton,,Bazzanella17,Table 35
 Input|elec,Output|meoh,2017,0.6,,GJ,1,metric_ton,,Bazzanella17,Section 4.4.1
 Input|ng,Output|meoh,2017,12.5,,GJ,1,metric_ton,,Bazzanella17,Section 4.4.1

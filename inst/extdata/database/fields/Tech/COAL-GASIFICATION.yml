@@ -1,4 +1,5 @@
 capture_rate:
   name: CO2 capture rate
-  type: cases
+  description: Share of all CO2 captured
+  type: case
   coded: False

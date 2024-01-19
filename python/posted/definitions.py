@@ -53,7 +53,7 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
     for def_key, def_specs in definitions.items():
         for def_property, def_value in def_specs.items():
             for token_key, token_func in tokens.items():
-                if f"{{{token_key}}}" in def_value:
+                if isinstance(def_value, str) and f"{{{token_key}}}" in def_value:
                     def_specs[def_property] = def_specs[def_property].replace(f"{{{token_key}}}", token_func(def_specs))
 
     return definitions

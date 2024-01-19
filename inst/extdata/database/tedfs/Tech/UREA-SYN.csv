@@ -1,4 +1,4 @@
-reported_variable,reference_variable,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAPEX,Output|urea,2023,4.05,,MUSD_2022,1000,metric_ton/a,,Palys23,"Section 2.3, Page 6"
 Input|elec,Output|urea,2020,173.7,27.2,kWh,1,metric_ton,,Fiamelda20,"Section 3.5, Page 5"
 Input|elec,Output|urea,2018,91.5,68.5,kWh,1,metric_ton,,Jarvis18,Section 2.1.2

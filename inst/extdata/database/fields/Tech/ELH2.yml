@@ -1,6 +1,7 @@
 subtech:
   name: Subtechnology
-  type: cases
+  description: Subtechnology
+  type: case
   coded: True
   codes:
     AEL: Alkaline electrolysis
@@ -8,5 +9,6 @@ subtech:
     SOEC: High-temperature solid-oxide electrolysis
 size:
   name: Plant size
-  type: cases
+  description: Total size (capacity) of the assumed plant
+  type: case
   coded: False

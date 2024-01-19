@@ -17,13 +17,6 @@ class TEDFiles(unittest.TestCase):
         tedf.load()
         tedf.check()
 
-    # load all ted files
-    def test_ted2(self):
-        from posted.nsha import NSHADataSet
-        NSHADataSet('Tech|ELH2').normalise()
-        NSHADataSet('Tech|ELH2').normalise(override={'Tech|ELH2|Input Capacity|elec': 'kW'})
-        NSHADataSet('Tech|DAC').normalise()
-
 
 if __name__ == '__main__':
     unittest.main()

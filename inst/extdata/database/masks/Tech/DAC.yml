@@ -1,5 +1,5 @@
-- when: "variable=='CAPEX'"
-  use: "src_ref=='Ozkan et al. (2022)'"
+- where: "variable=='Tech|DAC|CAPEX'"
+  use: "source=='Okzan22'"
   weight: nan
-  def: 1.0
+  other: 1.0
   comment: All CAPEX data given is misquoted from a paper by Fuss et al (2018).

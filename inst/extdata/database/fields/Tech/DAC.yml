@@ -1,14 +1,17 @@
 subtech:
   name: Subtechnology
-  type: cases
+  description: Subtechnology of DAC (high-temperature vs. low-temperature vs. other emerging subtechnologies)
+  type: case
   coded: True
   codes:
     HT-DAC: High-temperature DAC
     LT-DAC: Low-temperature DAC
 component:
   name: Component
-  type: components
+  description: Component
+  type: component
   coded: False
 comment2:
   name: Comment 2
+  description: An additional comment column.
   type: comment

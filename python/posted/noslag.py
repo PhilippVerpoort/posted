@@ -7,11 +7,12 @@ import numpy as np
 import pandas as pd
 from sigfig import round
 
-from posted.config import default_periods
-from posted.fields import AbstractFieldDefinition, SourceFieldDefinition, PeriodFieldDefinition, CustomFieldDefinition
+from posted.config import variables
+from posted.settings import default_periods
+from posted.columns import AbstractFieldDefinition, CustomFieldDefinition, read_fields, AbstractColumnDefinition, base_columns
 from posted.path import databases
-from posted.masking import Mask
-from posted.tedf import TEBase, read_fields, read_masks, TEDF
+from posted.masking import Mask, read_masks
+from posted.tedf import TEBase, TEDF
 from posted.units import unit_convert, ureg
 
 
@@ -64,42 +65,50 @@ def collect_files(parent_variable: str, include_databases: Optional[list[str]] =
 # normalise units
 def normalise_units(df: pd.DataFrame, level: Literal['reported', 'reference'], var_units: dict[str, str],
                     var_flow_ids: dict[str, str]):
-    level_variable = f"{level}_variable"
+    prefix = '' if level == 'reported' else 'reference_'
+    var_col_id = prefix + 'variable'
+    value_col_id = prefix + 'value'
+    unit_col_id = prefix + 'unit'
     df_tmp = pd.concat([
         df,
         df.apply(
-            lambda row: var_units[f"{row['parent_variable']}|{row[level_variable]}"]
-            if isinstance(row[level_variable], str) else np.nan,
+            lambda row: var_units[f"{row['parent_variable']}|{row[var_col_id]}"]
+            if isinstance(row[var_col_id], str) else np.nan,
             axis=1,
         )
         .to_frame('target_unit'),
         df.apply(
-            lambda row: var_flow_ids[f"{row['parent_variable']}|{row[level_variable]}"]
-            if isinstance(row[level_variable], str) else np.nan,
+            lambda row: var_flow_ids[f"{row['parent_variable']}|{row[var_col_id]}"]
+            if isinstance(row[var_col_id], str) else np.nan,
             axis=1,
         )
         .to_frame('target_flow_id'),
     ], axis=1)
 
-    df_tmp[f"{level}_value"] *= df_tmp.apply(
-        lambda row: unit_convert(row[f"{level}_unit"], row['target_unit'], row['target_flow_id'])
-        if not np.isnan(row[f"{level}_value"]) else 1.0,
+    conv_factor = df_tmp.apply(
+        lambda row: unit_convert(row[unit_col_id], row['target_unit'], row['target_flow_id'])
+        if not np.isnan(row[value_col_id]) else 1.0,
         axis=1,
     )
-    df_tmp[f"{level}_unit"] = df_tmp['target_unit']
+    df_tmp[value_col_id] *= conv_factor
+    if level == 'reported':
+        df_tmp['uncertainty'] *= conv_factor
+    df_tmp[unit_col_id] = df_tmp['target_unit']
 
     return df_tmp.drop(columns=['target_unit', 'target_flow_id'])
 
 
 # normalise values
 def normalise_values(df: pd.DataFrame):
-    reported_value_new = df.apply(
+    reference_value =  df.apply(
         lambda row:
-            row['reported_value'] / row['reference_value']
+            row['reference_value']
             if not pd.isnull(row['reference_value']) else
-            row['reported_value'],
+            1.0,
         axis=1,
     )
+    value_new = df['value'] / reference_value
+    uncertainty_new = df['uncertainty'] / reference_value
     reference_value_new = df.apply(
         lambda row:
             1.0
@@ -108,7 +117,7 @@ def normalise_values(df: pd.DataFrame):
         axis=1,
     )
 
-    return df.assign(reported_value=reported_value_new, reference_value=reference_value_new)
+    return df.assign(value=value_new, uncertainty=uncertainty_new, reference_value=reference_value_new)
 
 
 class HarmoniseMappingFailure(Warning):
@@ -130,9 +139,21 @@ class HarmoniseMappingFailure(Warning):
         super().__init__(warning_message)
 
 
-class NSHADataSet(TEBase):
+# combine fraction of two units into updated unit string
+def combine_units(numerator: str, denominator: str):
+    ret = ureg(f"{numerator}/({denominator})").u
+    if not ret.dimensionless:
+        return str(ret)
+    else:
+        return (f"{numerator}/({denominator})"
+                if '/' in denominator else
+                f"{numerator}/{denominator}")
+
+
+class DataSet(TEBase):
     _df: None | pd.DataFrame
-    _fields: list[AbstractFieldDefinition]
+    _columns: dict[str, AbstractColumnDefinition]
+    _fields: dict[str, AbstractFieldDefinition]
     _masks: list[Mask]
 
     # initialise
@@ -147,7 +168,12 @@ class NSHADataSet(TEBase):
 
         # initialise fields
         self._df = None
-        self._fields = []
+        self._columns = base_columns
+        self._fields = {
+            col_id: field
+            for col_id, field in self._columns.items()
+            if isinstance(field, AbstractFieldDefinition)
+        }
         self._masks = []
 
         if data is not None:
@@ -180,17 +206,18 @@ class NSHADataSet(TEBase):
         if not files:
             raise Exception(f"No TEDF to load for variable '{self._parent_variable}'.")
 
-        # get fields and masks from files
+        # get fields and masks from databases
         files_vars: set[str] = {f.parent_variable for f in files}
         for v in files_vars:
-            self._fields += read_fields(v)
+            new_fields, new_comments = read_fields(v)
+            for col_id in new_fields | new_comments:
+                if col_id in self._columns:
+                    raise Exception(f"Cannot load TEDFs due to multiple columns with same ID defined: {col_id}")
+            self._fields = new_fields | self._fields
+            self._columns = new_fields | self._columns | new_comments
             self._masks += read_masks(v)
-        self._fields += [SourceFieldDefinition(), PeriodFieldDefinition()]
-        field_ids = [field.id for field in self._fields]
-        if len(field_ids) > len(set(field_ids)):
-            raise Exception(f"Cannot load TEDFs due to multiple fields defined with equal name: {field_ids}")
 
-        # load all TEDataFiles: load from file, check for inconsistencies (if requested), expand cases and variables
+        # load all TEDFs: load from file, check for inconsistencies (if requested), expand cases and variables
         file_dfs: list[pd.DataFrame] = []
         for f in files:
             # load
@@ -216,10 +243,9 @@ class NSHADataSet(TEBase):
         # return
         return data
 
-    # normalise reference values, reference units, and reported units
-    def normalise(self, override: Optional[dict[str, str]] = None, inplace: bool = False) -> pd.DataFrame:
+    # normalise data: default reference units, reference value equal to 1.0, default reported units
+    def normalise(self, override: Optional[dict[str, str]] = None, inplace: bool = False) -> pd.DataFrame | None:
         normalised, _ = self._normalise(override)
-
         if inplace:
             self._df = normalised
             return
@@ -238,6 +264,7 @@ class NSHADataSet(TEBase):
         var_units = {
             var_name: var_specs['default_unit']
             for var_name, var_specs in self._var_specs.items()
+            if not ('mapped' in var_specs and var_specs['mapped'])
         } | override
 
         # normalise reference units, normalise reference values, and normalise reported units
@@ -246,152 +273,120 @@ class NSHADataSet(TEBase):
             .pipe(normalise_values) \
             .pipe(normalise_units, level='reported', var_units=var_units, var_flow_ids=var_flow_ids)
 
-        # return dataframe and variable units
+        # return normalised data and variable units
         return normalised, var_units
 
     # prepare data for selection
     def select(self,
                override: Optional[dict[str, str]] = None,
                drop_singular_fields: bool = True,
+               extrapolate_period: bool = True,
                **field_vals_select) -> pd.DataFrame:
-        selected, var_units_final = self._select(override, drop_singular_fields, **field_vals_select)
-        selected[['reported_unit', 'reference_unit']] = (selected[['reported_variable', 'reference_variable']]
-                                                         .apply(lambda col: col.map(var_units_final)))
-
-        return selected
+        return self._cleanup(*self._select(override, drop_singular_fields, extrapolate_period, **field_vals_select))
 
     def _select(self,
                 override: Optional[dict[str, str]],
                 drop_singular_fields: bool,
-                **field_vals_select) -> tuple[pd.DataFrame, dict[str, str]] :
-        # normalise before selection; the resulting dataframe is the starting point
-        selected, var_units = self._normalise(override)
-        selected.drop(columns=['reported_unit', 'reference_value', 'reference_unit'], inplace=True)
-        selected.rename(columns={'reported_value': 'value'}, inplace=True)
+                extrapolate_period: bool,
+                **field_vals_select) -> tuple[pd.DataFrame, dict[str, str]]:
+        # start from normalised data
+        normalised, var_units = self._normalise(override)
+        selected = normalised
 
-        # add parent variable
-        selected['reported_variable'] = selected['parent_variable'] + '|' + selected['reported_variable']
-        selected['reference_variable'] = selected['parent_variable'] + '|' + selected['reference_variable']
-        selected.drop(columns=['parent_variable'], inplace=True)
+        # drop unit columns and reference value column
+        selected.drop(columns=['unit', 'reference_unit', 'reference_value'], inplace=True)
 
-        # drop columns that are not used (at the moment)
+        # drop columns containing comments and uncertainty field (which is currently unsupported)
         selected.drop(
-            columns=['region', 'reported_unc', 'comment', 'source_detail'] +
-                    [field.id for field in self._fields if field.type == 'comment'],
+            columns=['uncertainty'] + [
+                col_id for col_id, field in self._columns.items()
+                if field.col_type == 'comment'
+            ],
             inplace=True,
         )
 
+        # add parent variable as prefix to other variable columns
+        selected['variable'] = selected['parent_variable'] + '|' + selected['variable']
+        selected['reference_variable'] = selected['parent_variable'] + '|' + selected['reference_variable']
+        selected.drop(columns=['parent_variable'], inplace=True)
+
         # raise exception if fields listed in arguments that are unknown
         for field_id in field_vals_select:
-            if not any(field_id == field.id for field in self._fields):
+            if not any(field_id == col_id for col_id in self._fields):
                 raise Exception(f"Field '{field_id}' does not exist and cannot be used for selection.")
-            if next(field for field in self._fields if field_id == field.id).type == 'comment':
-                raise Exception(f"Cannot select by comment field: {field_id}")
+
+        # order fields for selection: period must be expanded last due to the interpolation
+        fields_select = ({col_id: self._fields[col_id] for col_id in field_vals_select} |
+                         {col_id: field for col_id, field in self._fields.items() if col_id != 'period' and col_id not in field_vals_select} |
+                         {'period': self._fields['period']})
 
         # select and expand fields
-        for field in self._fields:
-            if field.type == 'comment':
-                continue
-            if field.id not in field_vals_select or field_vals_select[field.id] is None:
-                if field.is_coded:
-                    field_vals = field.codes
-                elif field.id == 'period':
-                    field_vals = default_periods
-                else:
-                    field_vals = [v for v in selected[field.id].unique() if v != '*']
-            else:
-                field_vals = field_vals_select[field.id]
-                # ensure that field values is a list of elements (not tuple, not single value)
-                if isinstance(field_vals, tuple):
-                    field_vals = list(field_vals)
-                elif not isinstance(field_vals, list):
-                    field_vals = [field_vals]
-                # check that every element is a suitable value
-                if any(not isinstance(v, field.allowed_types) for v in field_vals):
-                    raise Exception(f"Selected value(s) for field '{field.id}' must be type: {field.allowed_types}")
-                elif '*' in field_vals:
-                    raise Exception(f"Selected value(s) for field '{field.id}' must not be the asterisk."
-                                    f"Omit the '{field.id}' argument to select all.")
-            selected = field.select_and_expand(selected, field_vals)
+        for col_id, field in fields_select.items():
+            field_vals = field_vals_select[col_id] if col_id in field_vals_select else None
+            selected = field.select_and_expand(selected, col_id, field_vals, extrapolate_period=extrapolate_period)
 
-        # drop fields with only one value if specified in method argument
+        # drop custom fields with only one value if specified in method argument
         if drop_singular_fields:
             selected.drop(columns=[
-                field.id for field in self._fields
-                if isinstance(field, CustomFieldDefinition) and
-                   field.type != 'comment' and
-                   selected[field.id].nunique() < 2
+                col_id for col_id, field in self._fields.items()
+                if isinstance(field, CustomFieldDefinition) and selected[col_id].nunique() < 2
             ])
-
-        return selected, var_units
-
-    def harmonise(self,
-                  override: Optional[dict[str, str]] = None,
-                  drop_singular_fields: bool = True,
-                  **field_vals_select) -> pd.DataFrame:
-        harmonised, var_units_final = self._harmonise(override, drop_singular_fields, **field_vals_select)
-        harmonised.insert(harmonised.columns.tolist().index('value'), 'unit', np.nan)
-        harmonised['unit'] = harmonised['variable'].map(var_units_final)
-
-        return harmonised
-
-    def _harmonise(self,
-                   override: Optional[dict[str, str]],
-                   drop_singular_fields,
-                   **field_vals_select) -> tuple[pd.DataFrame, dict[str, str]]:
-        selected, var_units = self._select(override, drop_singular_fields, **field_vals_select)
 
         # apply mappings
         selected = self._apply_mappings(selected, var_units)
 
-        # add unit column, drop reference variable, reorder columns, sort rows
-        def combine_units(numerator: str, denominator: str):
-            ret = ureg(f"{numerator}/({denominator})").u
-            if not ret.dimensionless:
-                return str(ret)
-            else:
-                return (f"{numerator}/({denominator})"
-                        if '/' in denominator else
-                        f"{numerator}/{denominator}")
-        selection_units = selected.apply(
-            lambda row: {
-                'variable': row['reported_variable'],
-                'unit': combine_units(
-                    var_units[row['reported_variable']].split(';')[0],
-                    var_units[row['reference_variable']].split(';')[0]
-                ) if isinstance(row['reference_variable'], str) else
-                var_units[row['reported_variable']].split(';')[0],
-            },
-            axis=1,
-            result_type='expand',
-        ).set_index('variable').drop_duplicates()['unit']
-        if not selection_units.index.is_unique:
-            raise Exception('Multiple combined units per reported variable found.')
-        var_units_final = selection_units.to_dict()
-        selected.drop(columns=['reference_variable'], inplace=True)
-        selected.rename(columns={'reported_variable': 'variable'}, inplace=True)
-        custom_fields = [field.id for field in self._fields if isinstance(field, CustomFieldDefinition)]
-        cols_sorted = [
-            c for c in (custom_fields + ['source', 'variable', 'period', 'unit', 'value'])
-            if c in selected.columns
-        ]
-        selected = selected[cols_sorted]
-        selected = selected \
-            .sort_values(by=[c for c in cols_sorted if c in selected and c not in ('unit', 'value')]) \
-            .reset_index(drop=True)
+        # drop rows with failed mappings
+        selected.dropna(subset='value', inplace=True)
 
-        return selected, var_units_final
+        # get map of variable references
+        var_references = selected \
+            .filter(['variable', 'reference_variable']) \
+            .drop_duplicates() \
+            .set_index('variable')['reference_variable']
+        if not var_references.index.is_unique:
+            raise Exception(f"Multiple reference variables per reported variable found: {var_references}")
+        var_references = var_references.dropna().to_dict()
+        selected.drop(columns=['reference_variable'], inplace=True)
+
+        # strip off unit variants
+        var_units = {
+            variable: unit.split(';')[0]
+            for variable, unit in var_units.items()
+        }
+
+        # map variables and references to simplified variables (e.g. CAPEX / Output Capacity -> Capital Cost)
+        mapped_variables: dict[str, str] = {}
+        for variable, reference_variable in var_references.items():
+            try:
+                var_mapped = next(
+                    var_name
+                    for var_name, var_specs in variables.items()
+                    if (
+                        'mapped' in var_specs and
+                        var_specs['mapped'] and
+                        variable == var_specs['variable'] and
+                        reference_variable == var_specs['reference_variable']
+                    )
+                )
+            except StopIteration:
+                raise Exception(f"Cannot find mapped variable for pair of variable and reference: {variable} and "
+                                f"{reference_variable}")
+            mapped_variables[variable] = var_mapped
+            var_units[var_mapped] = combine_units(var_units[variable], var_units[reference_variable])
+        selected['variable'] = selected['variable'].map(lambda v: mapped_variables[v] if v in mapped_variables else v)
+
+        return selected, var_units
 
     # apply mappings between entry types
-    def _apply_mappings(self, selection: pd.DataFrame, var_units: dict) -> pd.DataFrame:
+    def _apply_mappings(self, expanded: pd.DataFrame, var_units: dict) -> pd.DataFrame:
         # list of columns to group by
         group_cols = [
-            c for c in selection.columns
-            if c not in ['reported_variable', 'reference_variable', 'value']
+            c for c in expanded.columns
+            if c not in ['variable', 'reference_variable', 'value']
         ]
 
         # perform groupby and do not drop NA values
-        grouped = selection.groupby(group_cols, dropna=False)
+        grouped = expanded.groupby(group_cols, dropna=False)
 
         # create return list
         ret = []
@@ -399,37 +394,37 @@ class NSHADataSet(TEBase):
         # loop over groups
         for keys, ids in grouped.groups.items():
             # get rows in group
-            rows = selection.loc[ids, [c for c in selection if c not in group_cols]].copy()
+            rows = expanded.loc[ids, [c for c in expanded if c not in group_cols]].copy()
 
             # 1. convert FLH to OCF
-            cond = rows['reported_variable'].str.endswith('|FLH')
+            cond = rows['variable'].str.endswith('|FLH')
             if cond.any():
                 rows.loc[cond, 'value'] *= rows.loc[cond].apply(
-                    lambda row: unit_convert(var_units[row['reported_variable']], 'a'),
+                    lambda row: unit_convert(var_units[row['variable']], 'a'),
                     axis=1,
                 )
-                rows.loc[cond, 'reported_variable'] = rows.loc[cond, 'reported_variable'] \
+                rows.loc[cond, 'variable'] = rows.loc[cond, 'variable'] \
                     .str.replace('|FLH', '|OCF', regex=False)
 
-            # 2. convert FOPEX Relative to FOPEX
-            cond = rows['reported_variable'].str.endswith('|FOPEX Relative')
+            # 2. convert OPEX Fixed Relative to OPEX Fixed
+            cond = rows['variable'].str.endswith('|OPEX Fixed Relative')
             if cond.any():
                 rows.loc[cond, 'value'] *= rows.loc[cond].apply(
-                    lambda row: unit_convert(
-                        var_units[row['reported_variable'].replace('|FOPEX Relative', '|CAPEX')] + '/a',
-                        var_units[row['reported_variable'].replace('|FOPEX Relative', '|FOPEX')]
+                    lambda row: unit_convert(var_units[row['variable']], 'dimensionless') * unit_convert(
+                        var_units[row['variable'].replace('|OPEX Fixed Relative', '|CAPEX')] + '/a',
+                        var_units[row['variable'].replace('|OPEX Fixed Relative', '|OPEX Fixed')]
                     ) * (rows.query(
-                        f"reported_variable=='{row['reported_variable'].replace('|FOPEX Relative', '|CAPEX')}'"
+                        f"variable=='{row['variable'].replace('|OPEX Fixed Relative', '|CAPEX')}'"
                     ).pipe(
                         lambda df: df['value'].iloc[0] if not df.empty else np.nan,
                     )),
                     axis=1,
                 )
-                rows.loc[cond, 'reported_variable'] = rows.loc[cond, 'reported_variable'] \
-                    .str.replace('|FOPEX Relative', '|FOPEX')
+                rows.loc[cond, 'variable'] = rows.loc[cond, 'variable'] \
+                    .str.replace('|OPEX Fixed Relative', '|OPEX Fixed')
                 rows.loc[cond, 'reference_variable'] = rows.loc[cond].apply(
                     lambda row: rows.query(
-                        f"reported_variable=='{row['reported_variable'].replace('|FOPEX', '|CAPEX')}'"
+                        f"variable=='{row['variable'].replace('|OPEX Fixed', '|CAPEX')}'"
                     ).pipe(
                         lambda df: df['reference_variable'].iloc[0] if not df.empty else np.nan,
                     ),
@@ -437,66 +432,76 @@ class NSHADataSet(TEBase):
                 )
                 if (cond & rows['value'].isnull()).any():
                     warnings.warn(HarmoniseMappingFailure(
-                        selection.loc[ids].loc[cond & rows['value'].isnull()],
-                        'No CAPEX value matching a FOPEX Relative value found.',
+                        expanded.loc[ids].loc[cond & rows['value'].isnull()],
+                        'No CAPEX value matching a OPEX Fixed Relative value found.',
                     ))
 
-            # 3. convert FOPEX Specific to FOPEX
-            cond = rows['reported_variable'].str.endswith('|FOPEX Specific')
+            # 3. convert OPEX Fixed Specific to OPEX Fixed
+            cond = rows['variable'].str.endswith('|OPEX Fixed Specific')
             if cond.any():
                 rows.loc[cond, 'value'] *= rows.loc[cond].apply(
                     lambda row: unit_convert(
-                        var_units[row['reported_variable']] + '/a',
-                        var_units[row['reported_variable'].replace('|FOPEX Specific', '|FOPEX')]
+                        var_units[row['variable']] + '/a',
+                        var_units[row['variable'].replace('|OPEX Fixed Specific', '|OPEX Fixed')]
                     ) / unit_convert(
                         var_units[row['reference_variable']] + '/a',
                         var_units[re.sub(r'(Input|Output)', r'\1 Capacity', row['reference_variable'])],
                         self._var_specs[row['reference_variable']]['flow_id'],
                     ) * (rows.query(
-                        f"reported_variable=='{row['reported_variable'].replace('|FOPEX Specific', '|OCF')}'"
+                        f"variable=='{row['variable'].replace('|OPEX Fixed Specific', '|OCF')}'"
                     ).pipe(
                         lambda df: df['value'].iloc[0] if not df.empty else np.nan,
                     )),
                     axis=1,
                 )
-                rows.loc[cond, 'reported_variable'] = rows.loc[cond, 'reported_variable'] \
-                    .str.replace('|FOPEX Specific', '|FOPEX')
+                rows.loc[cond, 'variable'] = rows.loc[cond, 'variable'] \
+                    .str.replace('|OPEX Fixed Specific', '|OPEX Fixed')
                 rows.loc[cond, 'reference_variable'] = rows.loc[cond, 'reference_variable'].apply(
                     lambda cell: re.sub(r'(Input|Output)', r'\1 Capacity', cell),
                 )
                 if (cond & rows['value'].isnull()).any():
                     warnings.warn(HarmoniseMappingFailure(
-                        selection.loc[ids].loc[cond & rows['value'].isnull()],
-                        'No OCF value matching a FOPEX Specific value found.',
+                        expanded.loc[ids].loc[cond & rows['value'].isnull()],
+                        'No OCF value matching a OPEX Fixed Specific value found.',
                     ))
 
             # 4. convert efficiencies (Output over Input) to demands (Input over Output)
-            cond = (rows['reported_variable'].str.contains(r'\|Output(?: Capacity)?\|') &
-                    rows['reference_variable'].str.contains(r'\|Input(?: Capacity)?\|'))
+            cond = (rows['variable'].str.contains(r'\|Output(?: Capacity)?\|') &
+                    (rows['reference_variable'].str.contains(r'\|Input(?: Capacity)?\|')
+                    if rows['reference_variable'].notnull().any() else False))
             if cond.any():
                 rows.loc[cond, 'value'] = 1.0 / rows.loc[cond, 'value']
-                rows.loc[cond, 'reported_variable_new'] = rows.loc[cond, 'reference_variable']
-                rows.loc[cond, 'reference_variable'] = rows.loc[cond, 'reported_variable']
-                rows.loc[cond, 'reported_variable'] = rows.loc[cond, 'reported_variable_new']
-                rows.drop(columns=['reported_variable_new'], inplace=True)
+                rows.loc[cond, 'variable_new'] = rows.loc[cond, 'reference_variable']
+                rows.loc[cond, 'reference_variable'] = rows.loc[cond, 'variable']
+                rows.loc[cond, 'variable'] = rows.loc[cond, 'variable_new']
+                rows.drop(columns=['variable_new'], inplace=True)
 
             # 5. convert all references to primary output
-            cond = ((rows['reference_variable'].str.contains(r'\|Output(?: Capacity)?\|') |
-                    rows['reference_variable'].str.contains(r'\|Input(?: Capacity)?\|')) &
-                    rows['reported_variable'].map(lambda var: 'default_reference' in self._var_specs[var]) &
-                    (rows['reported_variable'].map(
+            cond = (((rows['reference_variable'].str.contains(r'\|Output(?: Capacity)?\|') |
+                    rows['reference_variable'].str.contains(r'\|Input(?: Capacity)?\|'))
+                    if rows['reference_variable'].notnull().any() else False) &
+                    rows['variable'].map(lambda var: 'default_reference' in self._var_specs[var]) &
+                    (rows['variable'].map(
                         lambda var: self._var_specs[var]['default_reference']
                         if 'default_reference' in self._var_specs[var] else np.nan
                     ) != rows['reference_variable']))
             if cond.any():
                 regex_find = r'\|(Input|Output)(?: Capacity)?\|'
                 regex_repl = r'|\1|'
-                rows.loc[cond, 'reference_variable_new'] = rows.loc[cond, 'reported_variable'].map(
+                rows.loc[cond, 'reference_variable_new'] = rows.loc[cond, 'variable'].map(
                     lambda var: self._var_specs[var]['default_reference'],
                 )
                 rows.loc[cond, 'value'] *= rows.loc[cond].apply(
-                    lambda row: rows.query(
-                        f"reported_variable=='{re.sub(regex_find, regex_repl, row['reference_variable'])}' & "
+                    lambda row: unit_convert(
+                        ('a*' if 'Capacity' in row['reference_variable'] else '') + var_units[row['reference_variable_new']],
+                        var_units[re.sub(regex_find, regex_repl, row['reference_variable_new'])],
+                        row['reference_variable_new'].split('|')[-1]
+                    ) / unit_convert(
+                        ('a*' if 'Capacity' in row['reference_variable'] else '') + var_units[row['reference_variable']],
+                        var_units[re.sub(regex_find, regex_repl, row['reference_variable'])],
+                        row['reference_variable'].split('|')[-1]
+                    ) * rows.query(
+                        f"variable=='{re.sub(regex_find, regex_repl, row['reference_variable'])}' & "
                         f"reference_variable=='{re.sub(regex_find, regex_repl, row['reference_variable_new'])}'"
                     ).pipe(
                         lambda df: df['value'].iloc[0] if not df.empty else np.nan,
@@ -507,7 +512,7 @@ class NSHADataSet(TEBase):
                 rows.drop(columns=['reference_variable_new'], inplace=True)
                 if (cond & rows['value'].isnull()).any():
                     warnings.warn(HarmoniseMappingFailure(
-                        selection.loc[ids].loc[cond & rows['value'].isnull()],
+                        expanded.loc[ids].loc[cond & rows['value'].isnull()],
                         'No appropriate mapping found to convert row reference to primary output.',
                     ))
 
@@ -518,18 +523,19 @@ class NSHADataSet(TEBase):
             ret.append(rows)
 
         # convert return list to dataframe and return
-        return pd.concat(ret).reset_index(drop=True)
+        return pd.concat(ret).reset_index(drop=True) if ret else expanded.iloc[[]]
 
     # select data
     def aggregate(self,
                   override: Optional[dict[str, str]] = None,
                   drop_singular_fields: bool = True,
+                  extrapolate_period: bool = True,
                   agg: Optional[str | list[str] | tuple[str]] = None,
                   masks: Optional[list[Mask]] = None,
                   masks_database: bool = True,
                   **field_vals_select) -> pd.DataFrame:
         # get selection
-        harmonised, var_units_final = self._harmonise(override, drop_singular_fields, **field_vals_select)
+        selected, var_units = self._select(override, extrapolate_period, drop_singular_fields, **field_vals_select)
 
         # compile masks from databases and function argument into one list
         if masks is not None and any(not isinstance(m, Mask) for m in masks):
@@ -538,8 +544,8 @@ class NSHADataSet(TEBase):
 
         # aggregation
         component_fields = [
-            field.id for field in self._fields
-            if field.type == 'components'
+            col_id for col_id, field in self._fields.items()
+            if field.field_type == 'component'
         ]
         if agg is None:
             agg = component_fields + ['source']
@@ -551,15 +557,15 @@ class NSHADataSet(TEBase):
             for a in agg:
                 if not isinstance(a, str):
                     raise Exception(f"Field ID in argument 'agg' must be a string but found: {a}")
-                if not any(a == field.id for field in self._fields):
+                if not any(a == col_id for col_id in self._fields):
                     raise Exception(f"Field ID in argument 'agg' is not a valid field: {a}")
 
         # aggregate over component fields
         group_cols = [
-            c for c in harmonised.columns
+            c for c in selected.columns
             if not (c == 'value' or (c in agg and c in component_fields))
         ]
-        aggregated = harmonised \
+        aggregated = selected \
             .groupby(group_cols, dropna=False) \
             .agg({'value': 'sum'}) \
             .reset_index()
@@ -587,23 +593,35 @@ class NSHADataSet(TEBase):
                 out = rows \
                     .groupby(group_cols, dropna=False) \
                     .apply(lambda cols: pd.Series({
-                    'value': np.average(cols['value'], weights=cols['weight']),
-                }))
+                        'value': np.average(cols['value'], weights=cols['weight']),
+                    }))
 
                 # add to return list
                 ret.append(out)
 
-        # convert return list to dataframe and reset index
-        aggregated = pd.concat(ret).reset_index()
+        # convert return list to dataframe, reset index, and clean up
+        return self._cleanup(pd.concat(ret).reset_index(), var_units)
+
+    # clean up: sort columns and rows, round values, insert units
+    def _cleanup(self, df: pd.DataFrame, var_units: dict[str, str]) -> pd.DataFrame:
+        # sort columns and rows
+        cols_sorted = (
+            [col_id for col_id, field in self._fields.items() if isinstance(field, CustomFieldDefinition)] +
+            ['source', 'variable', 'region', 'period', 'value']
+        )
+        cols_sorted = [c for c in cols_sorted if c in df.columns]
+        df = df[cols_sorted]
+        df = df \
+            .sort_values(by=[c for c in cols_sorted if c in df and c != 'value']) \
+            .reset_index(drop=True)
 
         # round values
-        aggregated['value'] = aggregated['value'].apply(
+        df['value'] = df['value'].apply(
             lambda cell: cell if pd.isnull(cell) else round(cell, sigfigs=4, warn=False)
         )
 
-        # add units
-        aggregated.insert(aggregated.columns.tolist().index('value'), 'unit', np.nan)
-        aggregated['unit'] = aggregated['variable'].map(var_units_final)
+        # insert column containing units
+        df.insert(df.columns.tolist().index('value'), 'unit', np.nan)
+        df['unit'] = df['variable'].map(var_units)
 
-        # return dataframe
-        return aggregated
+        return df

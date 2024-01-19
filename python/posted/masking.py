@@ -3,8 +3,12 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 
+from posted.path import databases
+from posted.read import read_yml_file
+
 
 MaskCondition = str | dict | Callable
+
 
 def apply_cond(df: pd.DataFrame, cond: MaskCondition):
     if isinstance(cond, str):
@@ -15,29 +19,32 @@ def apply_cond(df: pd.DataFrame, cond: MaskCondition):
     elif isinstance(cond, Callable):
         return df.apply(cond)
 
+
 class Mask:
     def __init__(self,
-                 when: MaskCondition | list[MaskCondition] = None,
+                 where: MaskCondition | list[MaskCondition] = None,
                  use: MaskCondition | list[MaskCondition] = None,
                  weight: None | float | list[float] = None,
-                 other: float = np.nan):
+                 other: float = np.nan,
+                 comment: str = ''):
         # set fields from constructor arguments
-        self._when: list[MaskCondition] = [] if when is None else when if isinstance(when, list) else [when]
+        self._where: list[MaskCondition] = [] if where is None else where if isinstance(where, list) else [where]
         self._use: list[MaskCondition] = [] if use is None else use if isinstance(use, list) else [use]
         self._weight: list[float] = weight if isinstance(weight, list) or weight is None else [weight]
-        self._other = other
+        self._other: float = other
+        self._comment: str = comment
 
         # perform consistency checks on fields
-        if use and weight is not None and len(use) != len(weight):
+        if self._use and self._weight and len(self._use) != len(self._weight):
             raise Exception(f"Must provide same length of 'use' conditions as 'weight' values.")
 
         # set default weight to 1 if not set otherwise
-        if self._weight is None:
+        if not self._weight:
             self._weight = len(self._use) * [1.0]
 
     # check if a mask matches a dataframe (all 'when' conditions match across all rows)
     def matches(self, df: pd.DataFrame):
-        for w in self._when:
+        for w in self._where:
             if not apply_cond(df, w).all():
                 return False
         return True
@@ -52,3 +59,20 @@ class Mask:
 
         # return
         return ret
+
+
+def read_masks(variable: str):
+    ret: list[Mask] = []
+
+    for database_id in databases:
+        fpath = databases[database_id] / 'masks' / ('/'.join(variable.split('|')) + '.yml')
+        if fpath.exists():
+            if not fpath.is_file():
+                raise Exception(f"Expected YAML file, but not a file: {fpath}")
+
+            ret += [
+                Mask(**mask_specs)
+                for mask_specs in read_yml_file(fpath)
+            ]
+
+    return ret

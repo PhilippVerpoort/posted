@@ -1,6 +1,7 @@
 subtech:
   name: Subtechnology
-  type: cases
+  description: Distinguishing between above-ground compressed and under-ground salt-cavern storage.
+  type: case
   coded: True
   codes:
     AGCS: Above-ground compressed storage

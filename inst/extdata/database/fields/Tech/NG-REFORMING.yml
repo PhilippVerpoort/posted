@@ -1,11 +1,13 @@
 subtech:
   name: Subtechnology
-  type: cases
+  description: Subtechnology
+  type: case
   coded: True
   codes:
     SMR: Steam-methane reforming
     ATR: Auto-thermal reforming
 capture_rate:
-  name: CO2 capture rate
-  type: cases
+  name: Capture Rate
+  description: Share of all CO2 captured
+  type: case
   coded: False

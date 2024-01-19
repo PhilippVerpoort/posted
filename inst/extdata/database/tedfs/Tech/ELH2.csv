@@ -1,4 +1,4 @@
-subtech,size,reported_variable,reference_variable,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+subtech,size,variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 AEL,100 MW,CAPEX,Input Capacity|elec,2020,400,0,EUR_2020,1,kW,,Vartiainen22,"Page 4, Figure 4"
 AEL,100 MW,CAPEX,Input Capacity|elec,2030,240,50,EUR_2020,1,kW,,Vartiainen22,"Page 4, Figure 4"
 AEL,100 MW,CAPEX,Input Capacity|elec,2040,140,75,EUR_2020,1,kW,,Vartiainen22,"Page 4, Figure 4"
@@ -39,22 +39,22 @@ SOEC,1 MW,CAPEX,Output Capacity|h2,2020,8047,2163,EUR_2020,1,kg/d,,DEARF23,"Shee
 SOEC,1 MW,CAPEX,Output Capacity|h2,2030,3279,,EUR_2020,1,kg/d,,DEARF23,"Sheet 86 SOEC 1MW, Row 23"
 SOEC,1 MW,CAPEX,Output Capacity|h2,2040,2273,,EUR_2020,1,kg/d,,DEARF23,"Sheet 86 SOEC 1MW, Row 23"
 SOEC,1 MW,CAPEX,Output Capacity|h2,2050,1303,368,EUR_2020,1,kg/d,,DEARF23,"Sheet 86 SOEC 1MW, Row 23"
-AEL,100 MW,FOPEX,Input Capacity|elec,2020,6,,EUR_2020/a,1,kW,1.5% of CAPEX; reported in units of electric capacity,Vartiainen22,Page 4
-AEL,100 MW,FOPEX,Input Capacity|elec,2030,2.1,,EUR_2020/a,1,kW,10% LR decrease,Vartiainen22,Page 4
-AEL,100 MW,FOPEX,Input Capacity|elec,2040,0.73,,EUR_2020/a,1,kW,10% LR decrease,Vartiainen22,Page 4
-AEL,100 MW,FOPEX,Input Capacity|elec,2050,0.25,,EUR_2020/a,1,kW,10% LR decrease,Vartiainen22,Page 4
-AEL,*,FOPEX,Input Capacity|elec,2020,20,5,EUR_2020/a,1,kW,electrolyser annual maintenance costs,Holst21,"Section 3.4, Page 57"
-PEM,*,FOPEX,Input Capacity|elec,2020,15,5,EUR_2020/a,1,kW,electrolyser annual maintenance costs,Holst21,"Section 3.4, Page 57"
-AEL,*,FOPEX,Input Capacity|elec,2020,17,3.5,USD_2020/a,1,kW,,Yates20,"Table 3, Page 10"
-AEL,1 MW,FOPEX Relative,,*,5,,percent,,,,DEARF23,"Sheet 86 AEC 1MW, Row 27"
-AEL,100 MW,FOPEX Relative,,*,2,,percent,,,,DEARF23,"Sheet 86 AEC 100MW, Row 27"
-PEM,1 MW,FOPEX Relative,,*,7,,percent,,,,DEARF23,"Sheet 86 PEM 1MW, Row 27"
-PEM,100 MW,FOPEX Relative,,*,4,,percent,,,,DEARF23,"Sheet 86 PEM 100MW, Row 27"
-SOEC,1 MW,FOPEX Relative,,*,12,,percent,,,,DEARF23,"Sheet 86 SOEC 1MW, Row 26"
-AEL,100 MW,Output|h2,Input|elec,2020,0.67,,kWh;LHV,1,kWh,1.5% of CAPEX; reported in units of electric capacity; 67% assumes the LHV,Vartiainen22,Page 4
-AEL,100 MW,Output|h2,Input|elec,2030,0.7,,kWh;LHV,1,kWh,10% LR decrease,Vartiainen22,Page 4
-AEL,100 MW,Output|h2,Input|elec,2040,0.73,,kWh;LHV,1,kWh,10% LR decrease,Vartiainen22,Page 4
-AEL,100 MW,Output|h2,Input|elec,2050,0.76,,kWh;LHV,1,kWh,10% LR decrease,Vartiainen22,Page 4
+AEL,100 MW,OPEX Fixed,Input Capacity|elec,2020,6,,EUR_2020/a,1,kW,1.5% of CAPEX; reported in units of electric capacity,Vartiainen22,Page 4
+AEL,100 MW,OPEX Fixed,Input Capacity|elec,2030,2.1,,EUR_2020/a,1,kW,10% LR decrease,Vartiainen22,Page 4
+AEL,100 MW,OPEX Fixed,Input Capacity|elec,2040,0.73,,EUR_2020/a,1,kW,10% LR decrease,Vartiainen22,Page 4
+AEL,100 MW,OPEX Fixed,Input Capacity|elec,2050,0.25,,EUR_2020/a,1,kW,10% LR decrease,Vartiainen22,Page 4
+AEL,*,OPEX Fixed,Input Capacity|elec,2020,20,5,EUR_2020/a,1,kW,electrolyser annual maintenance costs,Holst21,"Section 3.4, Page 57"
+PEM,*,OPEX Fixed,Input Capacity|elec,2020,15,5,EUR_2020/a,1,kW,electrolyser annual maintenance costs,Holst21,"Section 3.4, Page 57"
+AEL,*,OPEX Fixed,Input Capacity|elec,2020,17,3.5,USD_2020/a,1,kW,,Yates20,"Table 3, Page 10"
+AEL,1 MW,OPEX Fixed Relative,,*,5,,percent,,,,DEARF23,"Sheet 86 AEC 1MW, Row 27"
+AEL,100 MW,OPEX Fixed Relative,,*,2,,percent,,,,DEARF23,"Sheet 86 AEC 100MW, Row 27"
+PEM,1 MW,OPEX Fixed Relative,,*,7,,percent,,,,DEARF23,"Sheet 86 PEM 1MW, Row 27"
+PEM,100 MW,OPEX Fixed Relative,,*,4,,percent,,,,DEARF23,"Sheet 86 PEM 100MW, Row 27"
+SOEC,1 MW,OPEX Fixed Relative,,*,12,,percent,,,,DEARF23,"Sheet 86 SOEC 1MW, Row 26"
+AEL,100 MW,Output|h2,Input|elec,2020,67,,pct kWh;LHV,100,pct kWh,1.5% of CAPEX; reported in units of electric capacity; 67% assumes the LHV,Vartiainen22,Page 4
+AEL,100 MW,Output|h2,Input|elec,2030,70,,pct kWh;LHV,100,pct kWh,10% LR decrease,Vartiainen22,Page 4
+AEL,100 MW,Output|h2,Input|elec,2040,73,,pct kWh;LHV,100,pct kWh,10% LR decrease,Vartiainen22,Page 4
+AEL,100 MW,Output|h2,Input|elec,2050,76,,pct kWh;LHV,100,pct kWh,10% LR decrease,Vartiainen22,Page 4
 AEL,*,Output|h2,Input|elec,2020,20,1,kg,1,MWh,,DEARF23,"Sheet 86 AEC 1MW, Row 17"
 AEL,*,Output|h2,Input|elec,2030,20.4,,kg,1,MWh,,DEARF23,"Sheet 86 AEC 1MW, Row 17"
 AEL,*,Output|h2,Input|elec,2040,21.5,,kg,1,MWh,,DEARF23,"Sheet 86 AEC 1MW, Row 17"
@@ -90,7 +90,7 @@ AEL,*,Input|elec,Output|h2,2020,54,4,kWh,1,kg,,Yates20,"Table 3, Page 10"
 PEM,*,Input|water,Output|h2,2020,10,,kg,1,kg,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani21,"Table 2, Page 3"
 *,*,Input|water,Output|h2,2021,9,,kg,1,kg,,IEA-GHR21,
 AEL,*,Input|water,Output|h2,2020,10,1,L;norm,1,kg,,Yates20,"Table 3, Page 10"
-*,1 MW,Input Capacity|elec,,*,1,,MW,,,,*,
-*,5 MW,Input Capacity|elec,,*,5,,MW,,,,*,
-*,100 MW,Input Capacity|elec,,*,100,,MW,,,,*,
-*,130000 Nm³/h,Output Capacity|h2,,*,130000,,m³/h;norm,,,,*,
+*,1 MW,Total Input Capacity|elec,,*,1,,MW,,,,*,
+*,5 MW,Total Input Capacity|elec,,*,5,,MW,,,,*,
+*,100 MW,Total Input Capacity|elec,,*,100,,MW,,,,*,
+*,130000 Nm³/h,Total Output Capacity|h2,,*,130000,,m³/h;norm,,,,*,

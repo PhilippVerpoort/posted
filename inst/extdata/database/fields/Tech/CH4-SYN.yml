@@ -1,5 +1,6 @@
 subtech:
   name: Subtechnology
+  description: Subtechnology
   type: cases
   coded: True
   codes:

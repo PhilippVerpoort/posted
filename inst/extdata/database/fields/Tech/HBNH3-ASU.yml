@@ -1,4 +1,5 @@
 component:
   name: Component
-  type: components
+  description: Component
+  type: component
   coded: False

@@ -1,32 +1,48 @@
 Tech Variables w/o Flows:
   CAPEX:
-    description: CAPital EXpenditure (referring to reference capacity)
+    description: CAPital EXpenditure (in reference to capacity specified by reference variable)
     dimension: '[currency]'
     default_unit: '{default currency}'
     default_reference: '{parent variable}|Output Capacity|{primary output}'
   CAPEX Annualised:
-    description: Annulaised CAPital EXpenditure (referring product)
-    dimension: '[currency]'
-    default_unit: '{default currency}'
-  FOPEX:
-    description: Fixed OPerational EXpenditure (referring to reference capacity)
-    dimension: '[currency]/[time]'
-    default_unit: '{default currency}/a'
-    default_reference: '{parent variable}|Output Capacity|{primary output}'
-  FOPEX Specific:
-    description: Fixed OPerational EXpenditure (specific per output)
+    description: Annualised CAPital EXpenditure (in reference to input or output specified by reference variable)
     dimension: '[currency]'
     default_unit: '{default currency}'
     default_reference: '{parent variable}|Output|{primary output}'
-  FOPEX Relative:
-    description: Fixed OPerational EXpenditure (relative to CAPEX)
+  Capital Cost:
+    description: Capital cost of the technology per primary output capacity (not annualised)
+    mapped: True
+    variable: '{parent variable}|CAPEX'
+    reference_variable: '{parent variable}|Output Capacity|{primary output}'
+  OPEX Fixed:
+    description: OPerational EXpenditure fixed (in reference to capacity specified by reference variable)
+    dimension: '[currency]/[time]'
+    default_unit: '{default currency}/a'
+    default_reference: '{parent variable}|Output Capacity|{primary output}'
+  OPEX Fixed Specific:
+    description: OPerational EXpenditure fixed (in reference to input or output specified by reference variable)
+    dimension: '[currency]'
+    default_unit: '{default currency}'
+    default_reference: '{parent variable}|Output|{primary output}'
+  OPEX Fixed Relative:
+    description: Annual Fixed OPerational EXpenditure as relative share of CAPEX
     dimension: 'dimensionless'
     default_unit: 'pct'
-  VOPEX:
+  OM Cost Fixed:
+    description: Fixed operation and maintenance cost of the technology per primary output capacity
+    mapped: True
+    variable: '{parent variable}|OPEX Fixed'
+    reference_variable: '{parent variable}|Output Capacity|{primary output}'
+  OPEX Variable:
     description: Variable OPerational EXpenditure (non-energy, non-feedstock)
     dimension: '[currency]'
     default_unit: '{default currency}'
     default_reference: '{parent variable}|Output|{primary output}'
+  OM Cost Variable:
+    description: Variable operation and maintenance cost of the technology (non-energy, non-feedstock) per primary output
+    mapped: True
+    variable: '{parent variable}|OPEX Variable'
+    reference_variable: '{parent variable}|Output|{primary output}'
   Lifetime:
     description: Expected time a facility can be in production for
     dimension: '[time]'
@@ -39,11 +55,16 @@ Tech Variables w/o Flows:
     description: Full-load hours
     dimension: '[time]'
     default_unit: 'h'
-  Total Cost:
-    description: Total cost of production
+  Total Production Expenditure:
+    description: Total expenditure for production (in reference to input or output specified by reference variable)
     dimension: '[currency]'
     default_unit: '{default currency}'
     default_reference: '{parent variable}|Output|{primary output}'
+  Total Cost:
+    description: Total cost of production per primary output
+    mapped: True
+    variable: '{parent variable}|Total Production Expenditure'
+    reference_variable: '{parent variable}|Output|{primary output}'
   Output|All Products Mass:
     description: Mass of all outputs produced
     dimension: '[mass]'
@@ -67,6 +88,15 @@ Tech Variables w/ Flows:
     description: Capacity per input (energy or feedstock)
     dimension: '[flow]/[time]'
     default_unit: '{default flow unit raw}/a{default flow unit variant}'
+  Total Input Capacity:
+    description: Total capacity per input (energy or feedstock) of described plant
+    dimension: '[flow]/[time]'
+    default_unit: '{default flow unit raw}/a{default flow unit variant}'
+  Demand:
+    description: Specific demand (energy or feedstock) per primary output
+    mapped: True
+    variable: '{parent variable}|Input|{Flow IDs}'
+    reference_variable: '{parent variable}|Output|{primary output}'
   Output:
     description: Output (energy or feedstock) produced
     dimension: '[flow]'
@@ -76,6 +106,15 @@ Tech Variables w/ Flows:
     description: Capacity per output (energy or feedstock)
     dimension: '[flow]/[time]'
     default_unit: '{default flow unit raw}/a{default flow unit variant}'
+  Total Output Capacity:
+    description: Total capacity per output (energy or feedstock) of described plant
+    dimension: '[flow]/[time]'
+    default_unit: '{default flow unit raw}/a{default flow unit variant}'
+  Coproduction:
+    description: Specific demand (energy or feedstock) per primary output
+    mapped: True
+    variable: '{parent variable}|Output|{Flow IDs}'
+    reference_variable: '{parent variable}|Output|{primary output}'
   Storage Capacity:
     description: Capacity per storage volume (energy or feedstock)
     dimension: '[flow]'

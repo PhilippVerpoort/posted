@@ -1,4 +1,4 @@
-reported_variable,reference_variable,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAPEX,Output Capacity|steelslab,,195,,MUSD,4.3,Mt/a,,IEA-GHG13,Tables 1 and 5
 Input|elec,Output|steelslab,,10.3,,kWh,1,t,,IEA-GHG13,Table D-13
 Input|heat,Output|steelslab,,22,,MJ,1,t,Assuming 20MJ/Nm³ for caloric heating value of COG.,IEA-GHG13,Table D-13

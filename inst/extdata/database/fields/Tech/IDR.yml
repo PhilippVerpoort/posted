@@ -1,11 +1,13 @@
 mode:
   name: Operation mode
-  type: cases
+  description: Whether direct reduction shaft is primarily operated with hydrogen or natural gas
+  type: case
   coded: True
   codes:
     h2: Operated with hydrogen
     ng: Operated with natural gas
 component:
   name: Component
-  type: components
+  description: Component
+  type: component
   coded: False

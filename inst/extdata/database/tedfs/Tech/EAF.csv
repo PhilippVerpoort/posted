@@ -1,13 +1,13 @@
-mode,reheating,reported_variable,reference_variable,period,component,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+mode,reheating,variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 *,*,CAPEX,Output Capacity|steelliq,,,184,,EUR,1,t/a,,Wortler13,
 *,*,CAPEX,Output Capacity|steelliq,,,184,,EUR,1,t/a,"This reference assumes the value provided by Wörtler et al., 2013.",Vogl18,
 *,*,CAPEX,Output Capacity|steelliq,,,479.89,,MEUR,2,Mt/a,,Jacobasch21,"Page 9, Table 6"
 *,*,CAPEX,Output Capacity|steelliq,,,331.2,,EUR,1,t/a,"This reference assumes the value provided by Wörtler et al., 2013 but with an additional integration factor of 1.8.","Agora Energiewende, 2022",
-*,*,FOPEX Relative,,,,3,,percent,,,,"Agora Energiewende, 2022",
-*,*,FOPEX Relative,,,Operation and maintenance incl. refractory lining w/o labour,3,,percent,,,,Vogl18,Section 2.1
-*,*,FOPEX Specific,,,Labour,53.2,,EUR,1,t,,Vogl18,Section 2.1
-*,*,FOPEX Specific,,,,3,,EUR,1,t,Labour cost,ECORYS08,Table 3.1
-*,*,VOPEX,Output|steelliq,,,9,,EUR,1,t,Labour cost,ECORYS08,Table 3.1
+*,*,OPEX Fixed Relative,,,,3,,percent,,,,"Agora Energiewende, 2022",
+*,*,OPEX Fixed Relative,,,Operation and maintenance incl. refractory lining w/o labour,3,,percent,,,,Vogl18,Section 2.1
+*,*,OPEX Fixed Specific,,,Labour,53.2,,EUR,1,t,,Vogl18,Section 2.1
+*,*,OPEX Fixed Specific,,,,3,,EUR,1,t,Labour cost,ECORYS08,Table 3.1
+*,*,OPEX Variable,Output|steelliq,,,9,,EUR,1,t,Labour cost,ECORYS08,Table 3.1
 Primary,w/o reheating,Input|elec,Output|steelliq,,,0.594,,MWh,1,t,Without reheating of DRI,"Agora Energiewende, 2022",
 Primary,w/ reheating,Input|elec,Output|steelliq,,,0.753,,MWh,1,t,Reheating of cold DRI,"Agora Energiewende, 2022",
 Primary,w/o reheating,Input|elec,Output|steelliq,,,0.753,,MWh,1,t,Without reheating of DRI,Vogl18,Section 3.1

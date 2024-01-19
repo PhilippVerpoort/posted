@@ -1,13 +1,13 @@
-reported_variable,reference_variable,period,reported_value,reported_unc,reported_unit,reference_value,reference_unit,comment,source,source_detail
+variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAPEX,Output Capacity|heat,2020,660,,EUR_2016,1,kW,,Fasihi19,Table 8
 CAPEX,Output Capacity|heat,2030,590,,EUR_2016,1,kW,,Fasihi19,Table 8
 CAPEX,Output Capacity|heat,2040,554,,EUR_2016,1,kW,,Fasihi19,Table 8
 CAPEX,Output Capacity|heat,2050,530,,EUR_2016,1,kW,,Fasihi19,Table 8
-FOPEX Relative,,*,2,,percent,,,,Fasihi19,Table 8
-VOPEX,Output|heat,2020,0.0018,,EUR_2016,1,kWh,,Fasihi19,Table 8
-VOPEX,Output|heat,2030,0.0017,,EUR_2016,1,kWh,,Fasihi19,Table 8
-VOPEX,Output|heat,2040,0.00163,,EUR_2016,1,kWh,,Fasihi19,Table 8
-VOPEX,Output|heat,2050,0.0016,,EUR_2016,1,kWh,,Fasihi19,Table 8
+OPEX Fixed Relative,,*,2,,percent,,,,Fasihi19,Table 8
+OPEX Variable,Output|heat,2020,0.0018,,EUR_2016,1,kWh,,Fasihi19,Table 8
+OPEX Variable,Output|heat,2030,0.0017,,EUR_2016,1,kWh,,Fasihi19,Table 8
+OPEX Variable,Output|heat,2040,0.00163,,EUR_2016,1,kWh,,Fasihi19,Table 8
+OPEX Variable,Output|heat,2050,0.0016,,EUR_2016,1,kWh,,Fasihi19,Table 8
 Output|heat,Input|elec,2020,3,,kWh,1,kWh,,Fasihi19,Table 8
 Output|heat,Input|elec,2030,3.26,,MWh,1,kWh,,Fasihi19,Table 8
 Output|heat,Input|elec,2040,3.41,,MWh,1,kWh,,Fasihi19,Table 8

@@ -1,6 +1,7 @@
 subtech:
   name: Subtechnology
-  type: cases
+  description: Subtechnology
+  type: case
   coded: True
   codes:
     BF-BOF-POST: BF-BOF post-combustion capture
