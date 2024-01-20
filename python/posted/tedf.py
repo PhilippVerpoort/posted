@@ -21,7 +21,6 @@ def read_fields(variable: str):
         if fpath.exists():
             if not fpath.is_file():
                 raise Exception(f"Expected YAML file, but not a file: {fpath}")
-
             ret += [
                 CustomFieldDefinition(field_id, **field_specs)
                 for field_id, field_specs in read_yml_file(fpath).items()
@@ -116,14 +115,18 @@ class TEDF(TEBase):
 
         # create data format and dtypes from base format
         data_format_cols = list(base_format.keys())
+       
         data_format_cols = [c for c in self._df.columns if c not in data_format_cols] + data_format_cols
         data_dtypes = copy.deepcopy(base_dtypes)
+    
         for c in data_format_cols:
             if c not in data_dtypes:
                 data_dtypes[c] = 'category'
-
+        print(data_format_cols)
         # insert missing columns and reorder via reindexing and update dtypes
         df_new = self._df.reindex(columns=data_format_cols)
+        print(self._df.columns)
+        print(df_new.columns)
         for col, dtype in data_dtypes.items():
             if col in self._df:
                 continue
@@ -311,3 +314,8 @@ def is_float(string: str) -> bool:
         return True
     except ValueError:
         return False
+
+
+tedf = TEDF("tech|ELH2")
+tedf.load()
+print(tedf._df)
