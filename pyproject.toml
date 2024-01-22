@@ -11,7 +11,6 @@ readme = "README.md"
 homepage = "https://github.com/PhilippVerpoort/posted/"
 packages = [
     {include = "posted", from = "python"},
-    {include = "posted_gui", from = "python"},
 ]
 include = ["python/posted/data/**/*"]
 
@@ -44,4 +43,3 @@ script = "build_attach_data.py"
 
 [tool.poetry.scripts]
 posted = 'posted.cmdline:main'
-posted-gui = 'posted_gui.cmdline:main'
