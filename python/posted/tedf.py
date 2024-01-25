@@ -10,6 +10,7 @@ from posted.path import databases
 from posted.units import unit_allowed
 
 
+
 class TEDFInconsistencyException(Exception):
     """Exception raised for inconsistencies in TEDFs.
 
@@ -135,6 +136,7 @@ class TEDF(TEBase):
         df_new = self._df.reindex(columns=list(self._columns.keys()))
         for col_id, col in self._columns.items():
             if col_id in self._df:
+
                 continue
             df_new[col_id] = df_new[col_id].astype(col.dtype)
             df_new[col_id] = col.default
@@ -214,5 +216,4 @@ class TEDF(TEBase):
             allowed, message = unit_allowed(unit=unit, flow_id=flow_id, dimension=dimension)
             if not allowed:
                 ret.append(new_inconsistency(message=message, col_id=col_id, **ikwargs))
-
         return ret
