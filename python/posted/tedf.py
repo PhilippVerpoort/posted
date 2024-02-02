@@ -94,7 +94,6 @@ class TEDF(TEBase):
         )
         self._fields, comments = read_fields(self._parent_variable)
         self._columns = self._fields | base_columns | comments
-
     @property
     def file_path(self) -> Path:
         return self._file_path
@@ -114,6 +113,7 @@ class TEDF(TEBase):
 
     # read TEDF from CSV file
     def read(self):
+        print(self._file_path)
         if self._file_path is None:
             raise Exception('Cannot read from file, as this TEDF object has been created from a dataframe.')
 
@@ -124,7 +124,8 @@ class TEDF(TEBase):
             quotechar='"',
             encoding='utf-8',
         )
-
+        print(self._columns)
+        print(self._df.columns)
         # check column IDs match base columns and fields
         if not all(c in self._columns for c in self._df.columns):
             raise Exception(f"Column IDs used in CSV file do not match columns definition: {self._df.columns.tolist()}")
@@ -134,10 +135,13 @@ class TEDF(TEBase):
 
         # insert missing columns and reorder via reindexing, then update dtypes
         df_new = self._df.reindex(columns=list(self._columns.keys()))
+        print("df_new")
+        print(df_new)
         for col_id, col in self._columns.items():
             if col_id in self._df:
-
+                print(col_id)
                 continue
+            print("add new column")
             df_new[col_id] = df_new[col_id].astype(col.dtype)
             df_new[col_id] = col.default
         self._df = df_new

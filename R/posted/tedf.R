@@ -1,36 +1,12 @@
 source("R/posted/config.R")
-source("R/posted/fields.R")
-# source("R/posted/masking.R")
+source("R/posted/columns.R")
+
 source("R/posted/path.R")
-source("R/posted/read.R")
+
 # source("R/posted/units.R")
 
 
-read_fields <- function(variable) {
-  ret <- list()
-  
-  for (database_id in names(databases)) {
-    print(strsplit(variable, split="\\|"))
-    fpath <- file.path(databases[[database_id]], 'fields', paste0(paste(unlist(strsplit(variable, split= "\\|")), collapse = '/'), '.yml'))
-    if (file.exists(fpath)) {
-      if (!file_test("-f", fpath)) {
-        stop(paste("Expected YAML file, but not a file:", fpath))
-      }
 
-
-      fields <- read_yml_file(fpath)
-      for (field_id in names(fields)) {
-
-        field_specs <- fields[[field_id]]
-        
-        custom_field <- CustomFieldDefinition$new(field_id = field_id, field_specs = field_specs)
-        ret <- c(ret, list(custom_field))
-      }
-
-      }
-    }
-    return(ret)
-  }
 
 
 
@@ -38,122 +14,144 @@ read_fields <- function(variable) {
 
 # Define the TEBase class
 TEBase <- R6::R6Class("TEBase",
-
-  public = list(
+  private = list(
     parent_variable = NULL,
-    var_specs = NULL,
+    var_specs = NULL
+  ),
+  public = list(
     initialize = function(parent_variable) {
-      self$parent_variable <- parent_variable
-      self$var_specs <- variables[grepl(paste0("^", parent_variable), names(variables))]
+      private$parent_variable <- parent_variable
+      private$var_specs <- variables[grepl(paste0("^", parent_variable), names(variables))]
     }
   )
 )
 
 # Define the TEDF class, inheriting from TEBase
-TEDF <- R6::R6Class("TEDF",
-  inherit = TEBase,
-  public = list(
+TEDF <- R6::R6Class("TEDF", inherit = TEBase,
+  # initialise private fields
+  private = list(
     df = NULL,
     inconsistencies = NULL,
     file_path = NULL,
     fields = NULL,
+    columns = NULL
     
+  ),
+  public = list(
+    # inititalise
     initialize = function(parent_variable, database_id = 'public', file_path = NULL, data = NULL) {
+      print("initialize TEDF")
       super$initialize(parent_variable)
-      self$df <- data
-      self$inconsistencies <- list()
-      self$file_path <- if (!is.null(data)) NULL else if (!is.null(file_path)) file_path else file.path(databases[[database_id]], 'tedfs', paste0(paste(unlist(strsplit(parent_variable, '\\|')), collapse = '/'), '.csv'))
+      private$df <- data
+      private$inconsistencies <- list()
+      private$file_path <- if (!is.null(data)) NULL else if (!is.null(file_path)) file_path else file.path(databases[[database_id]], 'tedfs', paste0(paste(unlist(strsplit(parent_variable, '\\|')), collapse = '/'), '.csv'))
+      fields_comments <- read_fields(private$parent_variable)
       
-      self$fields <- read_fields(self$parent_variable)
+      private$fields <- fields_comments$fields
+      comments <- fields_comments$comments
+      private$columns <- c(private$fields, base_columns, comments)
+ 
+
+    
     },
 
+    file_path_getter = function() {
+      return(private$file_path)
+     },
+
+    file_path_setter = function(file_path) {
+      private$file_path <- file_path
+    },
+
+
+    # load TEDataFile (only if it has not been read yet)
     load = function() {
-      if (is.null(self$df)) {
+      if (is.null(private$df)) {
         self$read()
       } else {
         warning('TEDataFile is already loaded. Please execute .read() if you want to load from file again.')
       }
       return(self)
     },
+
     # read TEDataFile from CSV file
     read = function() {
-      if (is.null(self$file_path)) {
+      if (is.null(private$file_path)) {
         stop('Cannot read from file, as this TEDataFile object has been created from a dataframe.')
       }
 
       # read CSV file
-      self$df <- read.csv(self$file_path, sep = ',', quote = '"', encoding = 'utf-8')
+      private$df <- read.csv(private$file_path, sep = ',', quote = '"', encoding = 'utf-8')
     
-      # create data format and dtypes from base format
-      data_format_cols <- names(base_format)
-   
-      data_format_cols <- c(setdiff(names(self$df), data_format_cols), data_format_cols)
-      
-      data_dtypes <- base_dtypes
+      # Check column IDs match base columns and fields
+    if (!all(colnames(private$df) %in% names(private$columns)  )) {
+      stop(paste("Column IDs used in CSV file do not match columns definition: ",
+                paste(colnames(private$df), collapse = ", ")))
+    }
+       # create data format and dtypes from base format
      
-      for (c in data_format_cols) {
-        if (!(c %in% names(data_dtypes))) {
-          data_dtypes[c] <- 'category'
-        }
-      }
-
-      # add missing columns from data_format_cols to self$df
-      missing_columns <- setdiff(data_format_cols, names(self$df))
-      self$df[,missing_columns] <- NA
-      df_new <- select(self$df, all_of(data_format_cols))
-
-     
-      for (col in names(data_dtypes)) {
-        if (col %in% names(self$df)) {
+      # add missing columns from data_format_cols to private$df
+      missing_columns <- setdiff(names(private$columns), names(private$df))
+      private$df[,missing_columns] <- NA
+      df_new <- select(private$df, all_of(names(private$columns)))
+      print("missing_columns")
+      print(missing_columns)
+      print(str(private$columns))
+      for (col in names(private$columns)) {
+        if (col %in% names(private$df)) {
+          print(col)
           next
         }
-  
-        df_new[, col] <- as(self$df[, col], data_dtypes[col])
+        print("add new column")
+        df_new[, col] <- as(private$df[, col], data_dtypes[col])
      
         df_new[, col] <- NA
       }
   
-      self$df <- df_new
-
+      private$df <- df_new
+      
     },
 
     write = function() {
-      if (is.null(self$file_path)) {
+      if (is.null(private$file_path)) {
         stop('Cannot write to file, as this TEDataFile object has been created from a dataframe. Please first set a file path on this object.')
       }
-      write.csv(self$df, self$file_path, row.names = FALSE, sep = ',', quote = '"', encoding = 'utf-8', na = '')
+      write.csv(private$df, private$file_path, row.names = FALSE, sep = ',', quote = '"', encoding = 'utf-8', na = '')
     },
 
-    data = function() {
-      return(self$df)
+    data_getter = function() {
+      return(private$df)
     },
 
-    get_inconsistencies = function() {
-      return(self$inconsistencies)
+    inconsistencies_getter = function() {
+      return(private$inconsistencies)
     },
 
     check = function(raise_exception = TRUE) {
       stop("Check not implemented yet")
-      self$inconsistencies <- list()
-      for (row_id in seq_along(rownames(self$df))) {
+      private$inconsistencies <- list()
+      for (row_id in seq_along(rownames(private$df))) {
         self$check_row(row_id, raise_exception = raise_exception)
       }
     },
 
     check_row = function(row_id, raise_exception = TRUE) {
       stop("Check not implemented yet")
-      row <- self$df[row_id, ]
+      row <- private$df[row_id, ]
       inconsistencies <- check_row_consistency(
-        parent_variable = self$parent_variable,
-        fields = self$fields,
+        parent_variable = private$parent_variable,
+        fields = private$fields,
         row = row,
         row_id = row_id,
-        file_path = self$file_path,
+        file_path = private$file_path,
         raise_exception = raise_exception
       )
-      self$inconsistencies[[as.character(row_id)]] <- inconsistencies
+      private$inconsistencies[[as.character(row_id)]] <- inconsistencies
     }
+
+    
   )
+
 )
 
 # Define the TEDFInconsistencyException class
@@ -323,12 +321,4 @@ TEDFInconsistencyException <- R6::R6Class("TEDFInconsistencyException",
 # }
 
 
-print("test0")
-tedf <- TEDF$new("tech|ELH2")
-print("initialized")
 
-# print(tedf$parent_variable)
-# print(tedf$file_path)
-tedf$load()
-
-print(tedf$df)
