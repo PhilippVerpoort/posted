@@ -1,3 +1,6 @@
+[![DOI](https://zenodo.org/badge/616985767.svg)](https://zenodo.org/doi/10.5281/zenodo.10639752)
+
+
 # POSTED: Potsdam Open-Source Techno-Economic Database for climate-mitigation technologies
 POSTED is a public database of techno-economic data on energy and climate-mitigation technologies, along with a framework for consistent data handling and an open-source toolbox for techno-economic assessments (TEA). In particular, it provides a structure for and contains data on investment cost, energy and feedstock demand, other fixed and variable costs, emissions intensities, and other characteristics of conversion, storage, and transportation technologies in the energy and related sectors. The accompanying software code is intended for consistent maintenance of this data and for deriving straight-forward results from them, such as levelised cost, greenhouse-gas emission intensities, or marginal abatement cost.
 
@@ -39,7 +42,7 @@ renv::restore()
 ## CITATION
 To cite POSTED, please use this:
 
-P.C. Verpoort, C. Bachorz, J. Dürrwächter, P. Effing, L. Gast, A. Hofmann, F. Ueckerdt (2024). _POSTED: Potsdam Open-Source Techno-Economic Database._ Version 0.2.2, DOI: TBD.
+P.C. Verpoort, C. Bachorz, J. Dürrwächter, P. Effing, L. Gast, A. Hofmann, F. Ueckerdt (2024). _POSTED: Potsdam Open-Source Techno-Economic Database._ Version 0.2.2, [DOI:10.5281/zenodo.10639752](https://doi.org/10.5281/zenodo.10639752).
 
 Please remember that it is good scientific practice to cite the authors who published the respective data entries that you use. The respective BibTeX records can be found in file `references.bib`.
 
