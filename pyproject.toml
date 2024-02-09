@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "posted"
-version = "0.2.2"
-description = "POSTED: Potsdam Open-Source Techno-Economic Database"
+version = "0.2.3"
+description = "POSTED: Potsdam open-source techno-economic database"
 authors = [
     "Philipp C. Verpoort <philipp.verpoort@pik-potsdam.de>",
     "Paul Effing <paul.effing@pik-potsdam.de>"
 ]
-license = "GPL-3.0-or-later"
+license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/PhilippVerpoort/posted/"
 packages = [

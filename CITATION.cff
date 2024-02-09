@@ -1,0 +1,26 @@
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: Verpoort
+  given-names: Philipp C.
+  orcid: https://orcid.org/0000-0003-1319-5006
+- family-names: Bachorz
+  given-names: Clara
+  orcid: https://orcid.org/0000-0003-1638-4048
+- family-names: Dürrwächter
+  given-names: Jakob
+  orcid: https://orcid.org/0000-0001-8961-5340
+- family-names: Effing
+  given-names: Paul
+- family-names: Gast
+  given-names: Lukas
+  orcid: https://orcid.org/0009-0003-1416-5199
+- family-names: Hofmann
+  given-names: Anke
+  orcid: https://orcid.org/0009-0001-4837-3530
+- family-names: Ueckerdt
+  given-names: Falko
+  orcid: https://orcid.org/0000-0001-5585-030X
+title: "POSTED: Potsdam open-source techno-economic database"
+version: v0.2.3
+date-released: 2024-02-09

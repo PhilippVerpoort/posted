@@ -42,7 +42,7 @@ renv::restore()
 ## CITATION
 To cite POSTED, please use this:
 
-P.C. Verpoort, C. Bachorz, J. Dürrwächter, P. Effing, L. Gast, A. Hofmann, F. Ueckerdt (2024). _POSTED: Potsdam Open-Source Techno-Economic Database._ Version 0.2.2, [DOI:10.5281/zenodo.10639752](https://doi.org/10.5281/zenodo.10639752).
+P.C. Verpoort, C. Bachorz, J. Dürrwächter, P. Effing, L. Gast, A. Hofmann, F. Ueckerdt (2024). _POSTED: Potsdam Open-Source Techno-Economic Database._ Version 0.2.3, [DOI:10.5281/zenodo.10639752](https://doi.org/10.5281/zenodo.10639752).
 
 Please remember that it is good scientific practice to cite the authors who published the respective data entries that you use. The respective BibTeX records can be found in file `references.bib`.
 

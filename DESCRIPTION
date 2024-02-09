@@ -1,6 +1,6 @@
 Package: posted
-Title: POSTED: Potsdam Open-Source Techno-Economic Database
-Version: 0.2.0
+Title: POSTED: Potsdam open-source techno-economic database
+Version: 0.2.3
 Authors@R: 
     c(person(given = "Philipp C.", family = "Verpoort", email= "philipp.verpoort@pik-potsdam.de", role = c("aut", "cre")),
     person(given = "Paul", family = "Effing", email= "paulef@pik-potsdam.de", role = "aut"))
