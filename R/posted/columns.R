@@ -21,11 +21,11 @@ is_float <- function(string) {
 
 AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
     private = list(
-        col_type_internal = NULL,
-        name_internal = NULL,
-        description_internal = NULL,
-        dtype_internal = NULL,
-        required_internal = NULL
+        ..col_type = NULL,
+        ..name = NULL,
+        ..description = NULL,
+        ..dtype = NULL,
+        ..required = NULL
     ),
  
   
@@ -48,43 +48,46 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
             stop(sprintf("The 'required' argument must be a bool but found: %s", required))
         }
 
-        private$col_type_internal <- col_type
-        private$name_internal <- name
-        private$description_internal <- description
-        private$dtype_internal <- dtype
-        private$required_internal <- required
+        private$..col_type <- col_type
+        private$..name <- name
+        private$..description <- description
+        private$..dtype <- dtype
+        private$..required <- required
 
 
     },
 
+    is_allowed = function(cell) {
+      TRUE
+    }
+
+  ),
+  active = list(
     col_type = function() {
-      private$col_type_internal
+      private$..col_type
     },
     
     name = function() {
-      private$name_internal
+      private$..name
     },
     
     description = function() {
-      private$description_internal
+      private$..description
     },
     
     dtype = function() {
-      private$dtype_internal
+      private$..dtype
     },
     
     required = function() {
-      private$required_internal
+      private$..required
     },
     
     default = function() {
       NA
-    },
-    
-    is_allowed = function() {
-      TRUE
     }
-
+    
+    
   )
 )
 
@@ -102,7 +105,7 @@ VariableDefinition <- R6::R6Class("VariableDefinition", inherit = AbstractColumn
     
     is_allowed = function(cell) {
       if (is.na(cell)) {
-        return(!private$required_internal)
+        return(!private$..required)
       }
       return(is.character(cell) && (cell %in% variables))
     }
@@ -179,18 +182,18 @@ CommentDefinition <- R6::R6Class("CommentDefinition", inherit = AbstractColumnDe
 # Define the AbstractFieldDefinition class
 AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = AbstractColumnDefinition,
   private = list(
-    field_type_internal = NULL,
-    coded_internal = NULL,
-    codes_internal = NULL,
+    ..field_type = NULL,
+    ..coded = NULL,
+    ..codes = NULL,
 
-    expand = function(df, col_id, field_vals, ...) {
+    ..expand = function(df, col_id, field_vals, ...) {
       rbind(df[df[[col_id]] %in% field_vals, ],
             merge(df[df[[col_id]] == '*', ][, !(col_id), drop = FALSE],
                   expand.grid(!!rlang::sym(col_id) := field_vals),
                   all = TRUE))
     },
     
-    select = function(df, col_id, field_vals, ...) {
+    ..select = function(df, col_id, field_vals, ...) {
       df[df[[col_id]] %in% field_vals, , drop = FALSE]
     }
 
@@ -207,52 +210,34 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
                        dtype = dtype,
                        required = TRUE)
 
-      private$field_type_internal <- field_type
-      private$coded_internal <- coded
-      private$codes_internal <- codes
+      private$..field_type <- field_type
+      private$..coded <- coded
+      private$..codes <- codes
     },
 
     
-    field_type = function() {
-      private$field_type_internal
-    },
     
-    coded = function() {
-      private$coded_internal
-    },
-    
-    codes = function() {
-      private$codes_internal
-    },
-    
-    default = function() {
-      if (private$field_type_internal == 'case') {
-        return('*')
-      } else {
-        return('#')
-      }
-    },
     
     is_allowed = function(cell) {
       if (is.na(cell)) {
         return(FALSE)
       }
-      if (private$coded_internal) {
-        return(cell %in% private$codes_internal || cell == '*' ||
-               (cell == '#' && private$col_type_internal == 'component'))
+      if (private$..coded) {
+        return(cell %in% private$..codes || cell == '*' ||
+               (cell == '#' && private$..col_type == 'component'))
       } else {
         return(TRUE)
       }
     },
     
     
-    
+    # TODO: rework select and expand function according to new style
     select_and_expand = function(df, col_id, field_vals = NULL, ...) {
       if (is.null(field_vals)) {
         if (col_id == 'period') {
           field_vals <- default_periods
-        } else if (private$coded_internal) {
-          field_vals <- names(private$codes_internal)
+        } else if (private$..coded) {
+          field_vals <- names(private$..codes)
         } else {
           field_vals <- unique(df[[col_id]][df[[col_id]] != '*'])
         }
@@ -265,9 +250,31 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
         }
       }
       
-      df <- private$expand(df, col_id, field_vals, ...)
-      df <- private$select(df, col_id, field_vals, ...)
+      df <- private$..expand(df, col_id, field_vals, ...)
+      df <- private$..select(df, col_id, field_vals, ...)
       return(df)
+    }
+  ),
+  active = list(
+    field_type = function() {
+      private$..field_type
+    },
+    
+    coded = function() {
+      private$..coded
+    },
+    
+    codes = function() {
+      private$..codes
+    
+    },
+    
+    default = function() {
+      if (private$..field_type == 'case') {
+        return('*')
+      } else {
+        return('#')
+      }
     }
   )
 )
@@ -443,22 +450,6 @@ CustomFieldDefinition <- R6::R6Class("CustomFieldDefinition",
   
       self$field_specs <- field_specs
     
-    },
-
-    type = function() {
-      return(self$field_specs$type)
-    },
-
-    is_coded = function() {
-      return(self$field_specs$coded)
-    },
-
-    codes = function() {
-      return(names(self$field_specs$codes))
-    },
-
-    allowed_types = function() {
-      return('character')
     }
   )
 )
@@ -535,9 +526,6 @@ read_fields <- function(variable) {
 
   
   for (database_id in names(databases)) {
-    print(variable)
-    print(typeof(variable))
-    print(strsplit(variable, split= "\\|"))
     fpath <- file.path(databases[[database_id]], 'fields', paste0(paste(unlist(strsplit(variable, split= "\\|")), collapse = '/'), '.yml'))
     if (file.exists(fpath)) {
       if (!file_test("-f", fpath)) {

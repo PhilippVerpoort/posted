@@ -8,24 +8,28 @@ source("R/posted/read.R")
 
 read_definitions <- function(definitions_dir, flows, techs) {
   stopifnot(dir.exists(definitions_dir))
-  
+  print("read_definitions")
   # read all definitions and tags
   definitions <- list()
   tags <- list()
   file_paths <- list.files(path = definitions_dir, pattern = "\\.yml$", recursive = TRUE, full.names = TRUE)
   
   for (file_path in file_paths) {
+    print(file_path)
     if (grepl("^tag_", basename(file_path))) {
-      tags <- union(tags, read_yml_file(file_path))
+      tags <- c(tags, read_yml_file(file_path))
     } else {
-      definitions <- union(definitions, read_yml_file(file_path))
+      definitions <- c(definitions, read_yml_file(file_path))
     }
   }
-  
+
+  print("flows")
+  print(flows)
   # read tags from flows and techs
   tags[['Flow IDs']] <- map(flows, ~list())
   tags[['Tech IDs']] <- map(techs, ~select(.x, primary_output = primary_output))
-  
+  print(tags['Flow IDs'])
+  print(tags['Tech IDs'])
   # insert tags
   definitions <- replace_tags(definitions, tags)
   

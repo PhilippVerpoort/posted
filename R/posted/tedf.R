@@ -15,13 +15,25 @@ source("R/posted/path.R")
 # Define the TEBase class
 TEBase <- R6::R6Class("TEBase",
   private = list(
-    parent_variable = NULL,
-    var_specs = NULL
+    ..parent_variable = NULL,
+    ..var_specs = NULL
   ),
   public = list(
     initialize = function(parent_variable) {
-      private$parent_variable <- parent_variable
-      private$var_specs <- variables[grepl(paste0("^", parent_variable), names(variables))]
+      private$..parent_variable <- parent_variable
+      var_specs <- list()
+      print("variables")
+      print(variables)
+     
+      private$..var_specs <- variables[grepl(paste0("^", parent_variable), names(variables))]
+    }
+  ),
+  active = list(
+    parent_variable = function() {
+      return(private$..parent_variable)
+    },
+    var_specs = function() {
+      return(private$..var_specs)
     }
   )
 )
@@ -30,11 +42,11 @@ TEBase <- R6::R6Class("TEBase",
 TEDF <- R6::R6Class("TEDF", inherit = TEBase,
   # initialise private fields
   private = list(
-    df = NULL,
-    inconsistencies = NULL,
-    file_path = NULL,
-    fields = NULL,
-    columns = NULL
+    ..df = NULL,
+    ..inconsistencies = NULL,
+    ..file_path = NULL,
+    ..fields = NULL,
+    ..columns = NULL
     
   ),
   public = list(
@@ -42,31 +54,32 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
     initialize = function(parent_variable, database_id = 'public', file_path = NULL, data = NULL) {
       print("initialize TEDF")
       super$initialize(parent_variable)
-      private$df <- data
-      private$inconsistencies <- list()
-      private$file_path <- if (!is.null(data)) NULL else if (!is.null(file_path)) file_path else file.path(databases[[database_id]], 'tedfs', paste0(paste(unlist(strsplit(parent_variable, '\\|')), collapse = '/'), '.csv'))
-      fields_comments <- read_fields(private$parent_variable)
+      private$..df <- data
+      private$..inconsistencies <- list()
+      private$..file_path <- if (!is.null(data)) NULL else if (!is.null(file_path)) file_path else file.path(databases[[database_id]], 'tedfs', paste0(paste(unlist(strsplit(parent_variable, '\\|')), collapse = '/'), '.csv'))
+      fields_comments <- read_fields(private$..parent_variable)
       
-      private$fields <- fields_comments$fields
+      private$..fields <- fields_comments$fields
       comments <- fields_comments$comments
-      private$columns <- c(private$fields, base_columns, comments)
- 
 
-    
+      
+      private$..columns <- c(comments,base_columns, private$..fields)
+      private$..columns <- c( private$..fields, base_columns, comments)
+      # delete duplicates
+      reversed_names <- rev(names(private$..columns))
+   
+      reversed_values <- rev(private$..columns)
+       #print(reversed_values)
+      unique_names <- reversed_names[!duplicated(reversed_names)]
+      unique_columns <- reversed_values[match(unique_names, reversed_names)]
+      private$..columns <- rev(unique_columns)
     },
 
-    file_path_getter = function() {
-      return(private$file_path)
-     },
-
-    file_path_setter = function(file_path) {
-      private$file_path <- file_path
-    },
 
 
     # load TEDataFile (only if it has not been read yet)
     load = function() {
-      if (is.null(private$df)) {
+      if (is.null(private$..df)) {
         self$read()
       } else {
         warning('TEDataFile is already loaded. Please execute .read() if you want to load from file again.')
@@ -76,80 +89,101 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
 
     # read TEDataFile from CSV file
     read = function() {
-      if (is.null(private$file_path)) {
+      if (is.null(private$..file_path)) {
         stop('Cannot read from file, as this TEDataFile object has been created from a dataframe.')
       }
 
       # read CSV file
-      private$df <- read.csv(private$file_path, sep = ',', quote = '"', encoding = 'utf-8')
+      private$..df <- read.csv(private$..file_path, sep = ',', quote = '"', encoding = 'utf-8')
     
       # Check column IDs match base columns and fields
-    if (!all(colnames(private$df) %in% names(private$columns)  )) {
+    if (!all(colnames(private$..df) %in% names(private$..columns)  )) {
       stop(paste("Column IDs used in CSV file do not match columns definition: ",
-                paste(colnames(private$df), collapse = ", ")))
+                paste(colnames(private$..df), collapse = ", ")))
     }
        # create data format and dtypes from base format
      
-      # add missing columns from data_format_cols to private$df
-      missing_columns <- setdiff(names(private$columns), names(private$df))
-      private$df[,missing_columns] <- NA
-      df_new <- select(private$df, all_of(names(private$columns)))
-      print("missing_columns")
-      print(missing_columns)
-      print(str(private$columns))
-      for (col in names(private$columns)) {
-        if (col %in% names(private$df)) {
-          print(col)
-          next
+      # add missing columns from data_format_cols to private$..df
+      missing_columns <- setdiff(names(private$..columns), names(private$..df))
+
+
+      for(col in missing_columns) {
+        mode_type  =  private$..columns[[col]]$dtype
+        if(mode_type == "int") {
+        private$..df[,col] <- vector(mode = "double")
+        } else if((mode_type =="str")| mode_type=="category" ) {
+          private$..df[,col] <- vector(mode = "character")
+        } else {
+          stop("dtype of column not allowed")
         }
-        print("add new column")
-        df_new[, col] <- as(private$df[, col], data_dtypes[col])
+        }
+      
+      # private$..df[,missing_columns] <- NaN
+      
+      df_new <- select(private$..df, all_of(names(private$..columns)))
+      # TODO: Check if it makes sense to implement this typecasting in R
+      # print(private$..columns)
+      # for (col_id in names(private$..columns)) {
+      #   if (col_id %in% names(private$..df)) {
+        
+      #     test = private$..columns[col_id]
+          
+          
+      #     next
+      #   }
+        
+      #   # df_new[, col] <- as(private$..df[, col], data_dtypes[col])
      
-        df_new[, col] <- NA
-      }
+      #   df_new[, col] <- NA
+      # }
   
-      private$df <- df_new
+      private$..df <- df_new
       
     },
-
+    # TODO: has to be checked if it works properly
     write = function() {
-      if (is.null(private$file_path)) {
+      if (is.null(private$..file_path)) {
         stop('Cannot write to file, as this TEDataFile object has been created from a dataframe. Please first set a file path on this object.')
       }
-      write.csv(private$df, private$file_path, row.names = FALSE, sep = ',', quote = '"', encoding = 'utf-8', na = '')
+      write.csv(private$..df, private$..file_path, row.names = FALSE, sep = ',', quote = '"', encoding = 'utf-8', na = '')
     },
 
-    data_getter = function() {
-      return(private$df)
-    },
-
-    inconsistencies_getter = function() {
-      return(private$inconsistencies)
-    },
 
     check = function(raise_exception = TRUE) {
       stop("Check not implemented yet")
-      private$inconsistencies <- list()
-      for (row_id in seq_along(rownames(private$df))) {
+      private$..inconsistencies <- list()
+      for (row_id in seq_along(rownames(private$..df))) {
         self$check_row(row_id, raise_exception = raise_exception)
       }
     },
 
     check_row = function(row_id, raise_exception = TRUE) {
       stop("Check not implemented yet")
-      row <- private$df[row_id, ]
+      row <- private$..df[row_id, ]
       inconsistencies <- check_row_consistency(
-        parent_variable = private$parent_variable,
-        fields = private$fields,
+        parent_variable = private$..parent_variable,
+        fields = private$..fields,
         row = row,
         row_id = row_id,
-        file_path = private$file_path,
+        file_path = private$..file_path,
         raise_exception = raise_exception
       )
-      private$inconsistencies[[as.character(row_id)]] <- inconsistencies
+      private$..inconsistencies[[as.character(row_id)]] <- inconsistencies
     }
 
     
+  ),
+  active = list(
+    file_path = function(file_path) {
+      if (missing(file_path)) return(private$..file_path)
+      else private$..file_path <- file_path
+    },
+    data = function() {
+      return(private$..df)
+    },
+    inconistencies = function() {
+      return(private$..inconsistencies)
+    }
   )
 
 )
