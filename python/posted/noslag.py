@@ -179,16 +179,19 @@ class DataSet(TEBase):
         if data is not None:
             self._df = data
         else:
+            print("databases")
+            print(include_databases)
             # read TEDataFiles and combine into dataset
             include_databases = list(include_databases) if include_databases is not None else list(databases.keys())
+            print(include_databases)
             self._df = self._load_files(include_databases, file_paths or [], check_inconsistencies)
-
+    
     # access dataframe
     @property
     def data(self):
         return self._df
-
-    def set_data(self, df: pd.DataFrame):
+    @data.setter
+    def data(self, df: pd.DataFrame):
         self._df = df
 
     # load TEDFs and compile into NSHADataSet
@@ -197,7 +200,9 @@ class DataSet(TEBase):
 
         # collect TEDF and append to list
         collected_files = collect_files(parent_variable=self._parent_variable, include_databases=include_databases)
+        print("collected files = ", collected_files)
         for file_variable, file_database_id in collected_files:
+            print(file_variable)
             files.append(TEDF(parent_variable=file_variable, database_id=file_database_id))
         for file_path in file_paths:
             files.append(TEDF(parent_variable=self._parent_variable, file_path=file_path))
@@ -206,11 +211,18 @@ class DataSet(TEBase):
         if not files:
             raise Exception(f"No TEDF to load for variable '{self._parent_variable}'.")
 
+        print(files)
         # get fields and masks from databases
         files_vars: set[str] = {f.parent_variable for f in files}
+        print(files_vars)
         for v in files_vars:
+            
             new_fields, new_comments = read_fields(v)
+            print("new fields = ", new_fields)
+            print("new comments = ", new_comments)
             for col_id in new_fields | new_comments:
+               
+                print("col_id = ", col_id)
                 if col_id in self._columns:
                     raise Exception(f"Cannot load TEDFs due to multiple columns with same ID defined: {col_id}")
             self._fields = new_fields | self._fields
@@ -255,12 +267,13 @@ class DataSet(TEBase):
     def _normalise(self, override: Optional[dict[str, str]]) -> tuple[pd.DataFrame, dict[str, str]]:
         if override is None:
             override = {}
-
+        print(self._var_specs.items())
         # get overridden var specs
         var_flow_ids = {
             var_name: var_specs['flow_id'] if 'flow_id' in var_specs else np.nan
             for var_name, var_specs in self._var_specs.items()
         }
+       
         var_units = {
             var_name: var_specs['default_unit']
             for var_name, var_specs in self._var_specs.items()

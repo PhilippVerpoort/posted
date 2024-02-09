@@ -14,11 +14,13 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
     definitions = {}
     tags = {}
     for file_path in definitions_dir.rglob('*.yml'):
+        print(file_path)
         if file_path.name.startswith('tag_'):
             tags |= read_yml_file(file_path)
         else:
             definitions |= read_yml_file(file_path)
-
+    
+    print("flows = ", flows)
     # read tags from flows and techs
     tags['Flow IDs'] = {
         flow_id: {}
@@ -32,7 +34,8 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
         }
         for tech_id, tech_specs in techs.items()
     }
-
+    print(tags['Flow IDs'])
+    print(tags['Tech IDs'])
     # insert tags
     for tag, items in tags.items():
         definitions = replace_tags(definitions, tag, items)
