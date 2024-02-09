@@ -1,39 +1,39 @@
 mode,variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-*,CAPEX,Output Capacity|dri,,,230,,EUR,1,t/a,,Wortler13,
-*,CAPEX,Output Capacity|dri,,,414,,EUR,1,t/a,"This reference assumes the value provided by Wörtler et al., 2013 but with an additional integration factor of 1.8.","Agora Energiewende, 2022",
-*,CAPEX,Output Capacity|dri,,,605.9,,MEUR,1905400,t/a,Note that the reference value is not 2 Mt but ~1.9 Mt as per flow data presented in Table 2.,Jacobasch21,"Page 9, Table 6"
-*,OPEX Fixed Relative,,,,3,,percent,,,,"Agora Energiewende, 2022",
-h2,Input|h2,Output|dri,,,541,,m³;norm,1.1,t,"This source states 541 Nm³ of hydrogen per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used.","Agora Energiewende, 2022",
-h2,Input|h2,Output|dri,,,52,,kg,1.1,t,"This source states 52 kg of hydrogen per tonne of semi-finished steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 52×0.909 kg of hydrogen per tonne of HBI.",Devlin22,Section 2.2.2
-h2,Input|h2,Output|dri,,,635,,m³;norm,1,t,,Holling17,Just before Table 1
-h2,Input|h2,Output|dri,,,58.17,,kg,1.03,t,This source states 58.17 kg of hydrogen per 1.03 tonnes of iron sponge.,Otto17,Figure 6
-h2,Input|h2,Output|dri,,Reduction agent,504.5,20.5,m³;norm,1,t,Only the value reported for the hydrogen needed as a reduction agent is mentioned. The remaining hydrogen is instead reported here as heat.,Rechenberger20,Section 4.2
-h2,Input|h2,Output|dri,,Reduction agent,503.5,21.5,m³;norm,1,t,Only the value reported for the hydrogen needed as a reduction agent is mentioned. The remaining hydrogen is instead reported here as heat.,Sasiain20,"Results and Discussion, 8th paragraph"
-h2,Input|h2,Output|dri,,Heat,242,,m³;norm,1,t,This is the hydrogen not used as a reduction agent but instead as a heat source.,Rechenberger20,Section 4.2
-h2,Input|h2,Output|dri,,Heat,242,,m³;norm,1,t,This is the hydrogen not used as a reduction agent but instead as a heat source.,Sasiain20,"Results and Discussion, 8th paragraph"
-h2,Input|h2,Output|dri,,,51,,kg,1.08,t,This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.,Vogl18,Section 3
-h2,Input|h2,Output|dri,,,115742.31,,t,1744694.39,t,,Jacobasch21,"Page 6, Table 2"
-h2,Input|heat,Output|dri,,,0,,MWh,1,t,This source does not assume any additional heat demand for the direct reduction other than the hydrogen and natural gas used in the process.,"Agora Energiewende, 2022",
-h2,Input|heat,Output|dri,,,0.45,,MWh,1.1,t,"This source states 0.45 MWh of electricity for H2 heating per tonne of liquid steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 0.45×0.909 MWh of electricity per tonne of HBI.",Devlin22,Chapter 2.2.2
-h2,Input|heat,Output|dri,,,0.23,,MWh,1,t,,Holling17,Just before Table 1
-h2,Input|heat,Output|dri,,,5.62,,GJ,1.03,t,This source states 5.62 GJ of NG demand for heat provision per 1.03 tonnes of iron sponge.,Otto17,Figure 6
-h2,Input|heat,Output|dri,,,0.286,,MWh,1.08,t,The value 0.286 was read off from the graph and corresponds to the ore heating for 100% HBI. This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.,Vogl18,Figure 2
-h2,Input|ng,Output|dri,,,50,,m³;norm,1.1,t,"This source states 50 Nm³ of natural gas per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used.","Agora Energiewende, 2022",
-h2,Input|ng,Output|dri,,,48,,m³;norm,1,t,This source assumes a natural-gas demand to provide not only heat but also the carbon content of the DRI.,Rechenberger20,Section 4.2
-h2,Input|ng,Output|dri,,,48,,m³;norm,1,t,This source assumes a natural-gas demand to provide not only heat but also the carbon content of the DRI.,Sasiain20,"Results and Discussion, 8th paragraph"
-h2,Input|elec,Output|dri,,,0.065,,MWh,1.1,t,"This source states 0.065 MWh of electricity for H2 compression per tonne of liquid steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 0.065×0.909 MWh of electricity per tonne of HBI.",Devlin22,Section 2.2.2
-h2,Input|elec,Output|dri,,,0.08,,MWh,1,t,,Holling17,Just before Table 1
-h2,Input|elec,Output|dri,,,0.46,,GJ,1.03,t,This source states 0.46 GJ of electric power per 1.03 tonnes of iron sponge.,Otto17,Figure 6
-h2,Input|elec,Output|dri,,,102.5,22.5,kWh,1,t,,Rechenberger20,Section 4.2.1
-h2,Input|elec,Output|dri,,,151444.7,,MWh,1744694.39,t,,Jacobasch21,"Page 6, Table 2"
-ng,Input|ng,Output|dri,,,9.7,,GJ,1,t,,Holling17,Page 7
-ng,Input|ng,Output|dri,,,390692,,t,1905400,t,,Jacobasch21,"Page 6, Table 2"
-ng,Input|elec,Output|dri,,,0.08,,MWh,1,t,,Holling17,Page 7
-ng,Input|elec,Output|dri,,,149027.78,,MWh,1905400,,,Jacobasch21,"Page 6, Table 2"
-*,Input|ironore,Output|dri,,,1.5,,t,1.1,t,"This source states 1.5 tonnes of iron ore per tonne of semi-finished steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 1.5×0.909 tonnes of iron ore per tonne of HBI.",Devlin22,Chapter 2.2.2
-*,Input|ironore,Output|dri,,,1.66,,t,1.03,t,This source states 1.66 t of iron ore per 1.03 tonnes of iron sponge.,Otto17,"Chapter 5.4, Figure 6"
-*,Input|ironore,Output|dri,,,1.391,,t,1,t,,Rechenberger20,"Section 3, Table 1"
-*,Input|ironore,Output|dri,,,1.504,,t,1.1,t,This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.,Vogl18,Section 3
-h2,Input|ironore,Output|dri,,,2590520,,t,1744694.39,t,,Jacobasch21,"Page 6, Table 2"
-ng,Input|ironore,Output|dri,,,2434400,,t,1905400,t,,Jacobasch21,"Page 6, Table 2"
-ng,Input|oxygen,Output|dri,,,163000,,t,1905400,t,,,
+*,CAPEX,Output Capacity|dri,2013,#,230,,EUR_2013,1,t/a,,Wortler13,
+*,CAPEX,Output Capacity|dri,2022,#,414,,EUR_2013,1,t/a,"This reference assumes the value provided by Wörtler et al., 2013 but with an additional integration factor of 1.8.",AgoraEnergiewende22,
+*,CAPEX,Output Capacity|dri,2021,#,605.9,,MEUR_2020,1905400,t/a,Note that the reference value is not 2 Mt but ~1.9 Mt as per flow data presented in Table 2.,Jacobasch21,"Page 9, Table 6"
+*,OPEX Fixed Relative,,2022,#,3,,percent,,,,AgoraEnergiewende22,
+h2,Input|h2,Output|dri,2022,#,541,,m³;norm,1.1,t,"This source states 541 Nm³ of hydrogen per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used.",AgoraEnergiewende22,
+h2,Input|h2,Output|dri,2022,#,52,,kg,1.1,t,"This source states 52 kg of hydrogen per tonne of semi-finished steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 52×0.909 kg of hydrogen per tonne of HBI.",Devlin22,Section 2.2.2
+h2,Input|h2,Output|dri,2017,#,635,,m³;norm,1,t,,Holling17,Just before Table 1
+h2,Input|h2,Output|dri,2017,#,58.17,,kg,1.03,t,This source states 58.17 kg of hydrogen per 1.03 tonnes of iron sponge.,Otto17,Figure 6
+h2,Input|h2,Output|dri,2020,Reduction agent,504.5,20.5,m³;norm,1,t,Only the value reported for the hydrogen needed as a reduction agent is mentioned. The remaining hydrogen is instead reported here as heat.,Rechenberger20,Section 4.2
+h2,Input|h2,Output|dri,2020,Reduction agent,503.5,21.5,m³;norm,1,t,Only the value reported for the hydrogen needed as a reduction agent is mentioned. The remaining hydrogen is instead reported here as heat.,Sasiain20,"Results and Discussion, 8th paragraph"
+h2,Input|h2,Output|dri,2020,Heat,242,,m³;norm,1,t,This is the hydrogen not used as a reduction agent but instead as a heat source.,Rechenberger20,Section 4.2
+h2,Input|h2,Output|dri,2020,Heat,242,,m³;norm,1,t,This is the hydrogen not used as a reduction agent but instead as a heat source.,Sasiain20,"Results and Discussion, 8th paragraph"
+h2,Input|h2,Output|dri,2018,#,51,,kg,1.08,t,This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.,Vogl18,Section 3
+h2,Input|h2,Output|dri,2021,#,115742.31,,t,1744694.39,t,,Jacobasch21,"Page 6, Table 2"
+h2,Input|heat,Output|dri,2022,#,0,,MWh,1,t,This source does not assume any additional heat demand for the direct reduction other than the hydrogen and natural gas used in the process.,AgoraEnergiewende22,
+h2,Input|heat,Output|dri,2022,#,0.45,,MWh,1.1,t,"This source states 0.45 MWh of electricity for H2 heating per tonne of liquid steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 0.45×0.909 MWh of electricity per tonne of HBI.",Devlin22,Chapter 2.2.2
+h2,Input|heat,Output|dri,2017,#,0.23,,MWh,1,t,,Holling17,Just before Table 1
+h2,Input|heat,Output|dri,2017,#,5.62,,GJ,1.03,t,This source states 5.62 GJ of NG demand for heat provision per 1.03 tonnes of iron sponge.,Otto17,Figure 6
+h2,Input|heat,Output|dri,2018,#,0.286,,MWh,1.08,t,The value 0.286 was read off from the graph and corresponds to the ore heating for 100% HBI. This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.,Vogl18,Figure 2
+h2,Input|ng,Output|dri,2022,#,50,,m³;norm,1.1,t,"This source states 50 Nm³ of natural gas per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used.",AgoraEnergiewende22,
+h2,Input|ng,Output|dri,2020,#,48,,m³;norm,1,t,This source assumes a natural-gas demand to provide not only heat but also the carbon content of the DRI.,Rechenberger20,Section 4.2
+h2,Input|ng,Output|dri,2020,#,48,,m³;norm,1,t,This source assumes a natural-gas demand to provide not only heat but also the carbon content of the DRI.,Sasiain20,"Results and Discussion, 8th paragraph"
+h2,Input|elec,Output|dri,2022,#,0.065,,MWh,1.1,t,"This source states 0.065 MWh of electricity for H2 compression per tonne of liquid steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 0.065×0.909 MWh of electricity per tonne of HBI.",Devlin22,Section 2.2.2
+h2,Input|elec,Output|dri,2017,#,0.08,,MWh,1,t,,Holling17,Just before Table 1
+h2,Input|elec,Output|dri,2017,#,0.46,,GJ,1.03,t,This source states 0.46 GJ of electric power per 1.03 tonnes of iron sponge.,Otto17,Figure 6
+h2,Input|elec,Output|dri,2020,#,102.5,22.5,kWh,1,t,,Rechenberger20,Section 4.2.1
+h2,Input|elec,Output|dri,2021,#,151444.7,,MWh,1744694.39,t,,Jacobasch21,"Page 6, Table 2"
+ng,Input|ng,Output|dri,2017,#,9.7,,GJ;LHV,1,t,,Holling17,Page 7
+ng,Input|ng,Output|dri,2021,#,390692,,t,1905400,t,,Jacobasch21,"Page 6, Table 2"
+ng,Input|elec,Output|dri,2017,#,0.08,,MWh,1,t,,Holling17,Page 7
+ng,Input|elec,Output|dri,2021,#,149027.78,,MWh,1905400,t,,Jacobasch21,"Page 6, Table 2"
+*,Input|ironore,Output|dri,2022,#,1.5,,t,1.1,t,"This source states 1.5 tonnes of iron ore per tonne of semi-finished steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 1.5×0.909 tonnes of iron ore per tonne of HBI.",Devlin22,Chapter 2.2.2
+*,Input|ironore,Output|dri,2017,#,1.66,,t,1.03,t,This source states 1.66 t of iron ore per 1.03 tonnes of iron sponge.,Otto17,"Chapter 5.4, Figure 6"
+*,Input|ironore,Output|dri,2020,#,1.391,,t,1,t,,Rechenberger20,"Section 3, Table 1"
+*,Input|ironore,Output|dri,2018,#,1.504,,t,1.1,t,This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.,Vogl18,Section 3
+h2,Input|ironore,Output|dri,2021,#,2590520,,t,1744694.39,t,,Jacobasch21,"Page 6, Table 2"
+ng,Input|ironore,Output|dri,2021,#,2434400,,t,1905400,t,,Jacobasch21,"Page 6, Table 2"
+ng,Input|oxygen,Output|dri,2021,#,163000,,t,1905400,t,,Jacobasch21,"Page 6, Table 2"

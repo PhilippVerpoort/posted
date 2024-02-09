@@ -343,7 +343,7 @@ class DataSet(TEBase):
             selected.drop(columns=[
                 col_id for col_id, field in self._fields.items()
                 if isinstance(field, CustomFieldDefinition) and selected[col_id].nunique() < 2
-            ])
+            ], inplace=True)
 
         # apply mappings
         selected = self._apply_mappings(selected, var_units)

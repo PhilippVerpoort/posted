@@ -4,8 +4,8 @@ mode:
   type: case
   coded: True
   codes:
-    primary: Producing primary steel from iron ore
-    secondary: Producing secondary steel from scrap
+    Primary: Producing primary steel from iron ore
+    Secondary: Producing secondary steel from scrap
 reheating:
   name: Reheating
   description: Whether DRI input has to be reheated by EAF or is fed in hot from the DRI shaft.
@@ -16,5 +16,6 @@ reheating:
     w/o reheating: Without reheating of DRI inputs
 component:
   name: Component
+  description: Component
   type: component
   coded: False
