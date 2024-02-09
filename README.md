@@ -1,7 +1,7 @@
 [![DOI](https://zenodo.org/badge/616985767.svg)](https://zenodo.org/doi/10.5281/zenodo.10639752)
 
 
-# POSTED: Potsdam Open-Source Techno-Economic Database for climate-mitigation technologies
+# POSTED — Potsdam open-source techno-economic database
 POSTED is a public database of techno-economic data on energy and climate-mitigation technologies, along with a framework for consistent data handling and an open-source toolbox for techno-economic assessments (TEA). In particular, it provides a structure for and contains data on investment cost, energy and feedstock demand, other fixed and variable costs, emissions intensities, and other characteristics of conversion, storage, and transportation technologies in the energy and related sectors. The accompanying software code is intended for consistent maintenance of this data and for deriving straight-forward results from them, such as levelised cost, greenhouse-gas emission intensities, or marginal abatement cost.
 
 POSTED was created and is maintained by researchers at the [Potsdam Institute for Climate Impact Research (PIK)](https://www.pik-potsdam.de/en/), a German research institute conducting integrated research for global sustainability. The source code of the accompanying framework and structure is written in both Python and R, and it is open-sourced via [this git repository](https://github.com/PhilippVerpoort/posted) and can be used and redistributed under the [MIT License](https://opensource.org/license/mit/).
