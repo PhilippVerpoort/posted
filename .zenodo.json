@@ -1,0 +1,47 @@
+{
+  "title": "POSTED: Potsdam open-source techno-economic database",
+  "version": "0.3.0",
+  "creators": [
+    {
+      "name": "Verpoort, Philipp C.",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0000-0003-1319-5006"
+    },
+    {
+      "name": "Bachorz, Clara",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0000-0003-1638-4048"
+    },
+    {
+      "name": "Dürrwächter, Jakob",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0000-0001-8961-5340"
+    },
+    {
+      "name": "Effing, Paul",
+      "affiliation": "Potsdam Institute for Climate Impact Research"
+    },
+    {
+      "name": "Gast, Lukas",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0009-0003-1416-5199"
+    },
+    {
+      "name": "Hofmann, Anke",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0009-0001-4837-3530"
+    },
+    {
+      "name": "Ueckerdt, Falko",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0000-0001-5585-030X"
+    }
+  ],
+  "keywords": ["techno-economic assessment", "database", "technologies", "energy", "climate"],
+  "license": {
+    "id": "MIT",
+    "title": "MIT Licence",
+    "url": "http://www.opensource.org/licenses/MIT"
+  },
+  "publication_date": "2024-02-09"
+}

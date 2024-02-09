@@ -6,7 +6,7 @@ authors = [
     "Philipp C. Verpoort <philipp.verpoort@pik-potsdam.de>",
     "Paul Effing <paul.effing@pik-potsdam.de>"
 ]
-license = "GPL-3.0-or-later"
+license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/PhilippVerpoort/posted/"
 packages = [
