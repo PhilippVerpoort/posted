@@ -21,11 +21,16 @@ TEBase <- R6::R6Class("TEBase",
   public = list(
     initialize = function(parent_variable) {
       private$..parent_variable <- parent_variable
-      var_specs <- list()
-      print("variables")
-      print(variables)
-     
-      private$..var_specs <- variables[grepl(paste0("^", parent_variable), names(variables))]
+      var_specs <- lapply(names(variables), function(name) {
+        if (startsWith(name, private$..parent_variable)) {
+          return(variables[[name]])
+        } else {
+          return(NULL)
+        }
+      })
+      names(var_specs) <- names(variables)
+      var_specs  <- Filter(function(x) !is.null(x), var_specs)
+      private$..var_specs <-  var_specs
     }
   ),
   active = list(

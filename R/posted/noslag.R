@@ -68,8 +68,98 @@ collect_files <- function(parent_variable, include_databases = NULL) {
   return(ret)
 }
 
-# Example usage:
-# result <- collect_files("your_parent_variable", include_databases = c("db1", "db2"))
+# Define normalise_units function
+normalise_units <- function(df, level, var_units, var_flow_ids) {
+  print("normalise_units")
+  prefix <- ifelse(level == 'reported', '', 'reference_')
+  var_col_id <- paste0(prefix, 'variable')
+  value_col_id <- paste0(prefix, 'value')
+  unit_col_id <- paste0(prefix, 'unit')
+  print("print df")
+  print(var_col_id)
+  #print(df)
+  print(df[,'parent_variable'][4])
+  print(df[, var_col_id][3])
+  print("printed df")
+
+  target_unit = sapply(1:nrow(df), function(row) {
+      ifelse(is.character(df[,'parent_variable'][row]),
+             var_units[[paste0(df[,'parent_variable'][row], "\\|", df[,var_col_id][row])]], NA)})
+  print("target unit")
+  # Create a temporary dataframe for concatenation
+  df_tmp <- cbind(
+    df,
+    target_unit = sapply(1:nrow(df), function(row) {
+      ifelse(is.character(df[,'parent_variable'][row]),
+             var_units[[paste0(df[,'parent_variable'][row], "\\|", df[,var_col_id][row])]], NA)
+    }),
+    target_flow_id = sapply(1:nrow(df), function(i) {
+      ifelse(is.character(df[,'parent_variable'][i]),
+             var_flow_ids[[paste0(df[,'parent_variable'][i], "\\|", df[,var_col_id][i])]], NA)
+    })
+  )
+  
+  print("apply unit conversion")
+  
+  # Apply unit conversion
+  conv_factor <- apply(df_tmp, 1, function(row) {
+    if (!is.na(row[value_col_id])) {
+      unit_convert(row[unit_col_id], row['target_unit'], row['target_flow_id'])
+    } else {
+      return(1.0)
+    }
+  })
+  
+  # Update value column with conversion factor
+  df_tmp[[value_col_id]] <- df_tmp[[value_col_id]] * conv_factor
+  
+  # If level is 'reported', update uncertainty column with conversion factor
+  if (level == 'reported') {
+    df_tmp[['uncertainty']] <- df_tmp[['uncertainty']] * conv_factor
+  }
+  
+  # Update unit column
+  df_tmp[[unit_col_id]] <- df_tmp[['target_unit']]
+  
+  # Drop unnecessary columns
+  df_tmp <- df_tmp[, !names(df_tmp) %in% c('target_unit', 'target_flow_id')]
+  
+  return(df_tmp)
+}
+
+normalise_values <- function(df) {
+  print(normalise_values)
+  # Calculate reference value
+  reference_value <- sapply(1:nrow(df), function(i) {
+    if (!is.na(df$reference_value[i])) {
+      df$reference_value[i]
+    } else {
+      1.0
+    }
+  })
+  
+  # Calculate new value
+  value_new <- df$value / reference_value
+  
+  # Calculate new uncertainty
+  uncertainty_new <- df$uncertainty / reference_value
+  
+  # Calculate new reference value
+  reference_value_new <- sapply(1:nrow(df), function(i) {
+    if (!is.na(df$reference_value[i])) {
+      1.0
+    } else {
+      NA
+    }
+  })
+  
+  # Assign new values to dataframe
+  df$value <- value_new
+  df$uncertainty <- uncertainty_new
+  df$reference_value <- reference_value_new
+  
+  return(df)
+}
 
 
 
@@ -161,9 +251,38 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       if (is.null(override)) {
         override <- list()
       }
-      print(private$..var_specs)
-      # get overriden var specs
-      # var_flow_ids <- list( var_name = var_specs['flow_id'])
+      print("normalize")
+     
+      var_flow_ids <- lapply(names(private$..var_specs), function(var_name) {
+        var_specs <- private$..var_specs[[var_name]]
+        if ('flow_id'%in% names(var_specs)) {
+          return(var_specs[['flow_id']])
+        } else {
+          return(NULL)
+        }
+      })
+      names(var_flow_ids) <- names(private$..var_specs)
+
+      var_units <- lapply(names(private$..var_specs), function(var_name) {
+        var_specs <- private$..var_specs[[var_name]]
+        if (!(('mapped' %in% names(var_specs)) && var_specs[['mapped']])) {
+          return(var_specs[['default_unit']])
+        } else {
+          return(NULL)
+        }
+      })
+      names(var_units <- names(private$..var_specs))
+      var_units <- Filter(function(x) !is.null(x), var_units)
+      var_units <- c(var_units, override)
+      var_units <- var_units[unique(names(var_units))]
+      # print(var_flow_ids)
+    
+      # normalise_units(private$..df, level = 'reference', var_units = var_units, var_flow_ids = var_flow_ids)
+      normalised <- private$..df %>%
+              normalise_units(level = 'reference', var_units = var_units, var_flow_ids = var_flow_ids) %>%
+              normalise_values() %>%
+              normalise_units(level = 'reported', var_units = var_units, var_flow_ids = var_flow_ids)
+      return(list(normalised=normalised, var_units=var_units))
     },
     
     # Internal method for selecting data

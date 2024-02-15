@@ -27,52 +27,26 @@ for (database_path in databases) {
   }
  
   tech_types = read_csv_file(file.path(database_path, 'tech_types.csv'))
-  # print(tech_types)
-
-  
   techs <- apply(tech_types, 1, function(row) {
-     temp <- list()
-     
+     temp <- list()  
     for (i in 2:length(row)) {
-      
-     
-      temp[[names(row[i])]] <- row[[i]]
-     
-      
-   
-
+         temp[[names(row[i])]] <- row[[i]]
     }
- 
     return(temp)
   })
-   
-   
-
+}
+names(techs) <- tech_types$tech_id
 
   
-
-
-# Set names of the list elements
-names(techs) <- tech_types$tech_id
-print(techs$'MEOH-2-OLEF')
-
-
-#   # Read technologies
-#   tech_types <- read_csv_file(file.path(database_path, 'tech_types.csv'))
-#   techs <- purrr::modify(techs, purrr::modify_at, tech_types$tech_id, ~ as.list(tech_types))
- }
-
- print("assigned flows")
 
 # Loop over databases and read definitions
 variables <- list()
 
 for (database_path in databases) {
   # Load variable definitions
-  print("flows_techs_config")
-  #print(flows)
- # print(techs)
-  variable_definitions <- read_definitions(file.path(database_path, 'definitions', 'variable'), flows, techs)
-  #print(variable_definitions)
-  variables <- purrr::modify(variables, purrr::modify_at, names(variable_definitions), ~ as.list(variable_definitions))
+  variables <-  c(variables, read_definitions(file.path(database_path, 'definitions', 'variable'), flows, techs))
+
+  
 }
+
+
