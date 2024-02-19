@@ -264,7 +264,6 @@ class DataSet(TEBase):
         var_units = {
             var_name: var_specs['default_unit']
             for var_name, var_specs in self._var_specs.items()
-            if not ('mapped' in var_specs and var_specs['mapped'])
         } | override
 
         # normalise reference units, normalise reference values, and normalise reported units
@@ -282,13 +281,21 @@ class DataSet(TEBase):
                drop_singular_fields: bool = True,
                extrapolate_period: bool = True,
                **field_vals_select) -> pd.DataFrame:
-        return self._cleanup(*self._select(override, drop_singular_fields, extrapolate_period, **field_vals_select))
+        selected, var_units, var_references = self._select(
+            override,
+            drop_singular_fields,
+            extrapolate_period,
+            **field_vals_select,
+        )
+        selected.insert(selected.columns.tolist().index('variable'), 'reference_variable', np.nan)
+        selected['reference_variable'] = selected['variable'].map(var_references)
+        return self._cleanup(selected, var_units)
 
     def _select(self,
                 override: Optional[dict[str, str]],
                 drop_singular_fields: bool,
                 extrapolate_period: bool,
-                **field_vals_select) -> tuple[pd.DataFrame, dict[str, str]]:
+                **field_vals_select) -> tuple[pd.DataFrame, dict[str, str], dict[str, str]]:
         # start from normalised data
         normalised, var_units = self._normalise(override)
         selected = normalised
@@ -345,7 +352,7 @@ class DataSet(TEBase):
             .set_index('variable')['reference_variable']
         if not var_references.index.is_unique:
             raise Exception(f"Multiple reference variables per reported variable found: {var_references}")
-        var_references = var_references.dropna().to_dict()
+        var_references = var_references.to_dict()
         selected.drop(columns=['reference_variable'], inplace=True)
 
         # strip off unit variants
@@ -354,28 +361,7 @@ class DataSet(TEBase):
             for variable, unit in var_units.items()
         }
 
-        # map variables and references to simplified variables (e.g. CAPEX / Output Capacity -> Capital Cost)
-        mapped_variables: dict[str, str] = {}
-        for variable, reference_variable in var_references.items():
-            try:
-                var_mapped = next(
-                    var_name
-                    for var_name, var_specs in variables.items()
-                    if (
-                        'mapped' in var_specs and
-                        var_specs['mapped'] and
-                        variable == var_specs['variable'] and
-                        reference_variable == var_specs['reference_variable']
-                    )
-                )
-            except StopIteration:
-                raise Exception(f"Cannot find mapped variable for pair of variable and reference: {variable} and "
-                                f"{reference_variable}")
-            mapped_variables[variable] = var_mapped
-            var_units[var_mapped] = combine_units(var_units[variable], var_units[reference_variable])
-        selected['variable'] = selected['variable'].map(lambda v: mapped_variables[v] if v in mapped_variables else v)
-
-        return selected, var_units
+        return selected, var_units, var_references
 
     # apply mappings between entry types
     def _apply_mappings(self, expanded: pd.DataFrame, var_units: dict) -> pd.DataFrame:
@@ -535,7 +521,10 @@ class DataSet(TEBase):
                   masks_database: bool = True,
                   **field_vals_select) -> pd.DataFrame:
         # get selection
-        selected, var_units = self._select(override, extrapolate_period, drop_singular_fields, **field_vals_select)
+        selected, var_units, var_references = self._select(override,
+                                                           extrapolate_period,
+                                                           drop_singular_fields,
+                                                           **field_vals_select)
 
         # compile masks from databases and function argument into one list
         if masks is not None and any(not isinstance(m, Mask) for m in masks):
@@ -598,16 +587,38 @@ class DataSet(TEBase):
 
                 # add to return list
                 ret.append(out)
+        aggregated = pd.concat(ret).reset_index()
+
+        # insert reference variables
+        var_ref_unique = {
+            var_references[var]
+            for var in aggregated['variable'].unique()
+            if not pd.isnull(var_references[var])
+        }
+        agg_append = []
+        for ref_var in var_ref_unique:
+            agg_append.append(pd.DataFrame({
+                'variable': [ref_var],
+                'value': [1.0],
+            } | {
+                col_id: ['*']
+                for col_id, field in self._fields.items() if col_id in aggregated
+            }))
+        agg_append = pd.concat(agg_append).reset_index(drop=True)
+        for col_id, field in self._fields.items():
+            if col_id not in aggregated:
+                continue
+            agg_append = field.select_and_expand(agg_append, col_id, aggregated[col_id].unique().tolist())
 
         # convert return list to dataframe, reset index, and clean up
-        return self._cleanup(pd.concat(ret).reset_index(), var_units)
+        return self._cleanup(pd.concat([aggregated, agg_append]), var_units)
 
     # clean up: sort columns and rows, round values, insert units
     def _cleanup(self, df: pd.DataFrame, var_units: dict[str, str]) -> pd.DataFrame:
         # sort columns and rows
         cols_sorted = (
             [col_id for col_id, field in self._fields.items() if isinstance(field, CustomFieldDefinition)] +
-            ['source', 'variable', 'region', 'period', 'value']
+            ['source', 'variable', 'reference_variable', 'region', 'period', 'value']
         )
         cols_sorted = [c for c in cols_sorted if c in df.columns]
         df = df[cols_sorted]
@@ -622,6 +633,14 @@ class DataSet(TEBase):
 
         # insert column containing units
         df.insert(df.columns.tolist().index('value'), 'unit', np.nan)
-        df['unit'] = df['variable'].map(var_units)
+        if 'reference_variable' in df:
+            df['unit'] = df.apply(
+                lambda row: combine_units(var_units[row['variable']], var_units[row['reference_variable']])
+                            if not pd.isnull(row['reference_variable']) else
+                            var_units[row['variable']],
+                axis=1,
+            )
+        else:
+            df['unit'] = df['variable'].map(var_units)
 
         return df
