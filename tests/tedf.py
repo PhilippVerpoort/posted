@@ -1,7 +1,7 @@
 import unittest
 
 
-class TEDFiles(unittest.TestCase):
+class tedf(unittest.TestCase):
     # importing the TEDataFile class
     def test_import(self):
         from posted.tedf import TEDF
