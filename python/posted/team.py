@@ -163,6 +163,11 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
             for flow in proc_edges
         })
 
+    # get name of value chain
+    @property
+    def name(self) -> str:
+        return self._name
+
     # get process graph as property
     @property
     def proc_graph(self) -> dict[str, dict[str, list[str]]]:
