@@ -199,11 +199,11 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
         for token in subdiagram.split('=>'):
             components = token.split('->')
             if len(components) == 1:
-                processes.append((token, None))
+                processes.append((token.strip(' '), None))
             elif len(components) == 2:
-                processes.append((components[0], components[1]))
+                processes.append((components[0].strip(' '), components[1].strip(' ')))
             else:
-                raise Exception(f"Too many '->' in diagram.")
+                raise Exception(f"Too many consecutive `->` in diagram.")
 
         for i in range(len(processes)):
             proc, flow = processes[i]
@@ -216,7 +216,7 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
     @staticmethod
     def _read_diagram(diagram: str) -> dict[str, dict[str, list[str]]]:
         out = {}
-        for diagram in diagram.replace(' ', '').split(';'):
+        for diagram in diagram.split(';'):
             for proc, flow, proc2 in BuildValueChain._reduce_subdiagram(diagram):
                 if flow is None:
                     continue
