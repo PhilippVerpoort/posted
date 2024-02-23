@@ -1,7 +1,7 @@
 import re
 import warnings
 from abc import abstractmethod
-from typing import Optional, Callable, TypeAlias
+from typing import Optional, Callable, TypeAlias, Tuple
 
 import numpy as np
 import pandas as pd
@@ -15,7 +15,8 @@ from posted.units import ureg
 
 try:
     import igraph
-    from igraph import Graph
+    from igraph import Graph, Layout
+
     HAS_IGRAPH: bool = True
 except ImportError:
     igraph = None
@@ -168,13 +169,13 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
         return self._proc_graph
 
     # get process graph as igraph object for plotting
-    def igraph(self) -> Graph:
+    def igraph(self) -> Tuple[Graph, Layout]:
         if not HAS_IGRAPH:
             raise ImportError("Need to install the `igraph` package first. Please run `pip install igraph` or `poetry "
                               "add igraph`.")
 
         procs = list(self._proc_graph.keys())
-        g = igraph.Graph(
+        graph = igraph.Graph(
             n=len(procs),
             edges=[
                 (procs.index(p1), procs.index(p2))
@@ -183,10 +184,13 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
                 for p2 in procs2
             ],
         )
-        g.vs['name'] = procs
-        g.es['name'] = [flow for p1 in procs for flow in self._proc_graph[p1]]
+        graph.vs['name'] = procs
+        graph.es['name'] = [flow for p1 in procs for flow in self._proc_graph[p1]]
 
-        return g
+        layout = graph.layout_reingold_tilford(root=[len(graph.vs) - 1])
+        layout.rotate(angle=90)
+
+        return graph, layout
 
     # reduce a single subdiagram
     @staticmethod
