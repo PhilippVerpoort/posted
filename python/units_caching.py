@@ -71,6 +71,13 @@ for unit_str in unique_values:
                 # all units without extra info are the units that are convertable without a flow_type
                 other_units.append(unit_str)
 
+# TODO: do automatic adjustment on the base year defined in units.py
+
+other_units.append("EUR_2005")
+other_units.append("USD_2005")
+other_units.append("EUR_2005/a")
+other_units.append("USD_2005/a")
+
 # ----- Define all possible conversions for each entry type and additionally for a missing entry type
 
 # define conversion set 
@@ -88,7 +95,7 @@ for unit_from in other_units:
 
 # iterate over all flow types
 for flow_type in flows.keys():
-    print(flow_type)
+    # print(flow_type)
     # get allowed dimensions for the flow type
     allowed_dims = allowed_flow_dims(flow_type)
     # define a set of all possible units for this flow type
@@ -112,6 +119,8 @@ for flow_type in flows.keys():
 # ----- Add combinations of units that are not contained in the data
 conversions.append(dict(unit_from="percent", unit_to="dimensionless", flow_type = ''))
 conversions.append(dict(unit_from="dimensionless", unit_to="percent", flow_type = ''))
+conversions.append(dict(unit_from="percent", unit_to="pct", flow_type=''))
+conversions.append(dict(unit_from="pct", unit_to="percent", flow_type=''))
 
 # ----- Call convUnit for each of the conversions and save the result in the cache dataframe 
 

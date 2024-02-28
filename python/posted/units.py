@@ -90,7 +90,7 @@ def allowed_flow_dims(flow_type: None | str):
         allowed_dims = ['[currency]']
     else:
         flow_type_data = flows[flow_type]
-        print(flow_type_data['default_unit'])
+        # print(flow_type_data['default_unit'])
         default_unit = flow_type_data['default_unit'].split(';')[0]
         allowed_dims = [str(ureg.Quantity(default_unit).dimensionality)] # default units dimension is always accepted
 
