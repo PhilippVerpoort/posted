@@ -294,8 +294,7 @@ RegionFieldDefinition <- R6::R6Class("RegionFieldDefinition", inherit = Abstract
   )
 )
 
-# Assuming AbstractFieldDefinition is already defined as an R6 class
-# Assuming is_float is a function to check if a value is a float
+
 
 PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = AbstractFieldDefinition,
   private = list(

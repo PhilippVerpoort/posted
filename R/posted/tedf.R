@@ -1,7 +1,7 @@
-source("R/posted/config.R")
+# source("R/posted/config.R")
 source("R/posted/columns.R")
 
-source("R/posted/path.R")
+# source("R/posted/path.R")
 
 # source("R/posted/units.R")
 
@@ -31,6 +31,8 @@ TEBase <- R6::R6Class("TEBase",
       names(var_specs) <- names(variables)
       var_specs  <- Filter(function(x) !is.null(x), var_specs)
       private$..var_specs <-  var_specs
+    
+      # print(private$..var_specs['default_unit'])
     }
   ),
   active = list(

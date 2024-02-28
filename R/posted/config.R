@@ -1,6 +1,8 @@
-source("R/posted/read.R")
+# source("R/posted/read.R")
 source("R/posted/path.R")
 source("R/posted/definitions.R")
+
+print("access config")
 
 # Loop over databases
 flows <-  list()
@@ -44,9 +46,39 @@ variables <- list()
 
 for (database_path in databases) {
   # Load variable definitions
+  
   variables <-  c(variables, read_definitions(file.path(database_path, 'definitions', 'variable'), flows, techs))
 
   
 }
 
+# # Define a global variable to store the cached value
+# cached_variables <- NULL
+
+# # Function to load the variable from file or retrieve it from cache
+# load_or_retrieve_variable <- function() {
+#   if (!is.null(cached_variables)) {
+#     # If the variable is already cached, return it
+#     return(cached_variables)
+#   } else {
+#     for (database_path in databases) {
+#     # Load variable definitions
+    
+#     cached_variables <-  c(variables, read_definitions(file.path(database_path, 'definitions', 'variable'), flows, techs))
+
+  
+# }
+#     return(cached_variables)
+#   }
+# }
+
+# # Function to access the variable
+# access_variables <- function() {
+#   variable <- load_or_retrieve_variable()
+#   # Use the variable as needed
+#   return(variable)
+# }
+
+# # Example usage
+# # variables <- access_variable()
 
