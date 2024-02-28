@@ -76,41 +76,27 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
   var_col_id <- paste0(prefix, 'variable')
   value_col_id <- paste0(prefix, 'value')
   unit_col_id <- paste0(prefix, 'unit')
-  print("var_units")
-  # print(var_units)
-  # print(df)
-  # print(df[,'parent_variable'][4])
-  # print(df[, var_col_id][3])
-  # print(var_units[[paste0(df[,'parent_variable'][row], "\\|", df[,var_col_id][row])]], NA)})
-  print("printed df")
-  # print(var_units)
+ 
   target_unit <- apply(df, 1, function(row) {
+    tryCatch({
     ifelse((is.character(row[var_col_id]) && (!(row[var_col_id] == ""))),
-            var_units[[paste0(row['parent_variable'], "|", row[var_col_id])]], NA)})
-  print("target unit")
-  # print(typeof(target_unit))
+            var_units[[paste0(row['parent_variable'], "|", row[var_col_id])]], NA)}, error=function(e){NA})
+            })
 
+  # TODO: make this try catch nicer
   target_flow_id <- apply(df, 1, function(row) {
-    ifelse((is.character(row[var_col_id]) && (!(row[var_col_id] == ""))),
-    var_flow_ids[[paste0(row['parent_variable'], "|", row[var_col_id])]], NA)})
 
-  print("target_flow_id")
+    tryCatch({
+    ifelse((is.character(row[var_col_id]) && (!(row[var_col_id] == ""))),
+            var_flow_ids[[paste0(row['parent_variable'], "|", row[var_col_id])]], NA)}, error=function(e){NA}, warning=function(w){NA})
+            })
+
+ 
   df_tmp <- df
 
   df_tmp$target_unit <- target_unit
   df_tmp$ target_flow_id <- target_flow_id
 
-  # df_tmp <- cbind(
-  #   df,
-  #   target_unit <- apply(df, 1, function(row) {
-  #     ifelse((is.character(row[var_col_id]) && (!(row[var_col_id] == ""))),
-  #           var_units[[paste0(row['parent_variable'], "|", row[var_col_id])]], NA)}),
-  #  target_flow_id <- apply(df, 1, function(row) {
-  #     ifelse((is.character(row[var_col_id]) && (!(row[var_col_id] == ""))),
-  #           var_flow_ids[[paste0(row['parent_variable'], "|", row[var_col_id])]], NA)})
-  # )
-  #print(df_tmp)
-  print("apply unit conversion")
   
   # Apply unit conversion
   conv_factor <- apply(df_tmp, 1, function(row) {
@@ -121,21 +107,21 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
     }
   })
  
- print("applied unit conversion")
+
   # Update value column with conversion factor
   df_tmp[[value_col_id]] <- as.numeric(df_tmp[[value_col_id]]) * conv_factor
-  print("updated value column")
+
   # If level is 'reported', update uncertainty column with conversion factor
   if (level == 'reported') {
     df_tmp[['uncertainty']] <- df_tmp[['uncertainty']] * conv_factor
   }
-  print("updated uncertainty column ")
+
   # Update unit column
   df_tmp[[unit_col_id]] <- df_tmp[['target_unit']]
-  print("updated unit column")
+
   # Drop unnecessary columns
   df_tmp <- df_tmp[, !names(df_tmp) %in% c('target_unit', 'target_flow_id')]
-  print("dropped unnecessary columns")
+
   return(df_tmp)
 }
 
@@ -263,8 +249,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       if (is.null(override)) {
         override <- list()
       }
-      print("normalize")
-     
+      
       var_flow_ids <- lapply(names(private$..var_specs), function(var_name) {
         var_specs <- private$..var_specs[[var_name]]
         if ('flow_id'%in% names(var_specs)) {
@@ -274,8 +259,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         }
       })
       names(var_flow_ids) <- names(private$..var_specs)
-      print("var_specs")
-      #print(private$..var_specs)
+ 
       var_units <- lapply(names(private$..var_specs), function(var_name) {
         var_specs <- private$..var_specs[[var_name]]
       
@@ -286,25 +270,18 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
           return(NULL)
         }
       })
-      print("var_units 0")
-      #print(var_units)
-      #print(names(private$..var_specs))
+   
       names(var_units) <- names(private$..var_specs)
-      print("var_units 1")
-      #print(var_units)
+
       var_units <- Filter(function(x) !is.null(x), var_units)
-      # var_units <- c(var_units, override)
-      
+
       # Get the names common to both var_units and override
       common_names <- intersect(names(var_units), names(override))
 
       # Replace values in var_units with values from override for common names
       var_units[common_names] <- override[common_names]
       
-      # print(var_flow_ids)
-      print("var_units 2")
-      # print(var_units)
-      # normalise_units(private$..df, level = 'reference', var_units = var_units, var_flow_ids = var_flow_ids)
+
       normalised <- private$..df %>%
               normalise_units(level = 'reference', var_units = var_units, var_flow_ids = var_flow_ids) %>%
               normalise_values() %>%
@@ -369,9 +346,9 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     normalise = function(override = NULL, inplace = FALSE) {
       normalised <- private$..normalise(override)
       if (inplace) {
-        private$..df <- normalised
+        private$..df <- normalised[1]
       } else {
-        return(normalised)
+        return(normalised[1])
       }
     },
     
