@@ -1,30 +1,30 @@
 variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|meoh,2014,,496.5,,EUR_2014,1,metric_ton/a,,Perez-Fortes16,Table 3
-CAPEX,Output Capacity|meoh,,,209.5,,EUR,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant.",Nyari20,Table A4
-CAPEX,Output Capacity|meoh,,,169,,EUR,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant.",Bos20,Table S8
-OPEX Fixed,Output Capacity|meoh,2014,,11,,MEUR_2014/a,440,kilometric_ton/a,,Perez-Fortes16,Table 3
+CAPEX,Output Capacity|Methanol,2014.0,,496.5,,EUR_2014,1.0,metric_ton/a,,Perez-Fortes16,Table 3
+CAPEX,Output Capacity|Methanol,,,209.5,,EUR,1.0,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant.",Nyari20,Table A4
+CAPEX,Output Capacity|Methanol,,,169.0,,EUR,1.0,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant.",Bos20,Table S8
+OPEX Fixed,Output Capacity|Methanol,2014.0,,11.0,,MEUR_2014/a,440.0,kilometric_ton/a,,Perez-Fortes16,Table 3
 OPEX Fixed Relative,,,Admin,0.45,,percent,,,Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * om = 0.45% of TPC .,Nyari20,Table 5
 OPEX Fixed Relative,,,Operation & Maintenance,1.5,,percent,,,Operation and maintenance. Percentage of the total plant cost (TPC),Nyari20,Table 5
-OPEX Fixed Relative,,,Tax,1,,percent,,,"In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)",Nyari20,Table 5
-OPEX Variable,Output|meoh,2014,,11.6,,MEUR_2014,402,kilometric_ton,Utilities and consumables ammount to 4.1% of variable operating costs (Fig. 6). 4.1% of 283 MEUR is 11.6 MEUR (see Table 3). A plant of capacity 440 kt/a produces 402 kt in 8000 full-load hours.,Perez-Fortes16,"Table 3, Figure 6"
-OPEX Variable,Output|meoh,,Labour,2.01,,EUR,1,metric_ton,"Nyari misquotes the result from Collodi (2017). There are in fact 61 workers * 60 000 mean salary =3.66MEUR/a. Production of 5000 MTPD => 1.825e6 t/a.Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t ",Nyari20,Table 5
-OPEX Variable,Output|meoh,,Admin,0.6,,EUR,1,metric_ton,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * direct labour.Production of 5000 MTPD => 1.825e6 t/a. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t",Nyari20,Table 5
-Input|elec,Output|meoh,,,1.5,,MWh,1,metric_ton,,Bazzanella17,Section 4.4.3
-Input|elec,Output|meoh,,,1.07,,MJ,1,kg,,Soler22,Table 3
-Input|elec,Output|meoh,2019,,25.4,,GJ,1,metric_ton,,IEA-FOH19,Assumptions annex
-Input|elec,Output|meoh,2030,,23.7,,GJ,1,metric_ton,,IEA-FOH19,Assumptions annex
-Input|elec,Output|meoh,,,0.175,,kWh,1,kg,,Nyari20,Table 6
-Input|co2,Output|meoh,2014,,1.46,,metric_ton,1,metric_ton,,Perez-Fortes16,Table 1
-Input|co2,Output|meoh,,,1.373,,metric_ton,1,metric_ton,,Bazzanella17,Section 4.4.3
-Input|co2,Output|meoh,,,1.4,,metric_ton,1,metric_ton,,Soler22,Table 3
-Input|co2,Output|meoh,,,1.397,,metric_ton,1,metric_ton,,Nyari20,Table 6
-Input|h2,Output|meoh,2014,,0.199,,metric_ton,1,metric_ton,,Perez-Fortes16,Table 1
-Input|h2,Output|meoh,,,0.193,,metric_ton,1,metric_ton,,Soler22,Table 3
-Input|h2,Output|meoh,,,189,,kg,1,metric_ton,,Bazzanella17,Section 4.4.3
-Input|h2,Output|meoh,,,0.192,,metric_ton,1,metric_ton,,Nyari20,Table 6
-Output|heat,Output|meoh,2014,,0.68,,MWh,1,metric_ton,,Perez-Fortes16,"Section 5, Page 727"
-Emissions|CO2,Output|meoh,,,0.023,,kg,1,kg,,Nyari20,Table 6
-Emissions|CO2,Output|meoh,2014,,0.09,,kg,1,kg,"Only direct emissions, no upstream emissions.",Perez-Fortes16,Table 4
-FLH,,2014,,8000,,hour,,,,Perez-Fortes16,Section 3.1
-Lifetime,,,,25,,year,1,metric_ton,,IEA-FOH19,Assumptions annex
-Lifetime,,2014,,20,,year,1,metric_ton,,Perez-Fortes16,"Section 3.3, Page 723"
+OPEX Fixed Relative,,,Tax,1.0,,percent,,,"In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)",Nyari20,Table 5
+OPEX Variable,Output|Methanol,2014.0,,11.6,,MEUR_2014,402.0,kilometric_ton,Utilities and consumables ammount to 4.1% of variable operating costs (Fig. 6). 4.1% of 283 MEUR is 11.6 MEUR (see Table 3). A plant of capacity 440 kt/a produces 402 kt in 8000 full-load hours.,Perez-Fortes16,"Table 3, Figure 6"
+OPEX Variable,Output|Methanol,,Labour,2.01,,EUR,1.0,metric_ton,"Nyari misquotes the result from Collodi (2017). There are in fact 61 workers * 60 000 mean salary =3.66MEUR/a. Production of 5000 MTPD => 1.825e6 t/a.Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t ",Nyari20,Table 5
+OPEX Variable,Output|Methanol,,Admin,0.6,,EUR,1.0,metric_ton,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * direct labour.Production of 5000 MTPD => 1.825e6 t/a. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t",Nyari20,Table 5
+Input|Electricity,Output|Methanol,,,1.5,,MWh,1.0,metric_ton,,Bazzanella17,Section 4.4.3
+Input|Electricity,Output|Methanol,,,1.07,,MJ,1.0,kg,,Soler22,Table 3
+Input|Electricity,Output|Methanol,2019.0,,25.4,,GJ,1.0,metric_ton,,IEA-FOH19,Assumptions annex
+Input|Electricity,Output|Methanol,2030.0,,23.7,,GJ,1.0,metric_ton,,IEA-FOH19,Assumptions annex
+Input|Electricity,Output|Methanol,,,0.175,,kWh,1.0,kg,,Nyari20,Table 6
+Input|Captured CO2,Output|Methanol,2014.0,,1.46,,metric_ton,1.0,metric_ton,,Perez-Fortes16,Table 1
+Input|Captured CO2,Output|Methanol,,,1.373,,metric_ton,1.0,metric_ton,,Bazzanella17,Section 4.4.3
+Input|Captured CO2,Output|Methanol,,,1.4,,metric_ton,1.0,metric_ton,,Soler22,Table 3
+Input|Captured CO2,Output|Methanol,,,1.397,,metric_ton,1.0,metric_ton,,Nyari20,Table 6
+Input|Hydrogen,Output|Methanol,2014.0,,0.199,,metric_ton,1.0,metric_ton,,Perez-Fortes16,Table 1
+Input|Hydrogen,Output|Methanol,,,0.193,,metric_ton,1.0,metric_ton,,Soler22,Table 3
+Input|Hydrogen,Output|Methanol,,,189.0,,kg,1.0,metric_ton,,Bazzanella17,Section 4.4.3
+Input|Hydrogen,Output|Methanol,,,0.192,,metric_ton,1.0,metric_ton,,Nyari20,Table 6
+Output|Heat,Output|Methanol,2014.0,,0.68,,MWh,1.0,metric_ton,,Perez-Fortes16,"Section 5, Page 727"
+Emissions|CO2,Output|Methanol,,,0.023,,kg,1.0,kg,,Nyari20,Table 6
+Emissions|CO2,Output|Methanol,2014.0,,0.09,,kg,1.0,kg,"Only direct emissions, no upstream emissions.",Perez-Fortes16,Table 4
+FLH,,2014.0,,8000.0,,hour,,,,Perez-Fortes16,Section 3.1
+Lifetime,,,,25.0,,year,1.0,metric_ton,,IEA-FOH19,Assumptions annex
+Lifetime,,2014.0,,20.0,,year,1.0,metric_ton,,Perez-Fortes16,"Section 3.3, Page 723"

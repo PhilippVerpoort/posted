@@ -1,50 +1,50 @@
 mode,reheating,variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-*,*,CAPEX,Output Capacity|steelliq,2013,#,184,,EUR_2013,1,t/a,,Wortler13,
-*,*,CAPEX,Output Capacity|steelliq,2018,#,184,,EUR_2013,1,t/a,"This reference assumes the value provided by Wörtler et al., 2013.",Vogl18,
-*,*,CAPEX,Output Capacity|steelliq,2021,#,479.89,,MEUR_2020,2,Mt/a,,Jacobasch21,"Page 9, Table 6"
-*,*,CAPEX,Output Capacity|steelliq,2022,#,331.2,,EUR_2013,1,t/a,"This reference assumes the value provided by Wörtler et al., 2013 but with an additional integration factor of 1.8.",AgoraEnergiewende22,
-*,*,OPEX Fixed Relative,,2022,#,3,,percent,,,,AgoraEnergiewende22,
-*,*,OPEX Fixed Relative,,2018,Operation and maintenance incl. refractory lining w/o labour,3,,percent,,,,Vogl18,Section 2.1
-*,*,OPEX Fixed Specific,Output|steelliq,2018,Labour,53.2,,EUR,1,t,,Vogl18,Section 2.1
-*,*,OPEX Fixed Specific,Output|steelliq,2008,#,3,,EUR,1,t,Labour cost,ECORYS08,Table 3.1
-*,*,OPEX Variable,Output|steelliq,2008,#,9,,EUR,1,t,Labour cost,ECORYS08,Table 3.1
-Primary,w/o reheating,Input|elec,Output|steelliq,2022,#,0.594,,MWh,1,t,Without reheating of DRI,AgoraEnergiewende22,
-Primary,w/ reheating,Input|elec,Output|steelliq,2022,#,0.753,,MWh,1,t,Reheating of cold DRI,AgoraEnergiewende22,
-Primary,w/o reheating,Input|elec,Output|steelliq,2018,#,0.753,,MWh,1,t,Without reheating of DRI,Vogl18,Section 3.1
-Primary,w/ reheating,Input|elec,Output|steelliq,2018,#,0.912,,MWh,1,t,Reheating of cold DRI,Vogl18,Section 3.1
-Primary,*,Input|elec,Output|steelliq,2022,#,2.4,,MJ,,kg,,Devlin22,Section 2.2.2
-Primary,*,Input|elec,Output|steelliq,2020,#,0.525,,MWh,1,t,,Hegemann20,
-Primary,*,Input|elec,Output|steelliq,2017,#,2.07,,GJ,1,t,,Otto17,Figure 6
-Primary,*,Input|elec,Output|steelliq,2020,#,475,165,kWh,1,t,,Rechenberger20,Section 4.2.1
-Primary,*,Input|elec,Output|steelliq,2007,#,1.7,,GJ,1,t,,Worell2007,Table 2.1.5
-Primary,*,Input|elec,Output|steelliq,2021,#,1047946.52,,MWh,2000000,t,,Jacobasch21,"Page 6, Table 2"
-Primary,*,Input|heat,Output|steelliq,2007,#,0.6,,GJ,1,t,,Worell2007,Table 2.1.5
-Primary,*,Input|ng,Output|steelliq,2017,#,0.78,,GJ;LHV,1,t,,Otto17,Figure 6
-Primary,*,Input|coal,Output|steelliq,2017,#,0.284,,MWh;LHV,1,t,"According to the source, additional coal is needed to achieve 2% carbon content in steel and 100% charge of sponge iron in the EAF.",Otto17,Figure 6
-Primary,*,Input|coal,Output|steelliq,2021,#,20814.54,,t,2000000,t,,Jacobasch21,"Page 6, Table 2"
-Secondary,*,Input|elec,Output|steelliq,2007,Electric arc,409,,kWh,1,t,,Worell2007,Section 2.1.4
-Secondary,*,Input|elec,Output|steelliq,2007,Gas cleaning and ladle refining,65,,kWh,1,t,,Worell2007,Section 2.1.4
-Secondary,*,Input|ng,Output|steelliq,2007,#,0.15,,GJ;LHV,1,t,,Worell2007,Section 2.1.4
-Secondary,*,Input|elec,Output|steelliq,2018,#,0.667,,MWh,1,t,,Vogl18,Section 3.1
-Secondary,*,Input|elec,Output|steelliq,2008,#,0.4,,MWh,1,t,,ECORYS08,Table 3.1
-Secondary,*,Input|heat,Output|steelliq,2008,#,0.43,,GJ,1,t,,ECORYS08,Table 3.1
-Primary,*,Input|dri,Output|steelliq,2022,#,1.1,,t,1,t,,Devlin22,Section 2.2.2
-Primary,*,Input|dri,Output|steelliq,2017,#,1.03,,t,1,t,,Otto17,Figure 6
-Primary,*,Input|dri,Output|steelliq,2021,#,1744694.39,,t,2000000,t,,Jacobasch21,"Page 6, Table 2"
-Primary,*,Input|steelscrap,Output|steelliq,2022,#,0.17,,t,1,t,,AgoraEnergiewende22,
-Primary,*,Input|steelscrap,Output|steelliq,2021,#,400220.06,,t,2000000,t,,Jacobasch21,"Page 6, Table 2"
-Secondary,*,Input|steelscrap,Output|steelliq,2008,#,1.09,,t,1,t,,ECORYS08,Table 3.1
-*,*,Input|oxygen,Output|steelliq,2022,#,0.5,,t,1,t,,AgoraEnergiewende22,
-*,*,Input|oxygen,Output|steelliq,2008,#,50,,m³;norm,1,t,,ECORYS08,Table 3.1
-*,*,Input|oxygen,Output|steelliq,2017,#,0.5,,t,1,t,,Otto17,Figure 6
-*,*,Input|oxygen,Output|steelliq,2021,#,8349.01,,t,2000000,t,,Jacobasch21,"Page 6, Table 2"
-*,*,Input|nitrogen,Output|steelliq,2017,#,0.5,,t,1,t,,Otto17,Figure 6
-*,*,Input|alloys,Output|steelliq,2022,#,0.011,,t,1,t,,AgoraEnergiewende22,
-*,*,Input|alloys,Output|steelliq,2008,#,0.011,,t,1,t,,ECORYS08,Table 3.1
-*,*,Input|alloys,Output|steelliq,2018,#,0.011,,t,1,t,,Vogl18,Section 2.1
-*,*,Input|lime,Output|steelliq,2022,#,0.05,,t,1,t,,AgoraEnergiewende22,
-*,*,Input|lime,Output|steelliq,2018,#,0.05,,t,1,t,,Vogl18,Section 2.1
-*,*,Input|graph_electr,Output|steelliq,2022,#,0.002,,t,1,t,,AgoraEnergiewende22,
-*,*,Input|graph_electr,Output|steelliq,2008,#,0.003,,t,1,t,,ECORYS08,Table 3.1
-*,*,Input|graph_electr,Output|steelliq,2018,#,0.002,,t,1,t,,Vogl18,Section 2.1
-*,*,Input|graph_electr,Output|steelliq,2021,#,3000,,t,2000000,t,,Jacobasch21,"Page 6, Table 2"
+*,*,CAPEX,Output Capacity|Steel Liquid,2013,#,184.0,,EUR_2013,1.0,t/a,,Wortler13,
+*,*,CAPEX,Output Capacity|Steel Liquid,2018,#,184.0,,EUR_2013,1.0,t/a,"This reference assumes the value provided by Wörtler et al., 2013.",Vogl18,
+*,*,CAPEX,Output Capacity|Steel Liquid,2021,#,479.89,,MEUR_2020,2.0,Mt/a,,Jacobasch21,"Page 9, Table 6"
+*,*,CAPEX,Output Capacity|Steel Liquid,2022,#,331.2,,EUR_2013,1.0,t/a,"This reference assumes the value provided by Wörtler et al., 2013 but with an additional integration factor of 1.8.",AgoraEnergiewende22,
+*,*,OPEX Fixed Relative,,2022,#,3.0,,percent,,,,AgoraEnergiewende22,
+*,*,OPEX Fixed Relative,,2018,Operation and maintenance incl. refractory lining w/o labour,3.0,,percent,,,,Vogl18,Section 2.1
+*,*,OPEX Fixed Specific,Output|Steel Liquid,2018,Labour,53.2,,EUR,1.0,t,,Vogl18,Section 2.1
+*,*,OPEX Fixed Specific,Output|Steel Liquid,2008,#,3.0,,EUR,1.0,t,Labour cost,ECORYS08,Table 3.1
+*,*,OPEX Variable,Output|Steel Liquid,2008,#,9.0,,EUR,1.0,t,Labour cost,ECORYS08,Table 3.1
+Primary,w/o reheating,Input|Electricity,Output|Steel Liquid,2022,#,0.594,,MWh,1.0,t,Without reheating of DRI,AgoraEnergiewende22,
+Primary,w/ reheating,Input|Electricity,Output|Steel Liquid,2022,#,0.753,,MWh,1.0,t,Reheating of cold DRI,AgoraEnergiewende22,
+Primary,w/o reheating,Input|Electricity,Output|Steel Liquid,2018,#,0.753,,MWh,1.0,t,Without reheating of DRI,Vogl18,Section 3.1
+Primary,w/ reheating,Input|Electricity,Output|Steel Liquid,2018,#,0.912,,MWh,1.0,t,Reheating of cold DRI,Vogl18,Section 3.1
+Primary,*,Input|Electricity,Output|Steel Liquid,2022,#,2.4,,MJ,,kg,,Devlin22,Section 2.2.2
+Primary,*,Input|Electricity,Output|Steel Liquid,2020,#,0.525,,MWh,1.0,t,,Hegemann20,
+Primary,*,Input|Electricity,Output|Steel Liquid,2017,#,2.07,,GJ,1.0,t,,Otto17,Figure 6
+Primary,*,Input|Electricity,Output|Steel Liquid,2020,#,475.0,165.0,kWh,1.0,t,,Rechenberger20,Section 4.2.1
+Primary,*,Input|Electricity,Output|Steel Liquid,2007,#,1.7,,GJ,1.0,t,,Worell2007,Table 2.1.5
+Primary,*,Input|Electricity,Output|Steel Liquid,2021,#,1047946.52,,MWh,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
+Primary,*,Input|Heat,Output|Steel Liquid,2007,#,0.6,,GJ,1.0,t,,Worell2007,Table 2.1.5
+Primary,*,Input|Fossil Gas,Output|Steel Liquid,2017,#,0.78,,GJ;LHV,1.0,t,,Otto17,Figure 6
+Primary,*,Input|Coal,Output|Steel Liquid,2017,#,0.284,,MWh;LHV,1.0,t,"According to the source, additional coal is needed to achieve 2% carbon content in steel and 100% charge of sponge iron in the EAF.",Otto17,Figure 6
+Primary,*,Input|Coal,Output|Steel Liquid,2021,#,20814.54,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
+Secondary,*,Input|Electricity,Output|Steel Liquid,2007,Electric arc,409.0,,kWh,1.0,t,,Worell2007,Section 2.1.4
+Secondary,*,Input|Electricity,Output|Steel Liquid,2007,Gas cleaning and ladle refining,65.0,,kWh,1.0,t,,Worell2007,Section 2.1.4
+Secondary,*,Input|Fossil Gas,Output|Steel Liquid,2007,#,0.15,,GJ;LHV,1.0,t,,Worell2007,Section 2.1.4
+Secondary,*,Input|Electricity,Output|Steel Liquid,2018,#,0.667,,MWh,1.0,t,,Vogl18,Section 3.1
+Secondary,*,Input|Electricity,Output|Steel Liquid,2008,#,0.4,,MWh,1.0,t,,ECORYS08,Table 3.1
+Secondary,*,Input|Heat,Output|Steel Liquid,2008,#,0.43,,GJ,1.0,t,,ECORYS08,Table 3.1
+Primary,*,Input|Directly Reduced Iron,Output|Steel Liquid,2022,#,1.1,,t,1.0,t,,Devlin22,Section 2.2.2
+Primary,*,Input|Directly Reduced Iron,Output|Steel Liquid,2017,#,1.03,,t,1.0,t,,Otto17,Figure 6
+Primary,*,Input|Directly Reduced Iron,Output|Steel Liquid,2021,#,1744694.39,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
+Primary,*,Input|Steel Scrap,Output|Steel Liquid,2022,#,0.17,,t,1.0,t,,AgoraEnergiewende22,
+Primary,*,Input|Steel Scrap,Output|Steel Liquid,2021,#,400220.06,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
+Secondary,*,Input|Steel Scrap,Output|Steel Liquid,2008,#,1.09,,t,1.0,t,,ECORYS08,Table 3.1
+*,*,Input|Oxygen,Output|Steel Liquid,2022,#,0.5,,t,1.0,t,,AgoraEnergiewende22,
+*,*,Input|Oxygen,Output|Steel Liquid,2008,#,50.0,,m³;norm,1.0,t,,ECORYS08,Table 3.1
+*,*,Input|Oxygen,Output|Steel Liquid,2017,#,0.5,,t,1.0,t,,Otto17,Figure 6
+*,*,Input|Oxygen,Output|Steel Liquid,2021,#,8349.01,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
+*,*,Input|Nitrogen,Output|Steel Liquid,2017,#,0.5,,t,1.0,t,,Otto17,Figure 6
+*,*,Input|Alloys,Output|Steel Liquid,2022,#,0.011,,t,1.0,t,,AgoraEnergiewende22,
+*,*,Input|Alloys,Output|Steel Liquid,2008,#,0.011,,t,1.0,t,,ECORYS08,Table 3.1
+*,*,Input|Alloys,Output|Steel Liquid,2018,#,0.011,,t,1.0,t,,Vogl18,Section 2.1
+*,*,Input|Lime,Output|Steel Liquid,2022,#,0.05,,t,1.0,t,,AgoraEnergiewende22,
+*,*,Input|Lime,Output|Steel Liquid,2018,#,0.05,,t,1.0,t,,Vogl18,Section 2.1
+*,*,Input|Graphite Electrode,Output|Steel Liquid,2022,#,0.002,,t,1.0,t,,AgoraEnergiewende22,
+*,*,Input|Graphite Electrode,Output|Steel Liquid,2008,#,0.003,,t,1.0,t,,ECORYS08,Table 3.1
+*,*,Input|Graphite Electrode,Output|Steel Liquid,2018,#,0.002,,t,1.0,t,,Vogl18,Section 2.1
+*,*,Input|Graphite Electrode,Output|Steel Liquid,2021,#,3000.0,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
