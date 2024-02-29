@@ -1,4 +1,4 @@
-- where: "variable=='Tech|DAC|CAPEX'"
+- where: "variable=='Tech|Direct Air Capture|CAPEX'"
   use: "source=='Okzan22'"
   weight: nan
   other: 1.0
