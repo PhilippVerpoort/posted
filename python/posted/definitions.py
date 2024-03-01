@@ -8,7 +8,11 @@ from posted.read import read_yml_file
 
 
 def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
-    assert definitions_dir.is_dir()
+    # check that variables exists and is a directory
+    if not definitions_dir.exists():
+        return {}
+    if not definitions_dir.is_dir():
+        raise Exception(f"Should be a directory but is not: {definitions_dir}")
 
     # read all definitions and tags
     definitions = {}
