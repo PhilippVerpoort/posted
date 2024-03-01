@@ -20,9 +20,14 @@ try:
     HAS_IGRAPH: bool = True
 except ImportError:
     igraph = None
-    HAS_IGRAPH: bool = True
+
     class Graph:
         pass
+
+    class Layout:
+        pass
+
+    HAS_IGRAPH: bool = False
 
 
 # calculate annuity factor
@@ -233,6 +238,8 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
                         out[proc] |= {flow: ([proc2] if proc2 is not None else [])}
                 else:
                     out[proc] = {flow: ([proc2] if proc2 is not None else [])}
+                if proc2 is not None and proc2 not in out:
+                    out[proc2] = {}
 
         return out
 
