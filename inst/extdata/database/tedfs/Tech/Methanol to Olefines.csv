@@ -1,19 +1,19 @@
 variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Propylene,2021,0.76,,MEUR_2015,1.0,kilometric_ton/a,,Oliveira21,"Page 1, Section Costs"
-CAPEX Annualised,Output Capacity|All Products Mass,2017,300.0,,EUR_2015,1.0,metric_ton,Depreciated over 10 years with an interest rate of 10%.,Bazzanella17,Table 35
-OPEX Fixed Relative,,2021,3.0,,percent,,,,Oliveira21,"Page 1, Section Costs"
-OPEX Fixed Specific,Output Capacity|All Products Mass,2017,45.0,,EUR_2015,1.0,metric_ton,,Bazzanella17,Table 35
-OPEX Variable,Output|Propylene,2021,0.02,,MEUR_2015,1.0,kilometric_ton,,Oliveira21,"Page 1, Section Costs"
-Input|Electricity,Output|All Products,2017,5.0,,GJ,1.0,metric_ton,The source only reports “energy demand” and does not specify it this is heat or electricity.,Bazzanella17,Section 4.5.3
-Input|Methanol,Output|All Products,2017,2.28,,metric_ton,1.0,metric_ton,,Bazzanella17,Section 4.5.3
-Input|Methanol,Output|Ethylene,2015,1560.0,,kilometric_ton,214.0,kilometric_ton,,Jasper15,"Table 1, Page 689"
-Output|Propylene,Output|Ethylene,2015,386.0,,kilometric_ton,214.0,kilometric_ton,,Jasper15,"Table 1, Page 689"
-Output|Propylene,Input|methanol,2021,0.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
-Output|Ethylene,Input|methanol,2021,0.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
-Output|Residual Gas,Input|methanol,2021,0.3,,metric_ton,2.9,metric_ton,C4 fraction and LPG,Zhao21,"Figure 2, Page 196"
-Input|Electricity,Input|methanol,2021,50.6,,kWh,2.9,metric_ton,C4 fraction and LPG,Zhao21,"Figure 2, Page 196"
-Input|Steam,Input|methanol,2021,4.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
-Input|Cooling Water,Input|methanol,2021,93.3,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
-FLH,,2021,8550.0,,hour,,,,Oliveira21,Page 1
-Lifetime,,2021,20.0,,year,,,,Oliveira21,Page 1
-Emissions|CO2,Output|Propylene,2021,0.06,,kilometric_ton,1.0,kilometric_ton,Corrected unit.,Oliveira21,"Page 2, Section Emissions"
+CAPEX,Output Capacity|Propylene,2021,0.76,,MEUR_2015,1,kilometric_ton/a,,Oliveira21,"Page 1, Section Costs"
+CAPEX Annualised,Output Capacity|All Products Mass,2017,300,,EUR_2015,1,metric_ton/a,Depreciated over 10 years with an interest rate of 10%.,Bazzanella17,Table 35
+OPEX Fixed Relative,,2021,3,,percent,,,,Oliveira21,"Page 1, Section Costs"
+OPEX Fixed Specific,Output|All Products Mass,2017,45,,EUR_2015,1,metric_ton,,Bazzanella17,Table 35
+OPEX Variable,Output|Propylene,2021,0.02,,MEUR_2015,1,kilometric_ton,,Oliveira21,"Page 1, Section Costs"
+Input|Electricity,Output|All Products Mass,2017,5,,GJ,1,metric_ton,The source only reports “energy demand” and does not specify it this is heat or electricity.,Bazzanella17,Section 4.5.3
+Input|Methanol,Output|All Products Mass,2017,2.28,,metric_ton,1,metric_ton,,Bazzanella17,Section 4.5.3
+Input|Methanol,Output|Ethylene,2015,1560,,kilometric_ton,214,kilometric_ton,,Jasper15,"Table 1, Page 689"
+Output|Propylene,Output|Ethylene,2015,386,,kilometric_ton,214,kilometric_ton,,Jasper15,"Table 1, Page 689"
+Output|Propylene,Input|Methanol,2021,0.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
+Output|Ethylene,Input|Methanol,2021,0.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
+Output|Residual Gas,Input|Methanol,2021,0.3,,metric_ton,2.9,metric_ton,C4 fraction and LPG,Zhao21,"Figure 2, Page 196"
+Input|Electricity,Input|Methanol,2021,50.6,,kWh,2.9,metric_ton,C4 fraction and LPG,Zhao21,"Figure 2, Page 196"
+Input|Steam,Input|Methanol,2021,4.5,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
+Input|Cooling Water,Input|Methanol,2021,93.3,,metric_ton,2.9,metric_ton,,Zhao21,"Figure 2, Page 196"
+FLH,,2021,8550,,hour,,,,Oliveira21,Page 1
+Lifetime,,2021,20,,year,,,,Oliveira21,Page 1
+Emissions|CO2,Output|Propylene,2021,0.06,,kilometric_ton,1,kilometric_ton,Corrected unit.,Oliveira21,"Page 2, Section Emissions"

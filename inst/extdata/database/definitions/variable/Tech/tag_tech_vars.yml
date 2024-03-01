@@ -5,10 +5,10 @@ Tech Variables w/o Flows:
     default_unit: '{default currency}'
     default_reference: '{parent variable}|Output Capacity|{primary output}'
   CAPEX Annualised:
-    description: Annualised CAPital EXpenditure (in reference to input or output specified by reference variable)
+    description: Annualised CAPital EXpenditure (in reference to capacity specified by reference variable)
     dimension: '[currency]'
     default_unit: '{default currency}'
-    default_reference: '{parent variable}|Output|{primary output}'
+    default_reference: '{parent variable}|Output Capacity|{primary output}'
   OPEX Fixed:
     description: OPerational EXpenditure fixed (in reference to capacity specified by reference variable)
     dimension: '[currency]/[time]'
@@ -52,7 +52,7 @@ Tech Variables w/o Flows:
   Output Capacity|All Products Mass:
     description: Capacity per mass of all outputs produced
     dimension: '[mass]/[time]'
-    default_unit: 't'
+    default_unit: 't/a'
   Capture Rate:
     description: Share of CO2 emissions captured
     dimension: 'dimensionless'

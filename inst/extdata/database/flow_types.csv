@@ -130,7 +130,7 @@ Nitrogen,o_ratio,0.00%,,
 Graphite Electrode,name,Graphite electrodes,,
 Graphite Electrode,default_unit,t,,
 Steam,name,Steam,,
-Steam,default_unit,MWh,,
+Steam,default_unit,t,,
 Fischer-Tropsch Fuel,name,Fischer_Tropsch diesel,,
 Fischer-Tropsch Fuel,default_unit,MWh;LHV,,
 Fischer-Tropsch Fuel,energycontent_LHV,40991.0507126284 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
