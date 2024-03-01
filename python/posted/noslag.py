@@ -240,6 +240,14 @@ class DataSet(TEBase):
         # query relevant variables
         data = data.query(f"parent_variable=='{self._parent_variable}'")
 
+        # drop entries with unknown variables and warn
+        for var_type in ('variable', 'reference_variable'):
+            cond = (data[var_type].notnull() &
+                    data.apply(lambda row: f"{row['parent_variable']}|{row[var_type]}" not in self._var_specs, axis=1))
+            if cond.any():
+                warnings.warn(f"Unknown {var_type}, so dropping rows:\n{data.loc[cond, var_type]}")
+                data = data.loc[~cond].reset_index(drop=True)
+
         # return
         return data
 
