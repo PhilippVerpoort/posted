@@ -440,7 +440,7 @@ class DataSet(TEBase):
                     ) / unit_convert(
                         var_units[row['reference_variable']] + '/a',
                         var_units[re.sub(r'(Input|Output)', r'\1 Capacity', row['reference_variable'])],
-                        self._var_specs[row['reference_variable']]['flow_id'],
+                        self._var_specs[row['reference_variable']]['flow_id'] if 'flow_id' in self._var_specs[row['reference_variable']] else np.nan,
                     ) * (rows.query(
                         f"variable=='{row['variable'].replace('|OPEX Fixed Specific', '|OCF')}'"
                     ).pipe(
