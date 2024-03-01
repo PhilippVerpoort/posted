@@ -612,11 +612,14 @@ class DataSet(TEBase):
                 col_id: ['*']
                 for col_id, field in self._fields.items() if col_id in aggregated
             }))
-        agg_append = pd.concat(agg_append).reset_index(drop=True)
-        for col_id, field in self._fields.items():
-            if col_id not in aggregated:
-                continue
-            agg_append = field.select_and_expand(agg_append, col_id, aggregated[col_id].unique().tolist())
+        if agg_append:
+            agg_append = pd.concat(agg_append).reset_index(drop=True)
+            for col_id, field in self._fields.items():
+                if col_id not in aggregated:
+                    continue
+                agg_append = field.select_and_expand(agg_append, col_id, aggregated[col_id].unique().tolist())
+        else:
+            agg_append = None
 
         # convert return list to dataframe, reset index, and clean up
         return self._cleanup(pd.concat([aggregated, agg_append]), var_units)
