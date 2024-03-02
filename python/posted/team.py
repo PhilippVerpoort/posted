@@ -147,13 +147,17 @@ class CalcVariable(AbstractAnalysisOrManipulation):
 # building value chains
 class BuildValueChain(AbstractAnalysisOrManipulation):
     _name: str
-    _proc_graph: dict[str, dict[str, list[str]]]
+    _demand: dict[str, dict[str, pint.Quantity]]
+    _sc_demand: dict[str, dict[str, pint.Quantity]] | None
+    _proc_graph: dict[str, dict[str, list[str]]] | None
 
     def __init__(self,
                  name: str,
                  demand: dict[str, dict[str, pint.Quantity]],
                  process_diagram: Optional[str] = None,
-                 process_tree: Optional[dict[str, dict[str, list[str]]]] = None,):
+                 process_tree: Optional[dict[str, dict[str, list[str]]]] = None,
+                 sc_demand: Optional[dict[str, dict[str, pint.Quantity]]] = None,
+                 ):
         if process_diagram is None and process_tree is None:
             raise Exception('Either the process_diagram or the process_tree argument must be provided.')
         if process_diagram is not None and process_tree is not None:
@@ -161,6 +165,7 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
 
         self._name = name
         self._demand = demand
+        self._sc_demand = sc_demand
         self._proc_graph = self._read_diagram(process_diagram) if process_diagram is not None else process_tree
         self._flows = list({
             flow
@@ -267,6 +272,30 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
             for proc1 in self._proc_graph
             for flow, proc1_flow_targets in self._proc_graph[proc1].items()
         ])
+
+        # add supply-chain demand
+        if self._sc_demand is not None:
+            tsm = np.concatenate([
+                tsm,
+                [
+                    [
+                        row[f"Tech|{proc1}|Output|{flow}"].m
+                        if proc1 == proc2 else
+                        0.0
+                        for proc2 in self._proc_graph
+                    ]
+                    for proc1 in self._sc_demand
+                    for flow in self._sc_demand[proc1]
+                ]
+            ])
+            d = np.concatenate([
+                d,
+                [
+                    self._sc_demand[proc1][flow].to(row[f"Tech|{proc1}|Output|{flow}"].u).m
+                    for proc1 in self._sc_demand
+                    for flow in self._sc_demand[proc1]
+                ]
+            ])
 
         # calculate functional units from technosphere matrix and demand
         func_units = solve(tsm, d)
