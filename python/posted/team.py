@@ -307,6 +307,10 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
             f"Value Chain|{self._name}|Demand|{proc}|{flow}": self._demand[proc][flow]
             for proc in self._demand
             for flow in self._demand[proc]
+        } | {
+            f"Value Chain|{self._name}|SC Demand|{proc}|{flow}": self._sc_demand[proc][flow]
+            for proc in self._sc_demand
+            for flow in self._sc_demand[proc]
         })
 
 
@@ -339,7 +343,16 @@ class LCOXAnalysis(AbstractAnalysisOrManipulation):
 
     # calculate LCOX for one value chain
     def _calc(self, vc: str, row: pd.Series) -> dict[str, pint.Quantity]:
-        reference = self._reference or next(var for var in row.index if var.startswith(f"Value Chain|{vc}|Demand|"))
+        reference = self._reference
+        if reference is None:
+            try:
+                reference = next(var for var in row.index if var.startswith(f"Value Chain|{vc}|Demand|"))
+            except StopIteration:
+                try:
+                    reference = next(var for var in row.index if var.startswith(f"Value Chain|{vc}|SC Demand|"))
+                except StopIteration:
+                    raise Exception('The LCOX Analysis requires a reference (demand or supply-chain demand provided as '
+                                    'either argument or one of the dataframe variables).')
 
         ret = {}
         for func_unit_tech, func_unit in row[row.index.str.startswith(f"Value Chain|{vc}|Functional Units|")].items():
