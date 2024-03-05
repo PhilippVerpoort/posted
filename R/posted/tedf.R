@@ -32,7 +32,7 @@ TEBase <- R6::R6Class("TEBase",
       var_specs  <- Filter(function(x) !is.null(x), var_specs)
       private$..var_specs <-  var_specs
     
-      # print(private$..var_specs['default_unit'])
+      print(private$..var_specs['region'])
     }
   ),
   active = list(
@@ -114,15 +114,17 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
       missing_columns <- setdiff(names(private$..columns), names(private$..df))
 
 
-      for(col in missing_columns) {
-        mode_type  =  private$..columns[[col]]$dtype
+      for(col_id in missing_columns) {
+        col <- private$..columns[[col_id]]
+        mode_type  =  private$..columns[[col_id]]$dtype
         if(mode_type == "int") {
-        private$..df[,col] <- vector(mode = "double")
+        private$..df[,col_id] <- vector(mode = "double")
         } else if((mode_type =="str")| mode_type=="category" ) {
-          private$..df[,col] <- vector(mode = "character")
+          private$..df[,col_id] <- vector(mode = "character")
         } else {
           stop("dtype of column not allowed")
         }
+        private$..df[,col_id] <- col$default
         }
       
       # private$..df[,missing_columns] <- NaN

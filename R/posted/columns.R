@@ -187,10 +187,22 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     ..codes = NULL,
 
     ..expand = function(df, col_id, field_vals, ...) {
-      rbind(df[df[[col_id]] %in% field_vals, ],
-            merge(df[df[[col_id]] == '*', ][, !(col_id), drop = FALSE],
-                  expand.grid(!!rlang::sym(col_id) := field_vals),
-                  all = TRUE))
+      # Filtering rows where col_id is in field_vals
+      print(df)
+      df_filtered <- df %>%
+        filter(col_id %in% field_vals)
+      print("df asterisk")
+      print(df %>% filter(col_id == "*"))
+      # Filtering rows where col_id is '*'
+      df_asterisk <- df %>%
+        filter(col_id == "*") %>%
+        select(-all_of(col_id)) %>%
+        crossing(data.frame(col_id = field_vals))# %>%
+        # select(col_id, everything())  # Putting new_col_id as the first column
+
+# Concatenating the filtered data frames
+result <- bind_rows(df_filtered, df_asterisk)
+      return(result)
     },
     
     ..select = function(df, col_id, field_vals, ...) {
@@ -219,11 +231,13 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     
     
     is_allowed = function(cell) {
+      print(cell)
       if (is.na(cell)) {
         return(FALSE)
       }
       if (private$..coded) {
-        return(cell %in% private$..codes || cell == '*' ||
+      
+        return(cell %in% names(private$..codes) || cell == '*' ||
                (cell == '#' && private$..col_type == 'component'))
       } else {
         return(TRUE)
@@ -232,8 +246,10 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     
     
     # TODO: rework select and expand function according to new style
-    select_and_expand = function(df, col_id, field_vals = NULL, ...) {
-      if (is.null(field_vals)) {
+    select_and_expand = function(df, col_id, field_vals = NA, ...) {
+      print("field vals initial")
+      print(field_vals)
+      if (is.na(field_vals)) {
         if (col_id == 'period') {
           field_vals <- default_periods
         } else if (private$..coded) {
@@ -242,12 +258,23 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
           field_vals <- unique(df[[col_id]][df[[col_id]] != '*'])
         }
       } else {
-        if (is.null(field_vals)) {
-          stop("Selected values must not contain the asterisk. Omit the argument to select all entries.")
+        if(!(is.list(field_vals))) {
+        field_vals <- list(field_vals)}
+        print("field_vals_columns")
+        print(field_vals)
+
+        for (val in field_vals) {
+          print(val)
+          if (!self$is_allowed(val)) {
+            stop(paste("Invalid type selected for field '", col_id, "': ", val, sep = ""))
+          }
         }
-        if (is.field_vals(field_vals)) {
-          stop(paste("Invalid type selected for field '", col_id, "': ", field_vals))
+
+        if ("*" %in% field_vals) {
+          stop(paste("Selected values for field '", col_id, "' must not contain the asterisk.",
+                    "Omit the '", col_id, "' argument to select all entries.", sep = ""))
         }
+
       }
       
       df <- private$..expand(df, col_id, field_vals, ...)

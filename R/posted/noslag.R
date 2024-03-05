@@ -215,10 +215,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         file_dfs <- list()
         for (f in files) {
           # load
-          print("load")
           f$load()
-        
-
           #check for inconsistencies
           if (check_inconsistencies) {
             f$check()
@@ -246,6 +243,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     
     # Internal method for normalizing data
     ..normalise = function(override) {
+      print("normalise")
+      # print(override)
       if (is.null(override)) {
         override <- list()
       }
@@ -280,7 +279,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       # Replace values in var_units with values from override for common names
       var_units[common_names] <- override[common_names]
-      
+      print("call normalise_units")
 
       normalised <- private$..df %>%
               normalise_units(level = 'reference', var_units = var_units, var_flow_ids = var_flow_ids) %>%
@@ -291,15 +290,95 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     
     # Internal method for selecting data
     ..select = function(override, drop_singular_fields, extrapolate_period, ...) {
-      # Implementation of ..select method
-      # ... (similar logic as in Python)
-    },
+      field_vals_select <- list(...)
+      print("select")
+      print(override)
+      # start from normalised data
+      normalised_units <- private$..normalise(override)
+      selected <- normalised_units$normalised
+      var_units <- normalised_units$var_units
+      
+      # drop unit columns and reference falue column
+      selected <- selected %>% select( -unit, -reference_unit, -reference_value)
+      
+      # drop columns containing comments and uncertaindty field (which is currently unsupported)
+      comment_columns <- Filter(function(col_id) {(private$..columns[[col_id]]$col_type == "comment")}, names(private$..columns))
+      selected <- selected %>%
+        select(-uncertainty,  -any_of(comment_columns))
+      
+      # add parent variable as prefix to other variable columns
+      selected <- mutate(selected, variable = paste(parent_variable, variable, sep = "|"))
+      selected <- mutate(selected, reference_variable = paste(parent_variable, reference_variable, sep = "|"))
+      selected <- select(selected, -parent_variable)
+      
+      # raise exception if fields listed in arguments that are uknown
+      for (field_id in names(field_vals_select)) {
+
+        if (!(field_id %in% names(private$..fields))) {
+          stop(paste("Field '", field_id, "' does not exist and cannot be used for selection.", sep = ""))
+        }
+      }
+
+      # order fields for selection: period must be expanded last due to the interpolation
+      print("fields_select 1")
+      fields_select <- list()
+      for (col_id in names(field_vals_select)) {
+        fields_select[[col_id]] <- private$..fields[[col_id]]
+      }
+      print("fields_select 2")
+      for (col_id in names(private$..fields)) {
+        if (!(col_id %in% c('period', field_vals_select))) {
+          fields_select[[col_id]] <- private$..fields[[col_id]]
+        }
+      }
+      print("fields_select 3")
+      fields_select[['period']] <- private$..fields[['period']]
+      print("fields_select 4")
+      # select and expand fields
+      for (col_id in names(fields_select)) {
+        print("field")
+        field <- fields_select[[col_id]]
+        print("field_vals")
+        field_vals <- ifelse(col_id %in% names(field_vals_select), field_vals_select[[col_id]], NA)
+        print("selected")
+        selected <- field$select_and_expand(selected, col_id, field_vals, extrapolate_period=extrapolate_period)
+      }
+
+      # drop custom fields with only one value if specified in method argument
+
+      # if (drop_singular_fields) {
+        
+      # }
     
-    # Internal method for cleaning up data
-    ..cleanup = function(selected) {
-      # Implementation of ..cleanup method
-      # ... (if needed)
-    }
+
+      print("selected and expanded")
+      print(selected)
+      selected_and_var_units <- list(selected=selected, var_units=var_units)
+      print("return")
+      return(selected_and_var_units)
+    },
+    ..cleanup = function(df, var_units) {
+      # Sort columns and rows
+      cols_sorted <- c(names(df)[sapply(self$fields, function(field) class(field) == "CustomFieldDefinition")], 
+                      'source', 'variable', 'region', 'period', 'value')
+      cols_sorted <- cols_sorted[cols_sorted %in% names(df)]
+      df <- df[cols_sorted, ]
+      df <- df[order(df[, cols_sorted[cols_sorted != 'value']]), , drop = FALSE]
+
+      # Round values
+      df$value <- ifelse(is.na(df$value), df$value, round(df$value, digits = 4))
+
+      # Insert column containing units
+      unit_col_index <- match('value', names(df))  # Get the index of 'value' column
+      df <- cbind(df[, 1:(unit_col_index - 1)], unit = NA, df[, unit_col_index], df[, (unit_col_index + 1):ncol(df)])
+      df$unit <- var_units[df$variable]
+
+      return(df)
+}
+
+# Usage:
+# cleaned_df <- cleanup(df, var_units)
+
   ),
   public = list(
     # Constructor
@@ -321,7 +400,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       
       # Load data if provided, otherwise load from TEDataFiles
       if (!is.null(data)) {
-        private$..df <- data
+        private$..df <- data.frame(data)
       } else {
    
         if (!is.null(include_databases)) {
@@ -335,8 +414,10 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
             file_paths <- list()
      
         }
-        private$..df <- private$..load_files(include_databases, file_paths, check_inconsistencies)
+        private$..df <- data.frame(private$..load_files(include_databases, file_paths, check_inconsistencies))
       }
+      print("private_df_type")
+      print(typeof(private$..df))
     },
 
   
@@ -346,19 +427,19 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     normalise = function(override = NULL, inplace = FALSE) {
       normalised <- private$..normalise(override)
       if (inplace) {
-        private$..df <- normalised[1]
+        private$..df <- data.frame(normalised$normalised)
       } else {
-        return(normalised[1])
+        return(data.frame(normalised$normalised))
       }
     },
     
-    # Active binding for selecting data
+    
     select = function(override = NULL,
                       drop_singular_fields = TRUE,
                       extrapolate_period = TRUE,
                       ...) {
       result <- private$..cleanup(private$..select(override, drop_singular_fields, extrapolate_period, ...))
-      result
+      return(result)
     }
   ),
   active = list(
