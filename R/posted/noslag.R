@@ -310,7 +310,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       selected <- mutate(selected, variable = paste(parent_variable, variable, sep = "|"))
       selected <- mutate(selected, reference_variable = paste(parent_variable, reference_variable, sep = "|"))
       selected <- select(selected, -parent_variable)
-      
+      print("selected after drop")
+      print(selected)
       # raise exception if fields listed in arguments that are uknown
       for (field_id in names(field_vals_select)) {
 
@@ -334,6 +335,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       print("fields_select 3")
       fields_select[['period']] <- private$..fields[['period']]
       print("fields_select 4")
+      print(names(fields_select))
       # select and expand fields
       for (col_id in names(fields_select)) {
         print("field")
@@ -341,6 +343,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         print("field_vals")
         field_vals <- ifelse(col_id %in% names(field_vals_select), field_vals_select[[col_id]], NA)
         print("selected")
+        
         selected <- field$select_and_expand(selected, col_id, field_vals, extrapolate_period=extrapolate_period)
       }
 

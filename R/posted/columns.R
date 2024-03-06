@@ -188,11 +188,13 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
 
     ..expand = function(df, col_id, field_vals, ...) {
       # Filtering rows where col_id is in field_vals
-      print(df)
+      print("col id = ")
+      print(col_id)
+     
       df_filtered <- df %>%
         filter(col_id %in% field_vals)
       print("df asterisk")
-      print(df %>% filter(col_id == "*"))
+      print(df[df[[col_id]] == "*", ])
       # Filtering rows where col_id is '*'
       df_asterisk <- df %>%
         filter(col_id == "*") %>%
@@ -245,8 +247,9 @@ result <- bind_rows(df_filtered, df_asterisk)
     },
     
     
-    # TODO: rework select and expand function according to new style
+   
     select_and_expand = function(df, col_id, field_vals = NA, ...) {
+      print("df_select and expand")
       print("field vals initial")
       print(field_vals)
       if (is.na(field_vals)) {
@@ -325,73 +328,97 @@ RegionFieldDefinition <- R6::R6Class("RegionFieldDefinition", inherit = Abstract
 
 PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = AbstractFieldDefinition,
   private = list(
-# TODO: Review and implement functions
-#     expand = function(df, col_id, field_vals, ...) {
-#       return(dplyr::bind_rows(
-#         df[df[[col_id]] != '*', ],
-#         dplleft_join(
-#           df[df[[col_id]] == '*', ] %>% dplyr::select(-col_id),
-#           dplyr::expand_grid(!!col_id := field_vals),
-#           by = character()
-#         )
-#       ) %>% dplyr::mutate({{col_id}} := as.numeric({{col_id}})))
-#     },
 
-#     select = function(df, col_id, field_vals, ...) {
-#       group_cols <- colnames(df)[!(colnames(df) %in% c(col_id, 'value'))]
-#       grouped <- df %>% group_by(!!!syms(group_cols), .drop = FALSE)
-#       ret <- list()
 
-#       for (i in 1:n_groups(grouped)) {
-#         keys <- grouped$`...1`[[i]]
-#         rows <- grouped$data[[i]][[c(col_id, 'value')]]
-#         periods_exist <- unique(rows[[col_id]])
+    ..expand = function(df, col_id, field_vals, ...) {
+      
+      # expand period rows
+      df[df[[col_id]] == "*", col_id] = paste(field_vals, collapse=',')
+      result_df <- separate_rows(df, col_id, sep=',')
+      
+      # Convert 'period' column to float
+      result_df[[col_id]] <- as.numeric(result_df[[col_id]])
+      
+      return(result_df)
+    },
 
-#         req_rows <- tibble::tibble({{col_id}} := field_vals,
-#                                    {{paste0(col_id, '_upper')}} := purrr::map_dbl(field_vals, ~ min(periods_exist[periods_exist >= .x], na.rm = TRUE)),
-#                                    {{paste0(col_id, '_lower')}} := purrr::map_dbl(field_vals, ~ max(periods_exist[periods_exist <= .x], na.rm = TRUE)))
 
-#         req_rows[group_cols] <- as_tibble(keys)
 
-#         cond_match <- req_rows[[col_id]] %in% periods_exist
-#         cond_extrapolate <- is.na(req_rows[[paste0(col_id, '_upper')]]) | is.na(req_rows[[paste0(col_id, '_lower')]])
 
-#         rows_match <- dplyr::inner_join(req_rows[cond_match, ], rows, by = col_id)
-#         rows_extrapolate <- ifelse(!identical("extrapolate_period", names(list(...))), dplyr::bind_rows(
-#           req_rows[!cond_match & cond_extrapolate, ] %>%
-#             dplyr::mutate(period_combined = ifelse(!is.na({{paste0(col_id, '_upper')}}), {{paste0(col_id, '_upper')}}, {{paste0(col_id, '_lower')}})),
-#           dplyr::inner_join(
-#             req_rows[!cond_match & cond_extrapolate, ] %>%
-#               dplyr::rename({{col_id}} = {{paste0(col_id, '_combined')}}),
-#             rows,
-#             by = paste0(col_id, '_combined')
-#           )
-#         ), tibble())
+    ..select = function(df, col_id, field_vals, ...) {
+      # Get list of groupable columns
+      group_cols <- setdiff(names(df), c(col_id, 'value'))
+      
+      # Perform group_by and do not drop NA values
+      grouped <- df %>%
+        group_by(across(all_of(group_cols)), .drop = FALSE)
+      
+      # Create return list
+      ret <- list()
+      
+      # Loop over groups
+      for (i in seq_along(grouped)) {
+        group_df <- grouped[[i]]
+        
+        # Get rows in group
+        rows <- group_df %>%
+          select(col_id, value)
+        
+        # Get a list of periods that exist
+        periods_exist <- unique(rows[[col_id]])
+        
+        # Create dataframe containing rows for all requested periods
+        req_rows <- data.frame(
+          !!col_id := field_vals,
+          !!paste0(col_id, "_upper") := sapply(field_vals, function(p) min(periods_exist[periods_exist >= p], na.rm = TRUE)),
+          !!paste0(col_id, "_lower") := sapply(field_vals, function(p) max(periods_exist[periods_exist <= p], na.rm = TRUE))
+        )
+        
+        # Set missing columns from group
+        req_rows[group_cols] <- grouped[[i]] %>% slice(1) %>% select(all_of(group_cols))
+        
+        # Match
+        rows_match <- req_rows %>%
+          filter(.data[[col_id]] %in% periods_exist) %>%
+          inner_join(rows, by = col_id)
+        
+        # Extrapolate
+        rows_extrapolate <- if (!("extrapolate_period" %in% names(list(...))) || ...$extrapolate_period) {
+          req_rows %>%
+            filter(!(.data[[col_id]] %in% periods_exist) & (is.na(!!sym(paste0(col_id, "_upper"))) | is.na(!!sym(paste0(col_id, "_lower"))))) %>%
+            mutate(period_combined = if_else(!is.na(!!sym(paste0(col_id, "_upper"))), !!sym(paste0(col_id, "_upper")), !!sym(paste0(col_id, "_lower")))) %>%
+            inner_join(rename(rows, !!paste0(col_id, "_combined") := !!sym(col_id)), by = c("period_combined" = paste0(col_id, "_combined")))
+        } else {
+          data.frame()
+        }
+        
+        # Interpolate
+        rows_interpolate <- req_rows %>%
+          filter(!(.data[[col_id]] %in% periods_exist) & (!is.na(!!sym(paste0(col_id, "_upper"))) & !is.na(!!sym(paste0(col_id, "_lower"))))) %>%
+          inner_join(rename(rows, !!paste0(col_id, "_upper") := !!sym(col_id), !!paste0("value_upper") := value), by = paste0(col_id, "_upper")) %>%
+          inner_join(rename(rows, !!paste0(col_id, "_lower") := !!sym(col_id), !!paste0("value_lower") := value), by = paste0(col_id, "_lower")) %>%
+          mutate(value = value_lower + ((!!sym(paste0(col_id, "_upper")) - !!sym(col_id)) / (!!sym(paste0(col_id, "_upper")) - !!sym(paste0(col_id, "_lower")))) * (value_upper - value_lower))
+        
+        # Combine into one dataframe and drop unused columns
+        rows_to_concat <- list(rows_match, rows_extrapolate, rows_interpolate)
+        rows_to_concat <- Filter(function(x) !is.data.frame(x) || nrow(x) > 0, rows_to_concat)
+        if (length(rows_to_concat) > 0) {
+          rows_append <- bind_rows(rows_to_concat) %>%
+            select(-matches(paste0(col_id, "_upper|", col_id, "_lower|", col_id, "_combined|value_upper|value_lower")))
+          
+          # Add to return list
+          ret[[i]] <- rows_append
+        }
+      }
+      
+      # Convert return list to dataframe and return
+      if (length(ret) > 0) {
+        return(bind_rows(ret))
+      } else {
+        return(df[FALSE, ])  # Empty data frame
+      }
+    }
 
-#         rows_interpolate <- req_rows[!cond_match & !cond_extrapolate, ] %>%
-#           dplyr::inner_join(
-#             rows %>%
-#               dplyr::rename({{paste0(col_id, '_upper')}} = {{col_id}},
-#                             {{paste0(col_id, '_lower')}} = {{col_id}}),
-#             by = c(paste0(col_id, '_upper'), paste0(col_id, '_lower'))
-#           ) %>%
-#           dplyr::mutate(value = value_lower + ({{paste0(col_id, '_upper')}} - {{col_id}}) /
-#                                           ({{paste0(col_id, '_upper')}} - {{paste0(col_id, '_lower')}}) * (value_upper - value_lower)) %>%
-#           dplyr::select(-c({{paste0(col_id, '_upper')}}, {{paste0(col_id, '_lower')}}))
-
-#         rows_to_concat <- dplyr::bind_rows(rows_match, rows_extrapolate, rows_interpolate) %>%
-#           dplyr::select(-c(paste0(col_id, '_upper'), paste0(col_id, '_lower'), paste0(col_id, '_combined'), 'value_upper', 'value_lower'))
-#         if (nrow(rows_to_concat) > 0) {
-#           ret <- c(ret, rows_to_concat)
-#         }
-#       }
-
-#       if (length(ret) > 0) {
-#         return(dplyr::bind_rows(ret) %>% dplyr::ungroup())
-#       } else {
-#         return(df[integer()])
-#       }
-#     }
   ),
   
   public = list(
