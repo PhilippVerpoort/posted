@@ -68,13 +68,12 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
 def replace_tags(definitions: dict, tag: str, items: dict[str, dict]):
     definitions_with_replacements = {}
     for def_name, def_specs in definitions.items():
-        if f"{{{tag}}}" not in def_name: 
+        if f"{{{tag}}}" not in def_name:
             definitions_with_replacements[def_name] = def_specs
   
         else:
             for item_name, item_specs in items.items():
                 item_desc = item_specs['description'] if 'description' in item_specs else item_name
-                # print(item_desc)
                 def_name_new = def_name.replace(f"{{{tag}}}", item_name)
             
                 def_specs_new = copy.deepcopy(def_specs)

@@ -183,7 +183,7 @@ class DataSet(TEBase):
             # read TEDataFiles and combine into dataset
             include_databases = list(include_databases) if include_databases is not None else list(databases.keys())
             self._df = self._load_files(include_databases, file_paths or [], check_inconsistencies)
-    
+
     # access dataframe
     @property
     def data(self):
@@ -210,10 +210,10 @@ class DataSet(TEBase):
         # get fields and masks from databases
         files_vars: set[str] = {f.parent_variable for f in files}
         for v in files_vars:
-            
+
             new_fields, new_comments = read_fields(v)
             for col_id in new_fields | new_comments:
-               
+
                 if col_id in self._columns:
                     raise Exception(f"Cannot load TEDFs due to multiple columns with same ID defined: {col_id}")
             self._fields = new_fields | self._fields
@@ -271,12 +271,12 @@ class DataSet(TEBase):
             var_name: var_specs['flow_id'] if 'flow_id' in var_specs else np.nan
             for var_name, var_specs in self._var_specs.items()
         }
-        
+
         var_units = {
             var_name: var_specs['default_unit']
             for var_name, var_specs in self._var_specs.items()
         } | override
-
+        # normalise reference units, normalise reference values, and normalise reported units
         normalised = self._df \
             .pipe(normalise_units, level='reference', var_units=var_units, var_flow_ids=var_flow_ids) \
             .pipe(normalise_values) \
@@ -391,7 +391,7 @@ class DataSet(TEBase):
         for keys, ids in grouped.groups.items():
             # get rows in group
             rows = expanded.loc[ids, [c for c in expanded if c not in group_cols]].copy()
-          
+
             # 1. convert FLH to OCF
             cond = rows['variable'].str.endswith('|FLH')
             if cond.any():
@@ -481,7 +481,7 @@ class DataSet(TEBase):
                         lambda var: self._var_specs[var]['default_reference']
                         if 'default_reference' in self._var_specs[var] else np.nan
                     ) != rows['reference_variable']))
-           
+
             if cond.any():
                 regex_find = r'\|(Input|Output)(?: Capacity)?\|'
                 regex_repl = r'|\1|'
@@ -639,12 +639,12 @@ class DataSet(TEBase):
         df = df \
             .sort_values(by=[c for c in cols_sorted if c in df and c != 'value']) \
             .reset_index(drop=True)
- 
+
         # round values
         df['value'] = df['value'].apply(
             lambda cell: cell if pd.isnull(cell) else round(cell, sigfigs=4, warn=False)
         )
-     
+
         # insert column containing units
         df.insert(df.columns.tolist().index('value'), 'unit', np.nan)
         if 'reference_variable' in df:

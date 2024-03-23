@@ -60,10 +60,8 @@ class TEBase:
         self._parent_variable: str = parent_variable
         # set technology specifications
         self._var_specs: dict = {key: val for key, val in variables.items() if key.startswith(self._parent_variable)}
-        print("initialize TEBase")
-        print(self._var_specs)
-       
-        
+
+
     @property
     def parent_variable(self) -> str:
         return self._parent_variable
@@ -96,7 +94,7 @@ class TEDF(TEBase):
         )
         self._fields, comments = read_fields(self._parent_variable)
         self._columns = self._fields | base_columns | comments
-       
+
     @property
     def file_path(self) -> Path:
         return self._file_path
@@ -126,7 +124,7 @@ class TEDF(TEBase):
             quotechar='"',
             encoding='utf-8',
         )
-        
+
         # check column IDs match base columns and fields
         if not all(c in self._columns for c in self._df.columns):
             raise Exception(f"Column IDs used in CSV file do not match columns definition: {self._df.columns.tolist()}")
@@ -139,14 +137,11 @@ class TEDF(TEBase):
         for col_id, col in self._columns.items():
             if col_id in self._df:
                 continue
-            
-            print("col_id = ", col_id)
-            print("dtype = ", col.dtype)
-            print("default =", col.default)
+
             df_new[col_id] = df_new[col_id].astype(col.dtype)
             df_new[col_id] = col.default
         self._df = df_new
-      
+
 
     # write TEDF to CSV file
     def write(self):

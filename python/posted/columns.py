@@ -196,7 +196,7 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
             elif self._coded:
                 field_vals = list(self._codes.keys())
             else:
-                field_vals = [v for v in df[col_id].unique() if v != '*']
+                field_vals = [v for v in df[col_id].unique() if v != '*' and not pd.isnull(v)]
         else:
             # ensure that field values is a list of elements (not tuple, not single value)
             if isinstance(field_vals, tuple):
