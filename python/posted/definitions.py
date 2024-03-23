@@ -39,7 +39,6 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
     
     # insert tags
     for tag, items in tags.items():
-        # print(tag)
         definitions = replace_tags(definitions, tag, items)
        
     # remove definitions where tags could not been replaced
@@ -55,8 +54,7 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
         f"default flow unit {unit_component}": unit_token_func(unit_component, flows)
         for unit_component in ('full', 'raw', 'variant')
     }
-    
-    # print("tokens = ", tokens)
+     
     for def_key, def_specs in definitions.items():
         
         for def_property, def_value in def_specs.items():

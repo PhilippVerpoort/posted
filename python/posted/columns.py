@@ -169,23 +169,14 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
         return '*' if self._field_type == 'case' else '#'
 
     def is_allowed(self, cell: str | float | int) -> bool:
-        print("cell = ", cell)
         if pd.isnull(cell):
             return False
         if self._coded:
-            # print(self._codes)
             return cell in self._codes or cell == '*' or (cell == '#' and self.col_type == 'component')
         else:
             return True
 
     def _expand(self, df: pd.DataFrame, col_id: str, field_vals: list, **kwargs) -> pd.DataFrame:
-        print("col_id_expand = ", col_id)
-        print(pd.concat([
-            df[df[col_id].isin(field_vals)],
-            df[df[col_id] == '*']
-            .drop(columns=[col_id])
-            .merge(pd.DataFrame.from_dict({col_id: field_vals}), how='cross'),
-        ]))
         return pd.concat([
             df[df[col_id].isin(field_vals)],
             df[df[col_id] == '*']
@@ -199,37 +190,31 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
     # select and expand field based on values provided
     def select_and_expand(self, df: pd.DataFrame, col_id: str, field_vals: None | list, **kwargs) -> pd.DataFrame:
         # get list of selected field values
-       # print("field_vals_initial", field_vals)
         if field_vals is None:
             if col_id == 'period':
                 field_vals = default_periods
             elif self._coded:
                 field_vals = list(self._codes.keys())
             else:
-                field_vals = [v for v in df[col_id].unique() if v != '*' and not pd.isnull(v)]
+                field_vals = [v for v in df[col_id].unique() if v != '*']
         else:
             # ensure that field values is a list of elements (not tuple, not single value)
             if isinstance(field_vals, tuple):
                 field_vals = list(field_vals)
             elif not isinstance(field_vals, list):
                 field_vals = [field_vals]
-            #print("field_vals = ", field_vals)
             # check that every element is of allowed type
             for val in field_vals:
-                #print("val = ", val)
                 if not self.is_allowed(val):
                     raise Exception(f"Invalid type selected for field '{col_id}': {val}")
             if '*' in field_vals:
                 raise Exception(f"Selected values for field '{col_id}' must not contain the asterisk."
                                 f"Omit the '{col_id}' argument to select all entries.")
-        print("access expand")
+
         # expand
         df = self._expand(df, col_id, field_vals, **kwargs)
-        print("access select")
         # select
         df = self._select(df, col_id, field_vals, **kwargs)
-        print("df after select")
-        print(df)
         # return
         return df
 
