@@ -670,12 +670,23 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       var_units <- selected_and_var_units[[2]]
       result <- private$..cleanup(selected, var_units)
       return(result)
-    }
+    },
+
+    aggregate = function(override=NULL, 
+            drop_singular_fields=TRUE, 
+            extrapolate_period=TRUE, 
+            agg=NULL, 
+            masks=NULL, 
+            masks_database=TRUE,
+            ... ) {
+              stop("aggregate not implemented yet")
+            }
   ),
   active = list(
     data = function(df) {
       if (missing(df)) return(private$..df)
-      else private$..df <- df
+      else private$
+      ..df <- df
     }
   )
 
