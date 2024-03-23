@@ -32,7 +32,7 @@ TEBase <- R6::R6Class("TEBase",
       var_specs  <- Filter(function(x) !is.null(x), var_specs)
       private$..var_specs <-  var_specs
     
-      print(private$..var_specs['region'])
+ 
     }
   ),
   active = list(

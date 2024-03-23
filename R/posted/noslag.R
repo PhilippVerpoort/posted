@@ -1,16 +1,10 @@
-# source("R/posted/config.R")
-# source("R/posted/settings.R")
-# source("R/posted/columns.R")
-# source("R/posted/path.R")
+
 source("R/posted/masking.R")
 source("R/posted/tedf.R")
 source("R/posted/units.R")
-
-
-
-# Install and load the required libraries
-# install.packages("dplyr")
 library(dplyr)
+
+
 
 # get list of TEDFs potentially containing variable
 collect_files <- function(parent_variable, include_databases = NULL) {
@@ -25,6 +19,8 @@ collect_files <- function(parent_variable, include_databases = NULL) {
         stop(paste("Could not find database '", database_id, "'.", sep = ""))
       }
     }
+
+
   }
 
   ret <- list()
@@ -243,8 +239,6 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     
     # Internal method for normalizing data
     ..normalise = function(override) {
-      print("normalise")
-      # print(override)
       if (is.null(override)) {
         override <- list()
       }
@@ -290,6 +284,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     
     # Internal method for selecting data
     ..select = function(override, drop_singular_fields, extrapolate_period, ...) {
+      stop("Select function not implemented yet")
       field_vals_select <- list(...)
       print("select")
       print(override)
@@ -349,38 +344,267 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       # drop custom fields with only one value if specified in method argument
 
-      # if (drop_singular_fields) {
-        
-      # }
+      if (drop_singular_fields) {
+        selected <- selected %>%
+        select(-c(
+          names(sapply(self$..fields, function(field) {
+            if (inherits(field, "CustomFieldDefinition") && n_distinct(selected[[col_id]]) < 2) {
+              return(col_id)
+            } else {
+              return(NULL)
+            }
+          }))
+        ))
+      
+      }
     
-
-      print("selected and expanded")
+      selected2 <- private$..apply_mappings(selected, var_units)
+   
       print(selected)
       selected_and_var_units <- list(selected=selected, var_units=var_units)
       print("return")
       return(selected_and_var_units)
     },
     ..cleanup = function(df, var_units) {
+
       # Sort columns and rows
-      cols_sorted <- c(names(df)[sapply(self$fields, function(field) class(field) == "CustomFieldDefinition")], 
+      df_cols <- sapply(names(self$..fields), function(col_id) {
+          field <- self$..fields[[col_id]]
+          if (inherits(field, "CustomFieldDefinition")) {
+            return(col_id)
+          } else {
+            return(NULL)
+          }
+        })
+        print("df_cols")
+        print(df_cols)
+      cols_sorted <- c(
                       'source', 'variable', 'region', 'period', 'value')
       cols_sorted <- cols_sorted[cols_sorted %in% names(df)]
-      df <- df[cols_sorted, ]
-      df <- df[order(df[, cols_sorted[cols_sorted != 'value']]), , drop = FALSE]
+      print("cols sorted")
+      print(cols_sorted)
+      df <- select(df, any_of(cols_sorted))
+      print("cols selected")
+      df <- df %>%
+        arrange_at(vars(intersect(cols_sorted, names(df))[!intersect(cols_sorted, names(df)) != "value"])) %>%
+        mutate(row_index = row_number()) %>%
+        select(-row_index)
+      print("ordered")
 
       # Round values
       df$value <- ifelse(is.na(df$value), df$value, round(df$value, digits = 4))
-
+      print("rounded")
       # Insert column containing units
-      unit_col_index <- match('value', names(df))  # Get the index of 'value' column
-      df <- cbind(df[, 1:(unit_col_index - 1)], unit = NA, df[, unit_col_index], df[, (unit_col_index + 1):ncol(df)])
+      df <- as.data.frame(append(df, list(unit=NaN), after = match("value", names(df))-1))
+      print(df)
       df$unit <- var_units[df$variable]
-
+      print(df)
       return(df)
-}
+  },
 
-# Usage:
-# cleaned_df <- cleanup(df, var_units)
+  ..apply_mappings = function(expanded, var_units) {
+    print("apply mappings")
+    # Get list of groupable columns
+      group_cols <- setdiff(names(expanded), c('variable', 'reference_variable', 'value'))
+     
+      # Perform group_by and do not drop NA values
+      
+      
+      grouped <- expanded %>% group_split(across(all_of(group_cols)), .drop = FALSE)
+    
+      # Create return list
+      ret <- list()
+
+      for (i in seq_along(grouped)) {
+        rows <- grouped[[i]]
+        print(rows, width=Inf)
+
+        # 1. convert FLH to OCF
+        cond <- endsWith(rows$variable, '|FLH')
+        print("cond1")
+        print(cond)
+
+        # Check if any rows satisfy the condition
+        if (any(cond)) {
+          # Multiply 'value' by conversion factor
+          rows$value[cond] <- rows$value[cond] * sapply(rownames(rows)[cond], function(idx) {
+            unit_convert(var_units[rows$variable[idx]], 'a')
+          })
+
+          # Replace '|FLH' with '|OCF' in 'variable'
+          rows$variable[cond] <- gsub("\\|FLH$", "|OCF", rows$variable[cond], fixed = TRUE)
+        }
+
+        # 2. convert OPEX Fixed Relative to OPEX Fixed
+        print(rows, width=Inf)
+        cond <- endsWith(rows$variable, '|OPEX Fixed Relative')
+        print("cond2")
+        print(cond)
+
+        if (any(cond)) {
+        # Define a function to calculate the conversion factor
+        calculate_conversion <- function(row) {
+          print(row)
+          var_units_variable <- gsub("|OPEX Fixed Relative", "|CAPEX", row['variable'], fixed = TRUE)
+          var_units_reference <- gsub("|OPEX Fixed Relative", "|OPEX Fixed", row['variable'], fixed = TRUE)
+          var_units_dividend <- paste(var_units_variable, '/a', sep = "")
+          var_units_df <- subset(rows, variable == var_units_variable)
+  
+          return(unit_convert(var_units[row['variable']], 'dimensionless') * 
+                  unit_convert(var_units_dividend, var_units[var_units_reference]) *
+                  var_units_df$value[1])
+          
+        }
+        
+      
+
+        # Calculate the conversion factor and update 'value' for rows satisfying the condition
+        rows$value[cond] <- apply( rows[cond,], 1, calculate_conversion)
+        
+        # Replace '|OPEX Fixed Relative' with '|OPEX Fixed' in 'variable'
+        rows$variable[cond] <- gsub("\\|OPEX Fixed Relative$", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
+        
+        # Assign 'reference_variable' based on modified 'variable'
+        rows$reference_variable[cond] <- sapply(rownames(rows)[cond], function(idx) {
+          var_units_variable <- gsub("\\|OPEX Fixed$", "|CAPEX", rows$variable[idx], fixed = TRUE)
+          var_units_df <- subset(rows, variable == var_units_variable)
+          if (nrow(var_units_df) > 0) {
+            return(var_units_df$reference_variable[1])
+          } else {
+            return(NA)
+          }
+        })
+        
+        # Check if there are rows with null 'value' after the operation
+        if (any(cond & is.na(rows$value))) {
+          warning("No CAPEX value matching an OPEX Fixed Relative value found.")
+        }
+      }
+      print(rows, width=Inf)
+      # 3. convert OPEX Fixed Specific to OPEX Fixed
+      # Find rows where 'variable' ends with '|OPEX Fixed Specific'
+      cond <- endsWith(rows$variable, "|OPEX Fixed Specific")
+      print("cond3")
+      print(cond)
+
+      # Check if any rows satisfy the condition
+      if (any(cond)) {
+        # Define a function to calculate the conversion factor
+        calculate_conversion <- function(row) {
+          var_units_variable <- gsub("\\|OPEX Fixed Specific", "|OPEX Fixed", row['variable'], fixed = TRUE)
+          var_units_reference <- gsub(r'(Input|Output)', '\\1 Capacity', row['reference_variable'], perl = TRUE)
+          var_units_dividend <- paste(var_units_variable, '/a', sep = "")
+          var_units_df <- subset(rows, variable == gsub("\\|OPEX Fixed Specific$", "|OCF", row['variable'], fixed = TRUE))
+          if (nrow(var_units_df) > 0) {
+            return(unit_convert(var_units_dividend, var_units[var_units_reference]) /
+                  unit_convert(gsub("\\|OPEX Fixed Specific$", "|OPEX Fixed", row['variable'], fixed = TRUE), 
+                                var_units[var_units_variable],
+                                private$..var_specs[row['reference_variable']]['flow_id']) *
+                  var_units_df$value[1])
+          } else {
+            return(NA)
+          }
+        }
+        
+        # Calculate the conversion factor and update 'value' for rows satisfying the condition
+        rows$value[cond] <- mapply(calculate_conversion, rows[cond,])
+        
+        # Replace '|OPEX Fixed Specific' with '|OPEX Fixed' in 'variable'
+        rows$variable[cond] <- gsub("\\|OPEX Fixed Specific$", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
+        
+        # Update 'reference_variable' by replacing 'Input' or 'Output' with 'Input Capacity' or 'Output Capacity'
+        rows$reference_variable[cond] <- gsub(r'(Input|Output)', '\\1 Capacity', rows$reference_variable[cond], perl = TRUE)
+        
+        # Check if there are rows with null 'value' after the operation
+        if (any(cond & is.na(rows$value))) {
+          warning("No OCF value matching an OPEX Fixed Specific value found.")
+        }
+      }
+
+      # 4. convert efficiencies (Output over Input) to demands (Input over Output)
+     
+      cond1 <- grepl("\\|Output(?: Capacity)?\\|", rows$variable) 
+      if (any(!is.na(rows$reference_variable))) {
+        cond2 <- grepl("\\|Input(?: Capacity)?\\|", rows$reference_variable)
+                      } else {
+        cond2 <- FALSE}
+
+      print('cond4')
+      print(cond1 & cond2)
+      if (any(cond1 & cond2)) {
+        rows$value[cond] <- 1.0 / rows$value[cond]
+        rows$variable_new[cond] <- rows$reference_variable[cond]
+        rows$reference_variable[cond] <- rows$variable[cond]
+        rows$variable[cond] <- rows$variable_new[cond]
+        rows <- rows[!names(rows) %in% c("variable_new")]
+      }
+
+      # 5. convert all references to primary output
+      
+     
+      print(rows$reference_variable)
+      if (any(!is.na(rows$reference_variable))) {
+        cond1 <- (grepl("\\|Output(?: Capacity)?\\|", rows$reference_variable) | grepl("\\|Input(?: Capacity)?\\|", rows$reference_variable))
+      } else {
+        cond1 <- FALSE
+      }
+      print(rows$variable)
+      cond2 <- unlist(lapply(rows$variable, function(var) {
+        'default_reference' %in% names(private$..var_specs[[var]])
+        }))
+      
+   
+
+      get_default_reference <- function(var) {
+        if ('default_reference' %in% names(self$var_specs[[var]])) {
+          return(self$var_specs[[var]]$default_reference)
+        } else {
+          return(NA)
+        }
+      }
+
+      # Apply the function to each 'variable' in 'rows'
+      cond3  <- lapply(rows$variable, get_default_reference) != rows[['reference_variable']]
+      print('cond5')
+      print(cond1)
+      print(cond2)
+      print(cond3)
+      print(cond1 & cond2 & cond3)
+ 
+      if (any(cond1 & cond2 & cond3)) {
+        regex_find <- "\\|(Input|Output)(?: Capacity)?\\|"
+        regex_repl <- "|\\1|"
+        rows$reference_variable_new[cond] <- sapply(rows$variable[cond], function(var) {
+          self$var_specs[var]$default_reference
+        })
+        rows$value[cond] <- rows$value[cond] * sapply(seq_len(nrow(rows[cond,])), function(i) {
+          row <- rows[cond,]
+          unit_convert(paste0(ifelse(grepl("Capacity", row$reference_variable[i]), "a*", ""), 
+                              var_units[row$reference_variable_new[i]]), 
+                      var_units[gsub(regex_find, regex_repl, row$reference_variable_new[i])], 
+                      tail(strsplit(row$reference_variable_new[i], "\\|")[[1]], 1)) /
+          unit_convert(paste0(ifelse(grepl("Capacity", row$reference_variable[i]), "a*", ""), 
+                              var_units[row$reference_variable[i]]), 
+                      var_units[gsub(regex_find, regex_repl, row$reference_variable[i])], 
+                      tail(strsplit(row$reference_variable[i], "\\|")[[1]], 1)) * 
+          rows[grepl(paste0("^", gsub(regex_find, regex_repl, row$reference_variable[i]), "$"), 
+                    rows$variable) & 
+              grepl(paste0("^", gsub(regex_find, regex_repl, row$reference_variable_new[i]), "$"), 
+                    rows$reference_variable), ]$value[1]
+        })
+        rows$reference_variable[cond] <- rows$reference_variable_new[cond]
+        rows <- rows[!names(rows) %in% c("reference_variable_new")]
+        if (any(cond & is.na(rows$value))) {
+          warning(paste("No appropriate mapping found to convert row reference to primary output:", 
+                        rows[cond & is.na(rows$value), ]))
+        }
+      }
+
+
+        }
+
+
+  }
 
   ),
   public = list(
@@ -392,7 +616,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
                            data = NULL) {
       
       # Attributes
-
+      print("initialize")
       super$initialize(parent_variable)
       private$..df <- NULL
       private$..columns <- base_columns
@@ -441,7 +665,10 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
                       drop_singular_fields = TRUE,
                       extrapolate_period = TRUE,
                       ...) {
-      result <- private$..cleanup(private$..select(override, drop_singular_fields, extrapolate_period, ...))
+      selected_and_var_units <- private$..select(override, drop_singular_fields, extrapolate_period, ...)
+      selected <- selected_and_var_units[[1]]
+      var_units <- selected_and_var_units[[2]]
+      result <- private$..cleanup(selected, var_units)
       return(result)
     }
   ),

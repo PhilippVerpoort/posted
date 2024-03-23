@@ -187,24 +187,15 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     ..codes = NULL,
 
     ..expand = function(df, col_id, field_vals, ...) {
-      # Filtering rows where col_id is in field_vals
-      print("col id = ")
-      print(col_id)
-     
-      df_filtered <- df %>%
-        filter(col_id %in% field_vals)
-      print("df asterisk")
-      print(df[df[[col_id]] == "*", ])
-      # Filtering rows where col_id is '*'
-      df_asterisk <- df %>%
-        filter(col_id == "*") %>%
-        select(-all_of(col_id)) %>%
-        crossing(data.frame(col_id = field_vals))# %>%
-        # select(col_id, everything())  # Putting new_col_id as the first column
+      # expand period rows
+      df[df[[col_id]] == "*", col_id] = paste(field_vals, collapse=',')
+      result_df <- separate_rows(df, col_id, sep=',')
+      
+      
+      
+      return(result_df)
 
-# Concatenating the filtered data frames
-result <- bind_rows(df_filtered, df_asterisk)
-      return(result)
+
     },
     
     ..select = function(df, col_id, field_vals, ...) {
@@ -282,6 +273,7 @@ result <- bind_rows(df_filtered, df_asterisk)
       
       df <- private$..expand(df, col_id, field_vals, ...)
       df <- private$..select(df, col_id, field_vals, ...)
+      print(df)
       return(df)
     }
   ),
@@ -346,74 +338,115 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
 
     ..select = function(df, col_id, field_vals, ...) {
+      kwargs <- list(...)
+      
       # Get list of groupable columns
       group_cols <- setdiff(names(df), c(col_id, 'value'))
-      
+     
       # Perform group_by and do not drop NA values
-      grouped <- df %>%
-        group_by(across(all_of(group_cols)), .drop = FALSE)
       
+      
+      grouped <- df %>% group_split(across(all_of(group_cols)), .drop = FALSE)
+    
       # Create return list
+
+      
       ret <- list()
       
+   
+
+
       # Loop over groups
       for (i in seq_along(grouped)) {
         group_df <- grouped[[i]]
-        
+      
         # Get rows in group
         rows <- group_df %>%
           select(col_id, value)
-        
+    
         # Get a list of periods that exist
         periods_exist <- unique(rows[[col_id]])
-        
+       
         # Create dataframe containing rows for all requested periods
-        req_rows <- data.frame(
-          !!col_id := field_vals,
-          !!paste0(col_id, "_upper") := sapply(field_vals, function(p) min(periods_exist[periods_exist >= p], na.rm = TRUE)),
-          !!paste0(col_id, "_lower") := sapply(field_vals, function(p) max(periods_exist[periods_exist <= p], na.rm = TRUE))
-        )
+        req_rows <- data.frame()
+       
+     
+        req_rows <-setNames(data.frame(field_vals[[1]]),col_id )
+        req_rows[[paste0(col_id, "_upper")]] <- sapply(field_vals, function(p) {
+            filtered_values <- periods_exist[periods_exist >= p]
+            if (length(filtered_values) == 0 || all(is.na(filtered_values))) {
+              return(NaN)
+            } else {
+              return(min(filtered_values, na.rm = TRUE))
+            }
+          })
+                        
+        req_rows[[paste0(col_id, "_lower")]] <- sapply(field_vals, function(p) {
+            filtered_values <- periods_exist[periods_exist <= p]
+            if (length(filtered_values) == 0 || all(is.na(filtered_values))) {
+              return(NaN)
+            } else {
+              return(max(filtered_values, na.rm = TRUE))
+            }
+          })
+       
         
         # Set missing columns from group
-        req_rows[group_cols] <- grouped[[i]] %>% slice(1) %>% select(all_of(group_cols))
+        req_rows[group_cols] <- group_df%>% slice(1) %>% select(all_of(group_cols))
+        
+        # check case
+        cond_match <- req_rows[[col_id]] %in% periods_exist
+        cond_extrapolate <- is.na(req_rows[[paste0(col_id, "_upper")]]) | is.na(req_rows[[paste0(col_id, "_lower")]])
+
         
         # Match
-        rows_match <- req_rows %>%
-          filter(.data[[col_id]] %in% periods_exist) %>%
-          inner_join(rows, by = col_id)
+        rows_match <- req_rows[cond_match, ] %>%
+            merge(rows, by = col_id)
         
+      
         # Extrapolate
-        rows_extrapolate <- if (!("extrapolate_period" %in% names(list(...))) || ...$extrapolate_period) {
-          req_rows %>%
-            filter(!(.data[[col_id]] %in% periods_exist) & (is.na(!!sym(paste0(col_id, "_upper"))) | is.na(!!sym(paste0(col_id, "_lower"))))) %>%
-            mutate(period_combined = if_else(!is.na(!!sym(paste0(col_id, "_upper"))), !!sym(paste0(col_id, "_upper")), !!sym(paste0(col_id, "_lower")))) %>%
-            inner_join(rename(rows, !!paste0(col_id, "_combined") := !!sym(col_id)), by = c("period_combined" = paste0(col_id, "_combined")))
+
+       
+        if (!("extrapolate_period" %in% names(kwargs)) || kwargs$extrapolate_period) {
+         
+          rows_extrapolate <- req_rows[!cond_match & cond_extrapolate, ] %>% mutate(period_combined = ifelse(!is.na(!!sym(paste0(col_id, "_upper"))), !!sym(paste0(col_id, "_upper")), !!sym(paste0(col_id, "_lower"))))
+          rows_ext <- rows %>% rename(!!paste0(col_id, "_combined") := !!sym(col_id))
+
+          # Merge the data frames
+          rows_extrapolate <- left_join(rows_extrapolate, rows_ext, by = paste0(col_id, "_combined"))
         } else {
-          data.frame()
+          rows_extrapolate <- data.frame()
         }
         
-        # Interpolate
+      
+       
         rows_interpolate <- req_rows %>%
           filter(!(.data[[col_id]] %in% periods_exist) & (!is.na(!!sym(paste0(col_id, "_upper"))) & !is.na(!!sym(paste0(col_id, "_lower"))))) %>%
           inner_join(rename(rows, !!paste0(col_id, "_upper") := !!sym(col_id), !!paste0("value_upper") := value), by = paste0(col_id, "_upper")) %>%
           inner_join(rename(rows, !!paste0(col_id, "_lower") := !!sym(col_id), !!paste0("value_lower") := value), by = paste0(col_id, "_lower")) %>%
           mutate(value = value_lower + ((!!sym(paste0(col_id, "_upper")) - !!sym(col_id)) / (!!sym(paste0(col_id, "_upper")) - !!sym(paste0(col_id, "_lower")))) * (value_upper - value_lower))
-        
+       
         # Combine into one dataframe and drop unused columns
         rows_to_concat <- list(rows_match, rows_extrapolate, rows_interpolate)
         rows_to_concat <- Filter(function(x) !is.data.frame(x) || nrow(x) > 0, rows_to_concat)
         if (length(rows_to_concat) > 0) {
-          rows_append <- bind_rows(rows_to_concat) %>%
-            select(-matches(paste0(col_id, "_upper|", col_id, "_lower|", col_id, "_combined|value_upper|value_lower")))
-          
+          rows_append <- bind_rows(rows_to_concat) 
+        
+          rows_append <- rows_append %>%  select(-any_of(c(paste0(col_id, "_upper"),
+                  paste0(col_id, "_lower"),
+                  paste0(col_id, "_combined"),
+                  "value_upper",
+                  "value_lower")))
+        
           # Add to return list
           ret[[i]] <- rows_append
         }
       }
-      
+   
       # Convert return list to dataframe and return
       if (length(ret) > 0) {
         return(bind_rows(ret))
+        
       } else {
         return(df[FALSE, ])  # Empty data frame
       }
