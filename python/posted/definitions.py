@@ -18,7 +18,7 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
     definitions = {}
     tags = {}
     for file_path in definitions_dir.rglob('*.yml'):
-    
+
         if file_path.name.startswith('tag_'):
             tags |= read_yml_file(file_path)
         else:
@@ -36,11 +36,11 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
         }
         for tech_id, tech_specs in techs.items()
     }
-    
+
     # insert tags
     for tag, items in tags.items():
         definitions = replace_tags(definitions, tag, items)
-       
+
     # remove definitions where tags could not been replaced
     if any('{' in key for key in definitions):
         warnings.warn('Tokens could not be replaced correctly.')
@@ -54,9 +54,9 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
         f"default flow unit {unit_component}": unit_token_func(unit_component, flows)
         for unit_component in ('full', 'raw', 'variant')
     }
-     
+
     for def_key, def_specs in definitions.items():
-        
+
         for def_property, def_value in def_specs.items():
             for token_key, token_func in tokens.items():
                 if isinstance(def_value, str) and f"{{{token_key}}}" in def_value:
@@ -70,14 +70,14 @@ def replace_tags(definitions: dict, tag: str, items: dict[str, dict]):
     for def_name, def_specs in definitions.items():
         if f"{{{tag}}}" not in def_name:
             definitions_with_replacements[def_name] = def_specs
-  
+
         else:
             for item_name, item_specs in items.items():
                 item_desc = item_specs['description'] if 'description' in item_specs else item_name
                 def_name_new = def_name.replace(f"{{{tag}}}", item_name)
-            
+
                 def_specs_new = copy.deepcopy(def_specs)
-          
+
                 def_specs_new |= item_specs
                 def_specs_new['description'] = def_specs['description'].replace(f"{{{tag}}}", item_desc)
                 for k, v in def_specs_new.items():
@@ -87,7 +87,6 @@ def replace_tags(definitions: dict, tag: str, items: dict[str, dict]):
                     def_specs_new[k] = def_specs_new[k].replace('{parent variable}', def_name[:def_name.find(f"{{{tag}}}")-1])
                 definitions_with_replacements[def_name_new] = def_specs_new
     return definitions_with_replacements
-
 
 def unit_token_func(unit_component: Literal['full', 'raw', 'variant'], flows: dict):
     return lambda def_specs: (

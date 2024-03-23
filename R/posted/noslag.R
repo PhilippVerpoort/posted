@@ -72,7 +72,7 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
   var_col_id <- paste0(prefix, 'variable')
   value_col_id <- paste0(prefix, 'value')
   unit_col_id <- paste0(prefix, 'unit')
- 
+
   target_unit <- apply(df, 1, function(row) {
     tryCatch({
     ifelse((is.character(row[var_col_id]) && (!(row[var_col_id] == ""))),
@@ -87,13 +87,13 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
             var_flow_ids[[paste0(row['parent_variable'], "|", row[var_col_id])]], NA)}, error=function(e){NA}, warning=function(w){NA})
             })
 
- 
+
   df_tmp <- df
 
   df_tmp$target_unit <- target_unit
   df_tmp$ target_flow_id <- target_flow_id
 
-  
+
   # Apply unit conversion
   conv_factor <- apply(df_tmp, 1, function(row) {
     if (!is.na(row[value_col_id])) {
@@ -102,7 +102,7 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
       return(1.0)
     }
   })
- 
+
 
   # Update value column with conversion factor
   df_tmp[[value_col_id]] <- as.numeric(df_tmp[[value_col_id]]) * conv_factor
@@ -131,13 +131,13 @@ normalise_values <- function(df) {
       1.0
     }
   })
-  
+
   # Calculate new value
   value_new <- as.numeric(df$value) / reference_value
-  
+
   # Calculate new uncertainty
   uncertainty_new <- as.numeric(df$uncertainty) / reference_value
-  
+
   # Calculate new reference value
   reference_value_new <- sapply(1:nrow(df), function(i) {
     if (!is.na(df$reference_value[i])) {
@@ -146,12 +146,12 @@ normalise_values <- function(df) {
       NA
     }
   })
-  
+
   # Assign new values to dataframe
   df$value <- value_new
   df$uncertainty <- uncertainty_new
   df$reference_value <- reference_value_new
-  
+
   return(df)
 }
 
@@ -165,13 +165,13 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     ..columns = NULL,
     ..fields = NULL,
     ..masks = NULL,
-    
+
     # Internal method for loading TEDFs
     ..load_files = function(include_databases, file_paths, check_inconsistencies) {
         files <- list()
-        
+
         collected_files = collect_files(parent_variable = private$..parent_variable, include_databases = include_databases)
-  
+
         for (i in 1:length(collected_files)) {
           file_variable <- collected_files[[i]][[1]]
           file_database_id <- collected_files[[i]][[2]]
@@ -185,23 +185,23 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         if (length(files) == 0) {
           stop(sprintf("NO TEDF to load for variabele '%s'.", private$..parent_variable))
         }
-    
+
         # get fields and masks from databases
         files_vars = as.vector(unique(sapply(files, function(f) f$parent_variable)))
-      
+
         for (v in files_vars) {
           new_fields_comments = read_fields(v)
           new_fields = new_fields_comments$fields
           new_comments = new_fields_comments$comments
           for (col_id in names(c(new_fields, new_comments))) {
-    
-            
+
+
             if (col_id %in% private$..columns) {
               stop(sprintf("Cannot load TEDFs due to multiple columns with same ID defined : %s", col_id))
             }
-         
+
           private$..fields <- c(new_fields, private$..fields)
-        
+
           private$..columns <- c(new_fields, private$..columns, new_comments)
           # private$..masks <- c(private$..masks, read_masks(v))
           }
@@ -216,14 +216,14 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
           if (check_inconsistencies) {
             f$check()
           }
-         
+
           # obtain dataframe and insert column parent_variable
           df_tmp = f$data
           df_tmp <- df_tmp <- cbind(parent_variable = f$parent_variable, df_tmp)
 
           # append to dataframe list
           file_dfs <- append(file_dfs, df_tmp)
-        
+
         # compile dataset from the dataframes loaded from the individual files
         data <- do.call(cbind, file_dfs)
 
@@ -233,16 +233,16 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
         }
 
-        
-   
+
+
     },
-    
+
     # Internal method for normalizing data
     ..normalise = function(override) {
       if (is.null(override)) {
         override <- list()
       }
-      
+
       var_flow_ids <- lapply(names(private$..var_specs), function(var_name) {
         var_specs <- private$..var_specs[[var_name]]
         if ('flow_id'%in% names(var_specs)) {
@@ -252,18 +252,18 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         }
       })
       names(var_flow_ids) <- names(private$..var_specs)
- 
+
       var_units <- lapply(names(private$..var_specs), function(var_name) {
         var_specs <- private$..var_specs[[var_name]]
-      
+
         if (!(('mapped' %in% names(var_specs)) && var_specs[['mapped']])) {
-          
+
           return(var_specs[['default_unit']])
         } else {
           return(NULL)
         }
       })
-   
+
       names(var_units) <- names(private$..var_specs)
 
       var_units <- Filter(function(x) !is.null(x), var_units)
@@ -281,7 +281,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
               normalise_units(level = 'reported', var_units = var_units, var_flow_ids = var_flow_ids)
       return(list(normalised=normalised, var_units=var_units))
     },
-    
+
     # Internal method for selecting data
     ..select = function(override, drop_singular_fields, extrapolate_period, ...) {
       stop("Select function not implemented yet")
@@ -292,15 +292,15 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       normalised_units <- private$..normalise(override)
       selected <- normalised_units$normalised
       var_units <- normalised_units$var_units
-      
+
       # drop unit columns and reference falue column
       selected <- selected %>% select( -unit, -reference_unit, -reference_value)
-      
+
       # drop columns containing comments and uncertaindty field (which is currently unsupported)
       comment_columns <- Filter(function(col_id) {(private$..columns[[col_id]]$col_type == "comment")}, names(private$..columns))
       selected <- selected %>%
         select(-uncertainty,  -any_of(comment_columns))
-      
+
       # add parent variable as prefix to other variable columns
       selected <- mutate(selected, variable = paste(parent_variable, variable, sep = "|"))
       selected <- mutate(selected, reference_variable = paste(parent_variable, reference_variable, sep = "|"))
@@ -338,7 +338,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         print("field_vals")
         field_vals <- ifelse(col_id %in% names(field_vals_select), field_vals_select[[col_id]], NA)
         print("selected")
-        
+
         selected <- field$select_and_expand(selected, col_id, field_vals, extrapolate_period=extrapolate_period)
       }
 
@@ -355,11 +355,11 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
             }
           }))
         ))
-      
+
       }
-    
+
       selected2 <- private$..apply_mappings(selected, var_units)
-   
+
       print(selected)
       selected_and_var_units <- list(selected=selected, var_units=var_units)
       print("return")
@@ -406,12 +406,12 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     print("apply mappings")
     # Get list of groupable columns
       group_cols <- setdiff(names(expanded), c('variable', 'reference_variable', 'value'))
-     
+
       # Perform group_by and do not drop NA values
-      
-      
+
+
       grouped <- expanded %>% group_split(across(all_of(group_cols)), .drop = FALSE)
-    
+
       # Create return list
       ret <- list()
 
@@ -449,21 +449,21 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
           var_units_reference <- gsub("|OPEX Fixed Relative", "|OPEX Fixed", row['variable'], fixed = TRUE)
           var_units_dividend <- paste(var_units_variable, '/a', sep = "")
           var_units_df <- subset(rows, variable == var_units_variable)
-  
-          return(unit_convert(var_units[row['variable']], 'dimensionless') * 
+
+          return(unit_convert(var_units[row['variable']], 'dimensionless') *
                   unit_convert(var_units_dividend, var_units[var_units_reference]) *
                   var_units_df$value[1])
-          
+
         }
-        
-      
+
+
 
         # Calculate the conversion factor and update 'value' for rows satisfying the condition
         rows$value[cond] <- apply( rows[cond,], 1, calculate_conversion)
-        
+
         # Replace '|OPEX Fixed Relative' with '|OPEX Fixed' in 'variable'
         rows$variable[cond] <- gsub("\\|OPEX Fixed Relative$", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
-        
+
         # Assign 'reference_variable' based on modified 'variable'
         rows$reference_variable[cond] <- sapply(rownames(rows)[cond], function(idx) {
           var_units_variable <- gsub("\\|OPEX Fixed$", "|CAPEX", rows$variable[idx], fixed = TRUE)
@@ -474,7 +474,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
             return(NA)
           }
         })
-        
+
         # Check if there are rows with null 'value' after the operation
         if (any(cond & is.na(rows$value))) {
           warning("No CAPEX value matching an OPEX Fixed Relative value found.")
@@ -497,7 +497,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
           var_units_df <- subset(rows, variable == gsub("\\|OPEX Fixed Specific$", "|OCF", row['variable'], fixed = TRUE))
           if (nrow(var_units_df) > 0) {
             return(unit_convert(var_units_dividend, var_units[var_units_reference]) /
-                  unit_convert(gsub("\\|OPEX Fixed Specific$", "|OPEX Fixed", row['variable'], fixed = TRUE), 
+                  unit_convert(gsub("\\|OPEX Fixed Specific$", "|OPEX Fixed", row['variable'], fixed = TRUE),
                                 var_units[var_units_variable],
                                 private$..var_specs[row['reference_variable']]['flow_id']) *
                   var_units_df$value[1])
@@ -505,16 +505,16 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
             return(NA)
           }
         }
-        
+
         # Calculate the conversion factor and update 'value' for rows satisfying the condition
         rows$value[cond] <- mapply(calculate_conversion, rows[cond,])
-        
+
         # Replace '|OPEX Fixed Specific' with '|OPEX Fixed' in 'variable'
         rows$variable[cond] <- gsub("\\|OPEX Fixed Specific$", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
-        
+
         # Update 'reference_variable' by replacing 'Input' or 'Output' with 'Input Capacity' or 'Output Capacity'
         rows$reference_variable[cond] <- gsub(r'(Input|Output)', '\\1 Capacity', rows$reference_variable[cond], perl = TRUE)
-        
+
         # Check if there are rows with null 'value' after the operation
         if (any(cond & is.na(rows$value))) {
           warning("No OCF value matching an OPEX Fixed Specific value found.")
@@ -522,8 +522,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       }
 
       # 4. convert efficiencies (Output over Input) to demands (Input over Output)
-     
-      cond1 <- grepl("\\|Output(?: Capacity)?\\|", rows$variable) 
+
+      cond1 <- grepl("\\|Output(?: Capacity)?\\|", rows$variable)
       if (any(!is.na(rows$reference_variable))) {
         cond2 <- grepl("\\|Input(?: Capacity)?\\|", rows$reference_variable)
                       } else {
@@ -540,8 +540,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       }
 
       # 5. convert all references to primary output
-      
-     
+
+
       print(rows$reference_variable)
       if (any(!is.na(rows$reference_variable))) {
         cond1 <- (grepl("\\|Output(?: Capacity)?\\|", rows$reference_variable) | grepl("\\|Input(?: Capacity)?\\|", rows$reference_variable))
@@ -552,8 +552,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       cond2 <- unlist(lapply(rows$variable, function(var) {
         'default_reference' %in% names(private$..var_specs[[var]])
         }))
-      
-   
+
+
 
       get_default_reference <- function(var) {
         if ('default_reference' %in% names(self$var_specs[[var]])) {
@@ -570,7 +570,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       print(cond2)
       print(cond3)
       print(cond1 & cond2 & cond3)
- 
+
       if (any(cond1 & cond2 & cond3)) {
         regex_find <- "\\|(Input|Output)(?: Capacity)?\\|"
         regex_repl <- "|\\1|"
@@ -579,23 +579,23 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         })
         rows$value[cond] <- rows$value[cond] * sapply(seq_len(nrow(rows[cond,])), function(i) {
           row <- rows[cond,]
-          unit_convert(paste0(ifelse(grepl("Capacity", row$reference_variable[i]), "a*", ""), 
-                              var_units[row$reference_variable_new[i]]), 
-                      var_units[gsub(regex_find, regex_repl, row$reference_variable_new[i])], 
+          unit_convert(paste0(ifelse(grepl("Capacity", row$reference_variable[i]), "a*", ""),
+                              var_units[row$reference_variable_new[i]]),
+                      var_units[gsub(regex_find, regex_repl, row$reference_variable_new[i])],
                       tail(strsplit(row$reference_variable_new[i], "\\|")[[1]], 1)) /
-          unit_convert(paste0(ifelse(grepl("Capacity", row$reference_variable[i]), "a*", ""), 
-                              var_units[row$reference_variable[i]]), 
-                      var_units[gsub(regex_find, regex_repl, row$reference_variable[i])], 
-                      tail(strsplit(row$reference_variable[i], "\\|")[[1]], 1)) * 
-          rows[grepl(paste0("^", gsub(regex_find, regex_repl, row$reference_variable[i]), "$"), 
-                    rows$variable) & 
-              grepl(paste0("^", gsub(regex_find, regex_repl, row$reference_variable_new[i]), "$"), 
+          unit_convert(paste0(ifelse(grepl("Capacity", row$reference_variable[i]), "a*", ""),
+                              var_units[row$reference_variable[i]]),
+                      var_units[gsub(regex_find, regex_repl, row$reference_variable[i])],
+                      tail(strsplit(row$reference_variable[i], "\\|")[[1]], 1)) *
+          rows[grepl(paste0("^", gsub(regex_find, regex_repl, row$reference_variable[i]), "$"),
+                    rows$variable) &
+              grepl(paste0("^", gsub(regex_find, regex_repl, row$reference_variable_new[i]), "$"),
                     rows$reference_variable), ]$value[1]
         })
         rows$reference_variable[cond] <- rows$reference_variable_new[cond]
         rows <- rows[!names(rows) %in% c("reference_variable_new")]
         if (any(cond & is.na(rows$value))) {
-          warning(paste("No appropriate mapping found to convert row reference to primary output:", 
+          warning(paste("No appropriate mapping found to convert row reference to primary output:",
                         rows[cond & is.na(rows$value), ]))
         }
       }
@@ -614,7 +614,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
                            file_paths = NULL,
                            check_inconsistencies = FALSE,
                            data = NULL) {
-      
+
       # Attributes
       print("initialize")
       super$initialize(parent_variable)
@@ -624,22 +624,22 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         if (inherits(field, "AbstractFieldDefinition")) field else NULL
       })
       private$..masks <- list()
-      
+
       # Load data if provided, otherwise load from TEDataFiles
       if (!is.null(data)) {
         private$..df <- data.frame(data)
       } else {
-   
+
         if (!is.null(include_databases)) {
             include_databases <- list(include_databases)
         } else {
-          
+
             include_databases <- list(names(databases))
         }
 
         if (is.null(file_paths)){
             file_paths <- list()
-     
+
         }
         private$..df <- data.frame(private$..load_files(include_databases, file_paths, check_inconsistencies))
       }
@@ -647,10 +647,6 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       print(typeof(private$..df))
     },
 
-  
-    
-    
-    
     normalise = function(override = NULL, inplace = FALSE) {
       normalised <- private$..normalise(override)
       if (inplace) {
@@ -659,8 +655,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         return(data.frame(normalised$normalised))
       }
     },
-    
-    
+
     select = function(override = NULL,
                       drop_singular_fields = TRUE,
                       extrapolate_period = TRUE,
@@ -672,11 +667,11 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       return(result)
     },
 
-    aggregate = function(override=NULL, 
-            drop_singular_fields=TRUE, 
-            extrapolate_period=TRUE, 
-            agg=NULL, 
-            masks=NULL, 
+    aggregate = function(override=NULL,
+            drop_singular_fields=TRUE,
+            extrapolate_period=TRUE,
+            agg=NULL,
+            masks=NULL,
             masks_database=TRUE,
             ... ) {
               stop("aggregate not implemented yet")
@@ -690,8 +685,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     }
   )
 
-  
-  
+
+
 )
 
 

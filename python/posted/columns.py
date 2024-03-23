@@ -259,19 +259,19 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
             c for c in df.columns
             if c not in [col_id, 'value']
         ]
-      
+
         # perform groupby and do not drop NA values
         grouped = df.groupby(group_cols, dropna=False)
-        
+
         # create return list
         ret = []
 
         # loop over groups
         for keys, rows in grouped:
-          
+
             # get rows in group
             rows = rows[[col_id, 'value']]
-        
+
             # get a list of periods that exist
             periods_exist = rows[col_id].unique()
 
@@ -281,18 +281,18 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                 f"{col_id}_upper": [min([ip for ip in periods_exist if ip >= p], default=np.nan) for p in field_vals],
                 f"{col_id}_lower": [max([ip for ip in periods_exist if ip <= p], default=np.nan) for p in field_vals],
             })
-       
+
             # set missing columns from group
             req_rows[group_cols] = keys
-       
+
             # check case
             cond_match = req_rows[col_id].isin(periods_exist)
             cond_extrapolate = (req_rows[f"{col_id}_upper"].isna() | req_rows[f"{col_id}_lower"].isna())
-           
+
             # match
             rows_match = req_rows.loc[cond_match] \
                 .merge(rows, on=col_id)
-     
+
             # extrapolate
             rows_extrapolate = (
                 req_rows.loc[~cond_match & cond_extrapolate]
@@ -307,14 +307,14 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                 if 'extrapolate_period' not in kwargs or kwargs['extrapolate_period'] else
                 pd.DataFrame()
             )
-        
+
             # interpolate
             rows_interpolate = req_rows.loc[~cond_match & ~cond_extrapolate] \
                 .merge(rows.rename(columns={c: f"{c}_upper" for c in rows.columns}), on=f"{col_id}_upper") \
                 .merge(rows.rename(columns={c: f"{c}_lower" for c in rows.columns}), on=f"{col_id}_lower") \
                 .assign(value=lambda row: row['value_lower'] + (row[f"{col_id}_upper"] - row[col_id]) /
                                           (row[f"{col_id}_upper"] - row[f"{col_id}_lower"]) * (row['value_upper'] - row['value_lower']))
-     
+
             # combine into one dataframe and drop unused columns
             rows_to_concat = [df for df in [rows_match, rows_extrapolate, rows_interpolate] if not df.empty]
             if rows_to_concat:
@@ -325,9 +325,9 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                     ], inplace=True)
 
                 # add to return list
-          
+
                 ret.append(rows_append)
-    
+
         # convert return list to dataframe and return
         return pd.concat(ret).reset_index(drop=True) if ret else df.iloc[[]]
 
@@ -439,7 +439,7 @@ def read_fields(variable: str):
         if fpath.exists():
             if not fpath.is_file():
                 raise Exception(f"Expected YAML file, but not a file: {fpath}")
-            
+
             for col_id, field_specs in read_yml_file(fpath).items():
                 if field_specs['type'] in ('case', 'component'):
                     fields[col_id] = CustomFieldDefinition(**field_specs)
