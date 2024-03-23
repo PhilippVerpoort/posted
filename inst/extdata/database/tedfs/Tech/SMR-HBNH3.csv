@@ -1,7 +1,0 @@
-variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|nh3,,,670,,EUR,1,t/a,,Bazzanella17,Table 35
-OPEX Fixed Specific,Output|nh3,,,100,,EUR,1,t,,Bazzanella17,Table 35
-Input|elec,Output|nh3,,,0.3,,GJ,1,t,,IEA-Ammonia21,Table 1.2
-Input|ng,Output|nh3,,Feedstock,21,,GJ;LHV,1,t,,IEA-Ammonia21,Table 1.2
-Input|ng,Output|nh3,,Fuel,11.1,,GJ;LHV,1,t,,IEA-Ammonia21,Table 1.2
-Input|ng,Output|nh3,,,29.7,2.1,GJ;LHV,1,t,,EuroComm07,Table 2.14

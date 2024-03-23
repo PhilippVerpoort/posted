@@ -8,8 +8,12 @@ from posted.read import read_yml_file
 
 
 def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
-    assert definitions_dir.is_dir()
-    print("read definitions")
+    # check that variables exists and is a directory
+    if not definitions_dir.exists():
+        return {}
+    if not definitions_dir.is_dir():
+        raise Exception(f"Should be a directory but is not: {definitions_dir}")
+
     # read all definitions and tags
     definitions = {}
     tags = {}
@@ -19,9 +23,6 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
             tags |= read_yml_file(file_path)
         else:
             definitions |= read_yml_file(file_path)
-    
-   #  print("defs = ", definitions)
-    # print("tags = ", tags)
     # read tags from flows and techs
     tags['Flow IDs'] = {
         flow_id: {}
@@ -67,16 +68,12 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
 
 
 def replace_tags(definitions: dict, tag: str, items: dict[str, dict]):
-    # print("replace tags")
     definitions_with_replacements = {}
     for def_name, def_specs in definitions.items():
         if f"{{{tag}}}" not in def_name: 
             definitions_with_replacements[def_name] = def_specs
-            # print("not")
-           
+  
         else:
-            # print("is")
-           
             for item_name, item_specs in items.items():
                 item_desc = item_specs['description'] if 'description' in item_specs else item_name
                 # print(item_desc)
@@ -90,10 +87,8 @@ def replace_tags(definitions: dict, tag: str, items: dict[str, dict]):
                     if k == 'description' or not isinstance(v, str):
                         continue
                     def_specs_new[k] = def_specs_new[k].replace(f"{{{tag}}}", item_name)
-                    # print(def_name[:def_name.find(f"{{{tag}}}")-1])
                     def_specs_new[k] = def_specs_new[k].replace('{parent variable}', def_name[:def_name.find(f"{{{tag}}}")-1])
                 definitions_with_replacements[def_name_new] = def_specs_new
-    # print(definitions_with_replacements)
     return definitions_with_replacements
 
 

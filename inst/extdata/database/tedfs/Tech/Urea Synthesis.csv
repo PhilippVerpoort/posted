@@ -1,0 +1,13 @@
+variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output|Urea,2023,4.05,,MUSD_2022,1000.0,metric_ton/a,,Palys23,"Section 2.3, Page 6"
+Input|Electricity,Output|Urea,2020,173.7,27.2,kWh,1.0,metric_ton,,Fiamelda20,"Section 3.5, Page 5"
+Input|Electricity,Output|Urea,2018,91.5,68.5,kWh,1.0,metric_ton,,Jarvis18,Section 2.1.2
+Input|Electricity,Output|Urea,2023,0.18,,MWh,1.0,metric_ton,,Palys23,"Section 2.3, Page 6"
+Input|Heat,Output|Urea,2015,3.29,,GJ,1.0,metric_ton,Heat required for steam production.,Bazzanella17,Section 4.3.1
+Input|Heat,Output|Urea,2023,0.95,,MWh,1.0,metric_ton,,Palys23,"Section 2.3, Page 6"
+Input|Ammonia,Output|Urea,2015,0.57,,metric_ton,1.0,metric_ton,,Bazzanella17,Section 4.3.1
+Input|Ammonia,Output|Urea,1974,0.58,,metric_ton,1.0,metric_ton,,Kent74,
+Input|Captured CO2,Output|Urea,2018,0.7425,0.0075,metric_ton,1.0,metric_ton,,Jarvis18,Section 2.1.2
+Input|Captured CO2,Output|Urea,2017,0.73,,metric_ton,1.0,metric_ton,,Bazzanella17,Section 4.3.1
+Input|Captured CO2,Output|Urea,1974,0.76,,metric_ton,1.0,metric_ton,Prozess-Output: Wasser (0.34 t/t); CO2 und Ammonia werden teilweise im Kreis geführt (überstöchiometrischer Bedarf),Kent74,
+Lifetime,,2018,20.0,,year,,,,Jarvis18,Table 2

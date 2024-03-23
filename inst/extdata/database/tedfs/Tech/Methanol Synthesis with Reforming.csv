@@ -1,0 +1,5 @@
+variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX Annualised,Output Capacity|Methanol,2017,400.0,,EUR_2015,1,metric_ton,Depreciated over 10 years with an interest rate of 10%.,Bazzanella17,Table 35
+OPEX Fixed Specific,Output|Methanol,2017,60.0,,EUR_2015,1,metric_ton,,Bazzanella17,Table 35
+Input|Electricity,Output|Methanol,2017,0.6,,GJ,1,metric_ton,,Bazzanella17,Section 4.4.1
+Input|Fossil Gas,Output|Methanol,2017,12.5,,GJ,1,metric_ton,,Bazzanella17,Section 4.4.1

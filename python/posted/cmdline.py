@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import argparse
+from pathlib import Path
 
+from posted.sources import dump_sources
 from posted.units import unit_convert
 
 
@@ -21,14 +23,20 @@ def main():
     parser_conv.add_argument('fromUnit')
     parser_conv.add_argument('toUnit')
 
+    # create the parser for the "dump-sources" command
+    parser_conv = subparsers.add_parser('dump-sources')
+    parser_conv.add_argument('filePath', type=Path)
+
     # parse arguments
     args = parser.parse_args()
     cmd = args.command
 
     # switch between different commands
     if cmd == 'conv':
-        convFactor = unit_convert(args.fromUnit, args.toUnit, args.flow)
-        print(f"{convFactor*args.value:.2f} {args.toUnit}")
+        conv_factor = unit_convert(args.fromUnit, args.toUnit, args.flow)
+        print(f"{conv_factor*args.value:.2f} {args.toUnit}")
+    elif cmd == 'dump-sources':
+        dump_sources(args.filePath)
 
     return
 

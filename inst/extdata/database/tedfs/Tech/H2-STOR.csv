@@ -1,9 +1,0 @@
-subtech,variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-AGCS,Total Production Expenditure,Input|h2,,0.33,,USD,1,kg,,Abdin21,
-AGCS,Total Production Expenditure,Input|h2,,25.2,,USD,1,kg,,Abdin21,
-SC,Total Production Expenditure,Input|h2,,0.14,,USD,1,kg,,Abdin21,
-AGCS,CAPEX,Storage Capacity|h2,2017,100,,EUR,1,m³;norm,"here, H2 is stored at 500 bar. ""under standard conditions, (atmospheric pressure and 0°C), at 500 bar, H2 has a density of 33kg/m^3"" ",Gorre19,
-AGCS,OPEX Fixed Relative,,2017,1.5,,percent,,,,Gorre19,
-AGCS,CAPEX,Storage Capacity|h2,2030,75,,EUR,1,m³;norm,"here, H2 is stored at 500 bar. ""under standard conditions, (atmospheric pressure and 0°C), at 500 bar, H2 has a density of 33kg/m^3"" ",Gorre19,
-AGCS,OPEX Fixed Relative,,2030,1.5,,percent,,,,Gorre19,
-SC,Total Production Expenditure,Input|h2,2020,0.24,,EUR,1,kWh,40 days average storage duration,Michalski17,

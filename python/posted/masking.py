@@ -24,13 +24,19 @@ class Mask:
     def __init__(self,
                  where: MaskCondition | list[MaskCondition] = None,
                  use: MaskCondition | list[MaskCondition] = None,
-                 weight: None | float | list[float] = None,
+                 weight: None | float | str | list[float | str] = None,
                  other: float = np.nan,
                  comment: str = ''):
         # set fields from constructor arguments
         self._where: list[MaskCondition] = [] if where is None else where if isinstance(where, list) else [where]
         self._use: list[MaskCondition] = [] if use is None else use if isinstance(use, list) else [use]
-        self._weight: list[float] = weight if isinstance(weight, list) or weight is None else [weight]
+        self._weight: list[float] = (
+            None
+            if weight is None else
+            [float(w) for w in weight]
+            if isinstance(weight, list) else
+            [float(weight)]
+        )
         self._other: float = other
         self._comment: str = comment
 

@@ -11,7 +11,9 @@ from posted.config import flows
 # set up pint unit registry: use iam_units as a basis, load custom definitions, add pint_pandas, set display format,
 ureg = iam_units.registry
 for database_path in databases.values():
-    ureg.load_definitions(database_path / 'unit_definitions.txt')
+    units_definitions = database_path / 'unit_definitions.txt'
+    if units_definitions.exists():
+        ureg.load_definitions(units_definitions)
 iam_units.currency.configure_currency("EXC", "2005")
 ureg.Unit.default_format = "~P"
 
