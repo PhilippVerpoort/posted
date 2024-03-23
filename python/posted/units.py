@@ -6,6 +6,8 @@ from posted.path import databases
 from posted.config import flows
 
 
+
+
 # set up pint unit registry: use iam_units as a basis, load custom definitions, add pint_pandas, set display format,
 ureg = iam_units.registry
 for database_path in databases.values():
@@ -90,7 +92,6 @@ def allowed_flow_dims(flow_type: None | str):
         allowed_dims = ['[currency]']
     else:
         flow_type_data = flows[flow_type]
-        # print(flow_type_data['default_unit'])
         default_unit = flow_type_data['default_unit'].split(';')[0]
         allowed_dims = [str(ureg.Quantity(default_unit).dimensionality)] # default units dimension is always accepted
 
@@ -149,8 +150,6 @@ def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | s
            
             value_from, value_to = (
                 flows[flow_id][unit_variants[v]['value']] for v in variants)
-            # print("value_from = ",ureg (value_from))
-            # print("value_to = ", ureg(value_to))
             conv_factor = (ureg(value_from) / ureg(value_to)
                            if param == 'energycontent' else
                            ureg(value_to) / ureg(value_from))

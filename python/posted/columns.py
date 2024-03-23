@@ -169,14 +169,23 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
         return '*' if self._field_type == 'case' else '#'
 
     def is_allowed(self, cell: str | float | int) -> bool:
+        print("cell = ", cell)
         if pd.isnull(cell):
             return False
         if self._coded:
+            # print(self._codes)
             return cell in self._codes or cell == '*' or (cell == '#' and self.col_type == 'component')
         else:
             return True
 
     def _expand(self, df: pd.DataFrame, col_id: str, field_vals: list, **kwargs) -> pd.DataFrame:
+        print("col_id_expand = ", col_id)
+        print(pd.concat([
+            df[df[col_id].isin(field_vals)],
+            df[df[col_id] == '*']
+            .drop(columns=[col_id])
+            .merge(pd.DataFrame.from_dict({col_id: field_vals}), how='cross'),
+        ]))
         return pd.concat([
             df[df[col_id].isin(field_vals)],
             df[df[col_id] == '*']
@@ -190,6 +199,7 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
     # select and expand field based on values provided
     def select_and_expand(self, df: pd.DataFrame, col_id: str, field_vals: None | list, **kwargs) -> pd.DataFrame:
         # get list of selected field values
+       # print("field_vals_initial", field_vals)
         if field_vals is None:
             if col_id == 'period':
                 field_vals = default_periods
@@ -203,20 +213,23 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
                 field_vals = list(field_vals)
             elif not isinstance(field_vals, list):
                 field_vals = [field_vals]
+            #print("field_vals = ", field_vals)
             # check that every element is of allowed type
             for val in field_vals:
+                #print("val = ", val)
                 if not self.is_allowed(val):
                     raise Exception(f"Invalid type selected for field '{col_id}': {val}")
             if '*' in field_vals:
                 raise Exception(f"Selected values for field '{col_id}' must not contain the asterisk."
                                 f"Omit the '{col_id}' argument to select all entries.")
-
+        print("access expand")
         # expand
         df = self._expand(df, col_id, field_vals, **kwargs)
-
+        print("access select")
         # select
         df = self._select(df, col_id, field_vals, **kwargs)
-
+        print("df after select")
+        print(df)
         # return
         return df
 
@@ -261,18 +274,19 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
             c for c in df.columns
             if c not in [col_id, 'value']
         ]
-
+      
         # perform groupby and do not drop NA values
         grouped = df.groupby(group_cols, dropna=False)
-
+        
         # create return list
         ret = []
 
         # loop over groups
         for keys, rows in grouped:
+          
             # get rows in group
             rows = rows[[col_id, 'value']]
-
+        
             # get a list of periods that exist
             periods_exist = rows[col_id].unique()
 
@@ -282,18 +296,18 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                 f"{col_id}_upper": [min([ip for ip in periods_exist if ip >= p], default=np.nan) for p in field_vals],
                 f"{col_id}_lower": [max([ip for ip in periods_exist if ip <= p], default=np.nan) for p in field_vals],
             })
-
+       
             # set missing columns from group
             req_rows[group_cols] = keys
-
+       
             # check case
             cond_match = req_rows[col_id].isin(periods_exist)
             cond_extrapolate = (req_rows[f"{col_id}_upper"].isna() | req_rows[f"{col_id}_lower"].isna())
-
+           
             # match
             rows_match = req_rows.loc[cond_match] \
                 .merge(rows, on=col_id)
-
+     
             # extrapolate
             rows_extrapolate = (
                 req_rows.loc[~cond_match & cond_extrapolate]
@@ -308,14 +322,14 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                 if 'extrapolate_period' not in kwargs or kwargs['extrapolate_period'] else
                 pd.DataFrame()
             )
-
+        
             # interpolate
             rows_interpolate = req_rows.loc[~cond_match & ~cond_extrapolate] \
                 .merge(rows.rename(columns={c: f"{c}_upper" for c in rows.columns}), on=f"{col_id}_upper") \
                 .merge(rows.rename(columns={c: f"{c}_lower" for c in rows.columns}), on=f"{col_id}_lower") \
                 .assign(value=lambda row: row['value_lower'] + (row[f"{col_id}_upper"] - row[col_id]) /
                                           (row[f"{col_id}_upper"] - row[f"{col_id}_lower"]) * (row['value_upper'] - row['value_lower']))
-
+     
             # combine into one dataframe and drop unused columns
             rows_to_concat = [df for df in [rows_match, rows_extrapolate, rows_interpolate] if not df.empty]
             if rows_to_concat:
@@ -326,8 +340,9 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                     ], inplace=True)
 
                 # add to return list
+          
                 ret.append(rows_append)
-
+    
         # convert return list to dataframe and return
         return pd.concat(ret).reset_index(drop=True) if ret else df.iloc[[]]
 

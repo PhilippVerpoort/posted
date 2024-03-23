@@ -97510,6 +97510,9 @@ L;std,m³,xylene,0.001000000
 L;std,m**3,xylene,0.001000000
 L;std,L,xylene,1.000000000
 percent,dimensionless,,0.010000000
+pct,dimensionless,,0.0100000
 dimensionless,percent,,100.000000000
+dimensionless,pct,,100.00000
 percent,pct,,1.000000000
 pct,percent,,1.000000000
+

@@ -10,8 +10,6 @@ compatible_units = []
 
 # Create an empty DataFrame to store the appended data
 appended_data = pd.DataFrame()
-print("base_path = " ,BASE_PATH)
-print(DATA_PATH)
 # Loop through all ted files
 for filename in os.listdir(DATA_PATH /'database/tedfs/Tech/'):
     filepath = os.path.join(DATA_PATH /'database/tedfs/Tech/', filename)

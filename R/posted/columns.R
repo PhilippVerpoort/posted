@@ -224,7 +224,6 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     
     
     is_allowed = function(cell) {
-      print(cell)
       if (is.na(cell)) {
         return(FALSE)
       }
@@ -240,9 +239,6 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     
    
     select_and_expand = function(df, col_id, field_vals = NA, ...) {
-      print("df_select and expand")
-      print("field vals initial")
-      print(field_vals)
       if (is.na(field_vals)) {
         if (col_id == 'period') {
           field_vals <- default_periods
