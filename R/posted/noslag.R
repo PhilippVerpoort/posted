@@ -227,6 +227,21 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         # compile dataset from the dataframes loaded from the individual files
         data <- do.call(cbind, file_dfs)
 
+        # Query relevant variables
+        data <- subset(data, parent_variable == private$..parent_variable)
+
+        # Drop entries with unknown variables and warn
+        for (var_type in c('variable', 'reference_variable')) {
+          cond <- !is.na(data[[var_type]]) &
+            apply(data, 1, function(row) {
+              paste(row$parent_variable, row[[var_type]], sep = "|") %in% private$..var_specs
+            })
+          if (any(cond)) {
+            warning(paste("Unknown", var_type, "so dropping rows:\n", data[cond, var_type]))
+            data <- data[!cond, ]
+          }
+        }
+
         # return
         return(as.data.frame(data))
 
