@@ -255,13 +255,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       var_units <- lapply(names(private$..var_specs), function(var_name) {
         var_specs <- private$..var_specs[[var_name]]
-
-        if (!(('mapped' %in% names(var_specs)) && var_specs[['mapped']])) {
-
           return(var_specs[['default_unit']])
-        } else {
-          return(NULL)
-        }
+
       })
 
       names(var_units) <- names(private$..var_specs)
@@ -397,7 +392,18 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       # Insert column containing units
       df <- as.data.frame(append(df, list(unit=NaN), after = match("value", names(df))-1))
       print(df)
-      df$unit <- var_units[df$variable]
+      if ("reference_variable" %in% colnames(df)) {
+        df$unit <- apply(df, 1, function(row) {
+          if (!is.na(row["reference_variable"])) {
+            combine_units(var_units[row["variable"]], var_units[row["reference_variable"]])
+          } else {
+            var_units[row["variable"]]
+          }
+        })
+      } else {
+        df$unit <- var_units[df$variable]
+      }
+
       print(df)
       return(df)
   },
@@ -663,6 +669,16 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       selected_and_var_units <- private$..select(override, drop_singular_fields, extrapolate_period, ...)
       selected <- selected_and_var_units[[1]]
       var_units <- selected_and_var_units[[2]]
+
+      # Inserting a new column 'reference_variable' at a specific position in the data frame
+      selected <- cbind(selected[, 1:selected$variable - 1],
+                        reference_variable = NA,
+                        selected[, selected$variable:length(selected)])
+
+      # Mapping values from 'var_references' to the 'reference_variable' column based on 'variable'
+      selected$reference_variable <- var_references[selected$variable]
+
+
       result <- private$..cleanup(selected, var_units)
       return(result)
     },

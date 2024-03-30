@@ -27,14 +27,14 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
         ..dtype = NULL,
         ..required = NULL
     ),
- 
-  
+
+
   public = list(
-    
+
     initialize = function(col_type, name, description, dtype, required) {
         if (!(col_type %in% list('field', 'variable', 'unit', 'value', 'comment'))) {
             stop(sprintf("Columns must be of type field, variable, unit, value, or comment but found: %s", col_type))
-        } 
+        }
         if (!is.string(name)) {
             stop(sprintf("The 'name' must be a string but found type %s: %s", typeof(name), name))
         }
@@ -66,28 +66,28 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
     col_type = function() {
       private$..col_type
     },
-    
+
     name = function() {
       private$..name
     },
-    
+
     description = function() {
       private$..description
     },
-    
+
     dtype = function() {
       private$..dtype
     },
-    
+
     required = function() {
       private$..required
     },
-    
+
     default = function() {
       NA
     }
-    
-    
+
+
   )
 )
 
@@ -102,7 +102,7 @@ VariableDefinition <- R6::R6Class("VariableDefinition", inherit = AbstractColumn
                        dtype = 'category',
                        required = required)
     },
-    
+
     is_allowed = function(cell) {
       if (is.na(cell)) {
         return(!private$..required)
@@ -123,7 +123,7 @@ UnitDefinition <- R6::R6Class("UnitDefinition", inherit = AbstractColumnDefiniti
                        dtype = 'category',
                        required = required)
     },
-    
+
     is_allowed = function(cell) {
       if (is.na(cell)) {
         return(!private$required)
@@ -152,7 +152,7 @@ ValueDefinition <- R6::R6Class("ValueDefinition", inherit = AbstractColumnDefini
                        dtype = 'float',
                        required = required)
     },
-    
+
     is_allowed = function(cell) {
       if (is.na(cell)) {
         return(!private$required)
@@ -171,7 +171,7 @@ CommentDefinition <- R6::R6Class("CommentDefinition", inherit = AbstractColumnDe
                        dtype = 'str',
                        required = required)
     },
-    
+
     is_allowed = function(cell) {
       TRUE
     }
@@ -190,14 +190,14 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
       # expand period rows
       df[df[[col_id]] == "*", col_id] = paste(field_vals, collapse=',')
       result_df <- separate_rows(df, col_id, sep=',')
-      
-      
-      
+
+
+
       return(result_df)
 
 
     },
-    
+
     ..select = function(df, col_id, field_vals, ...) {
       df[df[[col_id]] %in% field_vals, , drop = FALSE]
     }
@@ -208,7 +208,7 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
       if (!(field_type %in% list('case', 'component'))) {
         stop("Fields must be of type case or component.")
       }
-      
+
      super$initialize(col_type = 'field',
                        name = name,
                        description = description,
@@ -220,24 +220,24 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
       private$..codes <- codes
     },
 
-    
-    
-    
+
+
+
     is_allowed = function(cell) {
       if (is.na(cell)) {
         return(FALSE)
       }
       if (private$..coded) {
-      
+
         return(cell %in% names(private$..codes) || cell == '*' ||
                (cell == '#' && private$..col_type == 'component'))
       } else {
         return(TRUE)
       }
     },
-    
-    
-   
+
+
+
     select_and_expand = function(df, col_id, field_vals = NA, ...) {
       if (is.na(field_vals)) {
         if (col_id == 'period') {
@@ -245,7 +245,8 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
         } else if (private$..coded) {
           field_vals <- names(private$..codes)
         } else {
-          field_vals <- unique(df[[col_id]][df[[col_id]] != '*'])
+          field_vals <- unique(df[df$col_id != "*" & !is.na(df$col_id), col_id])
+
         }
       } else {
         if(!(is.list(field_vals))) {
@@ -266,7 +267,7 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
         }
 
       }
-      
+
       df <- private$..expand(df, col_id, field_vals, ...)
       df <- private$..select(df, col_id, field_vals, ...)
       print(df)
@@ -277,16 +278,16 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     field_type = function() {
       private$..field_type
     },
-    
+
     coded = function() {
       private$..coded
     },
-    
+
     codes = function() {
       private$..codes
-    
+
     },
-    
+
     default = function() {
       if (private$..field_type == 'case') {
         return('*')
@@ -296,7 +297,7 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     }
   )
 )
- 
+
 RegionFieldDefinition <- R6::R6Class("RegionFieldDefinition", inherit = AbstractFieldDefinition,
   public = list(
     initialize = function(name, description) {
@@ -319,14 +320,14 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
 
     ..expand = function(df, col_id, field_vals, ...) {
-      
+
       # expand period rows
       df[df[[col_id]] == "*", col_id] = paste(field_vals, collapse=',')
       result_df <- separate_rows(df, col_id, sep=',')
-      
+
       # Convert 'period' column to float
       result_df[[col_id]] <- as.numeric(result_df[[col_id]])
-      
+
       return(result_df)
     },
 
@@ -335,38 +336,38 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
     ..select = function(df, col_id, field_vals, ...) {
       kwargs <- list(...)
-      
+
       # Get list of groupable columns
       group_cols <- setdiff(names(df), c(col_id, 'value'))
-     
+
       # Perform group_by and do not drop NA values
-      
-      
+
+
       grouped <- df %>% group_split(across(all_of(group_cols)), .drop = FALSE)
-    
+
       # Create return list
 
-      
+
       ret <- list()
-      
-   
+
+
 
 
       # Loop over groups
       for (i in seq_along(grouped)) {
         group_df <- grouped[[i]]
-      
+
         # Get rows in group
         rows <- group_df %>%
           select(col_id, value)
-    
+
         # Get a list of periods that exist
         periods_exist <- unique(rows[[col_id]])
-       
+
         # Create dataframe containing rows for all requested periods
         req_rows <- data.frame()
-       
-     
+
+
         req_rows <-setNames(data.frame(field_vals[[1]]),col_id )
         req_rows[[paste0(col_id, "_upper")]] <- sapply(field_vals, function(p) {
             filtered_values <- periods_exist[periods_exist >= p]
@@ -376,7 +377,7 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
               return(min(filtered_values, na.rm = TRUE))
             }
           })
-                        
+
         req_rows[[paste0(col_id, "_lower")]] <- sapply(field_vals, function(p) {
             filtered_values <- periods_exist[periods_exist <= p]
             if (length(filtered_values) == 0 || all(is.na(filtered_values))) {
@@ -385,26 +386,26 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
               return(max(filtered_values, na.rm = TRUE))
             }
           })
-       
-        
+
+
         # Set missing columns from group
         req_rows[group_cols] <- group_df%>% slice(1) %>% select(all_of(group_cols))
-        
+
         # check case
         cond_match <- req_rows[[col_id]] %in% periods_exist
         cond_extrapolate <- is.na(req_rows[[paste0(col_id, "_upper")]]) | is.na(req_rows[[paste0(col_id, "_lower")]])
 
-        
+
         # Match
         rows_match <- req_rows[cond_match, ] %>%
             merge(rows, by = col_id)
-        
-      
+
+
         # Extrapolate
 
-       
+
         if (!("extrapolate_period" %in% names(kwargs)) || kwargs$extrapolate_period) {
-         
+
           rows_extrapolate <- req_rows[!cond_match & cond_extrapolate, ] %>% mutate(period_combined = ifelse(!is.na(!!sym(paste0(col_id, "_upper"))), !!sym(paste0(col_id, "_upper")), !!sym(paste0(col_id, "_lower"))))
           rows_ext <- rows %>% rename(!!paste0(col_id, "_combined") := !!sym(col_id))
 
@@ -413,43 +414,43 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
         } else {
           rows_extrapolate <- data.frame()
         }
-        
-      
-       
+
+
+
         rows_interpolate <- req_rows %>%
           filter(!(.data[[col_id]] %in% periods_exist) & (!is.na(!!sym(paste0(col_id, "_upper"))) & !is.na(!!sym(paste0(col_id, "_lower"))))) %>%
           inner_join(rename(rows, !!paste0(col_id, "_upper") := !!sym(col_id), !!paste0("value_upper") := value), by = paste0(col_id, "_upper")) %>%
           inner_join(rename(rows, !!paste0(col_id, "_lower") := !!sym(col_id), !!paste0("value_lower") := value), by = paste0(col_id, "_lower")) %>%
           mutate(value = value_lower + ((!!sym(paste0(col_id, "_upper")) - !!sym(col_id)) / (!!sym(paste0(col_id, "_upper")) - !!sym(paste0(col_id, "_lower")))) * (value_upper - value_lower))
-       
+
         # Combine into one dataframe and drop unused columns
         rows_to_concat <- list(rows_match, rows_extrapolate, rows_interpolate)
         rows_to_concat <- Filter(function(x) !is.data.frame(x) || nrow(x) > 0, rows_to_concat)
         if (length(rows_to_concat) > 0) {
-          rows_append <- bind_rows(rows_to_concat) 
-        
+          rows_append <- bind_rows(rows_to_concat)
+
           rows_append <- rows_append %>%  select(-any_of(c(paste0(col_id, "_upper"),
                   paste0(col_id, "_lower"),
                   paste0(col_id, "_combined"),
                   "value_upper",
                   "value_lower")))
-        
+
           # Add to return list
           ret[[i]] <- rows_append
         }
       }
-   
+
       # Convert return list to dataframe and return
       if (length(ret) > 0) {
         return(bind_rows(ret))
-        
+
       } else {
         return(df[FALSE, ])  # Empty data frame
       }
     }
 
   ),
-  
+
   public = list(
     initialize = function(name, description) {
       super$initialize(
@@ -465,7 +466,7 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
       return(is_float(cell) || cell == '*')
     }
 
-    
+
   )
 )
 
@@ -483,10 +484,10 @@ SourceFieldDefinition <- R6::R6Class("SourceFieldDefinition",
         description = description,
         dtype = 'category',
         coded = FALSE # TODO: Insert list of BibTeX identifiers here.
-        ) 
+        )
     }
-    ) 
-)  
+    )
+)
 
 # Define the CustomFieldDefinition class
 CustomFieldDefinition <- R6::R6Class("CustomFieldDefinition",
@@ -514,12 +515,12 @@ CustomFieldDefinition <- R6::R6Class("CustomFieldDefinition",
     if (field_specs$coded && !('codes' %in% names(field_specs) && is.list(field_specs$codes))) {
     stop("Field codes must be provided and contain a list of possible codes.")
     }
-    if ('codes' %in% names(field_specs)) {    
+    if ('codes' %in% names(field_specs)) {
         x <- field_specs$codes
     } else {
         x <- NULL
     }
-    
+
 
     super$initialize(
         field_type=field_specs$type,
@@ -529,9 +530,9 @@ CustomFieldDefinition <- R6::R6Class("CustomFieldDefinition",
         coded=field_specs$coded,
         codes= x
     )
-  
+
       self$field_specs <- field_specs
-    
+
     }
   )
 )
@@ -606,7 +607,7 @@ read_fields <- function(variable) {
   fields <- list()
   comments <- list()
 
-  
+
   for (database_id in names(databases)) {
     fpath <- file.path(databases[[database_id]], 'fields', paste0(paste(unlist(strsplit(variable, split= "\\|")), collapse = '/'), '.yml'))
     if (file.exists(fpath)) {
@@ -615,24 +616,24 @@ read_fields <- function(variable) {
       }
 
 
-      fpathfile <- read_yml_file(fpath) 
+      fpathfile <- read_yml_file(fpath)
       for (pair in names(fpathfile)) {
         col_id <- pair
         field_specs <- fpathfile[[pair]]
         if (field_specs['type'] %in% list('case', 'component')) {
-      
+
             fields[[col_id]] <- CustomFieldDefinition$new(field_specs)
         } else if (field_specs['type'] == 'comment') {
             comments[[col_id]] <- CommentDefinition(, required =False)
         }  else {
             stop(sprintf("Unknown field type: %s", col_id))
         }
-    
+
       }
     #   for (col_id %in% fields):
     #     if (col_id %in% base_columns):
     #         stop(sprintf("Field ID cannot be equal to a base column ID: %s", col_id))
-    
+
       }
     }
     return(list(fields= fields, comments= comments))
