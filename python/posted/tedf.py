@@ -10,7 +10,6 @@ from posted.path import databases
 from posted.units import unit_allowed
 
 
-
 class TEDFInconsistencyException(Exception):
     """Exception raised for inconsistencies in TEDFs.
 
@@ -58,9 +57,9 @@ class TEBase:
     def __init__(self, parent_variable: str):
         # set variable from function argument
         self._parent_variable: str = parent_variable
+
         # set technology specifications
         self._var_specs: dict = {key: val for key, val in variables.items() if key.startswith(self._parent_variable)}
-
 
     @property
     def parent_variable(self) -> str:
@@ -137,11 +136,9 @@ class TEDF(TEBase):
         for col_id, col in self._columns.items():
             if col_id in self._df:
                 continue
-
             df_new[col_id] = df_new[col_id].astype(col.dtype)
             df_new[col_id] = col.default
         self._df = df_new
-
 
     # write TEDF to CSV file
     def write(self):
@@ -217,4 +214,5 @@ class TEDF(TEBase):
             allowed, message = unit_allowed(unit=unit, flow_id=flow_id, dimension=dimension)
             if not allowed:
                 ret.append(new_inconsistency(message=message, col_id=col_id, **ikwargs))
+
         return ret

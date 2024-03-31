@@ -198,6 +198,7 @@ class DataSet(TEBase):
 
         # collect TEDF and append to list
         collected_files = collect_files(parent_variable=self._parent_variable, include_databases=include_databases)
+        print("collected files = ", collected_files)
         for file_variable, file_database_id in collected_files:
             files.append(TEDF(parent_variable=file_variable, database_id=file_database_id))
         for file_path in file_paths:

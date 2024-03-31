@@ -12,7 +12,6 @@ def read_csv_file(fpath: str):
 # read YAML config file
 def read_yml_file(fpath: Path):
     fhandle = open(fpath, 'r', encoding='utf-8')
-    
     ret = yaml.load(stream=fhandle, Loader=yaml.FullLoader)
     fhandle.close()
     return ret
