@@ -229,8 +229,6 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         # Query relevant variables
         data <- as.data.frame(data) %>% filter(parent_variable == private$..parent_variable)
 
-        print("load6")
-
         # Drop entries with unknown variables and warn
         for (var_type in c('variable', 'reference_variable')) {
           cond <- (!is.na(data[[var_type]]) & (data[[var_type]] != "") &
@@ -290,9 +288,9 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
     # Internal method for selecting data
     ..select = function(override, drop_singular_fields, extrapolate_period, ...) {
-      stop("Select function not implemented yet")
       field_vals_select <- list(...)
       print("select")
+      print(field_vals_select)
       print(override)
       # start from normalised data
       normalised_units <- private$..normalise(override)
@@ -312,7 +310,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       selected <- mutate(selected, reference_variable = paste(parent_variable, reference_variable, sep = "|"))
       selected <- select(selected, -parent_variable)
       print("selected after drop")
-      print(selected)
+      # print(selected)
       # raise exception if fields listed in arguments that are uknown
       for (field_id in names(field_vals_select)) {
 
@@ -336,18 +334,22 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       print("fields_select 3")
       fields_select[['period']] <- private$..fields[['period']]
       print("fields_select 4")
-      print(names(fields_select))
+      # print(names(fields_select))
       # select and expand fields
       for (col_id in names(fields_select)) {
         print("field")
         field <- fields_select[[col_id]]
         print("field_vals")
+        print(col_id %in% names(field_vals_select))
         field_vals <- ifelse(col_id %in% names(field_vals_select), field_vals_select[[col_id]], NA)
-        print("selected")
+        print(field_vals)
+
+
 
         selected <- field$select_and_expand(selected, col_id, field_vals, extrapolate_period=extrapolate_period)
       }
-
+      print("selected and expanded")
+      print(selected)
       # drop custom fields with only one value if specified in method argument
 
       if (drop_singular_fields) {
