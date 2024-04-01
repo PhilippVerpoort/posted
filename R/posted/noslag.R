@@ -1,4 +1,3 @@
-
 source("R/posted/masking.R")
 source("R/posted/tedf.R")
 source("R/posted/units.R")
@@ -169,7 +168,6 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     # Internal method for loading TEDFs
     ..load_files = function(include_databases, file_paths, check_inconsistencies) {
         files <- list()
-
         collected_files = collect_files(parent_variable = private$..parent_variable, include_databases = include_databases)
 
         for (i in 1:length(collected_files)) {
@@ -223,19 +221,23 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
           # append to dataframe list
           file_dfs <- append(file_dfs, df_tmp)
+        }
 
         # compile dataset from the dataframes loaded from the individual files
         data <- do.call(cbind, file_dfs)
 
         # Query relevant variables
-        data <- subset(data, parent_variable == private$..parent_variable)
+        data <- as.data.frame(data) %>% filter(parent_variable == private$..parent_variable)
+
+        print("load6")
 
         # Drop entries with unknown variables and warn
         for (var_type in c('variable', 'reference_variable')) {
-          cond <- !is.na(data[[var_type]]) &
+          cond <- (!is.na(data[[var_type]]) & (data[[var_type]] != "") &
             apply(data, 1, function(row) {
-              paste(row$parent_variable, row[[var_type]], sep = "|") %in% private$..var_specs
-            })
+              !paste(row[["parent_variable"]], row[[var_type]], sep = "|") %in% names(private$..var_specs)
+            }))
+
           if (any(cond)) {
             warning(paste("Unknown", var_type, "so dropping rows:\n", data[cond, var_type]))
             data <- data[!cond, ]
@@ -244,12 +246,6 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
         # return
         return(as.data.frame(data))
-
-
-        }
-
-
-
     },
 
     # Internal method for normalizing data
