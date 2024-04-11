@@ -67,6 +67,7 @@ collect_files <- function(parent_variable, include_databases = NULL) {
 # Define normalise_units function
 normalise_units <- function(df, level, var_units, var_flow_ids) {
   print("normalise_units")
+  print(df)
   prefix <- ifelse(level == 'reported', '', 'reference_')
   var_col_id <- paste0(prefix, 'variable')
   value_col_id <- paste0(prefix, 'value')
@@ -368,7 +369,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       selected2 <- private$..apply_mappings(selected, var_units)
 
-      print(selected)
+      print(selected2)
       selected_and_var_units <- list(selected=selected, var_units=var_units)
       print("return")
       return(selected_and_var_units)

@@ -24,14 +24,14 @@ unit_convert <- function(unit_from, unit_to, flow_type=NULL) {
     # print(typeof(unit_from))
     # print(typeof(unit_to))
     if (is.null(flow_type)) {
-        print(unit_from)
-        print(unit_to)
+        # print(unit_from)
+        # print(unit_to)
         values <- dplyr::filter(cached_units, from==unit_from & to==unit_to)
-        print("values")
-        print(filter(cached_units, from==unit_from & to==unit_to))
-        print(values)
-        print(nrow(values))
-        print(values$factor)
+        # print("values")
+        # print(filter(cached_units, from==unit_from & to==unit_to))
+        # print(values)
+        # print(nrow(values))
+        # print(values$factor)
     } else {
         values <- dplyr::filter(cached_units, from==unit_from & to==unit_to & ft==flow_type)
         # if there was no match, try again without flow_type

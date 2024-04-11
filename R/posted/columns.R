@@ -208,8 +208,8 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
 
     ..select = function(df, col_id, field_vals, ...) {
       print("abstract select")
-      print(df[[col_id]])
-      print(field_vals)
+      #print(df[[col_id]])
+      # print(field_vals)
       df[df[[col_id]] %in% field_vals, , drop = FALSE]
     }
 
@@ -250,27 +250,27 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
 
 
     select_and_expand = function(df, col_id, field_vals = NA, ...) {
-      print("select_and_expand")
+      # print("select_and_expand")
       if (is.na(field_vals)) {
         if (col_id == 'period') {
           field_vals <- default_periods
         } else if (private$..coded) {
-          print("coded")
+          #print("coded")
           field_vals <- names(private$..codes)
           print(field_vals)
         } else {
           field_vals <- unname(as.list(unique(df[df[[col_id]] != "*" & !is.na(df[[col_id]]), col_id])))[[1]]
-          print("not codedfield vals")
-          print(field_vals)
+          # print("not codedfield vals")
+          #print(field_vals)
         }
       } else {
         if(!(is.list(field_vals))) {
         field_vals <- as.list(field_vals)}
-        print("field_vals_columns")
-        print(field_vals)
+        # print("field_vals_columns")
+        # print(field_vals)
 
         for (val in field_vals) {
-          print(val)
+          # print(val)
           if (!self$is_allowed(val)) {
             stop(paste("Invalid type selected for field '", col_id, "': ", val, sep = ""))
           }
