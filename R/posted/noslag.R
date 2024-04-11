@@ -1,3 +1,4 @@
+
 source("R/posted/masking.R")
 source("R/posted/tedf.R")
 source("R/posted/units.R")
@@ -66,8 +67,6 @@ collect_files <- function(parent_variable, include_databases = NULL) {
 
 # Define normalise_units function
 normalise_units <- function(df, level, var_units, var_flow_ids) {
-  print("normalise_units")
-  print(df)
   prefix <- ifelse(level == 'reported', '', 'reference_')
   var_col_id <- paste0(prefix, 'variable')
   value_col_id <- paste0(prefix, 'value')
@@ -87,7 +86,6 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
             var_flow_ids[[paste0(row['parent_variable'], "|", row[var_col_id])]], NA)}, error=function(e){NA}, warning=function(w){NA})
             })
 
-
   df_tmp <- df
 
   df_tmp$target_unit <- target_unit
@@ -97,12 +95,12 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
   # Apply unit conversion
   conv_factor <- apply(df_tmp, 1, function(row) {
     if (!is.na(row[value_col_id])) {
-      unit_convert(row[[unit_col_id]], row['target_unit'], row['target_flow_id'])
+
+      unit_convert(row[[unit_col_id]], row[['target_unit']], row[['target_flow_id']])
     } else {
       return(1.0)
     }
   })
-
 
   # Update value column with conversion factor
   df_tmp[[value_col_id]] <- as.numeric(df_tmp[[value_col_id]]) * conv_factor
@@ -262,6 +260,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         }
       })
       names(var_flow_ids) <- names(private$..var_specs)
+      var_flow_ids <- var_flow_ids[order(names(var_flow_ids))]
 
       var_units <- lapply(names(private$..var_specs), function(var_name) {
         var_specs <- private$..var_specs[[var_name]]
@@ -278,6 +277,9 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       # Replace values in var_units with values from override for common names
       var_units[common_names] <- override[common_names]
+
+      var_units <- var_units[order(names(var_units))]
+
       print("call normalise_units")
 
       normalised <- private$..df %>%
@@ -310,8 +312,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       selected <- mutate(selected, variable = paste(parent_variable, variable, sep = "|"))
       selected <- mutate(selected, reference_variable = paste(parent_variable, reference_variable, sep = "|"))
       selected <- select(selected, -parent_variable)
-      print("selected after drop")
-      # print(selected)
+
       # raise exception if fields listed in arguments that are uknown
       for (field_id in names(field_vals_select)) {
 
@@ -350,7 +351,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         selected <- field$select_and_expand(selected, col_id, field_vals, extrapolate_period=extrapolate_period)
       }
       print("selected and expanded")
-      print(selected)
+      # print(selected, width=Inf, n=Inf)
       # drop custom fields with only one value if specified in method argument
 
       if (drop_singular_fields) {
@@ -366,10 +367,12 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         ))
 
       }
+      # print('selected after drop')
+      # print(selected, n=Inf, width=Inf)
+      selected <- private$..apply_mappings(selected, var_units)
+      print("applied mappings")
+      print(selected)
 
-      selected2 <- private$..apply_mappings(selected, var_units)
-
-      print(selected2)
       selected_and_var_units <- list(selected=selected, var_units=var_units)
       print("return")
       return(selected_and_var_units)
@@ -424,6 +427,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
   ..apply_mappings = function(expanded, var_units) {
     print("apply mappings")
+    # print(expanded, width=Inf,n=Inf)
     # Get list of groupable columns
       group_cols <- setdiff(names(expanded), c('variable', 'reference_variable', 'value'))
 
@@ -437,12 +441,11 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       for (i in seq_along(grouped)) {
         rows <- grouped[[i]]
-        print(rows, width=Inf)
+
 
         # 1. convert FLH to OCF
         cond <- endsWith(rows$variable, '|FLH')
-        print("cond1")
-        print(cond)
+
 
         # Check if any rows satisfy the condition
         if (any(cond)) {
@@ -456,30 +459,30 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         }
 
         # 2. convert OPEX Fixed Relative to OPEX Fixed
-        print(rows, width=Inf)
+        #print(rows, width=Inf)
         cond <- endsWith(rows$variable, '|OPEX Fixed Relative')
-        print("cond2")
-        print(cond)
+
 
         if (any(cond)) {
         # Define a function to calculate the conversion factor
         calculate_conversion <- function(row) {
-          print(row)
-          var_units_variable <- gsub("|OPEX Fixed Relative", "|CAPEX", row['variable'], fixed = TRUE)
-          var_units_reference <- gsub("|OPEX Fixed Relative", "|OPEX Fixed", row['variable'], fixed = TRUE)
-          var_units_dividend <- paste(var_units_variable, '/a', sep = "")
-          var_units_df <- subset(rows, variable == var_units_variable)
 
-          return(unit_convert(var_units[row['variable']], 'dimensionless') *
-                  unit_convert(var_units_dividend, var_units[var_units_reference]) *
-                  var_units_df$value[1])
+          variable <- gsub("|OPEX Fixed Relative", "|CAPEX", row[['variable']], fixed = TRUE)
+          var_units_reference <- var_units[[gsub("|OPEX Fixed Relative", "|OPEX Fixed", row[['variable']], fixed = TRUE)]]
+          var_units_dividend <- paste(var_units[[variable]], '/a', sep = "")
+          filter_condition <- rows$variable == variable
+          var_units_df <-  filter(rows,  filter_condition)
+
+          return( unit_convert(var_units[row['variable']], 'dimensionless') *
+                  unit_convert(var_units_dividend,var_units_reference) *
+                   var_units_df$value[1])
 
         }
 
 
 
         # Calculate the conversion factor and update 'value' for rows satisfying the condition
-        rows$value[cond] <- apply( rows[cond,], 1, calculate_conversion)
+        rows$value[cond] <- rows$value[cond] * apply( rows[cond,], 1, calculate_conversion)
 
         # Replace '|OPEX Fixed Relative' with '|OPEX Fixed' in 'variable'
         rows$variable[cond] <- gsub("\\|OPEX Fixed Relative$", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
@@ -500,12 +503,12 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
           warning("No CAPEX value matching an OPEX Fixed Relative value found.")
         }
       }
-      print(rows, width=Inf)
+      # print("rows after cond 2")
+      # print(rows, width=Inf)
       # 3. convert OPEX Fixed Specific to OPEX Fixed
       # Find rows where 'variable' ends with '|OPEX Fixed Specific'
       cond <- endsWith(rows$variable, "|OPEX Fixed Specific")
-      print("cond3")
-      print(cond)
+
 
       # Check if any rows satisfy the condition
       if (any(cond)) {
@@ -548,17 +551,20 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         cond2 <- grepl("\\|Input(?: Capacity)?\\|", rows$reference_variable)
                       } else {
         cond2 <- FALSE}
-
+      cond <- cond1 & cond2
       print('cond4')
-      print(cond1 & cond2)
+      print(cond)
+
       if (any(cond1 & cond2)) {
         rows$value[cond] <- 1.0 / rows$value[cond]
+        rows$variable_new <- NaN
         rows$variable_new[cond] <- rows$reference_variable[cond]
         rows$reference_variable[cond] <- rows$variable[cond]
         rows$variable[cond] <- rows$variable_new[cond]
         rows <- rows[!names(rows) %in% c("variable_new")]
       }
-
+      # print('rows after cond 4')
+      # print(rows)
       # 5. convert all references to primary output
 
 
@@ -585,44 +591,81 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       # Apply the function to each 'variable' in 'rows'
       cond3  <- lapply(rows$variable, get_default_reference) != rows[['reference_variable']]
-      print('cond5')
-      print(cond1)
-      print(cond2)
-      print(cond3)
-      print(cond1 & cond2 & cond3)
 
-      if (any(cond1 & cond2 & cond3)) {
+      cond <- cond1 & cond2 & cond3
+
+
+      if (any(cond)) {
         regex_find <- "\\|(Input|Output)(?: Capacity)?\\|"
         regex_repl <- "|\\1|"
+        rows$reference_variable_new <- NaN
         rows$reference_variable_new[cond] <- sapply(rows$variable[cond], function(var) {
-          self$var_specs[var]$default_reference
+
+          private$..var_specs[[var]]$default_reference
         })
-        rows$value[cond] <- rows$value[cond] * sapply(seq_len(nrow(rows[cond,])), function(i) {
-          row <- rows[cond,]
-          unit_convert(paste0(ifelse(grepl("Capacity", row$reference_variable[i]), "a*", ""),
-                              var_units[row$reference_variable_new[i]]),
-                      var_units[gsub(regex_find, regex_repl, row$reference_variable_new[i])],
-                      tail(strsplit(row$reference_variable_new[i], "\\|")[[1]], 1)) /
-          unit_convert(paste0(ifelse(grepl("Capacity", row$reference_variable[i]), "a*", ""),
-                              var_units[row$reference_variable[i]]),
-                      var_units[gsub(regex_find, regex_repl, row$reference_variable[i])],
-                      tail(strsplit(row$reference_variable[i], "\\|")[[1]], 1)) *
-          rows[grepl(paste0("^", gsub(regex_find, regex_repl, row$reference_variable[i]), "$"),
-                    rows$variable) &
-              grepl(paste0("^", gsub(regex_find, regex_repl, row$reference_variable_new[i]), "$"),
-                    rows$reference_variable), ]$value[1]
-        })
+        print(rows,n=Inf,width=Inf)
+
+        calculate_conversion <- function(row) {
+
+          reference_variable_new <- gsub(regex_find, regex_repl, row['reference_variable_new'][[1]])
+
+          if(grepl("Capacity", row['reference_variable'][[1]])) {
+            if (grepl( "/a", var_units[[row['reference_variable_new'][[1]]]])) {
+              row_reference_variable_new <- sub("/a", "", var_units[[row['reference_variable_new'][[1]]]])
+            } else {
+              row_reference_variable_new <- paste0("a*", var_units[[row['reference_variable_new'][[1]]]])
+
+            }
+           } else {
+            row_reference_variable_new <- var_units[[row['reference_variable'][[1]]]]
+           }
+
+
+          var_units_reference_variable_new <- var_units[[reference_variable_new]]
+          tail_reference_variable_new <-  tail(strsplit(row['reference_variable_new'][1], "\\|")[[1]], 1)
+
+          reference_variable <- gsub(regex_find, regex_repl, row['reference_variable'][[1]] )
+
+          if(grepl("Capacity", row['reference_variable'][[1]])) {
+            if (grepl( "/a",var_units[[row['reference_variable'][[1]]]])) {
+              row_reference_variable <- sub("/a", "", var_units[[row['reference_variable'][[1]]]])
+            } else {
+              row_reference_variable<- paste0("a*", var_units[[row['reference_variable'][[1]]]])
+
+            }
+           } else {
+            row_reference_variable <- var_units[[row['reference_variable'][[1]]]]
+           }
+
+          var_units_reference_variable <- var_units[[reference_variable]]
+          tail_reference_variable <-  tail(strsplit(row['reference_variable'][1], "\\|")[[1]], 1)
+
+          rows_cond1 <-  rows$variable == reference_variable
+
+          rows_cond2 <-  rows$reference_variable == reference_variable_new
+          var_units_df <-  filter(rows, rows_cond2 & rows_cond2)
+
+          return(unit_convert(row_reference_variable_new, var_units_reference_variable_new, tail_reference_variable_new) /
+                      unit_convert(row_reference_variable, var_units_reference_variable, tail_reference_variable) *
+                           var_units_df$value[1])
+
+          }
+          rows$value[cond] <- rows$value[cond] * apply( rows[cond,], 1, calculate_conversion)
+          # print("rows after cond5")
+          # print(rows)
         rows$reference_variable[cond] <- rows$reference_variable_new[cond]
         rows <- rows[!names(rows) %in% c("reference_variable_new")]
         if (any(cond & is.na(rows$value))) {
           warning(paste("No appropriate mapping found to convert row reference to primary output:",
                         rows[cond & is.na(rows$value), ]))
+
         }
       }
-
-
+        ret <- append(ret, list(rows))
         }
+        print("return applied mappings")
 
+      return(bind_rows(ret))
 
   }
 
