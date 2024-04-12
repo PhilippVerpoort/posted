@@ -153,6 +153,9 @@ normalise_values <- function(df) {
   return(df)
 }
 
+combine_units <- function(numerator, denominator) {
+  return(paste0(numerator, "/(", denominator, ")"))
+}
 
 
 # Define the R6 class
@@ -299,7 +302,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       normalised_units <- private$..normalise(override)
       selected <- normalised_units$normalised
       var_units <- normalised_units$var_units
-
+      print("selected after normalised")
+      print(selected)
       # drop unit columns and reference falue column
       selected <- selected %>% select( -unit, -reference_unit, -reference_value)
 
@@ -354,60 +358,122 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       # print(selected, width=Inf, n=Inf)
       # drop custom fields with only one value if specified in method argument
 
-      if (drop_singular_fields) {
-        selected <- selected %>%
-        select(-c(
-          names(sapply(self$..fields, function(field) {
-            if (inherits(field, "CustomFieldDefinition") && n_distinct(selected[[col_id]]) < 2) {
-              return(col_id)
-            } else {
-              return(NULL)
-            }
-          }))
-        ))
+      df_cols <- sapply(names(private$..fields), function(col_id) {
+          # print("sapply")
+          print(col_id)
 
-      }
-      # print('selected after drop')
-      # print(selected, n=Inf, width=Inf)
-      selected <- private$..apply_mappings(selected, var_units)
-      print("applied mappings")
-      print(selected)
-
-      selected_and_var_units <- list(selected=selected, var_units=var_units)
-      print("return")
-      return(selected_and_var_units)
-    },
-    ..cleanup = function(df, var_units) {
-
-      # Sort columns and rows
-      df_cols <- sapply(names(self$..fields), function(col_id) {
-          field <- self$..fields[[col_id]]
+          field <- private$..fields[[col_id]]
+          # print(inherits(field, "CustomFieldDefinition"))
           if (inherits(field, "CustomFieldDefinition")) {
             return(col_id)
           } else {
             return(NULL)
           }
         })
-        print("df_cols")
-        print(df_cols)
-      cols_sorted <- c(
-                      'source', 'variable', 'region', 'period', 'value')
+      print("drop_columns")
+
+      if (drop_singular_fields) {
+        columns_to_drop <- c(
+          sapply(names(private$..fields), function(col_id) {
+            print("drop sapply")
+            field <- private$..fields[[col_id]]
+            if (inherits(field, "CustomFieldDefinition") && n_distinct(selected[[col_id]]) < 2) {
+              print("is true")
+              return(col_id)
+            } else {
+              return(NULL)
+            }
+          })
+        )
+        names(columns_to_drop )<- NULL
+        columns_to_drop <- unlist(unique( Filter(Negate(is.null), columns_to_drop)))
+        print(columns_to_drop)
+
+        selected <- selected %>%
+        select(-any_of(columns_to_drop))
+
+      }
+      print('selected after drop')
+      print(selected, n=Inf, width=Inf)
+      selected <- private$..apply_mappings(selected, var_units)
+      print("applied mappings")
+      print(selected)
+
+      # drop rows with failed mappings
+      selected <- selected[!is.na(selected$value), , drop = FALSE]
+
+      # get map of variable references
+      var_references <- selected %>%
+                  select(variable, reference_variable) %>%
+                  distinct() %>%
+                  mutate(variable = as.character(variable)) %>%
+                  distinct()
+      print("var_references")
+      print(var_references, width=Inf)
+      print(var_references$variable)
+      print(duplicated(list(var_references$variable)))
+      # Check for multiple reference variables per reported variable
+      if (duplicated(list(var_references$variable))) {
+        stop("Multiple reference variables per reported variable found")
+      }
+
+      # Convert to dictionary
+      var_references <- setNames(var_references$reference_variable, var_references$variable)
+      print(var_references)
+      # Remove 'reference_variable' column
+      selected <- selected %>%
+                    select(-reference_variable)
+      selected <- selected[order(selected$source),]
+      # strip off unit variants
+      var_units <- lapply(var_units, function(unit) {
+        unlist(strsplit(unit, ";"))[1]
+      })
+
+      selected_var_units_and_references <- list(selected=selected, var_units=var_units, var_references=var_references)
+      return(selected_var_units_and_references)
+    },
+    ..cleanup = function(df, var_units) {
+      print("cleanup")
+      # Sort columns and rows
+      print(names(private$..fields))
+      print(typeof(names(private$..fields)))
+      df_cols <- sapply(names(private$..fields), function(col_id) {
+          # print("sapply")
+          print(col_id)
+
+          field <- private$..fields[[col_id]]
+          # print(inherits(field, "CustomFieldDefinition"))
+          if (inherits(field, "CustomFieldDefinition")) {
+            return(col_id)
+          } else {
+            return(NULL)
+          }
+        })
+      names(df_cols) <- NULL
+      cols_sorted <- unlist(unique(c(df_cols, 'source', 'variable', 'reference_variable', 'region', 'period', 'value')))
+      print("df_cols")
+      print(cols_sorted)
+      print(names(df))
       cols_sorted <- cols_sorted[cols_sorted %in% names(df)]
       print("cols sorted")
       print(cols_sorted)
       df <- select(df, any_of(cols_sorted))
       print("cols selected")
+      print(df)
       df <- df %>%
         arrange_at(vars(intersect(cols_sorted, names(df))[!intersect(cols_sorted, names(df)) != "value"])) %>%
         mutate(row_index = row_number()) %>%
         select(-row_index)
       print("ordered")
-
+      print(df)
       # Round values
       df$value <- ifelse(is.na(df$value), df$value, round(df$value, digits = 4))
       print("rounded")
+      print(df)
       # Insert column containing units
       df <- as.data.frame(append(df, list(unit=NaN), after = match("value", names(df))-1))
+      print("inserted 1")
+      df <- df[order(df$source),]
       print(df)
       if ("reference_variable" %in% colnames(df)) {
         df$unit <- apply(df, 1, function(row) {
@@ -420,10 +486,11 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       } else {
         df$unit <- var_units[df$variable]
       }
-
+      print("inserted_unit_column")
+      df <- df[order(df$source),]
       print(df)
       return(df)
-  },
+    },
 
   ..apply_mappings = function(expanded, var_units) {
     print("apply mappings")
@@ -568,13 +635,13 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       # 5. convert all references to primary output
 
 
-      print(rows$reference_variable)
+      # print(rows$reference_variable)
       if (any(!is.na(rows$reference_variable))) {
         cond1 <- (grepl("\\|Output(?: Capacity)?\\|", rows$reference_variable) | grepl("\\|Input(?: Capacity)?\\|", rows$reference_variable))
       } else {
         cond1 <- FALSE
       }
-      print(rows$variable)
+      # print(rows$variable)
       cond2 <- unlist(lapply(rows$variable, function(var) {
         'default_reference' %in% names(private$..var_specs[[var]])
         }))
@@ -603,7 +670,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
           private$..var_specs[[var]]$default_reference
         })
-        print(rows,n=Inf,width=Inf)
+       #  print(rows,n=Inf,width=Inf)
 
         calculate_conversion <- function(row) {
 
@@ -723,18 +790,25 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
                       drop_singular_fields = TRUE,
                       extrapolate_period = TRUE,
                       ...) {
-      selected_and_var_units <- private$..select(override, drop_singular_fields, extrapolate_period, ...)
-      selected <- selected_and_var_units[[1]]
-      var_units <- selected_and_var_units[[2]]
+      selected_var_units_and_references <- private$..select(override, drop_singular_fields, extrapolate_period, ...)
+      selected <- selected_var_units_and_references$selected
+      var_units <- selected_var_units_and_references$var_units
+      var_references <- selected_var_units_and_references$var_references
+
+      print("finished ..select")
+      print("print_selected")
+      print(selected, width=Inf, n=Inf)
 
       # Inserting a new column 'reference_variable' at a specific position in the data frame
-      selected <- cbind(selected[, 1:selected$variable - 1],
-                        reference_variable = NA,
-                        selected[, selected$variable:length(selected)])
+      # df <- as.data.frame(append(df, list(unit=NaN), after = match("value", names(df))-1))
+      selected <- as.data.frame(append(selected, list(reference_variable=NaN), after=match("variable", names(selected))-1))
+      print(selected)
+      # print(selected, width=Inf, n=Inf)
 
       # Mapping values from 'var_references' to the 'reference_variable' column based on 'variable'
       selected$reference_variable <- var_references[selected$variable]
-
+      print("finally")
+      print(selected)
 
       result <- private$..cleanup(selected, var_units)
       return(result)
