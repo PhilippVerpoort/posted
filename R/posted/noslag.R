@@ -154,7 +154,11 @@ normalise_values <- function(df) {
 }
 
 combine_units <- function(numerator, denominator) {
-  return(paste0(numerator, "/(", denominator, ")"))
+  if (grepl('/', denominator)) {
+    return(paste0(numerator, "/(", denominator, ")"))
+  } else {
+    return(paste0(numerator, "/", denominator))
+  }
 }
 
 
@@ -312,10 +316,15 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       selected <- selected %>%
         select(-uncertainty,  -any_of(comment_columns))
 
+      reference_variable_temp <- selected$reference_variable
+      print(reference_variable_temp)
       # add parent variable as prefix to other variable columns
       selected <- mutate(selected, variable = paste(parent_variable, variable, sep = "|"))
-      selected <- mutate(selected, reference_variable = paste(parent_variable, reference_variable, sep = "|"))
+      selected <- mutate(selected, reference_variable = ifelse((is.na(reference_variable_temp) | (reference_variable_temp =="")), NA, paste(parent_variable, reference_variable_temp, sep = "|")))
       selected <- select(selected, -parent_variable)
+      # selected$reference_variable[selected$reference_variable == paste0(reference_variable_temp, "|")] <- NaN
+      print("selected after parent variable drop")
+      print(selected)
 
       # raise exception if fields listed in arguments that are uknown
       for (field_id in names(field_vals_select)) {
@@ -475,8 +484,16 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       print("inserted 1")
       df <- df[order(df$source),]
       print(df)
+      print("combine_units")
       if ("reference_variable" %in% colnames(df)) {
         df$unit <- apply(df, 1, function(row) {
+          print("start unit stuff")
+          print("row_reference_variable = ")
+          print(row["reference_variable"])
+          print("var_units_row_variable =")
+          print(var_units[row["variable"]])
+          print("var_units_row_reference_variable")
+          print(var_units[row["reference_variable"]])
           if (!is.na(row["reference_variable"])) {
             combine_units(var_units[row["variable"]], var_units[row["reference_variable"]])
           } else {
@@ -526,9 +543,10 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         }
 
         # 2. convert OPEX Fixed Relative to OPEX Fixed
-        #print(rows, width=Inf)
+        print("cond2")
+        print(rows, width=Inf)
         cond <- endsWith(rows$variable, '|OPEX Fixed Relative')
-
+        print(cond)
 
         if (any(cond)) {
         # Define a function to calculate the conversion factor
@@ -547,24 +565,29 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         }
 
 
-
+        print("before releative to fixed conversion")
         # Calculate the conversion factor and update 'value' for rows satisfying the condition
         rows$value[cond] <- rows$value[cond] * apply( rows[cond,], 1, calculate_conversion)
-
+        print(rows, width=Inf)
         # Replace '|OPEX Fixed Relative' with '|OPEX Fixed' in 'variable'
-        rows$variable[cond] <- gsub("\\|OPEX Fixed Relative$", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
-
+        rows$variable[cond] <- gsub("|OPEX Fixed Relative", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
+        print(rows, width=Inf)
         # Assign 'reference_variable' based on modified 'variable'
-        rows$reference_variable[cond] <- sapply(rownames(rows)[cond], function(idx) {
-          var_units_variable <- gsub("\\|OPEX Fixed$", "|CAPEX", rows$variable[idx], fixed = TRUE)
-          var_units_df <- subset(rows, variable == var_units_variable)
+        rows$reference_variable[cond] <- apply(rows[cond,],1, function(row) {
+          var_units_variable <- gsub("|OPEX Fixed", "|CAPEX", row[['variable']], fixed = TRUE)
+          filter_condition <- rows$variable == var_units_variable
+          var_units_df <-  filter(rows,  filter_condition)
+
+
+
           if (nrow(var_units_df) > 0) {
             return(var_units_df$reference_variable[1])
           } else {
             return(NA)
           }
         })
-
+        print("opex fixed relative to opex fixed")
+        print(rows, width=Inf)
         # Check if there are rows with null 'value' after the operation
         if (any(cond & is.na(rows$value))) {
           warning("No CAPEX value matching an OPEX Fixed Relative value found.")
@@ -581,13 +604,13 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       if (any(cond)) {
         # Define a function to calculate the conversion factor
         calculate_conversion <- function(row) {
-          var_units_variable <- gsub("\\|OPEX Fixed Specific", "|OPEX Fixed", row['variable'], fixed = TRUE)
-          var_units_reference <- gsub(r'(Input|Output)', '\\1 Capacity', row['reference_variable'], perl = TRUE)
+          var_units_variable <- gsub("|OPEX Fixed Specific", "|OPEX Fixed", row['variable'], fixed = TRUE)
+          var_units_reference <- gsub(r'(Input|Output)', '1 Capacity', row['reference_variable'], perl = TRUE)
           var_units_dividend <- paste(var_units_variable, '/a', sep = "")
-          var_units_df <- subset(rows, variable == gsub("\\|OPEX Fixed Specific$", "|OCF", row['variable'], fixed = TRUE))
+          var_units_df <- subset(rows, variable == gsub("\\|OPEX Fixed Specific", "|OCF", row['variable'], fixed = TRUE))
           if (nrow(var_units_df) > 0) {
             return(unit_convert(var_units_dividend, var_units[var_units_reference]) /
-                  unit_convert(gsub("\\|OPEX Fixed Specific$", "|OPEX Fixed", row['variable'], fixed = TRUE),
+                  unit_convert(gsub("|OPEX Fixed Specific", "|OPEX Fixed", row['variable'], fixed = TRUE),
                                 var_units[var_units_variable],
                                 private$..var_specs[row['reference_variable']]['flow_id']) *
                   var_units_df$value[1])
@@ -600,7 +623,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         rows$value[cond] <- mapply(calculate_conversion, rows[cond,])
 
         # Replace '|OPEX Fixed Specific' with '|OPEX Fixed' in 'variable'
-        rows$variable[cond] <- gsub("\\|OPEX Fixed Specific$", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
+        rows$variable[cond] <- gsub("|OPEX Fixed Specific$", "|OPEX Fixed", rows$variable[cond], fixed = TRUE)
 
         # Update 'reference_variable' by replacing 'Input' or 'Output' with 'Input Capacity' or 'Output Capacity'
         rows$reference_variable[cond] <- gsub(r'(Input|Output)', '\\1 Capacity', rows$reference_variable[cond], perl = TRUE)
@@ -775,6 +798,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       }
       print("private_df_type")
       print(typeof(private$..df))
+      print(private$..df)
     },
 
     normalise = function(override = NULL, inplace = FALSE) {
@@ -801,12 +825,13 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       # Inserting a new column 'reference_variable' at a specific position in the data frame
       # df <- as.data.frame(append(df, list(unit=NaN), after = match("value", names(df))-1))
-      selected <- as.data.frame(append(selected, list(reference_variable=NaN), after=match("variable", names(selected))-1))
+      selected <- as.data.frame(append(selected, list(reference_variable=NA), after=match("variable", names(selected))-1))
       print(selected)
       # print(selected, width=Inf, n=Inf)
 
       # Mapping values from 'var_references' to the 'reference_variable' column based on 'variable'
       selected$reference_variable <- var_references[selected$variable]
+      print(var_references)
       print("finally")
       print(selected)
 
