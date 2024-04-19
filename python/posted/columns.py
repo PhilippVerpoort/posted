@@ -25,7 +25,7 @@ class AbstractColumnDefinition:
         if not isinstance(name, str):
             raise Exception(f"The 'name' must be a string but found type {type(name)}: {name}")
         if not isinstance(description, str):
-            raise Exception(f"The 'description' must be a string but found type {type(description)}: {description}")
+            raise Exception(f"The 'name' must be a string but found type {type(description)}: {description}")
         if not (isinstance(dtype, str) and dtype in ['float', 'str', 'category']):
             raise Exception(f"The 'dtype' must be a valid data type but found: {dtype}")
         if not isinstance(required, bool):
@@ -213,8 +213,10 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
 
         # expand
         df = self._expand(df, col_id, field_vals, **kwargs)
+
         # select
         df = self._select(df, col_id, field_vals, **kwargs)
+
         # return
         return df
 
@@ -268,7 +270,6 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
 
         # loop over groups
         for keys, rows in grouped:
-
             # get rows in group
             rows = rows[[col_id, 'value']]
 
@@ -325,7 +326,6 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                     ], inplace=True)
 
                 # add to return list
-
                 ret.append(rows_append)
 
         # convert return list to dataframe and return
@@ -356,6 +356,7 @@ class CustomFieldDefinition(AbstractFieldDefinition):
             raise Exception('Field coded must be provided and of type bool.')
         if field_specs['coded'] and not ('codes' in field_specs and isinstance(field_specs['codes'], dict)):
             raise Exception('Field codes must be provided and contain a dict of possible codes.')
+
         super().__init__(
             field_type=field_specs['type'],
             name=field_specs['name'],
@@ -450,6 +451,7 @@ def read_fields(variable: str):
                     )
                 else:
                     raise Exception(f"Unkown field type: {col_id}")
+
     # make sure the field ID is not the same as for a base column
     for col_id in fields:
         if col_id in base_columns:

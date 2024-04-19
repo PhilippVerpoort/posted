@@ -69,7 +69,6 @@ def normalise_units(df: pd.DataFrame, level: Literal['reported', 'reference'], v
     var_col_id = prefix + 'variable'
     value_col_id = prefix + 'value'
     unit_col_id = prefix + 'unit'
-
     df_tmp = pd.concat([
         df,
         df.apply(
@@ -188,8 +187,8 @@ class DataSet(TEBase):
     @property
     def data(self):
         return self._df
-    @data.setter
-    def data(self, df: pd.DataFrame):
+
+    def set_data(self, df: pd.DataFrame):
         self._df = df
 
     # load TEDFs and compile into NSHADataSet
@@ -198,7 +197,6 @@ class DataSet(TEBase):
 
         # collect TEDF and append to list
         collected_files = collect_files(parent_variable=self._parent_variable, include_databases=include_databases)
-        print("collected files = ", collected_files)
         for file_variable, file_database_id in collected_files:
             files.append(TEDF(parent_variable=file_variable, database_id=file_database_id))
         for file_path in file_paths:
@@ -211,10 +209,8 @@ class DataSet(TEBase):
         # get fields and masks from databases
         files_vars: set[str] = {f.parent_variable for f in files}
         for v in files_vars:
-
             new_fields, new_comments = read_fields(v)
             for col_id in new_fields | new_comments:
-
                 if col_id in self._columns:
                     raise Exception(f"Cannot load TEDFs due to multiple columns with same ID defined: {col_id}")
             self._fields = new_fields | self._fields
@@ -226,6 +222,7 @@ class DataSet(TEBase):
         for f in files:
             # load
             f.load()
+
             # check for inconsistencies
             if check_inconsistencies:
                 f.check()
@@ -272,11 +269,11 @@ class DataSet(TEBase):
             var_name: var_specs['flow_id'] if 'flow_id' in var_specs else np.nan
             for var_name, var_specs in self._var_specs.items()
         }
-
         var_units = {
             var_name: var_specs['default_unit']
             for var_name, var_specs in self._var_specs.items()
         } | override
+
         # normalise reference units, normalise reference values, and normalise reported units
         normalised = self._df \
             .pipe(normalise_units, level='reference', var_units=var_units, var_flow_ids=var_flow_ids) \
@@ -432,6 +429,7 @@ class DataSet(TEBase):
                         expanded.loc[ids].loc[cond & rows['value'].isnull()],
                         'No CAPEX value matching a OPEX Fixed Relative value found.',
                     ))
+
             # 3. convert OPEX Fixed Specific to OPEX Fixed
             cond = rows['variable'].str.endswith('|OPEX Fixed Specific')
             if cond.any():
@@ -465,7 +463,6 @@ class DataSet(TEBase):
             cond = (rows['variable'].str.contains(r'\|Output(?: Capacity)?\|') &
                     (rows['reference_variable'].str.contains(r'\|Input(?: Capacity)?\|')
                     if rows['reference_variable'].notnull().any() else False))
-
             if cond.any():
                 rows.loc[cond, 'value'] = 1.0 / rows.loc[cond, 'value']
                 rows.loc[cond, 'variable_new'] = rows.loc[cond, 'reference_variable']
@@ -482,7 +479,6 @@ class DataSet(TEBase):
                         lambda var: self._var_specs[var]['default_reference']
                         if 'default_reference' in self._var_specs[var] else np.nan
                     ) != rows['reference_variable']))
-
             if cond.any():
                 regex_find = r'\|(Input|Output)(?: Capacity)?\|'
                 regex_repl = r'|\1|'

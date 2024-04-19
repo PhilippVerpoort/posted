@@ -6,8 +6,6 @@ from posted.path import databases
 from posted.config import flows
 
 
-
-
 # set up pint unit registry: use iam_units as a basis, load custom definitions, add pint_pandas, set display format,
 ureg = iam_units.registry
 for database_path in databases.values():
@@ -88,34 +86,6 @@ def unit_allowed(unit: str, flow_id: None | str, dimension: str):
         return False, f"Unit '{unit}' is not compatible with dimension [{dimension}]."
 
 
-# TODO: integraate in unit_allowed function? is only to be used to generate Unit Caches
-def allowed_flow_dims(flow_type: None | str):
-    if flow_type != flow_type:
-        allowed_dims = ['[currency]']
-    else:
-        flow_type_data = flows[flow_type]
-        default_unit = flow_type_data['default_unit'].split(';')[0]
-        allowed_dims = [str(ureg.Quantity(default_unit).dimensionality)] # default units dimension is always accepted
-
-        if(flow_type_data['energycontent_LHV'] == flow_type_data['energycontent_LHV'] or \
-           flow_type_data['energycontent_HHV'] == flow_type_data['energycontent_HHV']):
-            if '[length] ** 2 * [mass] / [time] ** 2' not in allowed_dims:
-                allowed_dims += ['[length] ** 2 * [mass] / [time] ** 2']
-            if '[mass]' not in allowed_dims: # [mass] is always accepted when there is a energydensity
-                allowed_dims += ['[mass]']
-
-        if(flow_type_data['density_norm'] == flow_type_data['density_norm'] or \
-            flow_type_data['density_std'] == flow_type_data['density_std']):
-            allowed_dims += ['[volume]']
-            allowed_dims += ['[length] ** 3']
-            if '[mass]' not in allowed_dims: # [mass] is always accepted when there is a energydensity
-                allowed_dims += ['[mass]']
-
-    return allowed_dims
-
-
-
-
 # get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m**3;norm"
 def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | str = None) -> float:
     # return nan if unit_from or unit_to is nan
@@ -149,9 +119,9 @@ def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | s
         }
         if len(variant_params) == 1:
             param = next(iter(variant_params))
-           
             value_from, value_to = (
                 flows[flow_id][unit_variants[v]['value']] for v in variants)
+
             conv_factor = (ureg(value_from) / ureg(value_to)
                            if param == 'energycontent' else
                            ureg(value_to) / ureg(value_from))
