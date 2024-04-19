@@ -10,7 +10,7 @@ from pint.errors import DimensionalityError
 from numpy.linalg import solve
 from pandas.core.groupby import DataFrameGroupBy
 
-from posted.units import ureg, unit_convert
+from posted.units import ureg
 
 
 try:
@@ -111,51 +111,6 @@ class TEAMAccessor:
             ret = [self._df] + ret
 
         return pd.concat(ret).reset_index(drop=True)
-
-    # for splitting variable components into separate columns
-    def varsplit(self, cmd: Optional[str] = None, regex: Optional[str] = None,
-                 new_variable: Optional[str | bool] = True):
-        # check that precisely one of the two arguments (cmd and regex) is provided
-        if cmd is not None and regex is not None:
-            raise Exception('Only one of the two arguments may be provided: cmd or regex.')
-        if cmd is None and regex is None:
-            raise Exception('Either a command or a regex string must be provided.')
-
-        # determine regex from cmd if necessary
-        if regex is None:
-            regex = '^' + r'\|'.join([rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else t for t in cmd.split('|')]) + '$'
-
-        # determine value of new variable column from arguments
-        if new_variable is False:
-            new_variable = None
-        elif new_variable is True:
-            if cmd is None:
-                warnings.warn("The variable cannot be set automatically if .")
-                new_variable = None
-            else:
-                new_variable = '|'.join([t for t in cmd.split('|') if t[0] != '?'])
-
-        # create dataframe to be returned by applying regex to variable column and dropping unmatched rows
-        ret = self._df['variable'].str.extract(regex).dropna()
-
-        # join with original dataframe and assign new variable if it is not None, then return
-        if new_variable is None:
-            return ret.join(self._df.drop(columns='variable'), how='left')
-        else:
-            return ret.join(self._df.assign(variable=new_variable), how='left')
-
-    # convert units
-    def unit_convert(self, to: str | pint.Unit | dict[str, str | pint.Unit]):
-        unit_to = self._df.apply(
-            lambda row: to
-                        if not isinstance(to, dict) else
-                        to[row['variable']] if row['variable'] in to else
-                        row['unit'],
-            axis=1).rename('unit_to')
-        return self._df.assign(
-            value=self._df.join(unit_to).apply(lambda row: row['value'] * unit_convert(row['unit'], row['unit_to']), axis=1),
-            unit=unit_to,
-        )
 
 
 # types that a variable assignment can take: it can be an int, float, string, or a function to be called
