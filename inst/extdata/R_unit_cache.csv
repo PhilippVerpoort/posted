@@ -96649,8 +96649,11 @@ L;std,m**3,Xylene,0.001000000
 L;std,L,Xylene,1.000000000
 percent,dimensionless,,0.010000000
 dimensionless,percent,,100.000000000
-percent,pct,,1.000000000
-pct,percent,,1.000000000
 pct,dimensionless,,0.010000000
 dimensionless,pct,,100.000000000
-
+percent,pct,,1.000000000
+pct,percent,,1.000000000
+hour,h,,1.000000000
+h,hour,,1.000000000
+a,h,,8760.000000000
+h,a,,0.000114155

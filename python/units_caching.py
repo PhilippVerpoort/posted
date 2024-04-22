@@ -1,20 +1,20 @@
-from posted.config.config import flowTypes
-from posted.units.units import ureg, convUnit, allowedFlowDims
-from posted.path import pathOfDataFile
+from posted.config import flows
+from posted.units import ureg, unit_convert
+from posted.path import BASE_PATH, DATA_PATH
 import os
 import pandas as pd
 import pint
 
 
-# TODO: integraate in unit_allowed function in units.py?
+
+# check allowed dimensions for a flow type
 def allowed_flow_dims(flow_type: None | str):
     if flow_type != flow_type:
         allowed_dims = ['[currency]']
     else:
         flow_type_data = flows[flow_type]
-        default_unit = flow_type_data['default_unit'].split(';')[0]
-        allowed_dims = [str(ureg.Quantity(default_unit).dimensionality)] # default units dimension is always accepted
-
+        print(flow_type_data['default_unit'].split(';')[0])
+        allowed_dims = [str(ureg.Quantity(flow_type_data['default_unit'].split(';')[0]).dimensionality)] # default units dimension is always accepted
         if(flow_type_data['energycontent_LHV'] == flow_type_data['energycontent_LHV'] or \
            flow_type_data['energycontent_HHV'] == flow_type_data['energycontent_HHV']):
             if '[length] ** 2 * [mass] / [time] ** 2' not in allowed_dims:
@@ -31,25 +31,27 @@ def allowed_flow_dims(flow_type: None | str):
 
     return allowed_dims
 
+
 # ----- Collect a list of all unique units that appear in all the inout data files
 compatible_units = []
 
 # Create an empty DataFrame to store the appended data
 appended_data = pd.DataFrame()
-
 # Loop through all ted files
-for filename in os.listdir('inst/extdata/teds/'):
-    filepath = os.path.join('inst/extdata//teds/', filename)
+for filename in os.listdir(DATA_PATH /'database/tedfs/Tech/'):
+    filepath = os.path.join(DATA_PATH /'database/tedfs/Tech/', filename)
     # Check if the file is a CSV file
     if filename.endswith(".csv"):
+
+
         # Read the ted file and extract only columns "reported_unit" and "reference_unit"
-        data = pd.read_csv(filepath, usecols=["reported_unit", "reference_unit"])
+        data = pd.read_csv(filepath, usecols=["unit", "reference_unit"])
 
         # Append the data to the main DataFrame
         appended_data = pd.concat([appended_data, data], ignore_index=True)
 
 # Get unique values from columns "reported_unit" and "reference_unit"
-unique_values = appended_data[["reported_unit", "reference_unit"]].values.ravel()
+unique_values = appended_data[["unit", "reference_unit"]].values.ravel()
 unique_values = pd.unique(unique_values).tolist()
 
 # define unit sets
@@ -84,7 +86,7 @@ for unit_str in unique_values:
                     # volume units are appened with norm and standard
                     volume_units.append(unit_str)
                     volume_units.append(unit_str + ';norm')
-                    volume_units.append(unit_str + ';standard')
+                    volume_units.append(unit_str + ';std')
                 elif unit.dimensionality == '[mass] / [time]':
                     # mass units are not augmented
                     mass_units.append(unit_str)
@@ -93,6 +95,13 @@ for unit_str in unique_values:
                     mass_units.append(unit_str)
                 # all units without extra info are the units that are convertable without a flow_type
                 other_units.append(unit_str)
+
+# TODO: do automatic adjustment on the base year defined in units.py
+
+other_units.append("EUR_2005")
+other_units.append("USD_2005")
+other_units.append("EUR_2005/a")
+other_units.append("USD_2005/a")
 
 # ----- Define all possible conversions for each entry type and additionally for a missing entry type
 
@@ -110,10 +119,10 @@ for unit_from in other_units:
 # for reference_unit, all combinations disregarding the flow_type limitations are added
 
 # iterate over all flow types
-for flow_type in flowTypes.keys():
-    print(flow_type)
+for flow_type in flows.keys():
+    # print(flow_type)
     # get allowed dimensions for the flow type
-    allowed_dims = allowedFlowDims(flow_type)
+    allowed_dims = allowed_flow_dims(flow_type)
     # define a set of all possible units for this flow type
     compatible_units = []
     # add units to the compatible units set depending on whether flow types allowed dimensions
@@ -135,7 +144,14 @@ for flow_type in flowTypes.keys():
 # ----- Add combinations of units that are not contained in the data
 conversions.append(dict(unit_from="percent", unit_to="dimensionless", flow_type = ''))
 conversions.append(dict(unit_from="dimensionless", unit_to="percent", flow_type = ''))
-
+conversions.append(dict(unit_from="pct", unit_to="dimensionless", flow_type = ''))
+conversions.append(dict(unit_from="dimensionless", unit_to="pct", flow_type = ''))
+conversions.append(dict(unit_from="percent", unit_to="pct", flow_type=''))
+conversions.append(dict(unit_from="pct", unit_to="percent", flow_type=''))
+conversions.append(dict(unit_from="hour", unit_to="h", flow_type=''))
+conversions.append(dict(unit_from="h", unit_to="hour", flow_type=''))
+conversions.append(dict(unit_from="a", unit_to="h", flow_type=''))
+conversions.append(dict(unit_from="h", unit_to="a", flow_type=''))
 # ----- Call convUnit for each of the conversions and save the result in the cache dataframe
 
 # use dictionary list to temporarily store data for better performance
@@ -147,13 +163,15 @@ for conversion in conversions:
     flow_type = ''
     # use try except block to catch Dimensionality errors, only valid combinations will end up in cache and no logic is needed here to check validity
     try:
+
         if conversion['flow_type'] == '':
-            result = convUnit(unit_from, unit_to)
+            result = unit_convert(unit_from, unit_to)
 
         else:
+
             flow_type = conversion['flow_type']
-            result = convUnit(unit_from, unit_to, flow_type)
-    except pint.errors.DimensionalityError:
+            result = unit_convert(unit_from, unit_to, flow_type)
+    except: # TODO check if there should be a specific error as in previous version: pint.errors.DimensionalityError:
         # skip this conversion and dont add it to cache
         continue
     new_row = {
@@ -169,7 +187,7 @@ for conversion in conversions:
 dfCache = pd.DataFrame.from_dict(new_row_list)
 
 # save dataframe to csv file
-path = pathOfDataFile('units_cached.csv')
+path = DATA_PATH / 'R_unit_cache.csv'
 
 dfCache.to_csv(
             path,
