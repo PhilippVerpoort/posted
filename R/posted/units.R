@@ -21,8 +21,6 @@ unit_convert <- function(unit_from, unit_to, flow_type=NULL) {
     if (unit_from == unit_to) {
         return(1)
     }
-    # print(typeof(unit_from))
-    # print(typeof(unit_to))
     if (is.null(flow_type)) {
 
         values <- dplyr::filter(cached_units, from==unit_from & to==unit_to)
@@ -32,7 +30,7 @@ unit_convert <- function(unit_from, unit_to, flow_type=NULL) {
     } else {
         values <- dplyr::filter(cached_units, from==unit_from & to==unit_to & ft==flow_type)
         # if there was no match, try again without flow_type
-        #print(values)
+
         if (nrow(values) == 0) {
             values <- dplyr::filter(cached_units, from==unit_from & to==unit_to)
         }

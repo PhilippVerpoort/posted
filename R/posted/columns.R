@@ -203,8 +203,6 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     },
 
     ..select = function(df, col_id, field_vals, ...) {
-      print("field_vals")
-
       df[df[[col_id]] %in% field_vals, , drop = FALSE]
     }
 
@@ -638,8 +636,7 @@ read_fields <- function(variable) {
 
             fields[[col_id]] <- CustomFieldDefinition$new(field_specs)
         } else if (field_specs['type'] == 'comment') {
-          print("commentdefinition")
-            print(field_specs)
+
             comments[[col_id]] <- CommentDefinition$new(name=field_specs$name, field_specs$description, required =FALSE)
         }  else {
             stop(sprintf("Unknown field type: %s", col_id))

@@ -152,40 +152,19 @@ normalise_values <- function(df) {
 }
 
 combine_units <- function(numerator, denominator) {
-   print(numerator)
-      print(denominator)
 
-  if (!(numerator == denominator)) {
-    print("combine_units")
+  ret = Simplify(paste0("(", numerator, ")/(", denominator, ")"))
 
-      # check if both units have the same pattern in the end starting with "/"
-      div_pattern <- "^(.+)/([^/]+)$"
-
-      # Extract the common ending from both strings
-      ending1 <- sub(div_pattern, "\\2", numerator)
-      ending2 <- sub(div_pattern, "\\2", denominator)
-
-      # Compare if both units have the same ending with a division
-      if (ending1 == ending2) {
-        # Delete everything starting with "/"
-        numerator <- sub(div_pattern, "\\1", numerator)
-        denominator <- sub(div_pattern, "\\1", denominator)
-
-        cat("Strings have the same ending.\n")
-        cat("Updated string1:", numerator, "\n")
-        cat("Updated string2:", denominator, "\n")
-      } else {
-        cat("Strings do not have the same ending.\n")
-      }
-
-
-  }
-
-  if (grepl('/', denominator)) {
-    return(paste0(numerator, "/(", denominator, ")"))
+  # check if ret is numeric, e.g. dimensionless, if not return re
+  if (!grepl("^-?\\d+\\.?\\d*$", ret)) {
+    return(ret)
   } else {
-    return(paste0(numerator, "/", denominator))
-  }
+    if (grepl('/', denominator)) {
+      return(paste0(numerator, "/(", denominator, ")"))
+    } else {
+      return(paste0(numerator, "/", denominator))
+    }
+}
 }
 
 
@@ -410,7 +389,6 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
       }
       selected <- private$..apply_mappings(selected, var_units)
-
       # drop rows with failed mappings
       selected <- selected[!is.na(selected$value), , drop = FALSE]
 
