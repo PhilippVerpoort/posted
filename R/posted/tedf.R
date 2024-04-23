@@ -1,15 +1,7 @@
 # source("R/posted/config.R")
 source("R/posted/columns.R")
-
 # source("R/posted/path.R")
-
 # source("R/posted/units.R")
-
-
-
-
-
-
 
 
 # Define the TEBase class
@@ -31,8 +23,8 @@ TEBase <- R6::R6Class("TEBase",
       names(var_specs) <- names(variables)
       var_specs  <- Filter(function(x) !is.null(x), var_specs)
       private$..var_specs <-  var_specs
-    
- 
+
+
     }
   ),
   active = list(
@@ -54,29 +46,29 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
     ..file_path = NULL,
     ..fields = NULL,
     ..columns = NULL
-    
+
   ),
   public = list(
     # inititalise
     initialize = function(parent_variable, database_id = 'public', file_path = NULL, data = NULL) {
-      print("initialize TEDF")
+
       super$initialize(parent_variable)
       private$..df <- data
       private$..inconsistencies <- list()
       private$..file_path <- if (!is.null(data)) NULL else if (!is.null(file_path)) file_path else file.path(databases[[database_id]], 'tedfs', paste0(paste(unlist(strsplit(parent_variable, '\\|')), collapse = '/'), '.csv'))
       fields_comments <- read_fields(private$..parent_variable)
-      
+
       private$..fields <- fields_comments$fields
       comments <- fields_comments$comments
 
-      
+
       private$..columns <- c(comments,base_columns, private$..fields)
       private$..columns <- c( private$..fields, base_columns, comments)
+
       # delete duplicates
       reversed_names <- rev(names(private$..columns))
-   
       reversed_values <- rev(private$..columns)
-       #print(reversed_values)
+
       unique_names <- reversed_names[!duplicated(reversed_names)]
       unique_columns <- reversed_values[match(unique_names, reversed_names)]
       private$..columns <- rev(unique_columns)
@@ -102,14 +94,14 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
 
       # read CSV file
       private$..df <- read.csv(private$..file_path, sep = ',', quote = '"', encoding = 'utf-8')
-    
+
       # Check column IDs match base columns and fields
     if (!all(colnames(private$..df) %in% names(private$..columns)  )) {
       stop(paste("Column IDs used in CSV file do not match columns definition: ",
                 paste(colnames(private$..df), collapse = ", ")))
     }
        # create data format and dtypes from base format
-     
+
       # add missing columns from data_format_cols to private$..df
       missing_columns <- setdiff(names(private$..columns), names(private$..df))
 
@@ -126,28 +118,28 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
         }
         private$..df[,col_id] <- col$default
         }
-      
+
       # private$..df[,missing_columns] <- NaN
-      
+
       df_new <- select(private$..df, all_of(names(private$..columns)))
       # TODO: Check if it makes sense to implement this typecasting in R
       # print(private$..columns)
       # for (col_id in names(private$..columns)) {
       #   if (col_id %in% names(private$..df)) {
-        
+
       #     test = private$..columns[col_id]
-          
-          
+
+
       #     next
       #   }
-        
+
       #   # df_new[, col] <- as(private$..df[, col], data_dtypes[col])
-     
+
       #   df_new[, col] <- NA
       # }
-  
+
       private$..df <- df_new
-      
+
     },
     # TODO: has to be checked if it works properly
     write = function() {
@@ -180,7 +172,7 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
       private$..inconsistencies[[as.character(row_id)]] <- inconsistencies
     }
 
-    
+
   ),
   active = list(
     file_path = function(file_path) {
