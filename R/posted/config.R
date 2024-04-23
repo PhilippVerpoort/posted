@@ -2,7 +2,6 @@
 source("R/posted/path.R")
 source("R/posted/definitions.R")
 
-print("access config")
 
 # Loop over databases
 flows <-  list()
@@ -27,10 +26,10 @@ for (database_path in databases) {
     }
     flows[[index]] <- temp
   }
- 
+
   tech_types = read_csv_file(file.path(database_path, 'tech_types.csv'))
   techs <- apply(tech_types, 1, function(row) {
-     temp <- list()  
+     temp <- list()
     for (i in 2:length(row)) {
          temp[[names(row[i])]] <- row[[i]]
     }
@@ -39,17 +38,17 @@ for (database_path in databases) {
 }
 names(techs) <- tech_types$tech_id
 
-  
+
 
 # Loop over databases and read definitions
 variables <- list()
 
 for (database_path in databases) {
   # Load variable definitions
-  
+
   variables <-  c(variables, read_definitions(file.path(database_path, 'definitions', 'variable'), flows, techs))
 
-  
+
 }
 
 # # Define a global variable to store the cached value
@@ -63,10 +62,10 @@ for (database_path in databases) {
 #   } else {
 #     for (database_path in databases) {
 #     # Load variable definitions
-    
+
 #     cached_variables <-  c(variables, read_definitions(file.path(database_path, 'definitions', 'variable'), flows, techs))
 
-  
+
 # }
 #     return(cached_variables)
 #   }

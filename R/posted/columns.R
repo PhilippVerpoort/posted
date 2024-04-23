@@ -203,8 +203,6 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     },
 
     ..select = function(df, col_id, field_vals, ...) {
-
-
       df[df[[col_id]] %in% field_vals, , drop = FALSE]
     }
 
@@ -254,8 +252,8 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
           field_vals <- names(private$..codes)
 
         } else {
-          field_vals <- unname(as.list(unique(df[df[[col_id]] != "*" & !is.na(df[[col_id]]), col_id])))[[1]]
-
+          field_vals <- unique(df[[col_id]])
+          field_vals <- field_vals[!is.na(field_vals) & field_vals != '*']
         }
       } else {
         if(!(is.list(field_vals))) {
@@ -370,7 +368,7 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
         # Get rows in group
         rows <- group_df %>%
-          select(col_id, value)
+          select(col_id, "value")
 
         # Get a list of periods that exist
         periods_exist <- unique(rows[[col_id]])
@@ -418,26 +416,24 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
 
         # Extrapolate
-
-
         if (!("extrapolate_period" %in% names(kwargs)) || kwargs$extrapolate_period) {
 
           rows_extrapolate <- req_rows[!cond_match & cond_extrapolate, ] %>% mutate(period_combined = ifelse(!is.na(!!sym(paste0(col_id, "_upper"))), !!sym(paste0(col_id, "_upper")), !!sym(paste0(col_id, "_lower"))))
           rows_ext <- rows %>% rename(!!paste0(col_id, "_combined") := !!sym(col_id))
 
           # Merge the data frames
-          rows_extrapolate <- left_join(rows_extrapolate, rows_ext, by = paste0(col_id, "_combined"))
+          rows_extrapolate <- merge(rows_extrapolate, rows_ext, by = paste0(col_id, "_combined"))
         } else {
           rows_extrapolate <- data.frame()
         }
 
+        # Interpolate
+        rows_interpolate <- req_rows[!(cond_match) & !(cond_extrapolate), ]
+        rows_interpolate <- merge(rows_interpolate, rename_with(rows, ~paste0(., "_upper"), everything()), by = paste0(col_id, "_upper"))
+        rows_interpolate <- merge(rows_interpolate, rename_with(rows, ~paste0(., "_lower"), everything()), by = paste0(col_id, "_lower"))
 
-
-        rows_interpolate <- req_rows %>%
-          filter(!(.data[[col_id]] %in% periods_exist) & (!is.na(!!sym(paste0(col_id, "_upper"))) & !is.na(!!sym(paste0(col_id, "_lower"))))) %>%
-          inner_join(rename(rows, !!paste0(col_id, "_upper") := !!sym(col_id), !!paste0("value_upper") := value), by = paste0(col_id, "_upper")) %>%
-          inner_join(rename(rows, !!paste0(col_id, "_lower") := !!sym(col_id), !!paste0("value_lower") := value), by = paste0(col_id, "_lower")) %>%
-          mutate(value = value_lower + ((!!sym(paste0(col_id, "_upper")) - !!sym(col_id)) / (!!sym(paste0(col_id, "_upper")) - !!sym(paste0(col_id, "_lower")))) * (value_upper - value_lower))
+        rows_interpolate$value <- rows_interpolate[['value_lower']] + (rows_interpolate[[paste0(col_id, "_upper")]] - rows_interpolate[[col_id]]) /
+                  (rows_interpolate[[paste0(col_id, "_upper")]]- rows_interpolate[[paste0(col_id, "_lower")]]) * (rows_interpolate[['value_upper']]- rows_interpolate[['value_lower']])
 
         # Combine into one dataframe and drop unused columns
         rows_to_concat <- list(rows_match, rows_extrapolate, rows_interpolate)
@@ -640,7 +636,8 @@ read_fields <- function(variable) {
 
             fields[[col_id]] <- CustomFieldDefinition$new(field_specs)
         } else if (field_specs['type'] == 'comment') {
-            comments[[col_id]] <- CommentDefinition(, required =False)
+
+            comments[[col_id]] <- CommentDefinition$new(name=field_specs$name, field_specs$description, required =FALSE)
         }  else {
             stop(sprintf("Unknown field type: %s", col_id))
         }
