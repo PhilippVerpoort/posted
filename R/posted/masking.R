@@ -21,18 +21,13 @@ Mask <- R6::R6Class("Mask",
         ..where = NULL,
         ..use = NULL,
         ..weight = NULL,
-        ..other = NULL
+        ..other = NULL,
         ..comment = NULL
 
-    )
-  public = list(
-    where = NULL,
-    use = NULL
-    weight = NULL,
-    other = NaN,
-    comment = '',
-
-    initialize = function(field_specs) {
+    ),
+    public = list(
+    initialize = function(where = NULL, use = NULL,weight = NULL, other = NaN, comment = '') {
+        print("initialize masks")
         private$..where <- if (is.null(where)){ list() }else{if (typeof(where)=="list"){ where }else{ list(where) }}
         private$..use <- if (is.null(use)){ list() }else{if (typeof(use)=="list"){ use }else{ list(use) }}
         private$..weight <- if(is.null(weight)){ NULL }else{ if (typeof(weight=="list")){lapply(weight, function(x){as.numeric(x)})}else{as.numeric(weight)}}
@@ -47,9 +42,10 @@ Mask <- R6::R6Class("Mask",
         }
 
         # set default weight to 1 if not set otherwise
-        if is.null(private$..weight)
+        if (is.null(private$..weight)){
             private$..weight <- list(length(private$..use) * 1.0)
-    }
+        }
+    },
 
     # check if a mask mateches a dataframe (all 'when' conditions match across all rows)
     matches = function(df) {
@@ -59,10 +55,10 @@ Mask <- R6::R6Class("Mask",
             }
         }
         return(TRUE)
-    }
+    },
 
     # return a dataframe with weights applied
-    get_weights <- function(df, use, weight) {
+    get_weights = function(df, use, weight) {
         ret <- rep(NA, nrow(df))
 
         # Apply weights where the use condition matches
@@ -75,25 +71,28 @@ Mask <- R6::R6Class("Mask",
         # Convert the result to a data frame with the same index as df
         ret <- data.frame(index = rownames(df), weights = ret)
         return(ret)
-        }
+     }
 
 
   )
 )
 
 read_masks <- function(variable) {
-  ret <- list()
+    print("read masks")
+    ret <- list()
 
-  for (database_id in databases) {
-    fpath <- file.path(databases[[database_id]], 'masks', paste(unlist(strsplit(variable, '\\|')), collapse = '/'), '.yml')
-    if (file.exists(fpath)) {
-      if (!file.info(fpath)$isfile) {
-        stop(paste("Expected YAML file, but not a file:", fpath))
-      }
+    for (database_id in names(databases)) {
+        fpath <- file.path(databases[[database_id]], 'masks', paste0(paste(unlist(strsplit(variable,split= '\\|')), collapse = '/'), '.yml'))
+        if (file.exists(fpath)) {
 
-      ret <- c(ret, lapply(read_yaml_file(fpath), function(mask_specs) Mask(mask_specs)))
+
+            if (dir.exists(fpath)) {
+                stop(paste("Expected YAML file, but not a file:", fpath))
+            }
+
+        ret <- c(ret, lapply(read_yml_file(fpath), function(mask_specs) {Mask$new(mask_specs)}))
+        }
     }
-  }
 
   return(ret)
 }
