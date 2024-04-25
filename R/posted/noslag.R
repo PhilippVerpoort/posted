@@ -213,7 +213,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
           private$..fields <- c(new_fields, private$..fields)
 
           private$..columns <- c(new_fields, private$..columns, new_comments)
-          # private$..masks <- c(private$..masks, read_masks(v))
+          private$..masks <- c(private$..masks, read_masks(v))
           }
         }
 
@@ -294,14 +294,12 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
               normalise_units(level = 'reference', var_units = var_units, var_flow_ids = var_flow_ids) %>%
               normalise_values() %>%
               normalise_units(level = 'reported', var_units = var_units, var_flow_ids = var_flow_ids)
-
       return(list(normalised=normalised, var_units=var_units))
     },
 
     # Internal method for selecting data
     ..select = function(override, drop_singular_fields, extrapolate_period, ...) {
       field_vals_select <- list(...)
-
 
 
       # start from normalised data
@@ -788,14 +786,27 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
             masks=NULL,
             masks_database=TRUE,
             ... ) {
-              stop("aggregate not implemented yet")
-            }
+      # get selection
+      selected_var_units_and_references <- private$..select(override, extrapolate_period, drop_singular_fields, ...)
+      selected <- selected_var_units_and_references[1]
+      var_units <- selected_var_units_and_references[2]
+      references <- selected_var_units_and_references[3]
+      # compile masks from databases and function argument into one list
+      if (!is.null(masks) && any(!sapply(masks, function(m) inherits(m, "Mask")))) {
+        stop("Function argument 'masks' must contain a list of posted.masking.Mask objects.")
+      }
+      masks <- c(if (masks_database) {private$..masks} else {list()}, if(!is.null(masks)) {masks} else {list()} )
+      print(masks)
+      # aggregation
+
+
+
+    }
   ),
   active = list(
     data = function(df) {
       if (missing(df)) return(private$..df)
-      else private$
-      ..df <- df
+      else private$..df <- df
     }
   )
 

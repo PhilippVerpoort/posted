@@ -623,7 +623,7 @@ read_fields <- function(variable) {
   for (database_id in names(databases)) {
     fpath <- file.path(databases[[database_id]], 'fields', paste0(paste(unlist(strsplit(variable, split= "\\|")), collapse = '/'), '.yml'))
     if (file.exists(fpath)) {
-      if (!file_test("-f", fpath)) {
+      if (dir.exists(fpath)) {
         stop(paste("Expected YAML file, but not a file:", fpath))
       }
 
