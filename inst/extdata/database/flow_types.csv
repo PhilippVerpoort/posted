@@ -147,8 +147,10 @@ Gasoline,density_std,718.61  kg/m³,Lemmon2023,
 Gasoline,c_ratio,82.80%,Wang2023,
 Kerosene,name,Kerosene,,
 Kerosene,default_unit,MWh;LHV,,
-Kerosene,energycontent_LHV,42.8 MJ/kg,ICAO17,same value for LHV and HHV
-Kerosene,energycontent_HHV,42.8 MJ/kg,ICAO17,same value for LHV and HHV
+Kerosene,energycontent_LHV,124307 Btu/gal,Wang2023,
+Kerosene,energycontent_HHV,132949 Btu/gal,Wang2023,
+Kerosene,density,3036 grams/gal,Wang2023,
+Kerosene,c_ratio,86.2%,Wang2023,
 Crude Oil,name,Crude oil,,
 Crude Oil,default_unit,MWh;LHV,,
 Crude Oil,energycontent_LHV,40458.6583463339 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
@@ -227,7 +229,9 @@ Isobutylene,c_ratio,85.70%,Wang2023,
 Isobutylene,h_ratio,14.30%,,
 Isobutylene,o_ratio,0.00%,,
 Pentane,name,Pentane,,
-Pentane,default_unit,t,,TO CHANGE to MWh and add LHV
+Pentane,default_unit,MWh;LHV,,
+Pentane,energycontent_LHV,12.60 kWh/kg,EngineeringToolBox,
+Pentane,energycontent_HHV,13.50 kWh/kg,EngineeringToolBox,
 Propane,name,Propane,,
 Propane,default_unit,MWh;LHV,,
 Propane,energycontent_LHV,43880.2083333333 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
