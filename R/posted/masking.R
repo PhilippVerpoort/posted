@@ -27,7 +27,6 @@ Mask <- R6::R6Class("Mask",
     ),
     public = list(
     initialize = function(where = NULL, use = NULL,weight = NULL, other = NaN, comment = '') {
-        print("initialize masks")
         private$..where <- if (is.null(where)){ list() }else{if (typeof(where)=="list"){ where }else{ list(where) }}
         private$..use <- if (is.null(use)){ list() }else{if (typeof(use)=="list"){ use }else{ list(use) }}
         private$..weight <- if(is.null(weight)){ NULL }else{ if (typeof(weight=="list")){lapply(weight, function(x){as.numeric(x)})}else{as.numeric(weight)}}
@@ -78,14 +77,12 @@ Mask <- R6::R6Class("Mask",
 )
 
 read_masks <- function(variable) {
-    print("read masks")
+
     ret <- list()
 
     for (database_id in names(databases)) {
         fpath <- file.path(databases[[database_id]], 'masks', paste0(paste(unlist(strsplit(variable,split= '\\|')), collapse = '/'), '.yml'))
         if (file.exists(fpath)) {
-
-
             if (dir.exists(fpath)) {
                 stop(paste("Expected YAML file, but not a file:", fpath))
             }
