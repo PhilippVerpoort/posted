@@ -854,7 +854,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
           # Aggregate with weighted average
           out <- rows %>%
             group_by_at(vars(group_cols)) %>%
-            summarise(value = weighted.mean(value, w = weight)) %>%
+            summarise(value = weighted.mean(value, w = weight), .groups ='drop') %>%
             ungroup()
           # Add to return list
           ret <- append(ret, list(out))
