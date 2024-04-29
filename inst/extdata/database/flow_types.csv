@@ -145,6 +145,10 @@ Gasoline,energycontent_HHV,42474.3384203907 Btu/kg,Wang2023,calculated from valu
 Gasoline,density_norm,702.61 kg/m³,Lemmon2023,
 Gasoline,density_std,718.61  kg/m³,Lemmon2023,
 Gasoline,c_ratio,82.80%,Wang2023,
+Kerosene,name,Kerosene,,
+Kerosene,default_unit,MWh;LHV,,
+Kerosene,energycontent_LHV,42.8 MJ/kg,ICAO17,same value for LHV and HHV
+Kerosene,energycontent_HHV,42.8 MJ/kg,ICAO17,same value for LHV and HHV
 Crude Oil,name,Crude oil,,
 Crude Oil,default_unit,MWh;LHV,,
 Crude Oil,energycontent_LHV,40458.6583463339 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
@@ -222,6 +226,8 @@ Isobutylene,density_std,2.599 kg/m^3,Franz2009,
 Isobutylene,c_ratio,85.70%,Wang2023,
 Isobutylene,h_ratio,14.30%,,
 Isobutylene,o_ratio,0.00%,,
+Pentane,name,Pentane,,
+Pentane,default_unit,t,,TO CHANGE to MWh and add LHV
 Propane,name,Propane,,
 Propane,default_unit,MWh;LHV,,
 Propane,energycontent_LHV,43880.2083333333 Btu/kg,Wang2023,calculated from values Energy/volume and density given in the source
@@ -367,3 +373,9 @@ Asphalt,default_unit,t,,
 Asphalt,energycontent_LHV,152371 Btu/kg,Wang2023,
 Asphalt,energycontent_HHV,162964 Btu/kg,Wang2023,
 Asphalt,c_ratio,80.80%,Wang2023,
+Cement,name,Cement,,
+Cement,default_unit,t,,
+Clinker,name,Clinker,,
+Clinker,default_unit,t,,
+NGL,name,Natural gas liquids,,
+NGL,default_unit,t,,

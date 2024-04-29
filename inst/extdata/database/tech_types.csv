@@ -1,5 +1,6 @@
 tech_id,description,description_long,class,sector,primary_output
 Blast Furnace and Basic Oxygen Furnace with CC,Integrated steel mill with CCS,"Integrated steel mill with a blast furnace and basic oxygen furnace, equipped with CCS.",conversion,steel,Steel Liquid
+Cement with CC,Cement production with post-combustion CC,"Cement production plant with post-combustion carbon capture",conversion,cement,Clinker
 Coal Gasification,Gasification of coal to produce hydrogen,Gasification of coal w/ or w/o carbon capture to produce purified hydrogen.,conversion,energy,Hydrogen
 Direct Air Capture,Direct air capture,"Capturing CO2 directly from ambient air, making it available as a purified gas for sequestration or utilisation.",conversion,energy,Captured CO2
 Electric Arc Furnace,Electric arc furnace,"An electric-arc furnace, which uses electricity directly to create temperature sufficiently high to melt iron and other components into liquid steel.",conversion,steel,Steel Liquid
@@ -8,6 +9,7 @@ Fischer-Tropsch,Fischer-Tropsch synthesis,Fischer-Tropsch synthesis of hydrocarb
 Haber-Bosch with ASU,Integrated Haber-Bosch synthesis and air-separation unit,"Synthesis of ammonia (NH₃) from hydrogen (H₂) and nitrogen (N₂), where the latter is obtained from ambient air via an air-separation unit.",conversion,chemicals,Ammonia
 Haber-Bosch with Reforming,Integrated Haber-Bosch synthesis and methane reforming,Methane reforming of fossil gas feeding into Haber-Bosch synthesis to produce (grey) ammonia,conversion,chemicals,Ammonia
 Heatpump for DAC,Low-temperature industrial heat pump to be used for DAC,Industrial heat pumps providing heat at a temperature of 80–120°C.,conversion,energy,Heat
+Hydrogen Liquefaction,Hydrogen liquefaction,Liquefaction of hydrogen,conversion,energy,Liquid Hydrogen
 Hydrogen Storage,Hydrogen storage,Long-term storage of hydrogen,storage,energy,Hydrogen
 Iron Direct Reduction,Direct-reduction shaft for iron ore,A furnace/shaft to directly reduce iron ore into DRI/HBI.,conversion,steel,Directly Reduced Iron
 Methanation,Methanation/Methane synthesis,Industrial plants combining H₂ and CO₂ to yield methane (aka Sabatier process).,conversion,energy,Methane
@@ -16,7 +18,9 @@ Methane Transport,Methane transport,Long-distance transportation of methane.,tra
 Methanol Synthesis with Reforming,Methanol synthesis from reformed fossil gas,Integrated methane reforming of fossil gas and synthesis of methanol.,conversion,energy,Methanol
 Methanol Synthesis,Methanol synthesis,Synthesis of methanol from H₂ and CO₂.,conversion,energy,Methanol
 Methanol to Gasoline,Methanol to Gasoline,Conversion of methanol to gasoline.,conversion,energy,Gasoline
-Methanol to Olefines,Methanol-to-olefines process,"Synthesis of ethylene, propylene, and by-products from methanol.",conversion,chemicals,Higher-Value Chemicals
+Methanol to Kerosene,Methanol-to-kerosene process,"Synthesis of kerosene from methanol.",conversion,chemicals,Kerosene
+Methanol to Olefins,Methanol-to-olefins process,"Synthesis of ethylene, propylene, and by-products from methanol.",conversion,chemicals,Higher-Value Chemicals
+NGL to Olefins,Natural gas liquids-to-olefins process,"Synthesis of ethylene, propylene, and by-products from natural gas liquids.",conversion,chemicals,Higher-Value Chemicals
 Steel Casting,Continuous casting,Continuous casting of liquid steel into steel slabs,conversion,steel,Steel Slab
 Steel Hot Rolling,Hot rolling of steel,Hot rolling of steel of cast steel into hot-rolled coils (HRCs),conversion,steel,Steel Hot-rolled Coil
 Urea Synthesis,Urea synthesis,Stand-alone synthesis of urea from NH₃ and CO₂ (w/o ammonia plant or methane reforming).,conversion,chemicals,Urea
