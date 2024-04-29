@@ -441,7 +441,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
 
       # Round values
-      df$value <- ifelse(is.na(df$value), df$value, round(df$value, digits = 4))
+      df$value <- ifelse(is.na(df$value), df$value, signif(df$value, digits = 4))
 
 
       # Insert column containing units
