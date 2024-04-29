@@ -243,7 +243,8 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
 
 
     select_and_expand = function(df, col_id, field_vals = NA, ...) {
-
+      print("select and expand")
+      print(field_vals)
       if (is.null(field_vals)) {
         if (col_id == 'period') {
           field_vals <- default_periods
