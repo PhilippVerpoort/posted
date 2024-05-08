@@ -1,0 +1,20 @@
+subtech:
+  name: Subtechnology
+  description: Subtechnology
+  type: case
+  coded: True
+  codes:
+    Standard: Standard cement plant, no CC
+    Tail-end CaL 20% IL: Tail-end Calcium looping CC with fluidized bed reactors, 20% integration level
+    Tail-end CaL 50% IL: Tail-end Calcium looping CC with fluidized bed reactors, 50% integration level
+    Integrated CaL: Integrated Calcium looping CC with entrained flow reactors
+capture_rate:
+  name: Capture Rate
+  description: Share of all CO2 captured
+  type: case
+  coded: False
+component:
+  name: Component
+  description: Component
+  type: component
+  coded: False
