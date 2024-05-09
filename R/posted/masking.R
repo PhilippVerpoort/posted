@@ -27,11 +27,11 @@ Mask <- R6::R6Class("Mask",
     ),
     public = list(
     initialize = function(where = NULL, use = NULL,weight = NULL, other = NaN, comment = '') {
+
+        # set fields from constructor arguments
         private$..where <- if (is.null(where)){ list() }else{if (typeof(where)=="list"){ where }else{ list(where) }}
         private$..use <- if (is.null(use)){ list() }else{if (typeof(use)=="list"){ use }else{ list(use) }}
         private$..weight <- if(is.null(weight)){ NULL }else{ if (typeof(weight=="list")){lapply(weight, function(x){as.numeric(x)})}else{as.numeric(weight)}}
-
-
         private$..other <- other
         private$..comment <- comment
 
@@ -69,6 +69,8 @@ Mask <- R6::R6Class("Mask",
 
         # Convert the result to a data frame with the same index as df
         ret <- data.frame(index = rownames(df), weights = ret)
+
+        # return
         return(ret)
      }
 
@@ -77,7 +79,6 @@ Mask <- R6::R6Class("Mask",
 )
 
 read_masks <- function(variable) {
-
     ret <- list()
 
     for (database_id in names(databases)) {

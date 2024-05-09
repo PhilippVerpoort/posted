@@ -42,9 +42,15 @@ class TEDFInconsistencyException(Exception):
 
         super().__init__(exception_message)
 
-# create a new inconsistency object based on function arguments and either raise or return. returning will typically
-# occur in file-editing mode in the GUI, whereas raising will happen in active usage and testing.
+
 def new_inconsistency(raise_exception: bool, **kwargs) -> TEDFInconsistencyException:
+    """
+    Create new inconsistency object based on kwqargs
+
+    Parameters
+    ----------
+
+    """
     exception = TEDFInconsistencyException(**kwargs)
     if raise_exception:
         raise exception
@@ -52,21 +58,66 @@ def new_inconsistency(raise_exception: bool, **kwargs) -> TEDFInconsistencyExcep
         return exception
 
 
+
 class TEBase:
+    """
+    Base Class for Technoeconomic Data
+
+    Parameters
+    ----------
+        parent_variable: str
+            Variable from which Data should be collected
+    """
     # initialise
     def __init__(self, parent_variable: str):
-        # set variable from function argument
+        """ Set parent variable and technology specifications (var_specs) from input"""
         self._parent_variable: str = parent_variable
-
-        # set technology specifications
         self._var_specs: dict = {key: val for key, val in variables.items() if key.startswith(self._parent_variable)}
 
     @property
     def parent_variable(self) -> str:
+        """ Get parent variable"""
         return self._parent_variable
 
 
 class TEDF(TEBase):
+    """
+    Class to store Technoeconomic DataFiles
+
+    Parameters
+    ----------
+        parent_variable: str
+            Variable from which Data should be collected
+        database_id: str, default: public
+            Database from which to load data
+        file_path: Path, optional
+            File Path from which to load file
+        data: pd.DataFrame, optional
+            Specific Technoeconomic data
+
+    Properties
+    ----------
+        file_path
+            Get or set the file path
+        data
+            Get data
+        inconsistencies
+            Get inconsistencies
+
+    Methods
+    ----------
+        load
+            Load TEDataFile if it has not been read yet
+        read
+            Read TEDF from CSV file
+        write
+            Write TEDF to CSV file
+        check
+            Check if TEDF is consistent
+        check_row
+            Check that row in TEDF is consistent and return all inconsistencies found for row
+    """
+
     # typed delcarations
     _df: None | pd.DataFrame
     _inconsistencies: dict
@@ -74,16 +125,16 @@ class TEDF(TEBase):
     _fields: dict[str, AbstractFieldDefinition]
     _columns: dict[str, AbstractColumnDefinition]
 
-    # initialise
+
     def __init__(self,
                  parent_variable: str,
                  database_id: str = 'public',
                  file_path: Optional[Path] = None,
                  data: Optional[pd.DataFrame] = None,
                  ):
+        """ Initialise parent class and object fields"""
         TEBase.__init__(self, parent_variable)
 
-        # initialise object fields
         self._df = data
         self._inconsistencies = {}
         self._file_path = (
@@ -96,14 +147,27 @@ class TEDF(TEBase):
 
     @property
     def file_path(self) -> Path:
+        """ Get or set the file File Path"""
         return self._file_path
 
     @file_path.setter
     def file_path(self, file_path: Path):
         self._file_path = file_path
 
-    # load TEDataFile (only if it has not been read yet)
+
     def load(self):
+        """
+        load TEDataFile (only if it has not been read yet)
+
+        Warns
+        ----------
+            warning
+                Warns if TEDF is already loaded
+        Returns
+        ----------
+            TEDF
+                Returns the TEDF object it is called on
+        """
         if self._df is None:
             self.read()
         else:
@@ -111,8 +175,16 @@ class TEDF(TEBase):
 
         return self
 
-    # read TEDF from CSV file
     def read(self):
+        """
+        read TEDF from CSV file
+
+        Raises
+        ------
+            Exception
+                If there is no file path from which to read
+        """
+
         if self._file_path is None:
             raise Exception('Cannot read from file, as this TEDF object has been created from a dataframe.')
 
@@ -140,8 +212,13 @@ class TEDF(TEBase):
             df_new[col_id] = col.default
         self._df = df_new
 
-    # write TEDF to CSV file
     def write(self):
+        """
+        Write TEDF to CSV file
+
+        Exception
+            If there is no file path that specifies where to write
+        """
         if self._file_path is None:
             raise Exception('Cannot write to file, as this TEDataFile object has been created from a dataframe. Please '
                             'first set a file path on this object.')
@@ -155,25 +232,48 @@ class TEDF(TEBase):
             na_rep='',
         )
 
-    # get data, i.e. access dataframe
+
     @property
     def data(self) -> pd.DataFrame:
+        """Get data, i.e. access dataframe"""
         return self._df
 
-    # get inconsistencies
+    @property
     def inconsistencies(self) -> dict[int, TEDFInconsistencyException]:
+        """Get inconsistencies"""
         return self._inconsistencies
 
-    # check that TEDF is consistent
     def check(self, raise_exception: bool = True):
+        """
+        Check that TEDF is consistent and add inconsistencies to internal parameter
+
+        Parameters
+        ----------
+            raise_exception: bool, default: True
+                If exception is to be raised
+        """
         self._inconsistencies = {}
 
         # check row consistency for each row individually
         for row_id in self._df.index:
             self._inconsistencies[row_id] = self.check_row(row_id, raise_exception=raise_exception)
 
-    # check that row in TEDF is consistent and return all inconsistencies found for row
     def check_row(self, row_id: int, raise_exception: bool) -> list[TEDFInconsistencyException]:
+        """
+        Check that row in TEDF is consistent and return all inconsistencies found for row
+
+        Parameters
+        ----------
+            row_id: int
+                Index of the row to check
+            raise_exception: bool
+                If exception is to be raised
+
+        Returns
+        -------
+            list
+                List of inconsistencies
+        """
         row = self._df.loc[row_id]
         ikwargs = {'row_id': row_id, 'file_path': self._file_path, 'raise_exception': raise_exception}
         ret = []

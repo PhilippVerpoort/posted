@@ -5,16 +5,19 @@ library(stringr)
 
 source("R/posted/settings.R")
 source("R/posted/read.R")
-# Assuming you have the necessary functions and libraries loaded
+
 
 read_definitions <- function(definitions_dir, flows, techs) {
-  Rprof(tmp <- "config.txt")
-  stopifnot(dir.exists(definitions_dir))
+  # chek that variables exists and is a directory
+  if(!dir.exists(definitions.dir)) {
+    stop(paste0("Should be a directory but is not: ", definitions_dir))
+  }
+
   # read all definitions and tags
   definitions <- list()
   tags <- list()
-  file_paths <- list.files(path = definitions_dir, pattern = "\\.yml$", recursive = TRUE, full.names = TRUE)
 
+  file_paths <- list.files(path = definitions_dir, pattern = "\\.yml$", recursive = TRUE, full.names = TRUE)
   for (file_path in file_paths) {
     if (grepl("^tag_", basename(file_path))) {
       tags <- c(tags, read_yml_file(file_path))
@@ -23,18 +26,14 @@ read_definitions <- function(definitions_dir, flows, techs) {
     }
   }
 
-
-
   # read tags from flows and techs
   tags[['Flow IDs']] <- map(flows, ~list())
   tags[['Tech IDs']] <- map(techs, function(item) {item['primary_output']})
 
-
-
+  # instert tags
   for (tag in names(tags)) {
     definitions <- replace_tags(definitions, tag, tags[[tag]])
   }
-
 
   # remove definitions where tags could not been replaced
   if (any(sapply(definitions, function(x) "\\{" %in% names(x)))) {
@@ -53,10 +52,6 @@ read_definitions <- function(definitions_dir, flows, techs) {
         }),
         sprintf('default flow unit %s', c('full', 'raw', 'variant'))
       ))
-
-
-
-
   for (def_key in names(definitions)) {
     for (def_property in names(definitions[[def_key]])) {
       def_value <- definitions[[def_key]][[def_property]]
@@ -70,31 +65,6 @@ read_definitions <- function(definitions_dir, flows, techs) {
     }
   }
   }
-
-  # # Precompute regular expressions for token keys
-  # token_regex <- lapply(names(tokens), function(token_key) {
-  #   paste0("\\{", token_key, "\\}")
-  # })
-
-  # for (def_key in names(definitions)) {
-  #   def_properties <- names(definitions[[def_key]])
-  #   for (def_property in def_properties) {
-  #     def_value <- definitions[[def_key]][[def_property]]
-  #     if (is.character(def_value)) {
-  #       for (i in seq_along(token_regex)) {
-  #         if (grepl(token_regex[[i]], def_value)) {
-  #           token_key <- names(tokens)[i]
-  #           token_func <- tokens[[token_key]]
-  #           definitions[[def_key]][[def_property]] <- gsub(token_regex[[i]], token_func(definitions[[def_key]]), def_value)
-  #         }
-  #       }
-  #     }
-  #   }
-  # }
-
-  # print(definitions)
-  # Rprof(NULL)
-  # print(summaryRprof(tmp))
   return(definitions)
 }
 
@@ -117,12 +87,12 @@ replace_tags <- function(definitions, tag, items) {
 
         def_name_new <- gsub( paste0("\\{", tag, "\\}"), item_name, def_name)
         def_specs_new <- c(def_specs, item_specs)
-        def_specs_new <- def_specs_new[!duplicated(names(def_specs_new))] # Remove duplicates
+        def_specs_new <- def_specs_new[!duplicated(names(def_specs_new))]
 
         # Replace tags in description
         def_specs_new$description <- gsub( paste0("\\{", tag, "\\}"), item_desc, def_specs$description)
 
-        # Replace tags in other specifications
+        # Replace tags in other specs
         def_specs_new <- lapply(def_specs_new, function(spec) {
           if (is.character(spec) && !identical(names(def_specs_new)[which(def_specs_new == spec)], 'description')) {
             spec <- gsub( paste0("\\{", tag, "\\}"), item_name, spec)
@@ -130,19 +100,14 @@ replace_tags <- function(definitions, tag, items) {
           }
           return(spec)
         })
-
         definitions_with_replacements[[def_name_new]] <- def_specs_new
       }
     } else {
       definitions_with_replacements[[def_name]] <- def_specs
     }
   }
-
   return(definitions_with_replacements)
 }
-
-
-
 
 unit_token_func <- function(unit_component, flows) {
   return(function(def_specs) {

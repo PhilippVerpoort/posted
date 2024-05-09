@@ -4,13 +4,35 @@ import pandas as pd
 import yaml
 
 
-# read CSV data file
 def read_csv_file(fpath: str):
+    """
+    Read CSF data file
+
+    Parameters
+    ----------
+        fpath: str
+            Path of the file to read
+    Returns
+    -------
+        pd.DataFrame
+            DataFrame containg the data of the CSV
+    """
     return pd.read_csv(fpath)
 
 
-# read YAML config file
 def read_yml_file(fpath: Path):
+    """
+    Read YAML config file
+
+    Parameters
+    ----------
+        fpath: str
+            Path of the file to read
+    Returns
+    -------
+        dict
+            Dictionary containing config info
+    """
     fhandle = open(fpath, 'r', encoding='utf-8')
     ret = yaml.load(stream=fhandle, Loader=yaml.FullLoader)
     fhandle.close()
