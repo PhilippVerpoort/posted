@@ -243,7 +243,6 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
 
 
     select_and_expand = function(df, col_id, field_vals = NA, ...) {
-
       if (is.null(field_vals)) {
         if (col_id == 'period') {
           field_vals <- default_periods
@@ -368,7 +367,7 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
         # Get rows in group
         rows <- group_df %>%
-          select(col_id, "value")
+          select(all_of(col_id), "value")
 
         # Get a list of periods that exist
         periods_exist <- unique(rows[[col_id]])
@@ -623,7 +622,7 @@ read_fields <- function(variable) {
   for (database_id in names(databases)) {
     fpath <- file.path(databases[[database_id]], 'fields', paste0(paste(unlist(strsplit(variable, split= "\\|")), collapse = '/'), '.yml'))
     if (file.exists(fpath)) {
-      if (!file_test("-f", fpath)) {
+      if (dir.exists(fpath)) {
         stop(paste("Expected YAML file, but not a file:", fpath))
       }
 

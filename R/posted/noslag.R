@@ -213,7 +213,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
           private$..fields <- c(new_fields, private$..fields)
 
           private$..columns <- c(new_fields, private$..columns, new_comments)
-          # private$..masks <- c(private$..masks, read_masks(v))
+          private$..masks <- c(private$..masks, read_masks(v))
           }
         }
 
@@ -301,7 +301,6 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     # Internal method for selecting data
     ..select = function(override, drop_singular_fields, extrapolate_period, ...) {
       field_vals_select <- list(...)
-
 
 
       # start from normalised data
@@ -442,7 +441,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
 
       # Round values
-      df$value <- ifelse(is.na(df$value), df$value, round(df$value, digits = 4))
+      df$value <- ifelse(is.na(df$value), df$value, signif(df$value, digits = 4))
 
 
       # Insert column containing units
@@ -726,6 +725,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       private$..fields <- lapply(private$..columns, function(field) {
         if (inherits(field, "AbstractFieldDefinition")) field else NULL
       })
+      private$..fields <- Filter(Negate(is.null), private$..fields)
       private$..masks <- list()
 
       # Load data if provided, otherwise load from TEDataFiles
@@ -788,14 +788,125 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
             masks=NULL,
             masks_database=TRUE,
             ... ) {
-              stop("aggregate not implemented yet")
-            }
-  ),
+      # get selection
+      selected_var_units_and_references <- private$..select(override, extrapolate_period, drop_singular_fields, ...)
+      selected <- selected_var_units_and_references[[1]]
+      var_units <- selected_var_units_and_references[[2]]
+      var_references <- selected_var_units_and_references[[3]]
+      # compile masks from databases and function argument into one list
+      if (!is.null(masks) && any(!sapply(masks, function(m) inherits(m, "Mask")))) {
+        stop("Function argument 'masks' must contain a list of posted.masking.Mask objects.")
+      }
+      masks <- c(if (masks_database) {private$..masks} else {list()}, if(!is.null(masks)) {masks} else {list()} )
+      # aggregation
+
+
+      # Extract col_id for fields where field_type is 'component'
+      component_fields <- names(Filter(function(field) field$field_type == 'component', private$..fields))
+
+      if (is.null(agg)) {
+        agg <- c(component_fields, 'source')
+      } else {
+        if (!is.list(agg)) {
+          agg <- list(agg)
+        }
+
+        for (a in agg) {
+          if (!is.character(a)) {
+            stop(sprintf("Field ID in argument 'agg' must be a string but found: %s", a))
+          }
+          if (!any(a %in% names(private$..fields))) {
+            stop(sprintf("Field ID in argument 'agg' is not a valid field: %s", a))
+          }
+        }
+      }
+
+      # aggregate over component fields
+      group_cols <- subset(names(selected), !(names(selected) == 'value' | (names(selected) %in% agg & names(selected) %in% component_fields)))
+
+      aggregated <- selected %>%
+          group_by_at(vars(group_cols)) %>%
+          summarise(value = sum(value), .groups = 'drop') %>%
+          ungroup()
+
+      # aggregate over cases fields
+      group_cols <- subset(names(selected), !(names(selected) == 'value' | (names(selected) %in% agg)))
+      grouped <- aggregated %>% group_split(across(all_of(group_cols)), .drop = FALSE)
+
+      ret <- list()
+      for (i in seq_along(grouped)) {
+        rows <- grouped[[i]]
+        # set default weights to 1.0
+        rows$weight <- 1.0
+
+        # update weights by applying masks
+        for (mask in masks) {
+          if (mask$matches(rows)) {
+            rows$weight <- rows$weight * mask$get_weights(rows)
+          }
+        }
+
+
+        # Drop all rows with missing values in the 'weight' column
+        rows <- rows[!is.na(rows$weight), , drop = FALSE]
+
+        if (!is_empty(rows)) {
+          # Aggregate with weighted average
+          out <- rows %>%
+            group_by_at(vars(group_cols)) %>%
+            summarise(value = weighted.mean(value, w = weight), .groups ='drop') %>%
+            ungroup()
+          # Add to return list
+          ret <- append(ret, list(out))
+        }
+      }
+      aggregated <- bind_rows(ret)
+
+      # Get unique values of 'variable' column
+      unique_vars <- unique(aggregated$variable)
+
+      # Filter out NULL and NA values and extract corresponding var_references
+      var_ref_unique <- unique(lapply(unique_vars, function(var) ifelse(!is.null(var_references[var]), var_references[var], NULL)))
+      var_ref_unique <- Filter(function(x) !is.null(x) & !is.na(x), var_ref_unique)
+
+      agg_append <- list()
+      for (ref_var in var_ref_unique) {
+        df <- data.frame(variable = ref_var, value = 1.0)
+
+        col_ids <- names(private$..fields)[names(private$..fields) %in% names(aggregated)]
+        col_ids <- setdiff(col_ids, names(df))
+
+        for (col_id in col_ids) {
+          df[col_id] <- '*'
+        }
+
+        agg_append <- append(agg_append, list(df))
+      }
+
+      if (length(agg_append) > 0) {
+        agg_append <- bind_rows(agg_append)
+        agg_append <- agg_append[order(rownames(agg_append)), ]  # Sort rows
+        for (col_id in names(private$..fields)) {
+          field <- private$..fields[[col_id]]
+          if (!(col_id %in% names(aggregated))) {
+            next
+          }
+
+          unique_values <- unique(aggregated[[col_id]])
+          agg_append <- field$select_and_expand(agg_append,col_id, as.list(unique(aggregated[[col_id]])))
+        }
+      } else {
+        agg_append <- NULL
+      }
+
+     return(private$..cleanup(bind_rows(list(aggregated, agg_append)), var_units))
+
+    }
+     ),
   active = list(
     data = function(df) {
       if (missing(df)) return(private$..df)
-      else private$
-      ..df <- df
+      else private$..df <- df
     }
   )
 
