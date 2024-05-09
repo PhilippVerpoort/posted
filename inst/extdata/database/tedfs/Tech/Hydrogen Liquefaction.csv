@@ -1,0 +1,11 @@
+variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|Liquid Hydrogen,,1.4,,MEUR,1,MW;LHV,,Korberg21,Table 1
+CAPEX,Output Capacity|Liquid Hydrogen,,100,,MUSD_2016,27000,kg/day,"HDSAM estimation",Connelly19,Figure 2
+CAPEX Annualised,Output Capacity|Liquid Hydrogen,,1.4,,USD_2016,1,kg/a,"Final value used by report gives CAPEX contribution to LCO, given as 1.4 USD/kg. Not currently compatible with POSTED framework",Connelly19,Figure 3 and 5
+OPEX Fixed Relative,,,5,,percent,,,O&M only,Korberg21,Table 1
+OPEX Fixed,Output Capacity|Liquid Hydrogen,,25,,EUR_2019/a,1,kW;LHV,"Unit mistake for OPEX ? Given as EUR/kW",Grahn22,Table 5
+Input|Electricity,Output|Liquid Hydrogen,,0.246,,kWh,1,kWh,Supplementary information,Stolz22,Table 5
+Input|Electricity,Output|Liquid Hydrogen,,0.28,,kWh,1,kWh,,Grahn22,Table 5
+Input|Electricity,Output|Liquid Hydrogen,,0.25,,kWh,1,kWh,,Korberg21,Table 1
+Input|Electricity,Output|Liquid Hydrogen,,11.5,,kWh,1,kg,"Read from the figure. But Ghafri22 also cite this number from this report in Table 6",Connelly19,Figure 3
+Lifetime,,,30,,year,,,,Korberg21,Table 1

@@ -1,10 +1,14 @@
 variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAPEX,Output Capacity|Ammonia,2022,#,643.0,,EUR,1.0,kW;LHV,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.",ArnaizdelPozo22,"Supplementary Information, Table 2"
 CAPEX,Output Capacity|Ammonia,2018,#,870.0,,EUR,1.0,kW;LHV,,Ikaheimo18,"Page 7, Table 3"
+CAPEX,Output Capacity|Ammonia,2025,#,1400,,EUR_2019,1.0,kW;LHV,"Error in Table 7, units are given in EUR/MW. Table 3 contradicts this",Grahn22,"Table 7"
+CAPEX,Output Capacity|Ammonia,2040,#,850,,EUR_2019,1.0,kW;LHV,"Error in Table 7, units are given in EUR/MW. Table 3 contradicts this",Grahn22,"Table 7"
 OPEX Fixed Relative,,2022,#,3.0,,percent,,,,ArnaizdelPozo22,"Supplementary Information, Table 2"
+OPEX Fixed Relative,,,#,4.0,,percent,,,,Grahn22,"Table7"
 OPEX Fixed,Output Capacity|Ammonia,2018,#,17.0,,EUR/a,1.0,kW;LHV,,Ikaheimo18,"Page 7, Table 3"
 OPEX Variable,Output|Ammonia,2022,#,0.6,,EUR,1.0,kWh;LHV,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.",ArnaizdelPozo22,"Supplementary Information, Table 2"
 Input|Hydrogen,Output|Ammonia,2015,#,0.178,,t,1.0,t,,Matzen15,Page 9 / Table 13
+Input|Hydrogen,Output|Ammonia,,#,1.148,,kWh,1,kWh;LHV,Found in supplementary information,Stolz22,Table 5
 Input|Electricity,Output|Ammonia,2015,Air-separation unit,3.1,,MJ,1.19,kg,"This source claims 3.1 MJ/kg electricity denand for the ASU. Assuming a nitrogen demand of 0.84 tonnes per tonne of ammonia, this amounts of an electricity demand of 3.1×0.85 GJ per tonne of ammonia.",Matzen15,Page 8 / Table 9
 Input|Electricity,Output|Ammonia,2016,Air-separation unit,61.0,,kWh,1.19,t,,GrinbergDana16,
 Input|Electricity,Output|Ammonia,2016,Synthesis process,0.44,,MWh,1.0,t,,GrinbergDana16,
@@ -13,3 +17,7 @@ Input|Electricity,Output|Ammonia,2014,Synthesis process,0.4,,MWh,1.0,t,,Morgan14
 Input|Electricity,Output|Ammonia,2018,#,0.64,,MWh,1.0,t,,Ikaheimo18,Page 4
 Input|Electricity,Output|Ammonia,2017,Compressors,5.2,1.3,GJ,1.0,t,,Bazzanella17,"Page 56, Section 4.2.2"
 Input|Electricity,Output|Ammonia,2017,Air-separation unit,0.33,,MWh,1.0,t,,Bazzanella17,"Page 57, Section 4.2.3"
+Input|Electricity,Output|Ammonia,,H2 compression and others,0.063,,kWh,1,kWh;LHV,Found in supplementary information,Stolz22,Table 5
+Input|Nitrogen,Output|Ammonia,,#,0.159,,kg,1,kWh;LHV,Found in supplementary information,Stolz22,Table 5
+Input|Electricity,Input|Nitrogen,,Air-separation unit,0.162,,kWh,1,kg,"NOT WORKING. Want to add the elec required from ASU, but can't relate this line to the one above (nitrogen to ammonia). Data found in supplementary information",Stolz22,Table 5
+Output|Ammonia,Input|Hydrogen,,#,0.79,,kWh;LHV,1.0,kWh,,Grahn22,"Table 7"
