@@ -6,3 +6,13 @@ subtech:
   codes:
     BF-BOF-POST: BF-BOF post-combustion capture
     TGR-BOF-POST: BF-BOF post top-gas recycling capture
+capture_rate:
+  name: Capture Rate
+  description: Share of all CO2 captured
+  type: case
+  coded: False
+component:
+  name: Component
+  description: Component
+  type: component
+  coded: False

@@ -1,0 +1,5 @@
+- where: "variable=='Tech|Haber-Bosch with ASU|Input|Electricity'"
+  use: "source=='Morgan14'"
+  weight: nan
+  other: 1.0
+  comment: This paper has been misquoted in the database. The values stated do not appear anywhere.

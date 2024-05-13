@@ -1,14 +1,16 @@
 variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAPEX,Output Capacity|Kerosene,2025,1000,,EUR_2019,1.0,kW;LHV,"Error in Table 7, units are given in EUR/MW. Table 3 contradicts this. The authors also highlight the limited information about the MtK process, and to take numbers here with caution",Grahn22,"Table 7"
 CAPEX,Output Capacity|Kerosene,2040,500,,EUR_2019,1.0,kW;LHV,"Error in Table 7, units are given in EUR/MW. Table 3 contradicts this. The authors also highlight the limited information about the MtK process, and to take numbers here with caution",Grahn22,"Table 7"
-CAPEX,Output Capacity|Kerosene,2020,307,,EUR,1.0,kW,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94
-CAPEX,Output Capacity|Kerosene,2030,269,,EUR,1.0,kW,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94
-CAPEX,Output Capacity|Kerosene,2050,200,,EUR,1.0,kW,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94
-OPEX Fixed Relative,,,4,,percent,,,,Grahn22,Table 7
-OPEX Fixed Relative,,,4.5,,percent,,,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94
-OPEX Variable,Output|Kerosene,,1350,,EUR,1.0,GWh,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94
-Input|Methanol,Output|Kerosene,,1.0482,,MJ,1,MJ,,Soler22,Table 94
-Input|Hydrogen,Output|Kerosene,,0.0240,,MJ,1,MJ,,Soler22,Table 94
-Input|Electricity,Output|Kerosene,,0.0163,,MJ,1,MJ,,Soler22,Table 94
-Output|Kerosene,Input|Methanol,,0.74,,kWh;LHV,1.0,kWh,,Grahn22,"Table 7"
-Lifetime,,,30,,year,,,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94
+CAPEX,Output Capacity|Kerosene,2020,307,,EUR_2019,1.0,kW,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from. Cost basis mentionned on page 246.",Soler22,Table 94
+CAPEX,Output Capacity|Kerosene,2030,269,,EUR_2019,1.0,kW,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from. Cost basis mentionned on page 246.",Soler22,Table 94
+CAPEX,Output Capacity|Kerosene,2050,200,,EUR_2019,1.0,kW,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from. Cost basis mentionned on page 246.",Soler22,Table 94
+OPEX Fixed Relative,,2025,4,,percent,,,,Grahn22,Table 7
+OPEX Fixed Relative,,2040,4,,percent,,,,Grahn22,Table 7
+OPEX Fixed Relative,,2022,4.5,,percent,,,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94
+OPEX Variable,Output|Kerosene,2022,1350,,EUR,1.0,GWh,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94
+Input|Methanol,Output|Kerosene,2022,1.0482,,MJ,1,MJ,,Soler22,Table 94
+Input|Hydrogen,Output|Kerosene,2022,0.0240,,MJ,1,MJ,,Soler22,Table 94
+Input|Electricity,Output|Kerosene,2022,0.0163,,MJ,1,MJ,,Soler22,Table 94
+Output|Kerosene,Input|Methanol,2025,0.74,,kWh;LHV,1.0,kWh,,Grahn22,"Table 7"
+Output|Kerosene,Input|Methanol,2040,0.74,,kWh;LHV,1.0,kWh,,Grahn22,"Table 7"
+Lifetime,,2022,30,,year,,,"Source misquotes an IEA report (IEA 2019d) for this parameter. Not clear where this data point comes from.",Soler22,Table 94

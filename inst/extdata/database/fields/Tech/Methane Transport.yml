@@ -21,6 +21,7 @@ distance:
   coded: False
 component:
   name: Component
+  description: Component
   type: component
   coded: True
   codes:

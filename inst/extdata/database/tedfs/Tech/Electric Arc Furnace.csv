@@ -1,17 +1,17 @@
 mode,reheating,variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-*,*,CAPEX,Output Capacity|Steel Liquid,2013,#,184.0,,EUR_2013,1.0,t/a,,Wortler13,
-*,*,CAPEX,Output Capacity|Steel Liquid,2018,#,184.0,,EUR_2013,1.0,t/a,"This reference assumes the value provided by Wörtler et al., 2013.",Vogl18,
+*,*,CAPEX,Output Capacity|Steel Liquid,2013,#,184.0,,EUR_2010,1.0,t/a,,Wortler13,Exhibit 8
+*,*,CAPEX,Output Capacity|Steel Liquid,2018,*,184.0,,EUR_2010,1.0,t/a,"This reference assumes the value provided by Wörtler et al., 2013.",Vogl18,
 *,*,CAPEX,Output Capacity|Steel Liquid,2021,#,479.89,,MEUR_2020,2.0,Mt/a,,Jacobasch21,"Page 9, Table 6"
-*,*,CAPEX,Output Capacity|Steel Liquid,2022,#,331.2,,EUR_2013,1.0,t/a,"This reference assumes the value provided by Wörtler et al., 2013 but with an additional integration factor of 1.8.",AgoraEnergiewende22,
-*,*,OPEX Fixed Relative,,2022,#,3.0,,percent,,,,AgoraEnergiewende22,
+*,*,CAPEX,Output Capacity|Steel Liquid,2022,#,331.2,,EUR_2010,1.0,t/a,"This reference assumes the value provided by Wörtler et al., 2013 (184 EUR/tLS) but with an additional integration factor of 1.8.",AgoraEnergiewende22,Abbildung 27 (Figure 27)
+*,*,OPEX Fixed Relative,,2022,#,3.0,,percent,,,"This entry is FALSE and should be removed. 3% is the OPEX value for BF-BOF, no value is given for EAF from this source.",AgoraEnergiewende22,"Found in the excel tool associated with the report, in Input_Anlage."
 *,*,OPEX Fixed Relative,,2018,Operation and maintenance incl. refractory lining w/o labour,3.0,,percent,,,,Vogl18,Section 2.1
 *,*,OPEX Fixed Specific,Output|Steel Liquid,2018,Labour,53.2,,EUR,1.0,t,,Vogl18,Section 2.1
-*,*,OPEX Fixed Specific,Output|Steel Liquid,2008,#,3.0,,EUR,1.0,t,Labour cost,ECORYS08,Table 3.1
+*,*,OPEX Fixed Specific,Output|Steel Liquid,2008,#,3.0,,EUR,1.0,t,"Labour cost. This line throws an error, as no OCF from this source has been found. Results from this table were obtained from steelonthenet, consultants. No reference to OCF could be found in the report, or on the website of steelonthenet.",ECORYS08,Table 3.1
 *,*,OPEX Variable,Output|Steel Liquid,2008,#,9.0,,EUR,1.0,t,Labour cost,ECORYS08,Table 3.1
-Primary,w/o reheating,Input|Electricity,Output|Steel Liquid,2022,#,0.594,,MWh,1.0,t,Without reheating of DRI,AgoraEnergiewende22,
-Primary,w/ reheating,Input|Electricity,Output|Steel Liquid,2022,#,0.753,,MWh,1.0,t,Reheating of cold DRI,AgoraEnergiewende22,
-Primary,w/o reheating,Input|Electricity,Output|Steel Liquid,2018,#,0.753,,MWh,1.0,t,Without reheating of DRI,Vogl18,Section 3.1
-Primary,w/ reheating,Input|Electricity,Output|Steel Liquid,2018,#,0.912,,MWh,1.0,t,Reheating of cold DRI,Vogl18,Section 3.1
+*,*,FLH,,2018,*,8760,,hour,,,"Found in the equations shown in the supplementary, page 8. The hourly production of the steel plant is obtained on the 8760 hour basis.",Vogl18,Supplementary Page 8
+Primary,w/o reheating,Input|Electricity,Output|Steel Liquid,2022,#,0.594,,MWh,1.0,t,Without reheating of DRI,AgoraEnergiewende22,"Found in the excel tool associated with the report, in Input_Anlage. Values based on Vogl et al (2018) but may be misquoted- See note on Vogl18 electricity demand row."
+Primary,w/ reheating,Input|Electricity,Output|Steel Liquid,2022,#,0.753,,MWh,1.0,t,Reheating of cold DRI,AgoraEnergiewende22,"Found in the excel tool associated with the report, in Input_Anlage. Values based on Vogl et al (2018) but may be misquoted- See note on Vogl18 electricity demand row."
+Primary,*,Input|Electricity,Output|Steel Liquid,2018,#,0.753,,MWh,1.0,t,"Section 3.1 also indicates that an additional 159kWh/t LS is needed if cold HBI is used (reheating case). It is however not clear if the previous value of 753kWh/tLS is for the hot or cold HBI case. AgoraEnergiewende22 make the assumption that cold HBI is the base case.",Vogl18,Section 3.1
 Primary,*,Input|Electricity,Output|Steel Liquid,2022,#,2.4,,MJ,,kg,,Devlin22,Section 2.2.2
 Primary,*,Input|Electricity,Output|Steel Liquid,2020,#,0.525,,MWh,1.0,t,,Hegemann20,
 Primary,*,Input|Electricity,Output|Steel Liquid,2017,#,2.07,,GJ,1.0,t,,Otto17,Figure 6
@@ -31,20 +31,20 @@ Secondary,*,Input|Heat,Output|Steel Liquid,2008,#,0.43,,GJ,1.0,t,,ECORYS08,Table
 Primary,*,Input|Directly Reduced Iron,Output|Steel Liquid,2022,#,1.1,,t,1.0,t,,Devlin22,Section 2.2.2
 Primary,*,Input|Directly Reduced Iron,Output|Steel Liquid,2017,#,1.03,,t,1.0,t,,Otto17,Figure 6
 Primary,*,Input|Directly Reduced Iron,Output|Steel Liquid,2021,#,1744694.39,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
-Primary,*,Input|Steel Scrap,Output|Steel Liquid,2022,#,0.17,,t,1.0,t,,AgoraEnergiewende22,
+Primary,*,Input|Steel Scrap,Output|Steel Liquid,2022,#,0.17,,t,1.0,t,,AgoraEnergiewende22,Abbildung 27 (Figure 27)
 Primary,*,Input|Steel Scrap,Output|Steel Liquid,2021,#,400220.06,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
 Secondary,*,Input|Steel Scrap,Output|Steel Liquid,2008,#,1.09,,t,1.0,t,,ECORYS08,Table 3.1
-*,*,Input|Oxygen,Output|Steel Liquid,2022,#,0.5,,t,1.0,t,,AgoraEnergiewende22,
+*,*,Input|Oxygen,Output|Steel Liquid,2022,#,0.5,,t,1.0,t,,AgoraEnergiewende22,Abbildung 27 (Figure 27)
 *,*,Input|Oxygen,Output|Steel Liquid,2008,#,50.0,,m³;norm,1.0,t,,ECORYS08,Table 3.1
 *,*,Input|Oxygen,Output|Steel Liquid,2017,#,0.5,,t,1.0,t,,Otto17,Figure 6
 *,*,Input|Oxygen,Output|Steel Liquid,2021,#,8349.01,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
 *,*,Input|Nitrogen,Output|Steel Liquid,2017,#,0.5,,t,1.0,t,,Otto17,Figure 6
-*,*,Input|Alloys,Output|Steel Liquid,2022,#,0.011,,t,1.0,t,,AgoraEnergiewende22,
+*,*,Input|Alloys,Output|Steel Liquid,2022,#,0.011,,t,1.0,t,,AgoraEnergiewende22,Abbildung 27 (Figure 27)
 *,*,Input|Alloys,Output|Steel Liquid,2008,#,0.011,,t,1.0,t,,ECORYS08,Table 3.1
 *,*,Input|Alloys,Output|Steel Liquid,2018,#,0.011,,t,1.0,t,,Vogl18,Section 2.1
-*,*,Input|Lime,Output|Steel Liquid,2022,#,0.05,,t,1.0,t,,AgoraEnergiewende22,
+*,*,Input|Lime,Output|Steel Liquid,2022,#,0.05,,t,1.0,t,,AgoraEnergiewende22,Abbildung 27 (Figure 27)
 *,*,Input|Lime,Output|Steel Liquid,2018,#,0.05,,t,1.0,t,,Vogl18,Section 2.1
-*,*,Input|Graphite Electrode,Output|Steel Liquid,2022,#,0.002,,t,1.0,t,,AgoraEnergiewende22,
+*,*,Input|Graphite Electrode,Output|Steel Liquid,2022,#,0.002,,t,1.0,t,,AgoraEnergiewende22,Abbildung 27 (Figure 27)
 *,*,Input|Graphite Electrode,Output|Steel Liquid,2008,#,0.003,,t,1.0,t,,ECORYS08,Table 3.1
 *,*,Input|Graphite Electrode,Output|Steel Liquid,2018,#,0.002,,t,1.0,t,,Vogl18,Section 2.1
 *,*,Input|Graphite Electrode,Output|Steel Liquid,2021,#,3000.0,,t,2000000.0,t,,Jacobasch21,"Page 6, Table 2"
