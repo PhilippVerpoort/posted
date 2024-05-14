@@ -9,7 +9,7 @@ source("R/posted/read.R")
 
 read_definitions <- function(definitions_dir, flows, techs) {
   # chek that variables exists and is a directory
-  if(!dir.exists(definitions.dir)) {
+  if(!dir.exists(definitions_dir)) {
     stop(paste0("Should be a directory but is not: ", definitions_dir))
   }
 
