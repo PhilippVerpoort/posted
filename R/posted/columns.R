@@ -10,8 +10,20 @@ library(assertthat)
 library(GROAN)
 
 is_float <- function(string) {
-  # Attempt to convert the string to a numeric value
-  # If successful, return TRUE; otherwise, return FALSE
+  #' is_float
+  #'
+  #' Checks if a given string can be converted to a floating-point number in Python.
+  #'
+  #' @param string Character. String to check.
+  #'
+  #' @return Logical. \code{TRUE} if conversion was successful, \code{FALSE} if not.
+  #'
+  #' @examples
+  #' # Example usage:
+  #' is_numeric("3.14")
+  #'
+  #' @export
+
   if (length(as.numeric(string)) == 1 && !is.na(as.numeric(string))) {
     return(TRUE)
   } else {
@@ -27,6 +39,32 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
         ..dtype = NULL,
         ..required = NULL
     ),
+  #' AbstractColumnDefinition
+  #' Abstract class to store columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param dtype Data type. Data type of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Properties:
+  #' \describe{
+  #'   \item{col_type}{Character.}
+  #'   \item{name}{Character.}
+  #'   \item{description}{Character.}
+  #'   \item{dtype}{Data type.}
+  #'   \item{required}{Logical. Bool that specifies if the column is required.}
+  #'   \item{default}{}
+  #' }
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
 
 
   public = list(
@@ -94,6 +132,21 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
 
 
 VariableDefinition <- R6::R6Class("VariableDefinition", inherit = AbstractColumnDefinition,
+  #' VariableDefinition
+  #' Class to store variable columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description, required) {
       super$initialize(col_type = 'variable',
@@ -115,6 +168,22 @@ VariableDefinition <- R6::R6Class("VariableDefinition", inherit = AbstractColumn
 
 
 UnitDefinition <- R6::R6Class("UnitDefinition", inherit = AbstractColumnDefinition,
+  #' UnitDefinition
+  #'
+  #' Class to store Unit columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description, required) {
       super$initialize(col_type = 'unit',
@@ -144,6 +213,23 @@ UnitDefinition <- R6::R6Class("UnitDefinition", inherit = AbstractColumnDefiniti
 )
 
 ValueDefinition <- R6::R6Class("ValueDefinition", inherit = AbstractColumnDefinition,
+  #' ValueDefinition
+  #'
+  #' Class to store Value columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
+
   public = list(
     initialize = function(name, description, required) {
       super$initialize(col_type = 'value',
@@ -163,6 +249,22 @@ ValueDefinition <- R6::R6Class("ValueDefinition", inherit = AbstractColumnDefini
 )
 
 CommentDefinition <- R6::R6Class("CommentDefinition", inherit = AbstractColumnDefinition,
+  #' CommentDefinition
+  #'
+  #' Class to store comment columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description, required) {
       super$initialize(col_type = 'comment',
@@ -179,27 +281,37 @@ CommentDefinition <- R6::R6Class("CommentDefinition", inherit = AbstractColumnDe
 )
 
 
-# Define the AbstractFieldDefinition class
+
 AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = AbstractColumnDefinition,
+  #' AbstractFieldDefinition
+  #'
+  #' Abstract class to store fields
+  #'
+  #' @param field_type Type of the field
+  #' @param name Name of the field
+  #' @param description Description of the field
+  #' @param dtype Data type of the field
+  #' @param coded If the field is coded
+  #' @param codes Optional codes for the field (default: NULL)
+  #'
+  #' @slot field_type Type of the field
+  #' @slot coded If the field is coded
+  #' @slot codes Optional codes for the field
+  #' @slot default Default value for the field
+  #'
+  #' @method is_allowed Check if cell is allowed
+  #' @method select_and_expand Select and expand fields
+  #'
+  #' @export
   private = list(
     ..field_type = NULL,
     ..coded = NULL,
     ..codes = NULL,
 
     ..expand = function(df, col_id, field_vals, ...) {
-      # expand period rows
-
-
-
       df[df[[col_id]] == "*", col_id] = paste(field_vals, collapse=',')
-
       result_df <- separate_rows(df, col_id, sep=',')
-
-
-
       return(result_df)
-
-
     },
 
     ..select = function(df, col_id, field_vals, ...) {
@@ -243,43 +355,54 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
 
 
     select_and_expand = function(df, col_id, field_vals = NA, ...) {
+      #' Select and expand fields which are valid for multiple periods or other field vals
+      #'
+      #' @param df DataFrame where fields should be selected and expanded
+      #' @param col_id col_id of the column to be selected and expanded
+      #' @param field_vals NULL or list of field_vals to select and expand
+      #' @param ... Additional keyword arguments
+      #'
+      #' @return DataFrame where fields are selected and expanded
+      #'
+      #' @examples
+      #' # Example usage:
+      #' # select_and_expand(df, "col_id", field_vals = NULL)
+      #'
+      #' @export
+      # get list of selected field values
       if (is.null(field_vals)) {
         if (col_id == 'period') {
           field_vals <- default_periods
         } else if (private$..coded) {
-
           field_vals <- names(private$..codes)
-
         } else {
           field_vals <- unique(df[[col_id]])
           field_vals <- field_vals[!is.na(field_vals) & field_vals != '*']
         }
       } else {
+        # ensure that field values is a list of element (not tuple, not single value)
         if(!(is.list(field_vals))) {
         field_vals <- as.list(field_vals)}
-
         for (val in field_vals) {
-
           if (!self$is_allowed(val)) {
+            # check that every element is of allowed type
             stop(paste("Invalid type selected for field " ,col_id, ": ", val, sep = ""))
           }
         }
-
         if ("*" %in% field_vals) {
           stop(paste("Selected values for field ", col_id, " must not contain the asterisk.",
                     "Omit the ", col_id, " argument to select all entries.", sep = ""))
         }
-
       }
-
-
+      # expand
       df <- private$..expand(df, col_id, field_vals, ...)
-
+      # select
       df <- private$..select(df, col_id, field_vals, ...)
-
+      # return
       return(df)
     }
   ),
+
   active = list(
     field_type = function() {
       private$..field_type
@@ -305,6 +428,15 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
 )
 
 RegionFieldDefinition <- R6::R6Class("RegionFieldDefinition", inherit = AbstractFieldDefinition,
+  #' RegionFieldDefinition
+  #'
+  #' Class to store Region fields
+  #'
+  #' @param name Character. Name of the field.
+  #' @param description Character. Description of the field.
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description) {
       super$initialize(
@@ -322,15 +454,27 @@ RegionFieldDefinition <- R6::R6Class("RegionFieldDefinition", inherit = Abstract
 
 
 PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = AbstractFieldDefinition,
+  #' PeriodFieldDefinition
+  #'
+  #' Class to store Period fields
+  #'
+  #' @param name Character. Name of the field.
+  #' @param description Character. Description of the field.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Checks if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
   private = list(
 
 
     ..expand = function(df, col_id, field_vals, ...) {
-
       # expand period rows
       df[df[[col_id]] == "*", col_id] = paste(field_vals, collapse=',')
       result_df <- separate_rows(df, col_id, sep=',')
-
       # Convert 'period' column to float
       result_df[[col_id]] <- as.numeric(result_df[[col_id]])
 
@@ -339,27 +483,17 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
 
 
-
+    # group by identifying columns and select periods/generate time series
     ..select = function(df, col_id, field_vals, ...) {
-
       kwargs <- list(...)
-
       # Get list of groupable columns
       group_cols <- setdiff(names(df), c(col_id, 'value'))
 
-
       # Perform group_by and do not drop NA values
-
-
       grouped <- df %>% group_split(across(all_of(group_cols)), .drop = FALSE)
 
       # Create return list
-
-
       ret <- list()
-
-
-
 
       # Loop over groups
       for (i in seq_along(grouped)) {
@@ -372,15 +506,9 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
         # Get a list of periods that exist
         periods_exist <- unique(rows[[col_id]])
 
-
-
         # Create dataframe containing rows for all requested periods
         req_rows <- data.frame()
-
-
         req_rows <-setNames(data.frame(unlist(field_vals)),col_id )
-
-
         req_rows[[paste0(col_id, "_upper")]] <- sapply(field_vals, function(p) {
             filtered_values <- periods_exist[periods_exist >= p]
 
@@ -390,7 +518,6 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
               return(min(filtered_values, na.rm = TRUE))
             }
           })
-
         req_rows[[paste0(col_id, "_lower")]] <- sapply(field_vals, function(p) {
             filtered_values <- periods_exist[periods_exist <= p]
             if (length(filtered_values) == 0 || all(is.na(filtered_values))) {
@@ -408,7 +535,6 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
         cond_match <- req_rows[[col_id]] %in% periods_exist
         cond_extrapolate <- is.na(req_rows[[paste0(col_id, "_upper")]]) | is.na(req_rows[[paste0(col_id, "_lower")]])
 
-
         # Match
         rows_match <- req_rows[cond_match, ] %>%
             merge(rows, by = col_id)
@@ -419,8 +545,6 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
           rows_extrapolate <- req_rows[!cond_match & cond_extrapolate, ] %>% mutate(period_combined = ifelse(!is.na(!!sym(paste0(col_id, "_upper"))), !!sym(paste0(col_id, "_upper")), !!sym(paste0(col_id, "_lower"))))
           rows_ext <- rows %>% rename(!!paste0(col_id, "_combined") := !!sym(col_id))
-
-          # Merge the data frames
           rows_extrapolate <- merge(rows_extrapolate, rows_ext, by = paste0(col_id, "_combined"))
         } else {
           rows_extrapolate <- data.frame()
@@ -481,12 +605,17 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
   )
 )
 
-
-
-
-# Define the SourceFieldDefinition class
 SourceFieldDefinition <- R6::R6Class("SourceFieldDefinition",
   inherit = AbstractFieldDefinition,
+  #' SourceFieldDefinition
+  #'
+  #' Class to store Source fields
+  #'
+  #' @param name Character. Name of the field.
+  #' @param description Character. Description of the field.
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description) {
       super$initialize(
@@ -500,8 +629,16 @@ SourceFieldDefinition <- R6::R6Class("SourceFieldDefinition",
     )
 )
 
-# Define the CustomFieldDefinition class
+
 CustomFieldDefinition <- R6::R6Class("CustomFieldDefinition",
+  #' CustomFieldDefinition
+  #'
+  #' Class to store Custom fields
+  #'
+  #' @param ... Additional arguments. Specs of the custom fields.
+  #'
+  #' @export
+
   inherit = AbstractFieldDefinition,
   public = list(
     field_specs = NULL,
@@ -642,10 +779,12 @@ read_fields <- function(variable) {
         }
 
       }
-    #   for (col_id %in% fields):
-    #     if (col_id %in% base_columns):
-    #         stop(sprintf("Field ID cannot be equal to a base column ID: %s", col_id))
-
+    # make sure the field ID is not the same as for a base column
+      for (col_id in names(fields)) {
+        if (col_id %in% base_columns) {
+            stop(sprintf("Field ID cannot be equal to a base column ID: %s", col_id))
+        }
+      }
       }
     }
     return(list(fields= fields, comments= comments))
