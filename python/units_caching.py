@@ -13,7 +13,6 @@ def allowed_flow_dims(flow_type: None | str):
         allowed_dims = ['[currency]']
     else:
         flow_type_data = flows[flow_type]
-        print(flow_type_data['default_unit'].split(';')[0])
         allowed_dims = [str(ureg.Quantity(flow_type_data['default_unit'].split(';')[0]).dimensionality)] # default units dimension is always accepted
         if(flow_type_data['energycontent_LHV'] == flow_type_data['energycontent_LHV'] or \
            flow_type_data['energycontent_HHV'] == flow_type_data['energycontent_HHV']):
@@ -87,6 +86,11 @@ for unit_str in unique_values:
                     volume_units.append(unit_str)
                     volume_units.append(unit_str + ';norm')
                     volume_units.append(unit_str + ';std')
+                elif unit.dimensionality == '[length] ** 3 / [time]' or unit.dimensionality == '[volume] /[time]':
+                    # volume units are appened with norm and standard
+                    volume_units.append(unit_str)
+                    volume_units.append(unit_str + ';norm')
+                    volume_units.append(unit_str + ';std')
                 elif unit.dimensionality == '[mass] / [time]':
                     # mass units are not augmented
                     mass_units.append(unit_str)
@@ -103,6 +107,7 @@ other_units.append("USD_2005")
 other_units.append("EUR_2005/a")
 other_units.append("USD_2005/a")
 
+
 # ----- Define all possible conversions for each entry type and additionally for a missing entry type
 
 # define conversion set
@@ -117,21 +122,25 @@ for unit_from in other_units:
             conversions.append(conversion)
 
 # for reference_unit, all combinations disregarding the flow_type limitations are added
-
 # iterate over all flow types
 for flow_type in flows.keys():
-    # print(flow_type)
     # get allowed dimensions for the flow type
     allowed_dims = allowed_flow_dims(flow_type)
+
     # define a set of all possible units for this flow type
     compatible_units = []
     # add units to the compatible units set depending on whether flow types allowed dimensions
     if ('[mass]' in allowed_dims):
+
         compatible_units += mass_units
+
     if ('[length] ** 2 * [mass] / [time] ** 2' in allowed_dims):
+
         compatible_units += energy_units
     if ('[length] ** 3' in allowed_dims):
+
         compatible_units += volume_units
+
 
     # iterate over all the commpatible units for the unit_from and unit_to variable to create all possible combinations
     for unit_from in compatible_units:

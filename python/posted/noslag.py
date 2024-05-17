@@ -18,6 +18,23 @@ from posted.units import unit_convert, ureg
 
 # get list of TEDFs potentially containing variable
 def collect_files(parent_variable: str, include_databases: Optional[list[str]] = None):
+    '''Takes a parent variable and optional list of databases to include,
+    checks for their existence, and collects files and directories based on the parent variable.
+
+    Parameters
+    ----------
+    parent_variable : str
+        Variable to collect files on
+    include_databases : Optional[list[str]]
+        List of Database IDs to collect files from
+
+    Returns
+    -------
+        list[tuple]
+            List of tuples containing the parent variable and the
+        database ID for each file found in the specified directories.
+
+    '''
     if not parent_variable:
         raise Exception('Variable may not me empty.')
 
@@ -61,10 +78,34 @@ def collect_files(parent_variable: str, include_databases: Optional[list[str]] =
 
     return ret
 
-
-# normalise units
 def normalise_units(df: pd.DataFrame, level: Literal['reported', 'reference'], var_units: dict[str, str],
-                    var_flow_ids: dict[str, str]):
+                       var_flow_ids: dict[str, str]):
+    '''
+    Takes a DataFrame with reported or reference data, along with
+    dictionaries mapping variable units and flow IDs, and normalizes the units of the variables in the
+    DataFrame based on the provided mappings.
+
+    Parameters
+    ----------
+        df : pd.DataFrame
+            Dataframe to be normalised
+        level : Literal['reported', 'reference']
+            Specifies whether the data should be normalised on the reported or reference values
+        var_units : dict[str, str]
+            Dictionary that maps a combination of parent variable and variable
+            to its corresponding unit. The keys in the dictionary are in the format "{parent_variable}|{variable}",
+            and the values are the units associated with that variable.
+        var_flow_ids : dict[str, str]
+            Dictionary that maps a combination of parent variable and variable to a
+            specific flow ID. This flow ID is used for unit conversion in the `normalise_units` function.
+
+    Returns
+    -------
+        pd.DataFrame
+            Normalised dataframe
+
+    '''
+
     prefix = '' if level == 'reported' else 'reference_'
     var_col_id = prefix + 'variable'
     value_col_id = prefix + 'value'
@@ -85,21 +126,47 @@ def normalise_units(df: pd.DataFrame, level: Literal['reported', 'reference'], v
         .to_frame('target_flow_id'),
     ], axis=1)
 
+    # Apply unit conversion
     conv_factor = df_tmp.apply(
         lambda row: unit_convert(row[unit_col_id], row['target_unit'], row['target_flow_id'])
         if not np.isnan(row[value_col_id]) else 1.0,
         axis=1,
     )
+
+    # Update value column with conversion factor
     df_tmp[value_col_id] *= conv_factor
+
+    # If level is 'reported', update uncertainty column with conversion factor
     if level == 'reported':
         df_tmp['uncertainty'] *= conv_factor
+
+    # Uupdate unit columns
     df_tmp[unit_col_id] = df_tmp['target_unit']
 
+    # Drop unneccessary columns and return
     return df_tmp.drop(columns=['target_unit', 'target_flow_id'])
 
 
-# normalise values
+
 def normalise_values(df: pd.DataFrame):
+    '''Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
+    columns by the reference value, and updates the 'reference_value' column accordingly.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe to be normalised
+
+    Returns
+    -------
+        pd.DataFrame
+            Returns a modified DataFrame where the 'value' column has been
+            divided by the 'reference_value' column (or 1.0 if 'reference_value' is null), the 'uncertainty'
+            column has been divided by the 'reference_value' column, and the 'reference_value' column has been
+            replaced with 1.0 if it was not null, otherwise
+
+    '''
+    # Calculate reference value
     reference_value =  df.apply(
         lambda row:
             row['reference_value']
@@ -107,6 +174,7 @@ def normalise_values(df: pd.DataFrame):
             1.0,
         axis=1,
     )
+    # Calculate new value, reference value and uncertainty
     value_new = df['value'] / reference_value
     uncertainty_new = df['uncertainty'] / reference_value
     reference_value_new = df.apply(
@@ -116,18 +184,29 @@ def normalise_values(df: pd.DataFrame):
             np.nan,
         axis=1,
     )
-
+    # Assign new values to dataframe and return
     return df.assign(value=value_new, uncertainty=uncertainty_new, reference_value=reference_value_new)
 
 
 class HarmoniseMappingFailure(Warning):
     """Warning raised for rows in TEDataSets where mappings fail.
 
-    Attributes:
-        row_data -- the data of the row that causes the failure
-        message -- explanation of the error
+    Parameters
+    ----------
+        row_data: pd.DataFrame
+            Contains the Data on the rows to map
+        message: str, optional
+            Contains the message of the failure
+
+    Attributes
+    ----------
+        row_data
+            the data of the row that causes the failure
+        message
+            explanation of the error
     """
     def __init__(self, row_data: pd.DataFrame, message: str = "Failure when selecting from dataset."):
+        '''Save constructor arguments as public fields, compose warning message, call super constructor'''
         # save constructor arguments as public fields
         self.row_data: pd.DataFrame = row_data
         self.message: str = message
@@ -139,9 +218,26 @@ class HarmoniseMappingFailure(Warning):
         super().__init__(warning_message)
 
 
-# combine fraction of two units into updated unit string
+
 def combine_units(numerator: str, denominator: str):
+    '''Combine fraction of two units into updated unit string
+
+    Parameters
+    ----------
+        numerator: str
+            numerator of the fraction
+        denominator: str
+            denominator of the fraction
+
+    Returns
+    -------
+        str
+            updated unit string after simplification
+    '''
+
+
     ret = ureg(f"{numerator}/({denominator})").u
+    # chekc if ret is dimensionless, if not return ret, else return the explicit quotient
     if not ret.dimensionless:
         return str(ret)
     else:
@@ -151,6 +247,30 @@ def combine_units(numerator: str, denominator: str):
 
 
 class DataSet(TEBase):
+    '''Class to store, normalise, select and aggregate DataSets
+
+    Parameters
+    ----------
+        parent_variable: str
+            Variable to collect Data on
+        include_databases: Optional[list|str] | tuple[str]], optional
+            Databases to load from
+        file_paths: Optional[list[path]], optional
+            Paths to load data from
+        check_inconsistencies: bool, optional
+            Wether to check for inconsistencies
+        data: Optional[pd.DataFrame], optional
+            Specific data to include in the dataset
+
+    Attributes
+    ----------
+        data
+
+    Methods
+    -------
+        normalise
+        select
+        aggregate'''
     _df: None | pd.DataFrame
     _columns: dict[str, AbstractColumnDefinition]
     _fields: dict[str, AbstractFieldDefinition]
@@ -164,6 +284,7 @@ class DataSet(TEBase):
                  check_inconsistencies: bool = False,
                  data: Optional[pd.DataFrame] = None,
                  ):
+        '''Initialise parent class and fields, load data from specified databases and files'''
         TEBase.__init__(self, parent_variable)
 
         # initialise fields
@@ -176,6 +297,7 @@ class DataSet(TEBase):
         }
         self._masks = []
 
+        # Load data if provided, otherwise load from TEDataFiles
         if data is not None:
             self._df = data
         else:
@@ -183,16 +305,19 @@ class DataSet(TEBase):
             include_databases = list(include_databases) if include_databases is not None else list(databases.keys())
             self._df = self._load_files(include_databases, file_paths or [], check_inconsistencies)
 
-    # access dataframe
+
     @property
     def data(self):
+        '''Get or set dataframe'''
         return self._df
 
     def set_data(self, df: pd.DataFrame):
         self._df = df
 
-    # load TEDFs and compile into NSHADataSet
+
     def _load_files(self, include_databases: list[str], file_paths: list[Path], check_inconsistencies: bool):
+        # Load TEDFs and compile into NSHADataSet
+
         files: list[TEDF] = []
 
         # collect TEDF and append to list
@@ -251,8 +376,22 @@ class DataSet(TEBase):
         # return
         return data
 
-    # normalise data: default reference units, reference value equal to 1.0, default reported units
+
     def normalise(self, override: Optional[dict[str, str]] = None, inplace: bool = False) -> pd.DataFrame | None:
+        '''
+        normalise data: default reference units, reference value equal to 1.0, default reported units
+
+        Parameters
+        ----------
+            override: Optional[dict[str,str]], optional
+                Dictionary with key, value pairs of variables to override
+            inplace: bool, optional
+                Wether to do the normalisation in place
+
+        Returns
+        -------
+            pd.DataFrame
+                if inplace is false, returns normalised dataframe'''
         normalised, _ = self._normalise(override)
         if inplace:
             self._df = normalised
@@ -289,6 +428,24 @@ class DataSet(TEBase):
                drop_singular_fields: bool = True,
                extrapolate_period: bool = True,
                **field_vals_select) -> pd.DataFrame:
+        '''Select desired data from the dataframe
+
+        Parameters
+        ----------
+            override: Optional[dict[str, str]]
+                Dictionary with key, value paris of variables to override
+            drop_singular_fields: bool, optional
+                If True, drop custom fields with only one value
+            extrapolate_period: bool, optional
+                If True, extrapolate values by extrapolation, if no value for this period is given
+            **field_vals_select
+                IDs of values to select
+
+        Returns
+        -------
+            pd.DataFrame
+                DataFrame with selected Values
+            '''
         selected, var_units, var_references = self._select(
             override,
             drop_singular_fields,
@@ -358,9 +515,13 @@ class DataSet(TEBase):
             .filter(['variable', 'reference_variable']) \
             .drop_duplicates() \
             .set_index('variable')['reference_variable']
+
+        # Check for multiple reference variables per reported variable
         if not var_references.index.is_unique:
             raise Exception(f"Multiple reference variables per reported variable found: {var_references}")
         var_references = var_references.to_dict()
+
+        # Remove 'reference_variable column
         selected.drop(columns=['reference_variable'], inplace=True)
 
         # strip off unit variants
@@ -369,10 +530,12 @@ class DataSet(TEBase):
             for variable, unit in var_units.items()
         }
 
+        # return
         return selected, var_units, var_references
 
-    # apply mappings between entry types
+
     def _apply_mappings(self, expanded: pd.DataFrame, var_units: dict) -> pd.DataFrame:
+        # apply mappings between entry types
         # list of columns to group by
         group_cols = [
             c for c in expanded.columns
@@ -393,29 +556,44 @@ class DataSet(TEBase):
             # 1. convert FLH to OCF
             cond = rows['variable'].str.endswith('|FLH')
             if cond.any():
+
+                # Multiply 'value' by conversion factor
                 rows.loc[cond, 'value'] *= rows.loc[cond].apply(
                     lambda row: unit_convert(var_units[row['variable']], 'a'),
                     axis=1,
                 )
+
+                # Replace '|FLH' with '|OCF‘ in 'variable'
                 rows.loc[cond, 'variable'] = rows.loc[cond, 'variable'] \
                     .str.replace('|FLH', '|OCF', regex=False)
 
             # 2. convert OPEX Fixed Relative to OPEX Fixed
             cond = rows['variable'].str.endswith('|OPEX Fixed Relative')
             if cond.any():
-                rows.loc[cond, 'value'] *= rows.loc[cond].apply(
-                    lambda row: unit_convert(var_units[row['variable']], 'dimensionless') * unit_convert(
+
+                # Define a function to calculate the conversion factor
+                def calculate_conversion(row):
+                    conversion_factor = unit_convert(var_units[row['variable']], 'dimensionless') * unit_convert(
                         var_units[row['variable'].replace('|OPEX Fixed Relative', '|CAPEX')] + '/a',
                         var_units[row['variable'].replace('|OPEX Fixed Relative', '|OPEX Fixed')]
                     ) * (rows.query(
                         f"variable=='{row['variable'].replace('|OPEX Fixed Relative', '|CAPEX')}'"
                     ).pipe(
                         lambda df: df['value'].iloc[0] if not df.empty else np.nan,
-                    )),
+                    ))
+                    return conversion_factor
+
+                # Calcualte the conversion factor and update 'value' for rows satisfying the condition
+                rows.loc[cond, 'value'] *= rows.loc[cond].apply(
+                    lambda row: calculate_conversion(row),
                     axis=1,
                 )
+
+                # Replace '|OPEX Fixed Relative' with '|OPEX FIXED' in 'variable'
                 rows.loc[cond, 'variable'] = rows.loc[cond, 'variable'] \
                     .str.replace('|OPEX Fixed Relative', '|OPEX Fixed')
+
+                # Assign 'reference_variable' based on modified 'variable'
                 rows.loc[cond, 'reference_variable'] = rows.loc[cond].apply(
                     lambda row: rows.query(
                         f"variable=='{row['variable'].replace('|OPEX Fixed', '|CAPEX')}'"
@@ -424,6 +602,8 @@ class DataSet(TEBase):
                     ),
                     axis=1,
                 )
+
+                # Check if there are rows with null 'value' after the operation
                 if (cond & rows['value'].isnull()).any():
                     warnings.warn(HarmoniseMappingFailure(
                         expanded.loc[ids].loc[cond & rows['value'].isnull()],
@@ -433,8 +613,10 @@ class DataSet(TEBase):
             # 3. convert OPEX Fixed Specific to OPEX Fixed
             cond = rows['variable'].str.endswith('|OPEX Fixed Specific')
             if cond.any():
-                rows.loc[cond, 'value'] *= rows.loc[cond].apply(
-                    lambda row: unit_convert(
+
+                # Define a function to calculate the conversion factor
+                def caluclate_conversion(row):
+                    conversion_factor = unit_convert(
                         var_units[row['variable']] + '/a',
                         var_units[row['variable'].replace('|OPEX Fixed Specific', '|OPEX Fixed')]
                     ) / unit_convert(
@@ -445,14 +627,25 @@ class DataSet(TEBase):
                         f"variable=='{row['variable'].replace('|OPEX Fixed Specific', '|OCF')}'"
                     ).pipe(
                         lambda df: df['value'].iloc[0] if not df.empty else np.nan,
-                    )),
+                    ))
+                    return conversion_factor
+
+                # Calculate the conversion factor and update 'value' for rows satisfying the condition
+                rows.loc[cond, 'value'] *= rows.loc[cond].apply(
+                    lambda row: calculate_conversion(row),
                     axis=1,
                 )
+
+                # replace '|OPEX Fixed Specific' with '|OPEX Fixed' in 'variable'
                 rows.loc[cond, 'variable'] = rows.loc[cond, 'variable'] \
                     .str.replace('|OPEX Fixed Specific', '|OPEX Fixed')
+
+                # Assign 'reference_variable by replacing 'Input' or 'Output' with 'Input Capacity' or 'Output Capacity'
                 rows.loc[cond, 'reference_variable'] = rows.loc[cond, 'reference_variable'].apply(
                     lambda cell: re.sub(r'(Input|Output)', r'\1 Capacity', cell),
                 )
+
+                # Check if there are any rows with null 'value' after the opera
                 if (cond & rows['value'].isnull()).any():
                     warnings.warn(HarmoniseMappingFailure(
                         expanded.loc[ids].loc[cond & rows['value'].isnull()],
@@ -485,8 +678,10 @@ class DataSet(TEBase):
                 rows.loc[cond, 'reference_variable_new'] = rows.loc[cond, 'variable'].map(
                     lambda var: self._var_specs[var]['default_reference'],
                 )
-                rows.loc[cond, 'value'] *= rows.loc[cond].apply(
-                    lambda row: unit_convert(
+
+                # Define function to calculate the conversion factor
+                def calculate_conversion(row):
+                    conversion_factor =  unit_convert(
                         ('a*' if 'Capacity' in row['reference_variable'] else '') + var_units[row['reference_variable_new']],
                         var_units[re.sub(regex_find, regex_repl, row['reference_variable_new'])],
                         row['reference_variable_new'].split('|')[-1]
@@ -499,7 +694,12 @@ class DataSet(TEBase):
                         f"reference_variable=='{re.sub(regex_find, regex_repl, row['reference_variable_new'])}'"
                     ).pipe(
                         lambda df: df['value'].iloc[0] if not df.empty else np.nan,
-                    ),
+                    )
+                    return conversion_factor
+
+                # Calculate the conversion factor and update 'value' for rows satisfying the condition
+                rows.loc[cond, 'value'] *= rows.loc[cond].apply(
+                    lambda row: caluclate_conversion(row),
                     axis=1,
                 )
                 rows.loc[cond, 'reference_variable'] = rows.loc[cond, 'reference_variable_new']
@@ -520,14 +720,46 @@ class DataSet(TEBase):
         return pd.concat(ret).reset_index(drop=True) if ret else expanded.iloc[[]]
 
     # select data
-    def aggregate(self,
-                  override: Optional[dict[str, str]] = None,
+    def aggregate(self, override: Optional[dict[str, str]] = None,
                   drop_singular_fields: bool = True,
                   extrapolate_period: bool = True,
                   agg: Optional[str | list[str] | tuple[str]] = None,
                   masks: Optional[list[Mask]] = None,
                   masks_database: bool = True,
                   **field_vals_select) -> pd.DataFrame:
+        '''Aggregates data based on specified parameters, applies masks,
+        and cleans up the resulting DataFrame.
+
+        Parameters
+        ----------
+             override: Optional[dict[str, str]]
+                Dictionary with key, value paris of variables to override
+            drop_singular_fields: bool, optional
+                If True, drop custom fields with only one value
+            extrapolate_period: bool, optional
+                If True, extrapolate values by extrapolation, if no value for this period is given
+            agg : Optional[str | list[str] | tuple[str]]
+                Specifies which fields to aggregate over.
+            masks : Optional[list[Mask]]
+                Specifies a list of Mask objects that will be applied to the data during aggregation.
+                These masks can be used to filter or weight the
+                data based on certain conditions defined in the Mask objects.
+            masks_database : bool, optional
+                Determines whether to include masks from databases in the aggregation process.
+                If set to `True`, masks from databases will be included along with any masks provided as function arguments.
+                If set to `False`, only the masks provided as function argruments will be applied
+
+        Returns
+        -------
+            pd.DataFrame
+                The `aggregate` method returns a pandas DataFrame that has been cleaned up and aggregated based
+                on the specified parameters and input data. The method performs aggregation over component
+                fields and cases fields, applies weights based on masks, drops rows with NaN weights, aggregates
+                with weights, inserts reference variables, sorts columns and rows, rounds values, and inserts
+                units before returning the final cleaned and aggregated DataFrame.
+
+        '''
+
         # get selection
         selected, var_units, var_references = self._select(override,
                                                            extrapolate_period,

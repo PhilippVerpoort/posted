@@ -1,9 +1,3 @@
-#' Read a CSV data file.
-#' 
-#' This function reads in a csv file specified by the relative file path.
-#' @usage (NOT EXPORTED)
-#' @param fpath The relative file path.
-
 # read CSV data file
 read_csv_file <- function (fpath) {
     return(read.csv(
@@ -14,11 +8,6 @@ read_csv_file <- function (fpath) {
     ))
 }
 
-#' Read a YAML data file.
-#' 
-#' This function reads in a yaml file specified by the relative file path
-#' @usage (NOT EXPORTED)
-#' @param fpath The relative file path .
 # read YAML config file
 read_yml_file <- function (fpath) {
     fhandle <- file(fpath, "r", encoding="utf-8")
