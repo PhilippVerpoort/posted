@@ -1,6 +1,6 @@
 tech_id,description,description_long,class,sector,primary_output
 Blast Furnace and Basic Oxygen Furnace with CC,Integrated steel mill with CCS,"Integrated steel mill with a blast furnace and basic oxygen furnace, equipped with CCS.",conversion,steel,Steel Liquid
-Cement with CC,Cement production with post-combustion CC,"Cement production plant with post-combustion carbon capture",conversion,cement,Clinker
+Cement Production,Cement production with post-combustion CC,"Cement production plant with post-combustion carbon capture",conversion,cement,Cement
 Coal Gasification,Gasification of coal to produce hydrogen,Gasification of coal w/ or w/o carbon capture to produce purified hydrogen.,conversion,energy,Hydrogen
 Direct Air Capture,Direct air capture,"Capturing CO2 directly from ambient air, making it available as a purified gas for sequestration or utilisation.",conversion,energy,Captured CO2
 Electric Arc Furnace,Electric arc furnace,"An electric-arc furnace, which uses electricity directly to create temperature sufficiently high to melt iron and other components into liquid steel.",conversion,steel,Steel Liquid
