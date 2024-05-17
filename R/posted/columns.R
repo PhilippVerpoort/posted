@@ -10,6 +10,20 @@ library(assertthat)
 library(GROAN)
 
 is_float <- function(string) {
+  #' is_float
+  #'
+  #' Checks if a given string can be converted to a floating-point number in Python.
+  #'
+  #' @param string Character. String to check.
+  #'
+  #' @return Logical. \code{TRUE} if conversion was successful, \code{FALSE} if not.
+  #'
+  #' @examples
+  #' # Example usage:
+  #' is_numeric("3.14")
+  #'
+  #' @export
+
   if (length(as.numeric(string)) == 1 && !is.na(as.numeric(string))) {
     return(TRUE)
   } else {
@@ -25,6 +39,32 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
         ..dtype = NULL,
         ..required = NULL
     ),
+  #' AbstractColumnDefinition
+  #' Abstract class to store columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param dtype Data type. Data type of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Properties:
+  #' \describe{
+  #'   \item{col_type}{Character.}
+  #'   \item{name}{Character.}
+  #'   \item{description}{Character.}
+  #'   \item{dtype}{Data type.}
+  #'   \item{required}{Logical. Bool that specifies if the column is required.}
+  #'   \item{default}{}
+  #' }
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
 
 
   public = list(
@@ -92,6 +132,21 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
 
 
 VariableDefinition <- R6::R6Class("VariableDefinition", inherit = AbstractColumnDefinition,
+  #' VariableDefinition
+  #' Class to store variable columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description, required) {
       super$initialize(col_type = 'variable',
@@ -113,6 +168,22 @@ VariableDefinition <- R6::R6Class("VariableDefinition", inherit = AbstractColumn
 
 
 UnitDefinition <- R6::R6Class("UnitDefinition", inherit = AbstractColumnDefinition,
+  #' UnitDefinition
+  #'
+  #' Class to store Unit columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description, required) {
       super$initialize(col_type = 'unit',
@@ -142,6 +213,23 @@ UnitDefinition <- R6::R6Class("UnitDefinition", inherit = AbstractColumnDefiniti
 )
 
 ValueDefinition <- R6::R6Class("ValueDefinition", inherit = AbstractColumnDefinition,
+  #' ValueDefinition
+  #'
+  #' Class to store Value columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
+
   public = list(
     initialize = function(name, description, required) {
       super$initialize(col_type = 'value',
@@ -161,6 +249,22 @@ ValueDefinition <- R6::R6Class("ValueDefinition", inherit = AbstractColumnDefini
 )
 
 CommentDefinition <- R6::R6Class("CommentDefinition", inherit = AbstractColumnDefinition,
+  #' CommentDefinition
+  #'
+  #' Class to store comment columns
+  #'
+  #' @param col_type Character. Type of the column.
+  #' @param name Character. Name of the column.
+  #' @param description Character. Description of the column.
+  #' @param required Logical. Bool that specifies if the column is required.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Check if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description, required) {
       super$initialize(col_type = 'comment',
@@ -179,6 +283,26 @@ CommentDefinition <- R6::R6Class("CommentDefinition", inherit = AbstractColumnDe
 
 
 AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = AbstractColumnDefinition,
+  #' AbstractFieldDefinition
+  #'
+  #' Abstract class to store fields
+  #'
+  #' @param field_type Type of the field
+  #' @param name Name of the field
+  #' @param description Description of the field
+  #' @param dtype Data type of the field
+  #' @param coded If the field is coded
+  #' @param codes Optional codes for the field (default: NULL)
+  #'
+  #' @slot field_type Type of the field
+  #' @slot coded If the field is coded
+  #' @slot codes Optional codes for the field
+  #' @slot default Default value for the field
+  #'
+  #' @method is_allowed Check if cell is allowed
+  #' @method select_and_expand Select and expand fields
+  #'
+  #' @export
   private = list(
     ..field_type = NULL,
     ..coded = NULL,
@@ -229,8 +353,22 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     },
 
 
-    # select and expand field based on values provided
+
     select_and_expand = function(df, col_id, field_vals = NA, ...) {
+      #' Select and expand fields which are valid for multiple periods or other field vals
+      #'
+      #' @param df DataFrame where fields should be selected and expanded
+      #' @param col_id col_id of the column to be selected and expanded
+      #' @param field_vals NULL or list of field_vals to select and expand
+      #' @param ... Additional keyword arguments
+      #'
+      #' @return DataFrame where fields are selected and expanded
+      #'
+      #' @examples
+      #' # Example usage:
+      #' # select_and_expand(df, "col_id", field_vals = NULL)
+      #'
+      #' @export
       # get list of selected field values
       if (is.null(field_vals)) {
         if (col_id == 'period') {
@@ -290,6 +428,15 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
 )
 
 RegionFieldDefinition <- R6::R6Class("RegionFieldDefinition", inherit = AbstractFieldDefinition,
+  #' RegionFieldDefinition
+  #'
+  #' Class to store Region fields
+  #'
+  #' @param name Character. Name of the field.
+  #' @param description Character. Description of the field.
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description) {
       super$initialize(
@@ -307,6 +454,20 @@ RegionFieldDefinition <- R6::R6Class("RegionFieldDefinition", inherit = Abstract
 
 
 PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = AbstractFieldDefinition,
+  #' PeriodFieldDefinition
+  #'
+  #' Class to store Period fields
+  #'
+  #' @param name Character. Name of the field.
+  #' @param description Character. Description of the field.
+  #'
+  #' @section Methods:
+  #' \describe{
+  #'   \item{\code{is_allowed}}{Checks if cell is allowed.}
+  #' }
+  #'
+  #' @export
+
   private = list(
 
 
@@ -446,6 +607,15 @@ PeriodFieldDefinition <- R6::R6Class("PeriodFieldDefinition", inherit = Abstract
 
 SourceFieldDefinition <- R6::R6Class("SourceFieldDefinition",
   inherit = AbstractFieldDefinition,
+  #' SourceFieldDefinition
+  #'
+  #' Class to store Source fields
+  #'
+  #' @param name Character. Name of the field.
+  #' @param description Character. Description of the field.
+  #'
+  #' @export
+
   public = list(
     initialize = function(name, description) {
       super$initialize(
@@ -461,6 +631,14 @@ SourceFieldDefinition <- R6::R6Class("SourceFieldDefinition",
 
 
 CustomFieldDefinition <- R6::R6Class("CustomFieldDefinition",
+  #' CustomFieldDefinition
+  #'
+  #' Class to store Custom fields
+  #'
+  #' @param ... Additional arguments. Specs of the custom fields.
+  #'
+  #' @export
+
   inherit = AbstractFieldDefinition,
   public = list(
     field_specs = NULL,

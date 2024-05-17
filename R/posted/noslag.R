@@ -8,6 +8,22 @@ library(Deriv)
 
 # get list of TEDFs potentially containing variable
 collect_files <- function(parent_variable, include_databases = NULL) {
+  #' collect_files
+  #' Takes a parent variable and optional list of databases to include,
+  #' checks for their existence, and collects files and directories based on the parent variable.
+  #'
+  #' @param parent_variable Character. Variable to collect files on.
+  #' @param include_databases Optional list[Character]. List of Database IDs to collect files from.
+  #'
+  #' @return List of tuples. List of tuples containing the parent variable and the
+  #' database ID for each file found in the specified directories.
+  #'
+  #' @examples
+  #' # Example usage:
+  #' collect_files("variable_name", c("db1", "db2"))
+  #'
+  #' @export
+
   if (parent_variable == "") {
     stop("Variable may not be empty.")
   }
@@ -66,6 +82,25 @@ collect_files <- function(parent_variable, include_databases = NULL) {
 
 # normalise units
 normalise_units <- function(df, level, var_units, var_flow_ids) {
+  #' normalise_units
+  #'
+  #' Takes a DataFrame with reported or reference data, along with
+  #' dictionaries mapping variable units and flow IDs, and normalizes the units of the variables in the
+  #' DataFrame based on the provided mappings.
+  #'
+  #' @param df DataFrame. Dataframe to be normalized.
+  #' @param level Character. Specifies whether the data should be normalized on the reported or reference values. Possible values are 'reported' or 'reference'.
+  #' @param var_units List. Dictionary that maps a combination of parent variable and variable to its corresponding unit. The keys in the dictionary are in the format "{parent_variable}|{variable}", and the values are the units associated with that variable.
+  #' @param var_flow_ids List. Dictionary that maps a combination of parent variable and variable to a specific flow ID. This flow ID is used for unit conversion in the \code{normalize_units} function.
+  #'
+  #' @return DataFrame. Normalized dataframe.
+  #'
+  #' @examples
+  #' # Example usage:
+  #' normalize_dataframe(df, "reported", var_units, var_flow_ids)
+  #'
+  #' @export
+
   prefix <- ifelse(level == 'reported', '', 'reference_')
   var_col_id <- paste0(prefix, 'variable')
   value_col_id <- paste0(prefix, 'value')
@@ -116,6 +151,24 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
 }
 
 normalise_values <- function(df) {
+  #' normalise_values
+  #'
+  #' Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
+  #' columns by the reference value, and updates the 'reference_value' column accordingly.
+  #'
+  #' @param df DataFrame. Dataframe to be normalized.
+  #'
+  #' @return DataFrame. Returns a modified DataFrame where the 'value' column has been
+  #' divided by the 'reference_value' column (or 1.0 if 'reference_value' is null), the 'uncertainty'
+  #' column has been divided by the 'reference_value' column, and the 'reference_value' column has been
+  #' replaced with 1.0 if it was not null.
+  #'
+  #' @examples
+  #' # Example usage:
+  #' normalized_df <- normalize_values(df)
+  #'
+  #' @export
+
   # Calculate reference value
   reference_value <- sapply(1:nrow(df), function(i) {
     if (!is.na(df$reference_value[i])) {
@@ -144,6 +197,19 @@ normalise_values <- function(df) {
 }
 
 combine_units <- function(numerator, denominator) {
+  #' Combine fraction of two units into an updated unit string
+  #'
+  #' @param numerator Character. Numerator of the fraction.
+  #' @param denominator Character. Denominator of the fraction.
+  #'
+  #' @return Character. Updated unit string after simplification.
+  #'
+  #' @examples
+  #' # Example usage:
+  #' combine_units("m", "s")
+  #'
+  #' @export
+
   ret = Simplify(paste0("(", numerator, ")/(", denominator, ")"))
   # check if ret is numeric, e.g. dimensionless, if not return ret, else return the explicit quotient
   if (!grepl("^-?\\d+\\.?\\d*$", ret)) {
@@ -158,6 +224,29 @@ combine_units <- function(numerator, denominator) {
 }
 
 
+#' @title DataSet
+#'
+#' @description This class provides methods to store, normalize, select, and aggregate DataSets.
+#'
+#' @param parent_variable Character. Variable to collect Data on.
+#' @param include_databases Optional list[Character] | tuple[Character], optional. Databases to load from.
+#' @param file_paths Optional list[Character], optional. Paths to load data from.
+#' @param check_inconsistencies Logical, optional. Whether to check for inconsistencies.
+#' @param data Optional DataFrame, optional. Specific data to include in the dataset.
+#'
+#' @section Attributes:
+#' \describe{
+#'   \item{data}{DataFrame. The dataset stored in the object.}
+#' }
+#'
+#' @section Methods:
+#' \describe{
+#'   \item{\code{normalize()}}{Normalizes the dataset.}
+#'   \item{\code{select()}}{Selects specific data from the dataset.}
+#'   \item{\code{aggregate()}}{Aggregates the dataset.}
+#' }
+#'
+#' @export
 
 DataSet <- R6::R6Class("DataSet", inherit=TEBase,
   private = list(
@@ -660,7 +749,10 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
   ),
 
   public = list(
-    # Initialise
+
+    #' initialise
+    #'
+    #' Initialise parent class and fields, load data from specified databases and files'''
     initialize = function(parent_variable,
                            include_databases = NULL,
                            file_paths = NULL,
@@ -696,7 +788,18 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       }
     },
 
-    # normalise data: default reference units, reference value equal to 1.0, default reported units
+    #' @description Normalize data: default reference units, reference value equal to 1.0, default reported units
+    #'
+    #' @param override Optional list[Character]. Dictionary with key, value pairs of variables to override.
+    #' @param inplace Logical, optional. Whether to do the normalization in place.
+    #'
+    #' @return DataFrame. If \code{inplace} is \code{FALSE}, returns normalized dataframe.
+    #'
+    #' @examples
+    #' # Example usage:
+    #' dataset$normalize(override = list("variable1" = "value1"), inplace = FALSE)
+    #'
+    #' @export
     normalise = function(override = NULL, inplace = FALSE) {
       normalised <- private$..normalise(override)
       if (inplace) {
@@ -706,7 +809,20 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       }
     },
 
-    # prepare data for selection
+    #' @description Select desired data from the dataframe
+    #'
+    #' @param override Optional list[Character]. Dictionary with key, value pairs of variables to override.
+    #' @param drop_singular_fields Logical, optional. If \code{TRUE}, drop custom fields with only one value.
+    #' @param extrapolate_period Logical, optional. If \code{TRUE}, extrapolate values if no value for this period is given.
+    #' @param ... IDs of values to select.
+    #'
+    #' @return DataFrame. DataFrame with selected values.
+    #'
+    #' @examples
+    #' # Example usage:
+    #' dataset$select(override = list("variable1" = "value1"), drop_singular_fields = TRUE, extrapolate_period = FALSE, field1 = "value1")
+    #'
+    #' @export
     select = function(override = NULL,
                       drop_singular_fields = TRUE,
                       extrapolate_period = TRUE,
@@ -731,7 +847,23 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
       return(result)
     },
 
-    # select data
+    #' @description Aggregates data based on specified parameters, applies masks,
+    #' and cleans up the resulting DataFrame.
+    #'
+    #' @param override Optional list[Character]. Dictionary with key, value pairs of variables to override.
+    #' @param drop_singular_fields Logical, optional. If \code{TRUE}, drop custom fields with only one value.
+    #' @param extrapolate_period Logical, optional. If \code{TRUE}, extrapolate values if no value for this period is given.
+    #' @param agg Optional Character | list[Character] | tuple[Character]. Specifies which fields to aggregate over.
+    #' @param masks Optional list[Mask]. Specifies a list of Mask objects that will be applied to the data during aggregation. These masks can be used to filter or weight the data based on certain conditions defined in the Mask objects.
+    #' @param masks_database Logical, optional. Determines whether to include masks from databases in the aggregation process. If \code{TRUE}, masks from databases will be included along with any masks provided as function arguments. If \code{FALSE}, only the masks provided as function arguments will be applied.
+    #'
+    #' @return DataFrame. The \code{aggregate} method returns a pandas DataFrame that has been cleaned up and aggregated based on the specified parameters and input data. The method performs aggregation over component fields and case fields, applies weights based on masks, drops rows with NaN weights, aggregates with weights, inserts reference variables, sorts columns and rows, rounds values, and inserts units before returning the final cleaned and aggregated DataFrame.
+    #'
+    #' @examples
+    #' # Example usage:
+    #' dataset$aggregate(override = list("variable1" = "value1"), drop_singular_fields = TRUE, extrapolate_period = FALSE, agg = "field", masks = list(mask1, mask2), masks_database = TRUE)
+    #'
+    #' @export
     aggregate = function(override=NULL,
             drop_singular_fields=TRUE,
             extrapolate_period=TRUE,

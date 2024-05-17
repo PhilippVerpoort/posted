@@ -1,5 +1,7 @@
 source("R/posted/path.R")
-
+library(docstring)
+library(roxygen2)
+print("hi")
 # Read in converion factors from R_unit_cache
 cached_units_path <- file.path(BASE_PATH, "R_unit_cache.csv")
 cached_units <- read.csv(
@@ -18,9 +20,29 @@ unit_variants <- list(
     std = list(param = 'density', value = 'density_std', dimension = 'volume')
 )
 
-# get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m**3;norm"
+
 unit_convert <- function(unit_from, unit_to, flow_id=NULL) {
-    # return NaN if unit_from or unit_to is NaN
+    #' Conversion of units with or withour flow ID
+    #'
+    #' Converts units with optional flow context handling based on
+    #' specified variants and flow ID. The function checks if the input units are not NaN,
+    #' then it proceeds to handle different cases based on the presence of a flow context and unit
+    #' variants.
+    #'
+    #' @param unit_from Character or numeric. Unit to convert from.
+    #' @param unit_to Character or numeric. Unit to convert to.
+    #' @param flow_id Character or NULL. Identifier for the specific flow or process.
+    #'
+    #' @return Numeric. Conversion factor between \code{unit_from} and \code{unit_to}.
+    #'
+    #' @examples
+    #' # Example usage:
+    #' convert_units("m", "km", flow_id = NULL)
+    #'
+    #' @export
+
+
+
     if(is.na(unit_from) | is.na(unit_to)) {
         return(NaN)
     }
