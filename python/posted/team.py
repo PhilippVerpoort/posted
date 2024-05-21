@@ -49,7 +49,7 @@ class AbstractAnalysisOrManipulation:
 
 
 # pandas dataframe accessor for groupby and perform methods
-@pd.api.extensions.register_dataframe_accessor("team")
+@pd.api.extensions.register_dataframe_accessor('team')
 class TEAMAccessor:
     def __init__(self, df: pd.DataFrame):
         self._df = df
@@ -348,15 +348,15 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
         return pd.Series({
             f"Value Chain|{self._name}|Functional Units|{proc}": func_units[i] * ureg('')
             for i, proc in enumerate(list(self._proc_graph.keys()))
-        } | {
+        } | ({
             f"Value Chain|{self._name}|Demand|{proc}|{flow}": self._demand[proc][flow]
             for proc in self._demand
             for flow in self._demand[proc]
-        } | {
+        } if self._demand is not None else {}) | ({
             f"Value Chain|{self._name}|SC Demand|{proc}|{flow}": self._sc_demand[proc][flow]
             for proc in self._sc_demand
             for flow in self._sc_demand[proc]
-        })
+        } if self._sc_demand is not None else {}))
 
 
 class LCOXAnalysis(AbstractAnalysisOrManipulation):
@@ -463,12 +463,12 @@ class LCOXAnalysis(AbstractAnalysisOrManipulation):
 
                 if not pd.isnull(reference):
                     if 'OPEX Fixed' in row_proc:
-                        ret['OM Cost'] = row_proc['OPEX Fixed'] / reference_capacity * reference
+                        ret['OM Fixed'] = row_proc['OPEX Fixed'] / reference_capacity * reference
 
                     if 'CAPEX' in row_proc:
                         if all(v in row_proc for v in ('Interest Rate', 'Book Lifetime')):
                             ANF = _annuity_factor(row_proc['Interest Rate'], row_proc['Book Lifetime'])
-                            ret['Capital Cost'] = ANF * row_proc['CAPEX'] / reference_capacity * reference
+                            ret['Capital'] = ANF * row_proc['CAPEX'] / reference_capacity * reference
                         else:
                             warnings.warn(f"Annuity factor could not be determined.")
 

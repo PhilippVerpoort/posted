@@ -25,8 +25,27 @@ unit_variants = {
 }
 
 
-# check if unit is allowed for variable
+
 def unit_allowed(unit: str, flow_id: None | str, dimension: str):
+    '''Checks if a given unit is allowed for a specific dimension and flow ID,
+    handling unit variants and compatibility checks.
+
+    Parameters
+    ----------
+    unit : str
+        The Unit to Check
+    flow_id : None | str
+        Identifier for the specific flow or process.
+    dimension : str
+        Expected dimension of the unit.
+
+    Returns
+    -------
+        tuple(bool, str)
+            Tuple with a boolean value and a message. The boolean value indicates
+            whether the unit is allowed based on the provided conditions, and the message
+            provides additional information or an error message related to the unit validation process.
+    '''
     if not isinstance(unit, str):
         raise Exception('Unit to check must be string.')
 
@@ -88,6 +107,27 @@ def unit_allowed(unit: str, flow_id: None | str, dimension: str):
 
 # get conversion factor between units, e.g. unit_from = "MWh;LHV" and unit_to = "m**3;norm"
 def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | str = None) -> float:
+    '''
+    Converts units with optional flow context handling based on
+    specified variants and flow ID. The function checks if the input units are not NaN,
+    then it proceeds to handle different cases based on the presence of a flow context and unit
+    variants.
+
+    Parameters
+    ----------
+    unit_from : str | float
+        Unit to convert from.
+    unit_to : str | float
+        Unit to convert to.
+    flow_id : None | str
+        Identifier for the specific flow or process.
+
+    Returns
+    -------
+        float
+            Conversion factor between unit_from and unit_to
+
+    '''
     # return nan if unit_from or unit_to is nan
     if unit_from is np.nan or unit_to is np.nan:
         return np.nan
@@ -133,8 +173,26 @@ def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | s
     return ureg(unit_from).to(unit_to, 'flocon', **ctx_kwargs).magnitude
 
 
-# get key-word arguments for unit conversion for context from flow specs
+
 def ctx_kwargs_for_variants(variants: list[str | None], flow_id: str):
+    '''
+    Generates a dictionary of context key-word arguments for unit conversion for context from flow specs
+
+
+    Parameters
+    ----------
+    variants : list[str | None]
+        A list of variant names or None values.
+    flow_id : str
+        Identifier for the specific flow or process.
+
+
+    Returns
+    -------
+        dict
+            Dictionary containing default conversion parameters for energy content and density,
+
+    '''
     # set default conversion parameters to NaN, such that conversion fails with a meaningful error message in their
     # absence. when this is left out, the conversion fails will throw a division-by-zero error message.
     ctx_kwargs = {'energycontent': np.nan, 'density': np.nan}
@@ -145,8 +203,24 @@ def ctx_kwargs_for_variants(variants: list[str | None], flow_id: str):
     return ctx_kwargs
 
 
-# split unit into pure unit and variant, e.g. MWh;LHV into MWh and LHV
+
 def split_off_variant(unit: str):
+    '''
+    Takes a unit string and splits it into a pure unit and a variant,
+    if present, based on a semicolon separator, e.g. MWh;LHV into MWh and LHV.
+
+    Parameters
+    ----------
+        unit : str
+            String that may contain a unit and its variant separated by a semicolon.
+
+    Returns
+    -------
+        tuple
+            Returns a tuple containing the pure unit and the variant (if
+            present) after splitting the input unit string by semi-colons.
+
+    '''
     tokens = unit.split(';')
     if len(tokens) == 1:
         pure_unit = unit
