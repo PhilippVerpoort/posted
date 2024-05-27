@@ -11,6 +11,8 @@ Standard,Input|Electricity,Output|Hydrogen,2023,25.0,,MWh,60622.0,lb,,Lewis22,"R
 w/ CC (92.5%),Input|Electricity,Output|Hydrogen,2023,39.0,,MWh,60627.0,lb,,Lewis22,"Results Analysis, Exhibit ES-2, Printed page 6 (document page 24/237), Case 5"
 Standard,Emission|CO2,Output|Hydrogen,2023,199,,lb,1,MMBtu,,Lewis22,"Results Analysis, Exhibit ES-2, Printed page 6 (document page 24/237), Case 4"
 w/ CC (92.5%),Emission|CO2,Output|Hydrogen,2023,15,,lb,1,MMBtu,,Lewis22,"Results Analysis, Exhibit ES-2, Printed page 6 (document page 24/237), Case 5"
+Standard,Emission|Capture Rate,,2023,0,,percent,,,,Lewis22,"Results Analysis, Exhibit ES-2, Printed page 6 (document page 24/237), Case 4"
+w/ CC (92.5%),Emission|Capture Rate,,2023,92.5,,percent,,,,Lewis22,"Results Analysis, Exhibit ES-2, Printed page 6 (document page 24/237), Case 5"
 *,OCF,,2023,80.0,,percent,,,,Lewis22,"Results Analysis, Exhibit ES-2, Printed page 6 (document page 24/237)"
 *,Lifetime,,2023,30.0,,year,,,,Lewis22,"Results Analysis, Exhibit ES-2, Printed page 6 (document page 24/237)"
 Standard,Total Output Capacity|Hydrogen,,2023,60622.0,,lb/hour,,,,Lewis22,"Results Analysis, Exhibit ES-2, Printed page 6 (document page 24/237)"

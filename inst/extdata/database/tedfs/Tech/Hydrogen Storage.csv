@@ -1,7 +1,7 @@
 subtech,variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-AGCS,Total Production Expenditure,Storage Capacity|Hydrogen,,0.33,,USD,1.0,kg,"Data point should be checked, it couldn't be found in the corresponding source paper.",Abdin21,
-AGCS,Total Production Expenditure,Storage Capacity|Hydrogen,,25.2,,USD,1.0,kg,"Data point should be checked, it couldn't be found in the corresponding source paper.",Abdin21,
-SC,Total Production Expenditure,Storage Capacity|Hydrogen,,0.14,,USD,1.0,kg,"Data point should be checked, it couldn't be found in the corresponding source paper.",Abdin21,
+AGCS,Total Production Expenditure,Storage Capacity|Hydrogen,,0.33,,USD,1.0,kg,"Daily storage cycle length",Abdin22,Abstract
+AGCS,Total Production Expenditure,Storage Capacity|Hydrogen,,25.2,,USD,1.0,kg,"4-month storage cycle length",Abdin22,Abstract
+SC,Total Production Expenditure,Storage Capacity|Hydrogen,,0.14,,USD,1.0,kg,"Daily storage cycle length",Abdin22,Abstract
 SC,CAPEX,Storage Capacity|Hydrogen,2017.0,280,,EUR,1.0,MWh,"Value reported as EUR/MWh in the paper, assumed to be an error.",Michalski17,"Page 13434, top of right-hand column"
 SC,OPEX Fixed Relative,,2017.0,4,,percent,,,,Michalski17,"Page 13434, top of right-hand column"
 AGCS,CAPEX,Storage Capacity|Hydrogen,2019.0,490,,EUR_2019,1.0,kg,"The number seems very large. Is there an error with units ? Cost basis is assumed from publication date. H2 is stored at 10-30 bar. Not specified which type of storage is considered here.",Gorre19,Table 4
