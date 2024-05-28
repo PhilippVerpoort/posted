@@ -615,7 +615,7 @@ class DataSet(TEBase):
             if cond.any():
 
                 # Define a function to calculate the conversion factor
-                def caluclate_conversion(row):
+                def calculate_conversion(row):
                     conversion_factor = unit_convert(
                         var_units[row['variable']] + '/a',
                         var_units[row['variable'].replace('|OPEX Fixed Specific', '|OPEX Fixed')]
@@ -702,7 +702,7 @@ class DataSet(TEBase):
 
                 # Calculate the conversion factor and update 'value' for rows satisfying the condition
                 rows.loc[cond, 'value'] *= rows.loc[cond].apply(
-                    lambda row: caluclate_conversion(row),
+                    lambda row: calculate_conversion(row),
                     axis=1,
                 )
                 rows.loc[cond, 'reference_variable'] = rows.loc[cond, 'reference_variable_new']
