@@ -9,14 +9,14 @@ Shipping,Mixed Refrigerant,,Liquefaction,Omen,CAPEX,Output Capacity|Methane,2000
 Shipping,Mixed Refrigerant,,Liquefaction,Russia,CAPEX,Output Capacity|Methane,2018,1311.0,,USD,1.0,t/a,APCI Propane Precooled Mixed Refrigerant (AP-C3MR),Zhang2020,
 Shipping,Mixed Refrigerant,,Liquefaction,US,CAPEX,Output Capacity|Methane,2019,799.0,,USD,1.0,t/a,APCI Propane Precooled Mixed Refrigerant (AP-C3MR),Zhang2020,
 Shipping,Cascade,,Liquefaction,,OPEX Fixed,Output Capacity|Methane,2016,0.74,,USD/a,1.0,GJ/a,PCI Propane Precooled Mixed Refrigerant (AP-C3MR,Zhang2020,
-Shipping,,,Liquefaction,,CAPEX,Output Capacity|Methane,2030,196.0,,kEUR,1.0,m**3/a,"to check I am using the right cubic meter",Fasihi15,
-Shipping,,,Liquefaction,,OPEX Fixed Relative,,2030,3.5,,percent,,,,Fasihi15,
-Shipping,,,Liquefaction,,Lifetime,,2030,25.0,,a,,,,Fasihi15,
-Shipping,,,Liquefaction,,Output|Methane,Input|???,2030,93.0,,pct MWh;LHV,100.0,pct MWh,,Fasihi15,
-Shipping,,,Regasification,,CAPEX,Output Capacity|Methane,2030,74.0,,kEUR,1.0,m**3/a,"to check I am using the right cubic meter",Fasihi15,
-Shipping,,,Regasification,,OPEX Fixed Relative,,2030,3.5,,percent,,,,Fasihi15,
-Shipping,,,Regasification,,Lifetime,,2030,30.0,,a,,,,Fasihi15,
-Shipping,,,Regasification,,Output|Methane,Input|???,2030,98.5,,pct MWh;LHV,100.0,pct MWh,,Fasihi15,
+Shipping,,,Liquefaction,,CAPEX,Output Capacity|Methane,2030,196.0,,kEUR,1.0e6,m**3/a,"to check I am using the right cubic meter",Fasihi15,Table VIII
+Shipping,,,Liquefaction,,OPEX Fixed Relative,,2030,3.5,,percent,,,,Fasihi15,Table VIII
+Shipping,,,Liquefaction,,Lifetime,,2030,25.0,,a,,,,Fasihi15,Table VIII
+Shipping,,,Liquefaction,,Output|Methane,Input|???,2030,93.0,,pct MWh;LHV,100.0,pct MWh,,Fasihi15,Table VIII
+Shipping,,,Regasification,,CAPEX,Output Capacity|Methane,2030,74.0,,kEUR,1.0e6,m**3/a,"to check I am using the right cubic meter",Fasihi15,Table VIII
+Shipping,,,Regasification,,OPEX Fixed Relative,,2030,3.5,,percent,,,,Fasihi15,Table VIII
+Shipping,,,Regasification,,Lifetime,,2030,30.0,,a,,,,Fasihi15,Table VIII
+Shipping,,,Regasification,,Output|Methane,Input|???,2030,98.5,,pct MWh;LHV,100.0,pct MWh,,Fasihi15,Table VIII
 Shipping,,4000km,Transportation,,Total Production Expenditure,Output|Methane,2020,2.571,,EUR,1.0,MWh;LHV,,Lux21,
 Shipping,,2000km,Transportation,,Total Production Expenditure,Output|Methane,2020,1.976,,EUR,1.0,MWh;LHV,,Lux21,
 Pipeline,,2000km,Transportation,,Total Production Expenditure,Output|Methane,2020,0.17,,cEUR,1.0,MWh;LHV,including on site compression of up to 80bar,Lux21,

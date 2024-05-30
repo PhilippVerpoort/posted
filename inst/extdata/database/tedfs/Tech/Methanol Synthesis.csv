@@ -1,13 +1,13 @@
 variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAPEX,Output Capacity|Methanol,2014,#,496.5,,EUR_2014,1,metric_ton/a,,Perez-Fortes16,Table 3
-CAPEX,Output Capacity|Methanol,2018,*,209.5,,EUR_2018,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant.",Nyari20,Table A4
+CAPEX,Output Capacity|Methanol,2018,#,209.5,,EUR_2018,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant.",Nyari20,Table A4
 CAPEX,Output Capacity|Methanol,2020,#,169,,EUR_2020,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant. No cost basis cited, assumed to be year of publication.",Bos20,Table S8
 CAPEX,Output Capacity|Methanol,2025,#,700,,EUR_2019,1,kW,,Grahn22,Table 3
 CAPEX,Output Capacity|Methanol,2040,#,300,,EUR_2019,1,kW,,Grahn22,Table 3
 OPEX Fixed,Output Capacity|Methanol,2014,#,11,,MEUR_2014/a,440,kilometric_ton/a,,Perez-Fortes16,Table 3
-OPEX Fixed Relative,,2018,Admin,0.45,,percent,,,Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * om = 0.45% of TPC .,Nyari20,Table 5
-OPEX Fixed Relative,,2018,Operation & Maintenance,1.5,,percent,,,Operation and maintenance. Percentage of the total plant cost (TPC),Nyari20,Table 5
-OPEX Fixed Relative,,2018,Tax,1,,percent,,,"In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)",Nyari20,Table 5
+OPEX Fixed,Output Capacity|Methanol,2018,Admin,0.94,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (0.45%), manually converted to OPEX FIxed. Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * om = 0.45% of TPC .",Nyari20,Table 5
+OPEX Fixed,Output Capacity|Methanol,2018,Operation & Maintenance,3.14,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (1.5%), manually converted to OPEX Fixed. Operation and maintenance. Percentage of the total plant cost (TPC)",Nyari20,Table 5
+OPEX Fixed,Output Capacity|Methanol,2018,Tax,2.10,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (1%), manually converted to OPEX Fixed. In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)",Nyari20,Table 5
 OPEX Fixed Relative,,2025,#,4,,percent,,,,Grahn22,Table 7
 OPEX Fixed Relative,,2040,#,4,,percent,,,,Grahn22,Table 7
 OPEX Variable,Output|Methanol,2014,#,11.6,,MEUR_2014,402,kilometric_ton,Utilities and consumables ammount to 4.1% of variable operating costs (Fig. 6). 4.1% of 283 MEUR is 11.6 MEUR (see Table 3). A plant of capacity 440 kt/a produces 402 kt in 8000 full-load hours.,Perez-Fortes16,"Table 3, Figure 6"
