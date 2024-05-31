@@ -145,17 +145,17 @@ class TEAMAccessor:
             return ret.join(self._df.assign(variable=new_variable), how='left')
 
     # convert units
-    def unit_convert(self, to: str | pint.Unit | dict[str, str | pint.Unit]):
-        unit_to = self._df.apply(
-            lambda row: to
-                        if not isinstance(to, dict) else
-                        to[row['variable']] if row['variable'] in to else
-                        row['unit'],
-            axis=1).rename('unit_to')
+    def unit_convert(self, to: str | pint.Unit | dict[str, str | pint.Unit], flow_id: Optional[str] = None):
         return self._df.assign(
-            value=self._df.join(unit_to).apply(lambda row: row['value'] * unit_convert(row['unit'], row['unit_to']), axis=1),
-            unit=unit_to,
-        )
+            unit_to=to if not isinstance(to, dict) else self._df.apply(
+                lambda row: to[row['variable']] if row['variable'] in to else row['unit'], axis=1,
+            ),
+            value=lambda df: df.apply(
+                lambda row: row['value'] * unit_convert(row['unit'], row['unit_to'], flow_id=flow_id), axis=1,
+            ),
+        ) \
+        .drop(columns='unit') \
+        .rename(columns={'unit_to': 'unit'})
 
 
 # types that a variable assignment can take: it can be an int, float, string, or a function to be called
