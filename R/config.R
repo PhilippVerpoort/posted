@@ -1,6 +1,6 @@
 # source("R/posted/read.R")
-source("R/posted/path.R")
-source("R/posted/definitions.R")
+source("R/path.R")
+source("R/definitions.R")
 
 
 # Loop over databases

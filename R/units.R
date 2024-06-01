@@ -1,4 +1,4 @@
-source("R/posted/path.R")
+source("R/path.R")
 library(docstring)
 library(roxygen2)
 

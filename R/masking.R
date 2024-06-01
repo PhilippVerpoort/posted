@@ -1,5 +1,5 @@
-source("R/posted/path.R")
-source("R/posted/read.R")
+source("R/path.R")
+source("R/read.R")
 library(docstring)
 library(roxygen2)
 

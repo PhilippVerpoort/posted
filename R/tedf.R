@@ -1,7 +1,4 @@
-# source("R/posted/config.R")
-source("R/posted/columns.R")
-# source("R/posted/path.R")
-# source("R/posted/units.R")
+source("R/columns.R")
 
 
 #' TEBase

@@ -1,7 +1,7 @@
-source("R/posted/config.R")
-source("R/posted/path.R")
-source("R/posted/read.R")
-source("R/posted/settings.R")
+source("R/config.R")
+source("R/path.R")
+source("R/read.R")
+source("R/settings.R")
 # source("R/posted/units.R")
 
 # Import necessary libraries

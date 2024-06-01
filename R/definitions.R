@@ -3,8 +3,8 @@ library(purrr)
 library(tidyr)
 library(stringr)
 
-source("R/posted/settings.R")
-source("R/posted/read.R")
+source("R/settings.R")
+source("R/read.R")
 
 
 read_definitions <- function(definitions_dir, flows, techs) {
