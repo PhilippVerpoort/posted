@@ -1,7 +1,7 @@
 source("R/posted/path.R")
 library(docstring)
 library(roxygen2)
-print("hi")
+
 # Read in converion factors from R_unit_cache
 cached_units_path <- file.path(BASE_PATH, "R_unit_cache.csv")
 cached_units <- read.csv(
