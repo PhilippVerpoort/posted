@@ -1,4 +1,7 @@
-# read CSV data file
+#' Read a csv datafile
+#'
+#' @param fpath path of the csv file
+#' @export
 read_csv_file <- function (fpath) {
     return(read.csv(
         fpath,
@@ -9,6 +12,9 @@ read_csv_file <- function (fpath) {
 }
 
 # read YAML config file
+#'
+#' @param fpath path of the YAML file
+#' @export
 read_yml_file <- function (fpath) {
     fhandle <- file(fpath, "r", encoding="utf-8")
     ret <- yaml::read_yaml(file=fhandle, fileEncoding="utf-8")

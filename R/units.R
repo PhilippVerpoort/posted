@@ -1,7 +1,6 @@
-source("R/posted/path.R")
 library(docstring)
 library(roxygen2)
-print("hi")
+
 # Read in converion factors from R_unit_cache
 cached_units_path <- file.path(BASE_PATH, "R_unit_cache.csv")
 cached_units <- read.csv(
@@ -37,7 +36,7 @@ unit_convert <- function(unit_from, unit_to, flow_id=NULL) {
     #'
     #' @examples
     #' # Example usage:
-    #' convert_units("m", "km", flow_id = NULL)
+    #' unit_convert("m", "km", flow_id = NULL)
     #'
     #' @export
 
