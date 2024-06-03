@@ -1,7 +1,7 @@
-# source("R/posted/read.R")
-source("R/path.R")
-source("R/definitions.R")
-
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(stringr)
 
 # Loop over databases
 flows <-  list()

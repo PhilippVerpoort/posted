@@ -1,4 +1,3 @@
-source("R/path.R")
 library(docstring)
 library(roxygen2)
 
@@ -37,7 +36,7 @@ unit_convert <- function(unit_from, unit_to, flow_id=NULL) {
     #'
     #' @examples
     #' # Example usage:
-    #' convert_units("m", "km", flow_id = NULL)
+    #' unit_convert("m", "km", flow_id = NULL)
     #'
     #' @export
 

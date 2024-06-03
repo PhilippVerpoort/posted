@@ -1,5 +1,34 @@
-source("R/columns.R")
+library(dplyr)
+library(assertthat)
+library(GROAN)
 
+# Define the TEDFInconsistencyException class
+TEDFInconsistencyException <- R6::R6Class("TEDFInconsistencyException",
+  inherit = stop,
+  public = list(
+    initialize = function(message = "Inconsistency detected", row_id = NULL, col_id = NULL, file_path = NULL) {
+      self$message <- message
+      self$row_id <- row_id
+      self$col_id <- col_id
+      self$file_path <- file_path
+      message_tokens <- c()
+      if (!is.null(file_path)) {
+        message_tokens <- c(message_tokens, paste("file", file_path))
+      }
+      if (!is.null(row_id)) {
+        message_tokens <- c(message_tokens, paste("line", row_id))
+      }
+      if (!is.null(col_id)) {
+        message_tokens <- c(message_tokens, paste("in column", col_id))
+      }
+      exception_message <- message
+      if (length(message_tokens) > 0) {
+        exception_message <- paste(exception_message, paste(message_tokens, collapse = ", "), sep = "\n    ")
+      }
+      stop(exception_message)
+    }
+  )
+)
 
 #' TEBase
 #'
@@ -243,30 +272,3 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
 
 )
 
-# Define the TEDFInconsistencyException class
-TEDFInconsistencyException <- R6::R6Class("TEDFInconsistencyException",
-  inherit = stop,
-  public = list(
-    initialize = function(message = "Inconsistency detected", row_id = NULL, col_id = NULL, file_path = NULL) {
-      self$message <- message
-      self$row_id <- row_id
-      self$col_id <- col_id
-      self$file_path <- file_path
-      message_tokens <- c()
-      if (!is.null(file_path)) {
-        message_tokens <- c(message_tokens, paste("file", file_path))
-      }
-      if (!is.null(row_id)) {
-        message_tokens <- c(message_tokens, paste("line", row_id))
-      }
-      if (!is.null(col_id)) {
-        message_tokens <- c(message_tokens, paste("in column", col_id))
-      }
-      exception_message <- message
-      if (length(message_tokens) > 0) {
-        exception_message <- paste(exception_message, paste(message_tokens, collapse = ", "), sep = "\n    ")
-      }
-      stop(exception_message)
-    }
-  )
-)

@@ -1,6 +1,3 @@
-source("R/masking.R")
-source("R/tedf.R")
-source("R/units.R")
 library(dplyr)
 library(Deriv)
 
@@ -9,6 +6,7 @@ library(Deriv)
 # get list of TEDFs potentially containing variable
 collect_files <- function(parent_variable, include_databases = NULL) {
   #' collect_files
+  #'
   #' Takes a parent variable and optional list of databases to include,
   #' checks for their existence, and collects files and directories based on the parent variable.
   #'

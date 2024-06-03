@@ -1,5 +1,3 @@
-source("R/path.R")
-source("R/read.R")
 library(docstring)
 library(roxygen2)
 
