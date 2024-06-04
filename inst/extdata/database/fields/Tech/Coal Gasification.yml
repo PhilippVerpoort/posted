@@ -1,5 +1,5 @@
-capture_rate:
-  name: CO2 capture rate
-  description: Share of all CO2 captured
+subtech:
+  name: Subtechnology
+  description: Subtechnology
   type: case
   coded: False

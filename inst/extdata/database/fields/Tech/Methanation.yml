@@ -1,7 +1,7 @@
 subtech:
   name: Subtechnology
   description: Subtechnology
-  type: cases
+  type: case
   coded: True
   codes:
     CAT: Catalytic

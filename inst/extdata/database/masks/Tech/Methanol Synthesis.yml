@@ -1,0 +1,5 @@
+- where: "variable=='Tech|Methanol Synthesis|Input|Electricity'"
+  use: "source=='IEA-FOH19'"
+  weight: nan
+  other: 1.0
+  comment: The value reported includes electrolyser electricity consumption, not just synthesis process consumption.
