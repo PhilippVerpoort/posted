@@ -1,6 +1,3 @@
-source("R/posted/masking.R")
-source("R/posted/tedf.R")
-source("R/posted/units.R")
 library(dplyr)
 library(Deriv)
 
@@ -9,6 +6,7 @@ library(Deriv)
 # get list of TEDFs potentially containing variable
 collect_files <- function(parent_variable, include_databases = NULL) {
   #' collect_files
+  #'
   #' Takes a parent variable and optional list of databases to include,
   #' checks for their existence, and collects files and directories based on the parent variable.
   #'
@@ -577,11 +575,15 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
             } else {
               NaN
             }
+            unit_conversion_3_from <- var_units[[gsub("|OPEX Fixed Specific", '|OCF'), row[['variable']], fixed=TRUE]]
+            unit_conversion_3_to <- 'dimensionless'
+
             var_units_df <- subset(rows, variable == gsub("|OPEX Fixed Specific", "|OCF", row['variable'], fixed = TRUE))
 
             if (nrow(var_units_df) > 0) {
               return(unit_convert(unit_conversion_1_from, unit_conversion_1_to) /
                     unit_convert(unit_conversion_2_from, unit_conversion_2_to, unit_conversion_2_flow_type) *
+                    unit_convert(unit_conversion_3_from, unit_conversion_4_to) *
                     var_units_df$value[1])
             } else {
               return(NA)
@@ -744,7 +746,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
         df$unit <- var_units[df$variable]
       }
       return(df)
-    },
+    }
 
   ),
 
@@ -990,4 +992,4 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
 )
 
-
+print("finished loading")

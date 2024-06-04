@@ -1,9 +1,3 @@
-source("R/posted/config.R")
-source("R/posted/path.R")
-source("R/posted/read.R")
-source("R/posted/settings.R")
-# source("R/posted/units.R")
-
 # Import necessary libraries
 library(dplyr)
 library(assertthat)
@@ -40,6 +34,7 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
         ..required = NULL
     ),
   #' AbstractColumnDefinition
+  #'
   #' Abstract class to store columns
   #'
   #' @param col_type Character. Type of the column.
@@ -133,6 +128,7 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
 
 VariableDefinition <- R6::R6Class("VariableDefinition", inherit = AbstractColumnDefinition,
   #' VariableDefinition
+  #'
   #' Class to store variable columns
   #'
   #' @param col_type Character. Type of the column.

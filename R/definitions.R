@@ -3,9 +3,6 @@ library(purrr)
 library(tidyr)
 library(stringr)
 
-source("R/posted/settings.R")
-source("R/posted/read.R")
-
 
 read_definitions <- function(definitions_dir, flows, techs) {
   #' read_definitions
