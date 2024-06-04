@@ -1,11 +1,12 @@
 Package: posted
-Title: POSTED: Potsdam Open-Source Techno-Economic Database
+Title: POSTED: Potsdam open-source techno-economic database
 Version: 0.3.0
 Authors@R: c(
     person(given = "Philipp C.", family = "Verpoort", email= "philipp.verpoort@pik-potsdam.de", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-1319-5006")),
-    person(given = "Paul", family = "Effing", email= "paulef@pik-potsdam.de", role = "aut"))
+    person(given = "Leo", family = "Heidweiler", role = "aut")),
+    person(given = "Paul", family = "Effing", role = "aut"))
 Description: POSTED is a consistent framework, public database, and open-source toolbox of techno-economic data of energy and climate-mitigation technologies. In particular, it provides a structure and contains actual data on capital expenditure, operational expenditure, energy and feedstock demand, emissions intensities, and other characteristics of conversion, storage, and transportation technologies in the energy and related sectors. The accompanying software code is intended for consistent maintenance of this data and for deriving straight-forward results from them, such as levelised cost, levelised emissions intensities, or marginal abatement cost.
-License: `use_gpl3_license()`
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
@@ -21,4 +22,3 @@ Collate:
 	'masking.R'
 	'tedf.R'
 	'noslag.R'
-	

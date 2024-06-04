@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "posted"
 version = "0.3.0"
-description = "POSTED: Potsdam Open-Source Techno-Economic Database"
+description = "POSTED: Potsdam open-source techno-economic database"
 authors = [
     "Philipp C. Verpoort <philipp.verpoort@pik-potsdam.de>",
-    "Paul Effing <paul.effing@pik-potsdam.de>"
+    "Leo Heidweiler",
+    "Paul Effing",
 ]
 license = "MIT"
 readme = "README.md"
@@ -45,4 +46,4 @@ generate-setup-file = false
 script = "build_attach_data.py"
 
 [tool.poetry.scripts]
-posted = 'posted.cmdline:main'
+posted = "posted.cmdline:main"
