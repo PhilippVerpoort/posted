@@ -1,6 +1,6 @@
 variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAPEX,Output Capacity|Ethylene,,#,1006.5,,MUSD_2016,0.356,Mt/a,"Reference ethylene capacity found in footnote, page 968. Cost basis found in Supplementary.",Dutta2019,"Figure 4"
-OPEX Fixed Specific,Output|Ethylene,,Other,181.3,,MUSD_2016/a,0.356,Mt/a,"OPEX other than methanol, electricity and heat demand. Reference ethylene capacity found in footnote, page 968. Cost basis found in Supplementary.",Dutta2019,"Figure 4"
+OPEX Fixed,Output Capacity|Ethylene,,Other,181.3,,MUSD_2016/a,0.356,Mt/a,"OPEX other than methanol, electricity and heat demand. Reference ethylene capacity found in footnote, page 968. Cost basis found in Supplementary.",Dutta2019,"Figure 4"
 Output|Propylene,Input|NGL,2019,#,11.4,,metric_ton,100,metric_ton,,Dutta2019,"Table 4"
 Output|Ethylene,Input|NGL,2019,#,45.6,,metric_ton,100,metric_ton,,Dutta2019,"Table 4"
 Output|Isobutane,Input|NGL,2019,#,3.8,,metric_ton,100,metric_ton,,Dutta2019,"Table 4"
