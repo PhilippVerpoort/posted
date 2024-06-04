@@ -14,7 +14,6 @@ Hydrogen Storage,Hydrogen storage,Long-term storage of hydrogen,storage,energy,H
 Iron Direct Reduction,Direct-reduction shaft for iron ore,A furnace/shaft to directly reduce iron ore into DRI/HBI.,conversion,steel,Directly Reduced Iron
 Methanation,Methanation/Methane synthesis,Industrial plants combining H₂ and CO₂ to yield methane (aka Sabatier process).,conversion,energy,Methane
 Methane Reforming,Reforming of fossil gas to produce hydrogen,Reforming of natural gas via steam-methane reforming (SMR) or auto-thermal reforming (ATR) w/ or w/o carbon capture to produce purified hydrogen.,conversion,energy,Hydrogen
-Methane Transport,Methane transport,Long-distance transportation of methane.,transport,energy,Methane
 Methanol Synthesis with Reforming,Methanol synthesis from reformed fossil gas,Integrated methane reforming of fossil gas and synthesis of methanol.,conversion,energy,Methanol
 Methanol Synthesis,Methanol synthesis,Synthesis of methanol from H₂ and CO₂.,conversion,energy,Methanol
 Methanol to Gasoline,Methanol to Gasoline,Conversion of methanol to gasoline.,conversion,energy,Gasoline
