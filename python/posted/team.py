@@ -92,11 +92,15 @@ class TEAMAccessor:
 
     # pivot posted-formatted dataframe from long to wide (variables as columns)
     def pivot_wide(self):
-        return self.explode().pivot(
+        ret = self.explode().pivot(
             index=self._fields,
             columns=['variable', 'unit'],
             values='value',
-        ).pint.quantify()
+        )
+        if ret.columns.get_level_values(level='unit').isna().any():
+            raise Exception('Unit column may not contain NaN entries. Please use "dimensionless" or "No Unit" if the '
+                            'variable has no unit.')
+        return ret.pint.quantify()
 
     # for performing analyses
     def perform(self, *manipulations: AbstractManipulation, dropna: bool = False, only_new: bool = False):

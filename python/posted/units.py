@@ -132,6 +132,12 @@ def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | s
     if unit_from is np.nan or unit_to is np.nan:
         return np.nan
 
+    # replace "No Unit" by "Dimensionless"
+    if unit_from == 'No Unit':
+        unit_from = 'dimensionless'
+    if unit_to == 'No Unit':
+        unit_to = 'dimensionless'
+
     # skip flow conversion if no flow_id specified
     if flow_id is None or pd.isna(flow_id):
         return ureg(unit_from).to(unit_to).magnitude
