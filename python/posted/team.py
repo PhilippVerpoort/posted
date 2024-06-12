@@ -72,16 +72,17 @@ class TEAMAccessor:
         return self._fields
 
     # explode rows with nan entries
-    def explode(self) -> pd.DataFrame:
+    def explode(self, fields: Optional[str | list[str]] = None) -> pd.DataFrame:
         df = self._df
-        for field in self._fields:
+        fields = self._fields if fields is None else [fields] if isinstance(fields, str) else fields
+        for field in fields:
             df = df \
                 .assign(**{field: lambda df: df[field].apply(
                     lambda cell: df[field].dropna().unique().tolist() if pd.isnull(cell) else cell
                 )}) \
                 .explode(field)
 
-        return df
+        return df.reset_index(drop=True)
 
     # for grouping rows by fields (region, period, other...), including an `explode` statement for `nan` entries
     def groupby_fields(self, **kwargs) -> DataFrameGroupBy:
