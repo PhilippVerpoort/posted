@@ -114,6 +114,9 @@ class TEAMAccessor:
             if not df_pivot.index.equals(original_index):
                 raise Exception('Manipulation may not change the index.')
 
+        # ensure that the axis label still exists before melt
+        df_pivot.rename_axis('variable', axis=1, inplace=True)
+
         # pivot back
         ret = df_pivot \
             .pint.dequantify() \
@@ -124,7 +127,7 @@ class TEAMAccessor:
         if dropna:
             ret.dropna(subset=['unit', 'value'], inplace=True)
 
-        # keep only new variable
+        # keep only new variables
         if only_new:
             ret = ret.loc[~ret['variable'].isin(self._df['variable'].unique())]
 
