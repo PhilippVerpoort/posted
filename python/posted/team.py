@@ -327,8 +327,11 @@ class BuildValueChain(AbstractManipulation):
 
         return out
 
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df.apply(self._perform_row, axis=1).combine_first(df)
+
     # perform analysis by computing functional units from technosphere matrix
-    def perform(self, row: pd.Series) -> pd.Series:
+    def _perform_row(self, row: pd.Series) -> pd.Series:
         # obtain technosphere matrix (tsm)
         tsm = np.array([
             [
@@ -406,8 +409,12 @@ class LCOXAnalysis(AbstractManipulation):
         self._interest_rate = interest_rate * ureg('') if isinstance(interest_rate, int | float) else interest_rate
         self._book_lifetime = book_lifetime * ureg('a') if isinstance(book_lifetime, int | float) else book_lifetime
 
+    # perform
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df.apply(self._perform_row, axis=1).combine_first(df)
+
     # perform LCOX calculation for every value chain
-    def perform(self, row: pd.Series) -> pd.Series:
+    def _perform_row(self, row: pd.Series) -> pd.Series:
         value_chains: list[str] = self._value_chains or list({
             var.split('|')[1]
             for var in row.index
