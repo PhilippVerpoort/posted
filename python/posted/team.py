@@ -31,6 +31,10 @@ except ImportError:
     HAS_IGRAPH: bool = False
 
 
+# set the unit registry for pint_pandas
+pint_pandas.PintType.ureg = ureg
+
+
 # calculate annuity factor
 def _annuity_factor(ir: ureg.Quantity, n: ureg.Quantity):
     try:

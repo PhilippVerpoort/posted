@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pint
 import iam_units
 
 from posted.path import databases
@@ -14,6 +15,7 @@ for database_path in databases.values():
         ureg.load_definitions(units_definitions)
 iam_units.currency.configure_currency("EXC", "2005")
 ureg.Unit.default_format = "~P"
+pint.set_application_registry(ureg)
 
 
 # define unit variants
