@@ -29,12 +29,9 @@ apply_cond <- function(df, cond) {
   }
 }
 
-#' Class for Masks
+#' @title Class for Masks
 #'
-#' @desctiption Class to define masks with conditions and weights to apply to DataFiles
-
-
-
+#' @description Class to define masks with conditions and weights to apply to DataFiles
 Mask <- R6::R6Class("Mask",
 
     private = list(
@@ -47,7 +44,7 @@ Mask <- R6::R6Class("Mask",
     ),
     public = list(
     #' @description
-    #' Create a new mask object
+    #'  Create a new mask object
     #' @param where MaskCondition | list[MaskCondition], optional. Where the mask should be applied.
     #' @param use MaskCondition | list[MaskCondition], optional. Condition on where to use the masks.
     #' @param weight Numeric | Character | list[Numeric | Character], optional. Weights to apply.
@@ -91,15 +88,15 @@ Mask <- R6::R6Class("Mask",
 
     #' @description Apply weights to the dataframe
     #'
-    #' @param df Dataframe. Dataframe to apply weights on
+    #' @param df (`Dataframe`): Dataframe to apply weights on
     #' @return Dataframe. Dataframe with applied weights
-    get_weights = function(df, use, weight) {
+    get_weights = function(df) {
         ret <- rep(NA, nrow(df))
 
         # Apply weights where the use condition matches
-        for (i in 1:length(use)) {
-            cond <- use[[i]]
-            w <- weight[i]
+        for (i in 1:length(private$..use)) {
+            cond <- private$..use[[i]]
+            w <- private$..weight[i]
             ret[apply_cond(df, cond)] <- w
         }
 
@@ -114,6 +111,8 @@ Mask <- R6::R6Class("Mask",
   )
 )
 
+#' @title read_masks
+#'
 #' @description Reads YAML files containing mask specifications from multiple databases and returns a list of Mask objects.
 #'
 #' @param variable Character. Variable to be read.

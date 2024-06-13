@@ -5,7 +5,7 @@ library(Deriv)
 
 # get list of TEDFs potentially containing variable
 collect_files <- function(parent_variable, include_databases = NULL) {
-  #' collect_files
+  #' @title collect_files
   #'
   #' Takes a parent variable and optional list of databases to include,
   #' checks for their existence, and collects files and directories based on the parent variable.
@@ -80,7 +80,7 @@ collect_files <- function(parent_variable, include_databases = NULL) {
 
 # normalise units
 normalise_units <- function(df, level, var_units, var_flow_ids) {
-  #' normalise_units
+  #' @title normalise_units
   #'
   #' Takes a DataFrame with reported or reference data, along with
   #' dictionaries mapping variable units and flow IDs, and normalizes the units of the variables in the
@@ -149,7 +149,7 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
 }
 
 normalise_values <- function(df) {
-  #' normalise_values
+  #' @title normalise_values
   #'
   #' Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
   #' columns by the reference value, and updates the 'reference_value' column accordingly.
@@ -195,7 +195,9 @@ normalise_values <- function(df) {
 }
 
 combine_units <- function(numerator, denominator) {
-  #' Combine fraction of two units into an updated unit string
+  #' @title combine_units
+  #'
+  #' @description Combine fraction of two units into an updated unit string
   #'
   #' @param numerator Character. Numerator of the fraction.
   #' @param denominator Character. Denominator of the fraction.
@@ -225,27 +227,6 @@ combine_units <- function(numerator, denominator) {
 #' @title DataSet
 #'
 #' @description This class provides methods to store, normalize, select, and aggregate DataSets.
-#'
-#' @param parent_variable Character. Variable to collect Data on.
-#' @param include_databases Optional list[Character] | tuple[Character], optional. Databases to load from.
-#' @param file_paths Optional list[Character], optional. Paths to load data from.
-#' @param check_inconsistencies Logical, optional. Whether to check for inconsistencies.
-#' @param data Optional DataFrame, optional. Specific data to include in the dataset.
-#'
-#' @section Attributes:
-#' \describe{
-#'   \item{data}{DataFrame. The dataset stored in the object.}
-#' }
-#'
-#' @section Methods:
-#' \describe{
-#'   \item{\code{normalize()}}{Normalizes the dataset.}
-#'   \item{\code{select()}}{Selects specific data from the dataset.}
-#'   \item{\code{aggregate()}}{Aggregates the dataset.}
-#' }
-#'
-#' @export
-
 DataSet <- R6::R6Class("DataSet", inherit=TEBase,
   private = list(
     # Private attributes
@@ -751,10 +732,13 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
   ),
 
   public = list(
-
-    #' initialise
+    #' Create new instance of the DataSet class
     #'
-    #' Initialise parent class and fields, load data from specified databases and files'''
+    #' @param parent_variable Character. Variable to collect Data on.
+    #' @param include_databases Optional list[Character] | tuple[Character], optional. Databases to load from.
+    #' @param file_paths Optional list[Character], optional. Paths to load data from.
+    #' @param check_inconsistencies Logical, optional. Whether to check for inconsistencies.
+    #' @param data Optional DataFrame, optional. Specific data to include in the dataset.
     initialize = function(parent_variable,
                            include_databases = NULL,
                            file_paths = NULL,
@@ -858,6 +842,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     #' @param agg Optional Character | list[Character] | tuple[Character]. Specifies which fields to aggregate over.
     #' @param masks Optional list[Mask]. Specifies a list of Mask objects that will be applied to the data during aggregation. These masks can be used to filter or weight the data based on certain conditions defined in the Mask objects.
     #' @param masks_database Logical, optional. Determines whether to include masks from databases in the aggregation process. If \code{TRUE}, masks from databases will be included along with any masks provided as function arguments. If \code{FALSE}, only the masks provided as function arguments will be applied.
+    #' @param ... additional field vals
     #'
     #' @return DataFrame. The \code{aggregate} method returns a pandas DataFrame that has been cleaned up and aggregated based on the specified parameters and input data. The method performs aggregation over component fields and case fields, applies weights based on masks, drops rows with NaN weights, aggregates with weights, inserts reference variables, sorts columns and rows, rounds values, and inserts units before returning the final cleaned and aggregated DataFrame.
     #'
@@ -981,7 +966,8 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
     }
      ),
   active = list(
-    # access dataframe
+    #' @field data
+    #'  access dataframe
     data = function(df) {
       if (missing(df)) return(private$..df)
       else private$..df <- df
@@ -992,4 +978,3 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
 
 )
 
-print("finished loading")

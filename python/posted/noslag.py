@@ -249,28 +249,12 @@ def combine_units(numerator: str, denominator: str):
 class DataSet(TEBase):
     '''Class to store, normalise, select and aggregate DataSets
 
-    Parameters
-    ----------
-        parent_variable: str
-            Variable to collect Data on
-        include_databases: Optional[list|str] | tuple[str]], optional
-            Databases to load from
-        file_paths: Optional[list[path]], optional
-            Paths to load data from
-        check_inconsistencies: bool, optional
-            Wether to check for inconsistencies
-        data: Optional[pd.DataFrame], optional
-            Specific data to include in the dataset
+
 
     Attributes
     ----------
         data
-
-    Methods
-    -------
-        normalise
-        select
-        aggregate'''
+    '''
     _df: None | pd.DataFrame
     _columns: dict[str, AbstractColumnDefinition]
     _fields: dict[str, AbstractFieldDefinition]
@@ -284,7 +268,22 @@ class DataSet(TEBase):
                  check_inconsistencies: bool = False,
                  data: Optional[pd.DataFrame] = None,
                  ):
-        '''Initialise parent class and fields, load data from specified databases and files'''
+        '''Initialise parent class and fields, load data from specified databases and files
+
+        Parameters
+        ----------
+        parent_variable: str
+            Variable to collect Data on
+        include_databases: Optional[list|str] | tuple[str]], optional
+            Databases to load from
+        file_paths: Optional[list[path]], optional
+            Paths to load data from
+        check_inconsistencies: bool, optional
+            Wether to check for inconsistencies
+        data: Optional[pd.DataFrame], optional
+            Specific data to include in the dataset
+
+        '''
         TEBase.__init__(self, parent_variable)
 
         # initialise fields
@@ -383,15 +382,15 @@ class DataSet(TEBase):
 
         Parameters
         ----------
-            override: Optional[dict[str,str]], optional
-                Dictionary with key, value pairs of variables to override
-            inplace: bool, optional
-                Wether to do the normalisation in place
+        override: Optional[dict[str,str]], optional
+            Dictionary with key, value pairs of variables to override
+        inplace: bool, optional
+            Wether to do the normalisation in place
 
         Returns
         -------
-            pd.DataFrame
-                if inplace is false, returns normalised dataframe'''
+        pd.DataFrame
+            if inplace is false, returns normalised dataframe'''
         normalised, _ = self._normalise(override)
         if inplace:
             self._df = normalised
@@ -432,19 +431,19 @@ class DataSet(TEBase):
 
         Parameters
         ----------
-            override: Optional[dict[str, str]]
-                Dictionary with key, value paris of variables to override
-            drop_singular_fields: bool, optional
-                If True, drop custom fields with only one value
-            extrapolate_period: bool, optional
-                If True, extrapolate values by extrapolation, if no value for this period is given
-            **field_vals_select
-                IDs of values to select
+        override: Optional[dict[str, str]]
+            Dictionary with key, value paris of variables to override
+        drop_singular_fields: bool, optional
+            If True, drop custom fields with only one value
+        extrapolate_period: bool, optional
+            If True, extrapolate values by extrapolation, if no value for this period is given
+        **field_vals_select
+            IDs of values to select
 
         Returns
         -------
-            pd.DataFrame
-                DataFrame with selected Values
+        pd.DataFrame
+            DataFrame with selected Values
             '''
         selected, var_units, var_references = self._select(
             override,
@@ -735,31 +734,31 @@ class DataSet(TEBase):
 
         Parameters
         ----------
-             override: Optional[dict[str, str]]
-                Dictionary with key, value paris of variables to override
-            drop_singular_fields: bool, optional
-                If True, drop custom fields with only one value
-            extrapolate_period: bool, optional
-                If True, extrapolate values by extrapolation, if no value for this period is given
-            agg : Optional[str | list[str] | tuple[str]]
-                Specifies which fields to aggregate over.
-            masks : Optional[list[Mask]]
-                Specifies a list of Mask objects that will be applied to the data during aggregation.
-                These masks can be used to filter or weight the
-                data based on certain conditions defined in the Mask objects.
-            masks_database : bool, optional
-                Determines whether to include masks from databases in the aggregation process.
-                If set to `True`, masks from databases will be included along with any masks provided as function arguments.
-                If set to `False`, only the masks provided as function argruments will be applied
+        override: Optional[dict[str, str]]
+            Dictionary with key, value paris of variables to override
+        drop_singular_fields: bool, optional
+            If True, drop custom fields with only one value
+        extrapolate_period: bool, optional
+            If True, extrapolate values by extrapolation, if no value for this period is given
+        agg : Optional[str | list[str] | tuple[str]]
+            Specifies which fields to aggregate over.
+        masks : Optional[list[Mask]]
+            Specifies a list of Mask objects that will be applied to the data during aggregation.
+            These masks can be used to filter or weight the
+            data based on certain conditions defined in the Mask objects.
+        masks_database : bool, optional
+            Determines whether to include masks from databases in the aggregation process.
+            If set to `True`, masks from databases will be included along with any masks provided as function arguments.
+            If set to `False`, only the masks provided as function argruments will be applied
 
         Returns
         -------
-            pd.DataFrame
-                The `aggregate` method returns a pandas DataFrame that has been cleaned up and aggregated based
-                on the specified parameters and input data. The method performs aggregation over component
-                fields and cases fields, applies weights based on masks, drops rows with NaN weights, aggregates
-                with weights, inserts reference variables, sorts columns and rows, rounds values, and inserts
-                units before returning the final cleaned and aggregated DataFrame.
+        pd.DataFrame
+            The `aggregate` method returns a pandas DataFrame that has been cleaned up and aggregated based
+            on the specified parameters and input data. The method performs aggregation over component
+            fields and cases fields, applies weights based on masks, drops rows with NaN weights, aggregates
+            with weights, inserts reference variables, sorts columns and rows, rounds values, and inserts
+            units before returning the final cleaned and aggregated DataFrame.
 
         '''
 

@@ -14,15 +14,15 @@ def is_float(string: str) -> bool:
     '''Checks if a given string can be converted to a floating-point number in
     Python.
 
-        Parameters
-        ----------
-            string : str
-                String to check
+    Parameters
+    ----------
+    string : str
+        String to check
 
-        Returns
-        -------
-            bool
-                True if conversion was successful, False if not
+    Returns
+    -------
+        bool
+            True if conversion was successful, False if not
     '''
     try:
         float(string)
@@ -35,8 +35,19 @@ class AbstractColumnDefinition:
     '''
     Abstract class to store columns
 
-    Parameters
-    ----------
+
+
+    Methods
+    -------
+        is_allowed
+            Check if cell is allowed
+    '''
+    def __init__(self, col_type: str, name: str, description: str, dtype: str, required: bool):
+        '''Initialize internal variables. Check if parameters have the required values and format
+
+
+        Parameters
+        ----------
         col_type: str
             Type of the column
         name: str
@@ -48,22 +59,7 @@ class AbstractColumnDefinition:
         required: bool
             Bool that specifies if the column is required
 
-    Properties
-    ----------
-        col_type
-        name
-        description
-        dtype
-        required
-        default
-
-    Methods
-    -------
-        is_allowed
-            Check if cell is allowed
-    '''
-    def __init__(self, col_type: str, name: str, description: str, dtype: str, required: bool):
-        '''Initialize internal variables. Check if parameters have the required values and format'''
+        '''
         if col_type not in ['field', 'variable', 'unit', 'value', 'comment']:
             raise Exception(f"Columns must be of type field, variable, unit, value, or comment but found: {col_type}")
         if not isinstance(name, str):
