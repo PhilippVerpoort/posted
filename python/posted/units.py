@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pint
 import iam_units
 
 from posted.path import databases
@@ -14,6 +15,7 @@ for database_path in databases.values():
         ureg.load_definitions(units_definitions)
 iam_units.currency.configure_currency("EXC", "2005")
 ureg.Unit.default_format = "~P"
+pint.set_application_registry(ureg)
 
 
 # define unit variants
@@ -131,6 +133,12 @@ def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | s
     # return nan if unit_from or unit_to is nan
     if unit_from is np.nan or unit_to is np.nan:
         return np.nan
+
+    # replace "No Unit" by "Dimensionless"
+    if unit_from == 'No Unit':
+        unit_from = 'dimensionless'
+    if unit_to == 'No Unit':
+        unit_to = 'dimensionless'
 
     # skip flow conversion if no flow_id specified
     if flow_id is None or pd.isna(flow_id):

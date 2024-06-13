@@ -1,5 +1,5 @@
 variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output|Urea,2023,4.05,,MUSD_2022,1000.0,metric_ton/a,,Palys23,"Section 2.3, Page 6"
+CAPEX,Output Capacity|Urea,2023,4.05,,MUSD_2022,1000.0,metric_ton/a,,Palys23,"Section 2.3, Page 6"
 Input|Electricity,Output|Urea,2020,173.7,27.2,kWh,1.0,metric_ton,,Fiamelda20,"Section 3.5, Page 5"
 Input|Electricity,Output|Urea,2018,91.5,68.5,kWh,1.0,metric_ton,,Jarvis18,Section 2.1.2
 Input|Electricity,Output|Urea,2023,0.18,,MWh,1.0,metric_ton,,Palys23,"Section 2.3, Page 6"

@@ -11,7 +11,3 @@ component:
   description: Component
   type: component
   coded: False
-comment2:
-  name: Comment 2
-  description: An additional comment column.
-  type: comment

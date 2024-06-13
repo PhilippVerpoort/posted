@@ -6,6 +6,7 @@ from typing import Optional, Callable, TypeAlias, Tuple
 import numpy as np
 import pandas as pd
 import pint
+import pint_pandas
 from pint.errors import DimensionalityError
 from numpy.linalg import solve
 from pandas.core.groupby import DataFrameGroupBy
@@ -30,6 +31,10 @@ except ImportError:
     HAS_IGRAPH: bool = False
 
 
+# set the unit registry for pint_pandas
+pint_pandas.PintType.ureg = ureg
+
+
 # calculate annuity factor
 def _annuity_factor(ir: ureg.Quantity, n: ureg.Quantity):
     try:
@@ -41,8 +46,8 @@ def _annuity_factor(ir: ureg.Quantity, n: ureg.Quantity):
     return ir * (1 + ir) ** n / ((1 + ir) ** n - 1) / ureg('a')
 
 
-# abstract analysis or manipulation
-class AbstractAnalysisOrManipulation:
+# define abstract manipulation class
+class AbstractManipulation:
     @abstractmethod
     def perform(self, df: pd.DataFrame) -> pd.DataFrame:
         pass
@@ -52,69 +57,90 @@ class AbstractAnalysisOrManipulation:
 @pd.api.extensions.register_dataframe_accessor('team')
 class TEAMAccessor:
     def __init__(self, df: pd.DataFrame):
+        # check that column axis has only one level
+        if df.columns.nlevels > 1:
+            raise ValueError('Can only use .team accessor with team-like dataframes that contain only one column '
+                             'layer.')
+
+        # check that at least variable, unit, and value are among the columns
+        if not all(c in df for c in ('variable', 'unit', 'value')):
+            raise ValueError('Can only use .team accessor with team-like dataframes that contain at least the variable, '
+                             'unit, and value columns.')
+
+        # store arguments
         self._df = df
         self._fields = [c for c in self._df if c not in ('variable', 'unit', 'value')]
-        for c in ('variable', 'unit', 'value'):
-            if c not in df:
-                raise AttributeError('Can only use .team accessor with team-like dataframes that contain at least the'
-                                     'variable, unit, and value columns.')
 
     @property
     def fields(self):
         return self._fields
 
-    # for grouping rows by fields (region, period, other...), including an `explode` statement for `nan` entries
-    def groupby_fields(self, **kwargs) -> DataFrameGroupBy:
-        if 'by' in kwargs:
-            raise Exception("The 'by' argument is determined by team, you cannot provide it manually.")
-
+    # explode rows with nan entries
+    def explode(self, fields: Optional[str | list[str]] = None) -> pd.DataFrame:
         df = self._df
-        for field in self._fields:
+        fields = self._fields if fields is None else [fields] if isinstance(fields, str) else fields
+        for field in fields:
             df = df \
                 .assign(**{field: lambda df: df[field].apply(
                     lambda cell: df[field].dropna().unique().tolist() if pd.isnull(cell) else cell
                 )}) \
                 .explode(field)
-        return df.groupby(by=self._fields, **kwargs)
+
+        return df.reset_index(drop=True)
+
+    # for grouping rows by fields (region, period, other...), including an `explode` statement for `nan` entries
+    def groupby_fields(self, **kwargs) -> DataFrameGroupBy:
+        if 'by' in kwargs:
+            raise Exception("The 'by' argument is determined by team, you cannot provide it manually.")
+        return self.explode().groupby(by=self._fields, **kwargs)
+
+    # pivot posted-formatted dataframe from long to wide (variables as columns)
+    def pivot_wide(self):
+        ret = self.explode().pivot(
+            index=self._fields,
+            columns=['variable', 'unit'],
+            values='value',
+        )
+        if ret.columns.get_level_values(level='unit').isna().any():
+            raise Exception('Unit column may not contain NaN entries. Please use "dimensionless" or "No Unit" if the '
+                            'variable has no unit.')
+        return ret.pint.quantify()
 
     # for performing analyses
-    def perform(self, *aoms: AbstractAnalysisOrManipulation, dropna: bool = False, only_new: bool = False):
-        # prepare data in dataframe format for manipulation
-        df = self.groupby_fields(group_keys=False).apply(
-            lambda rows: rows.pivot(
-                index=rows.team.fields,
-                columns='variable',
-                values=['unit', 'value'],
-            ),
-        ).apply(
-            func=lambda rows: {
-                var: rows['value', var] * ureg(rows['unit', var] if pd.notnull(rows['unit', var]) else '')
-                for var in rows.index.unique(level='variable')
-            },
-            axis=1,
-            result_type='expand',
-        ).rename_axis('variable', axis=1)
+    def perform(self, *manipulations: AbstractManipulation, dropna: bool = False, only_new: bool = False):
+        # pivot dataframe before manipulation
+        df_pivot = self.pivot_wide()
 
         # perform analysis or manipulation and bring rows back to original long dataframe format
-        ret = [
-            df.apply(lambda row: aom.perform(row), axis=1).rename_axis('variable', axis=1).stack().apply(
-                lambda cell: pd.Series({'unit': str(cell.u), 'value': cell.m})
-            ).reset_index()
-            for aom in aoms
-        ]
+        for manipulation in manipulations:
+            original_index = df_pivot.index
+            df_pivot = manipulation.perform(df_pivot)
+            if not df_pivot.index.equals(original_index):
+                raise Exception('Manipulation may not change the index.')
 
+        # ensure that the axis label still exists before melt
+        df_pivot.rename_axis('variable', axis=1, inplace=True)
+
+        # pivot back
+        ret = df_pivot \
+            .pint.dequantify() \
+            .melt(ignore_index=False) \
+            .reset_index()
+
+        # drop rows with na entries in unit or value columns
         if dropna:
-            for new_rows in ret:
-                new_rows.dropna(subset=['unit', 'value'], inplace=True)
+            ret.dropna(subset=['unit', 'value'], inplace=True)
 
-        if not only_new:
-            ret = [self._df] + ret
+        # keep only new variables
+        if only_new:
+            ret = ret.loc[~ret['variable'].isin(self._df['variable'].unique())]
 
-        return pd.concat(ret).reset_index(drop=True)
+        # return
+        return ret.reset_index(drop=True)
 
     # for splitting variable components into separate columns
     def varsplit(self, cmd: Optional[str] = None, regex: Optional[str] = None,
-                 new_variable: Optional[str | bool] = True):
+                 new_variable: Optional[str | bool] = True, keep_unmatched: bool = False):
         # check that precisely one of the two arguments (cmd and regex) is provided
         if cmd is not None and regex is not None:
             raise Exception('Only one of the two arguments may be provided: cmd or regex.')
@@ -130,67 +156,79 @@ class TEAMAccessor:
             new_variable = None
         elif new_variable is True:
             if cmd is None:
-                warnings.warn("The variable cannot be set automatically if .")
+                warnings.warn("The variable cannot be set automatically when using a custom regex.")
                 new_variable = None
             else:
                 new_variable = '|'.join([t for t in cmd.split('|') if t[0] != '?'])
 
         # create dataframe to be returned by applying regex to variable column and dropping unmatched rows
-        ret = self._df['variable'].str.extract(regex).dropna()
+        ret = self._df['variable'].str.extract(regex)
 
-        # join with original dataframe and assign new variable if it is not None, then return
-        if new_variable is None:
-            return ret.join(self._df.drop(columns='variable'), how='left')
-        else:
-            return ret.join(self._df.assign(variable=new_variable), how='left')
+        # assign new variable column and drop if all are nan
+        cond = ret.notnull().any(axis=1)
+        ret['variable'] = self._df['variable']
+        ret.loc[cond, 'variable'] = new_variable or np.nan
+
+        # drop unmatched rows if requested
+        if not keep_unmatched:
+            ret.dropna(inplace=True)
+
+        # drop variable column if all nan
+        if ret['variable'].isnull().all():
+            ret.drop(columns='variable', inplace=True)
+
+        # combine with original dataframe and return
+        return ret.combine_first(self._df.loc[ret.index].drop(columns='variable'))
+
 
     # convert units
     def unit_convert(self, to: str | pint.Unit | dict[str, str | pint.Unit], flow_id: Optional[str] = None):
         return self._df.assign(
-            unit_to=to if not isinstance(to, dict) else self._df.apply(
-                lambda row: to[row['variable']] if row['variable'] in to else row['unit'], axis=1,
-            ),
-            value=lambda df: df.apply(
-                lambda row: row['value'] * unit_convert(row['unit'], row['unit_to'], flow_id=flow_id), axis=1,
-            ),
-        ) \
-        .drop(columns='unit') \
-        .rename(columns={'unit_to': 'unit'})
+                unit_to=to if not isinstance(to, dict) else self._df.apply(
+                    lambda row: to[row['variable']] if row['variable'] in to else row['unit'], axis=1,
+                ),
+                value=lambda df: df.apply(
+                    lambda row: row['value'] * unit_convert(row['unit'], row['unit_to'], flow_id=flow_id), axis=1,
+                ),
+            ) \
+            .drop(columns='unit') \
+            .rename(columns={'unit_to': 'unit'})
 
 
-# types that a variable assignment can take: it can be an int, float, string, or a function to be called
-VariableAssignment: TypeAlias = int | float | str | Callable
+# new variable can be calculated through expression assignments or keyword assignments
+# expression assignments are of form "`a` = `b` + `c`" and are based on the pandas eval functionality
+# keyword assignment must be int, float, string, or a function to be called to assign to the variable defined as key
+ExprAssignment: TypeAlias = str
+KeywordAssignment: TypeAlias = int | float | str | Callable
 
 
 # generic manipulation for calculating variables
-class CalcVariable(AbstractAnalysisOrManipulation):
-    _assignments: dict[str, VariableAssignment]
-    _unit: Optional[str | pint.Unit]
+class CalcVariable(AbstractManipulation):
+    _expr_assignments: tuple[ExprAssignment]
+    _kw_assignments: dict[str, KeywordAssignment]
 
-    def __init__(self, unit: Optional[str | pint.Unit] = None, **assignments: VariableAssignment):
-        self._assignments = assignments
-        self._unit = unit
+    def __init__(self, *expr_assignments: ExprAssignment, **kw_assignments: KeywordAssignment):
+        self._expr_assignments = expr_assignments
+        self._kw_assignments = kw_assignments
 
-        # check all supplied arguments are either functions or allowed values (int, float, string)
-        for variable, assigned in self._assignments.items():
-            if not (isinstance(assigned, int | float | str) or callable(assigned)):
-                raise Exception(f"Assignments must be int, float, string, or callable, but found: {type(assigned)}")
+        # check all supplied arguments are valid
+        for expr_assignment in self._expr_assignments:
+            if not isinstance(expr_assignment, str):
+                raise Exception(f"Expression assignments must be of type str, but found: {type(expr_assignment)}")
+        for kw_assignment in self._kw_assignments.values():
+            if not (isinstance(kw_assignment, int | float | str) or callable(kw_assignment)):
+                raise Exception(f"Keyword assignments must be of type int, float, string, or callable, but found: "
+                                f"{type(kw_assignment)}")
 
-        # check unit has correct format if supplied
-        if not (unit is None or
-                (isinstance(unit, str) and ureg.Unit(unit)) or
-                (isinstance(unit, ureg.Unit) and id(unit._REGISTRY) == id(ureg))):
-            raise Exception('Argument unit must be a valid posted unit.')
-
-    def perform(self, row: pd.Series) -> pd.Series:
-        return pd.Series({
-            variable: assigned(row) if callable(assigned) else assigned
-            for variable, assigned in self._assignments.items()
-        })
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        for expr_assignment in self._expr_assignments:
+            df.eval(expr_assignment, inplace=True, engine='python')
+        df = df.assign(**self._kw_assignments)
+        return df
 
 
 # building value chains
-class BuildValueChain(AbstractAnalysisOrManipulation):
+class BuildValueChain(AbstractManipulation):
     _name: str
     _demand: dict[str, dict[str, pint.Quantity]]
     _sc_demand: dict[str, dict[str, pint.Quantity]] | None
@@ -293,8 +331,11 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
 
         return out
 
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df.apply(self._perform_row, axis=1).combine_first(df)
+
     # perform analysis by computing functional units from technosphere matrix
-    def perform(self, row: pd.Series) -> pd.Series:
+    def _perform_row(self, row: pd.Series) -> pd.Series:
         # obtain technosphere matrix (tsm)
         tsm = np.array([
             [
@@ -359,7 +400,7 @@ class BuildValueChain(AbstractAnalysisOrManipulation):
         } if self._sc_demand is not None else {}))
 
 
-class LCOXAnalysis(AbstractAnalysisOrManipulation):
+class LCOXAnalysis(AbstractManipulation):
     _reference: Optional[str]
     _value_chains: Optional[list[str]]
     _interest_rate: Optional[float]
@@ -372,8 +413,12 @@ class LCOXAnalysis(AbstractAnalysisOrManipulation):
         self._interest_rate = interest_rate * ureg('') if isinstance(interest_rate, int | float) else interest_rate
         self._book_lifetime = book_lifetime * ureg('a') if isinstance(book_lifetime, int | float) else book_lifetime
 
+    # perform
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        return df.apply(self._perform_row, axis=1).combine_first(df)
+
     # perform LCOX calculation for every value chain
-    def perform(self, row: pd.Series) -> pd.Series:
+    def _perform_row(self, row: pd.Series) -> pd.Series:
         value_chains: list[str] = self._value_chains or list({
             var.split('|')[1]
             for var in row.index
