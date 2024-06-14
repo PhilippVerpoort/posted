@@ -50,7 +50,8 @@ nav:
     - read: python_modules/docs_read.md
 plugins:
 - mkdocs-jupyter:
-    execute: yes
+    include_requirejs: true
+    execute: true
 - search
 - mkdocstrings:
     handlers:
