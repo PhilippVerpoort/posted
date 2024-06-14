@@ -12,46 +12,30 @@ nav:
 - Overview: overview.md
 - Sources: sources.md
 - Get started: get_started.md
-- About: about.md
 - Tutorial:
   - Python: docs_python_tutorial.ipynb
   - R: docs_r_tutorial.ipynb
 - Documentation:
   - R:
-    - AbstractColumnDefinition: R_functions/AbstractColumnDefinition.md
-    - VariableDefinition: R_functions/VariableDefinition.md
-    - UnitDefinition: R_functions/UnitDefinition.md
-    - ValueDefinition: R_functions/ValueDefinition.md
-    - CommentDefinition: R_functions/CommentDefinition.md
-    - AbstractFieldDefinition: R_functions/AbstractFieldDefinition.md
-    - RegionFieldDefinition: R_functions/RegionFieldDefinition.md
-    - PeriodFieldDefinition: R_functions/PeriodFieldDefinition.md
-    - SourceFieldDefinition: R_functions/SourceFieldDefinition.md
-    - CustomFieldDefinition: R_functions/CustomFieldDefinition.md
-    - read_masks: R_functions/read_masks.md
-    - DataSet: R_functions/DataSet.md
-    - read_csv_file: R_functions/read_csv_file.md
-    - TEDFInconsistencyException: R_functions/TEDFInconsistencyException.md
-    - TEBase: R_functions/TEBase.md
-    - TEDF: R_functions/TEDF.md
+    - columns: R_modules/docs_columns.md
+    - masking: R_modules/docs_masking.md
+    - noslag: R_modules/docs_noslag.md
+    - read: R_modules/docs_read.md
+    - tedf: R_modules/docs_tedf.md
+    - units: R_modules/docs_units.md
   - Python:
-    - config: python_modules/docs_config.md
     - units: python_modules/docs_units.md
     - definitions: python_modules/docs_definitions.md
     - tedf: python_modules/docs_tedf.md
     - noslag: python_modules/docs_noslag.md
-    - cmdline: python_modules/docs_cmdline.md
     - masking: python_modules/docs_masking.md
-    - team: python_modules/docs_team.md
     - columns: python_modules/docs_columns.md
     - sources: python_modules/docs_sources.md
-    - settings: python_modules/docs_settings.md
-    - path: python_modules/docs_path.md
     - read: python_modules/docs_read.md
 plugins:
 - mkdocs-jupyter:
-    include_requirejs: true
-    execute: true
+    execute: yes
+    include_requirejs: yes
 - search
 - mkdocstrings:
     handlers:

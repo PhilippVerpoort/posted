@@ -37,8 +37,9 @@ r_files <- list.files(r_dir, pattern = "\\.R$", full.names = TRUE)
 file_titles_list <- lapply(r_files, extract_function_titles)
 names(file_titles_list) <- basename(r_files)
 
+
 # Print the extracted information
-print(file_titles_list)
+
 
 # List all R files in the directory
 r_files <- list.files(r_dir, pattern = "\\.R$", full.names = TRUE)
@@ -46,7 +47,7 @@ r_files <- list.files(r_dir, pattern = "\\.R$", full.names = TRUE)
 # List all files in the directory for rd files
 file_list <- dir_ls("man", type = "file")
 
-
+module_file_path <- "docs/r_modules/"
 # Define the path to the mkdocs.yml file
 yaml_file <- "mkdocs.yml"
 
@@ -58,9 +59,17 @@ yaml_content <- read_yaml(yaml_file)
 for (title_name in names(file_titles_list)) {
   print("title name")
   print(title_name)
+  mod_title_name <- substr(title_name, 1, nchar(title_name) - 2)
+  markdown_file_content <- ""
+
 
   for (name in file_titles_list[[title_name]]) {
+    markdown_file_content <- c(markdown_file_content,
+      paste0("## ", name),
+      paste0('--8<-- "r_functions/', name,'.md"')
+    )
     # print(file_list)
+    print("function name")
     print(name)
     if (!(paste0("man/", name, ".Rd") %in%  file_list) ){
       print("next")
@@ -76,18 +85,23 @@ for (title_name in names(file_titles_list)) {
       if (is.list(item) && "Documentation" %in% names(item)) {
         for (j in seq_along(item$Documentation)) {
           subitem <- item$Documentation[[j]]
+
           if (is.list(subitem) && "R" %in% names(subitem)) {
 
             temp_list <- list()
-            temp_list[[modified_name]] <- paste0('R_functions/', modified_name, '.md')
+            temp_list[[mod_title_name]] <- paste0('R_modules/docs_', mod_title_name, '.md')
             # print("temp list")
             # print(temp_list)
             # print(subitem$R)
-            # counter to check if a page with modified_ame already exists
+            # counter to check if a page with modified_name already exists
             dir_exists_counter <- FALSE
+            #print("subitem_R")
+            #print(subitem$R)
             for (k in seq_along(subitem$R)) {
               # print("name?")
-              if(names(subitem$R[[k]]) == modified_name) {
+              if(names(subitem$R[[k]]) == mod_title_name) {
+                  print("override")
+
                   # if the page exists, override the entry with the new version
                   subitem$R[[k]] <- temp_list
                   dir_exists_counter <- TRUE
@@ -107,6 +121,7 @@ for (title_name in names(file_titles_list)) {
       }
     }
   }
+  writeLines(markdown_file_content, paste0(module_file_path, "docs_", mod_title_name, ".md"))
 }
     # Print the modified content
   # print(yaml_content)

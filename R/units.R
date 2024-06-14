@@ -19,26 +19,26 @@ unit_variants <- list(
     std = list(param = 'density', value = 'density_std', dimension = 'volume')
 )
 
-
+#' @title unit_convert
+#'
+#' Converts units with optional flow context handling based on
+#' specified variants and flow ID. The function checks if the input units are not NaN,
+#' then it proceeds to handle different cases based on the presence of a flow context and unit
+#' variants.
+#'
+#' @param unit_from Character or numeric. Unit to convert from.
+#' @param unit_to Character or numeric. Unit to convert to.
+#' @param flow_id Character or NULL. Identifier for the specific flow or process.
+#'
+#' @return Numeric. Conversion factor between \code{unit_from} and \code{unit_to}.
+#'
+#' @examples
+#' # Example usage:
+#' unit_convert("m", "km", flow_id = NULL)
+#'
+#' @export
 unit_convert <- function(unit_from, unit_to, flow_id=NULL) {
-    #' Conversion of units with or withour flow ID
-    #'
-    #' Converts units with optional flow context handling based on
-    #' specified variants and flow ID. The function checks if the input units are not NaN,
-    #' then it proceeds to handle different cases based on the presence of a flow context and unit
-    #' variants.
-    #'
-    #' @param unit_from Character or numeric. Unit to convert from.
-    #' @param unit_to Character or numeric. Unit to convert to.
-    #' @param flow_id Character or NULL. Identifier for the specific flow or process.
-    #'
-    #' @return Numeric. Conversion factor between \code{unit_from} and \code{unit_to}.
-    #'
-    #' @examples
-    #' # Example usage:
-    #' unit_convert("m", "km", flow_id = NULL)
-    #'
-    #' @export
+
 
 
 

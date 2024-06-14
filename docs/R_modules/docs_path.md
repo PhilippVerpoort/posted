@@ -1,3 +1,1 @@
-# `path`
-::: python.posted.path
-        
+

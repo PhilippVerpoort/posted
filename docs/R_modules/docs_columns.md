@@ -1,3 +1,21 @@
-# `columns`
-::: python.posted.columns
-        
+
+## AbstractColumnDefinition
+--8<-- "r_functions/AbstractColumnDefinition.md"
+## VariableDefinition
+--8<-- "r_functions/VariableDefinition.md"
+## UnitDefinition
+--8<-- "r_functions/UnitDefinition.md"
+## ValueDefinition
+--8<-- "r_functions/ValueDefinition.md"
+## CommentDefinition
+--8<-- "r_functions/CommentDefinition.md"
+## AbstractFieldDefinition
+--8<-- "r_functions/AbstractFieldDefinition.md"
+## RegionFieldDefinition
+--8<-- "r_functions/RegionFieldDefinition.md"
+## PeriodFieldDefinition
+--8<-- "r_functions/PeriodFieldDefinition.md"
+## SourceFieldDefinition
+--8<-- "r_functions/SourceFieldDefinition.md"
+## CustomFieldDefinition
+--8<-- "r_functions/CustomFieldDefinition.md"

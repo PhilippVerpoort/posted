@@ -2,7 +2,12 @@
 % Please edit documentation in R/units.R
 \name{unit_convert}
 \alias{unit_convert}
-\title{Conversion of units with or withour flow ID}
+\title{unit_convert
+
+Converts units with optional flow context handling based on
+specified variants and flow ID. The function checks if the input units are not NaN,
+then it proceeds to handle different cases based on the presence of a flow context and unit
+variants.}
 \usage{
 unit_convert(unit_from, unit_to, flow_id = NULL)
 }
@@ -17,6 +22,8 @@ unit_convert(unit_from, unit_to, flow_id = NULL)
 Numeric. Conversion factor between \code{unit_from} and \code{unit_to}.
 }
 \description{
+unit_convert
+
 Converts units with optional flow context handling based on
 specified variants and flow ID. The function checks if the input units are not NaN,
 then it proceeds to handle different cases based on the presence of a flow context and unit
