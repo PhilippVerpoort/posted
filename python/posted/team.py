@@ -84,8 +84,12 @@ class TEAMAccessor:
 
         # check that at least variable, unit, and value are among the columns
         if not all(c in df for c in ('variable', 'unit', 'value')):
-            raise ValueError('Can only use .team accessor with team-like dataframes that contain at least the variable, '
-                             'unit, and value columns.')
+            raise ValueError('Can only use .team accessor with team-like dataframes that contain at least the '
+                             'variable, unit, and value columns.')
+
+        # warn if 'unfielded' column exists
+        if 'unfielded' in df.columns:
+            warnings.warn("Having a column named 'unfielded' in the dataframe may result in unexpected behaviour.")
 
         # store arguments
         self._df = df
@@ -116,11 +120,24 @@ class TEAMAccessor:
 
     # pivot posted-formatted dataframe from long to wide (variables as columns)
     def pivot_wide(self):
-        ret = self.explode().pivot(
-            index=self._fields,
+        # explode
+        ret = self.explode()
+
+        # create dummy field if non exists
+        if not self._fields:
+            ret = ret.assign(unfielded=0)
+            fields = self._fields + ['unfielded']
+        else:
+            fields = self._fields
+
+        # pivot dataframe
+        ret = ret.pivot(
+            index=fields,
             columns=['variable', 'unit'],
             values='value',
         )
+
+        # check unit exists for all columns
         if ret.columns.get_level_values(level='unit').isna().any():
             raise Exception('Unit column may not contain NaN entries. Please use "dimensionless" or "No Unit" if the '
                             'variable has no unit.')
@@ -154,6 +171,10 @@ class TEAMAccessor:
         # keep only new variables
         if only_new:
             ret = ret.loc[~ret['variable'].isin(self._df['variable'].unique())]
+
+        # drop unfielded if exists
+        if 'unfielded' in ret.columns:
+            ret = ret.drop(columns='unfielded')
 
         # return
         return ret.reset_index(drop=True)
