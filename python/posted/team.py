@@ -206,30 +206,38 @@ class TEAMAccessor:
             new_variable = None
         elif new_variable is True:
             if cmd is None:
-                warnings.warn("The variable cannot be set automatically when using a custom regex.")
                 new_variable = None
             else:
                 new_variable = '|'.join([t for t in cmd.split('|') if t[0] != '?'])
 
         # create dataframe to be returned by applying regex to variable column and dropping unmatched rows
-        ret = self._df['variable'].str.extract(regex)
-
-        # assign new variable column and drop if all are nan
-        cond = ret.notnull().any(axis=1)
-        ret['variable'] = self._df['variable']
-        ret.loc[cond, 'variable'] = new_variable or np.nan
+        matched = self._df['variable'].str.extract(regex)
 
         # drop unmatched rows if requested
         if not keep_unmatched:
-            ret.dropna(inplace=True)
+            matched.dropna(inplace=True)
+
+        # assign new variable column and drop if all are nan
+        if 'variable' not in matched:
+            cond = matched.notnull().any(axis=1)
+            matched['variable'] = self._df['variable']
+            matched.loc[cond, 'variable'] = new_variable or np.nan
+            if new_variable is None:
+                warnings.warn('New variable could not be set automatically.')
 
         # drop variable column if all nan
-        if ret['variable'].isnull().all():
-            ret.drop(columns='variable', inplace=True)
+        if matched['variable'].isnull().all():
+            matched.drop(columns='variable', inplace=True)
 
-        # combine with original dataframe and return
-        return ret.combine_first(self._df.loc[ret.index].drop(columns='variable'))
+        # combine with original dataframe
+        ret = matched.combine_first(self._df.loc[matched.index].drop(columns='variable'))
 
+        # sort columns
+        order = matched.columns.tolist() + self._df.columns.tolist()
+        ret.sort_index(key=lambda cols: [order.index(c) for c in cols], axis=1, inplace=True)
+
+        # return
+        return ret
 
     # convert units
     def unit_convert(self, to: str | pint.Unit | dict[str, str | pint.Unit], flow_id: Optional[str] = None):
