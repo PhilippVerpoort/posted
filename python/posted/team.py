@@ -36,10 +36,10 @@ pint_pandas.PintType.ureg = ureg
 
 
 # calculate annuity factor
-def _annuity_factor(ir: ureg.Quantity, n: ureg.Quantity):
+def annuity_factor(ir: ureg.Quantity, n: ureg.Quantity):
     try:
-        n = n.to('a').m
         ir = ir.to('dimensionless').m
+        n = n.to('a').m
     except DimensionalityError:
         return np.nan
 
@@ -225,6 +225,84 @@ class CalcVariable(AbstractManipulation):
             df.eval(expr_assignment, inplace=True, engine='python')
         df = df.assign(**self._kw_assignments)
         return df
+
+
+# calculate levelised cost of X
+class LCOX(AbstractManipulation):
+    _name: str
+    _reference: str
+    _process: str
+    _interest_rate: Optional[float]
+    _book_lifetime: Optional[float]
+
+    def __init__(self, name: str, process: str, reference: str,
+                 interest_rate: Optional[float] = None, book_lifetime: Optional[float] = None):
+        self._name = name
+        self._reference = reference
+        self._process = process
+        self._interest_rate = interest_rate * ureg('') if isinstance(interest_rate, int | float) else interest_rate
+        self._book_lifetime = book_lifetime * ureg('a') if isinstance(book_lifetime, int | float) else book_lifetime
+
+    # perform
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        # calculate levelised cost, prepend "LCOX|{name}|" before column names, and divide by reference
+        ret = self.calc_cost(df) \
+            .rename(columns=lambda col_name: f"LCOX|{self._name}|{col_name}") \
+            .apply(lambda col: col / df[f"Tech|{self._process}|{self._reference}"])
+        return pd.concat([df, ret], axis=1)
+
+    # calc levelised cost
+    def calc_cost(self, df: pd.DataFrame) -> pd.DataFrame:
+        tech = self._varsplit(df, f"Tech|{self._process}|?variable")
+        prices = self._varsplit(df, 'Price|?io')
+        iocaps = self._varsplit(df, regex=fr"Tech\|{self._process}\|((?:Input|Output) Capacity\|.*)")
+        ios = self._varsplit(df, regex=fr"Tech\|{self._process}\|((?:Input|Output)\|.*)")
+
+        # determine reference capacity and reference of that reference capacity for CAPEX and OPEX Fixed
+        if any(c in tech for c in ('CAPEX', 'OPEX Fixed')):
+            try:
+                cap = iocaps.iloc[:, 0]
+                capref = ios[re.sub(r'(Input|Output) Capacity', r'\1', cap.name)]
+            except IndexError:
+                warnings.warn('Could not find a reference capacity for CAPEX and OPEX columns.')
+                cap = capref = None
+            except KeyError:
+                warnings.warn('Could not find reference matching the reference capacity.')
+                capref = None
+        else:
+            cap = capref = None
+
+        ret = pd.DataFrame(index=df.index)
+
+        # calc capital cost and fixed OM cost
+        if cap is not None and capref is not None:
+            OCF = tech['OCF'] if 'OCF' in tech else 1.0
+
+            if 'CAPEX' in tech:
+                ANF = annuity_factor(self._interest_rate, self._book_lifetime)
+                ret['Capital'] = ANF * tech['CAPEX'] / OCF / cap * capref
+
+            if 'OPEX Fixed' in tech:
+                ret['OM Fixed'] = tech['OPEX Fixed'] / OCF / cap * capref
+
+        # calc var OM cost
+        if 'OPEX Variable' in tech:
+            ret['OM Variable'] = tech['OPEX Variable']
+
+        # calc input cost
+        for io in ios:
+            if io == self._reference:
+                continue
+            io_type, io_flow = io.split('|', 2)
+            if io_flow not in prices:
+                warnings.warn(
+                    f"'{io}' is ignored in LCOX, because it is neither the reference nor an associated price is given.")
+                continue
+            # inputs are counted as costs, outputs are counted as revenues
+            sign = +1 if io_type == 'Input' else -1
+            ret[f"{io_type} Cost|{io_flow}"] = sign * ios[io] * prices[io_flow]
+
+        return ret
 
 
 # building value chains
@@ -512,7 +590,7 @@ class LCOXAnalysis(AbstractManipulation):
 
                     if 'CAPEX' in row_proc:
                         if all(v in row_proc for v in ('Interest Rate', 'Book Lifetime')):
-                            ANF = _annuity_factor(row_proc['Interest Rate'], row_proc['Book Lifetime'])
+                            ANF = annuity_factor(row_proc['Interest Rate'], row_proc['Book Lifetime'])
                             ret['Capital'] = ANF * row_proc['CAPEX'] / reference_capacity * reference
                         else:
                             warnings.warn(f"Annuity factor could not be determined.")
