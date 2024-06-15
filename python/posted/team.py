@@ -52,6 +52,26 @@ class AbstractManipulation:
     def perform(self, df: pd.DataFrame) -> pd.DataFrame:
         pass
 
+    def _varsplit(self, df: pd.DataFrame, cmd: Optional[str] = None, regex: Optional[str] = None) -> pd.DataFrame:
+        # check that precisely one of the two arguments (cmd and regex) is provided
+        if cmd is not None and regex is not None:
+            raise Exception('Only one of the two arguments may be provided: cmd or regex.')
+        if cmd is None and regex is None:
+            raise Exception('Either a command or a regex string must be provided.')
+
+        # determine regex from cmd if necessary
+        if regex is None:
+            regex = '^' + r'\|'.join([rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else t for t in cmd.split('|')]) + '$'
+
+        cols_extracted = df.columns.str.extract(regex)
+        df_new = df[df.columns[cols_extracted.notnull().all(axis=1)]]
+        df_new.columns = (
+            pd.MultiIndex.from_frame(cols_extracted.dropna())
+            if len(cols_extracted.columns) > 1 else
+            cols_extracted.dropna().iloc[:, 0]
+        )
+        return df_new
+
 
 # pandas dataframe accessor for groupby and perform methods
 @pd.api.extensions.register_dataframe_accessor('team')
