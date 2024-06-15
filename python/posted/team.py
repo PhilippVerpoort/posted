@@ -159,6 +159,8 @@ class TEAMAccessor:
         for manipulation in manipulations:
             original_index = df_pivot.index
             df_pivot = manipulation.perform(df_pivot)
+            if not isinstance(df_pivot, pd.DataFrame):
+                raise Exception('Manipulation must return a dataframe.')
             if not df_pivot.index.equals(original_index):
                 raise Exception('Manipulation may not change the index.')
 
