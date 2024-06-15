@@ -663,3 +663,21 @@ class LCOXAnalysis(AbstractManipulation):
                     warnings.warn(f"Price not found corresponding to Input: {var_io}")
 
         return ret
+
+
+# calculate fuel-switching carbon price
+class FSCP(AbstractManipulation):
+    _fuels: tuple[str]
+
+    def __init__(self, *fuels: str):
+        self._fuels = fuels
+
+    # perform
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        for id_x, fuel_x in enumerate(self._fuels):
+            for id_y, fuel_y in enumerate(self._fuels):
+                if id_x < id_y:
+                    df[f"FSCP|{fuel_x} to {fuel_y}"] = (df[f"Cost|{fuel_y}"] - df[f"Cost|{fuel_x}"]) / (
+                                df[f"GHGI|{fuel_x}"] - df[f"GHGI|{fuel_y}"])
+
+        return df
