@@ -123,6 +123,13 @@ class TEAMAccessor:
         # explode
         ret = self.explode()
 
+        # check units are harmonised across variables before pivot
+        units = ret[['variable', 'unit']].drop_duplicates()
+        if not units['variable'].is_unique:
+            duplicate_units = units.loc[units['variable'].duplicated()]['variable'].tolist()
+            raise Exception(f"Cannot pivot wide on a dataframe where variables have multiple units: "
+                            f"{', '.join(duplicate_units)}")
+
         # create dummy field if non exists
         if not self._fields:
             ret = ret.assign(unfielded=0)
