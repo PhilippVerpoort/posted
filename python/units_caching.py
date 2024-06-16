@@ -34,6 +34,13 @@ def allowed_flow_dims(flow_type: None | str):
 # ----- Collect a list of all unique units that appear in all the inout data files
 compatible_units = []
 
+# Define a list of all units, that should have conversion factors from and to, regardless of their occurrence in data files
+standard_units = ["kWh", "MWh", "GWh", "t", "kg"]
+standard_units_per_year =  [unit +"/a" for unit in standard_units]
+standard_units_per_day =  [unit +"/d" for unit in standard_units]
+standard_units_per_hour =  [unit +"/h" for unit in standard_units]
+
+standard_units = standard_units + standard_units_per_year + standard_units_per_day + standard_units_per_hour
 # Create an empty DataFrame to store the appended data
 appended_data = pd.DataFrame()
 # Loop through all ted files
@@ -51,7 +58,9 @@ for filename in os.listdir(DATA_PATH /'database/tedfs/Tech/'):
 
 # Get unique values from columns "reported_unit" and "reference_unit"
 unique_values = appended_data[["unit", "reference_unit"]].values.ravel()
+print(unique_values)
 unique_values = pd.unique(unique_values).tolist()
+unique_values.append("MWh/a")
 
 # define unit sets
 mass_units = []
