@@ -11,8 +11,7 @@ from pint.errors import DimensionalityError
 from numpy.linalg import solve
 from pandas.core.groupby import DataFrameGroupBy
 
-from posted.units import ureg, unit_convert
-
+from posted.units import ureg, unit_convert, Q, U
 
 try:
     import igraph
@@ -36,14 +35,14 @@ pint_pandas.PintType.ureg = ureg
 
 
 # calculate annuity factor
-def annuity_factor(ir: ureg.Quantity, n: ureg.Quantity):
+def annuity_factor(ir: Q, n: Q):
     try:
         ir = ir.to('dimensionless').m
         n = n.to('a').m
     except DimensionalityError:
         return np.nan
 
-    return ir * (1 + ir) ** n / ((1 + ir) ** n - 1) / ureg('a')
+    return ir * (1 + ir) ** n / ((1 + ir) ** n - 1) / Q('1 a')
 
 
 # define abstract manipulation class
@@ -298,8 +297,8 @@ class LCOX(AbstractManipulation):
         self._name = name
         self._reference = reference
         self._process = process
-        self._interest_rate = interest_rate * ureg('') if isinstance(interest_rate, int | float) else interest_rate
-        self._book_lifetime = book_lifetime * ureg('a') if isinstance(book_lifetime, int | float) else book_lifetime
+        self._interest_rate = interest_rate * U('') if isinstance(interest_rate, int | float) else interest_rate
+        self._book_lifetime = book_lifetime * U('a') if isinstance(book_lifetime, int | float) else book_lifetime
 
     # perform
     def perform(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -523,7 +522,7 @@ class BuildValueChain(AbstractManipulation):
         func_units = solve(tsm, d)
 
         return pd.Series({
-            f"Value Chain|{self._name}|Functional Units|{proc}": func_units[i] * ureg('')
+            f"Value Chain|{self._name}|Functional Units|{proc}": func_units[i] * U('')
             for i, proc in enumerate(list(self._proc_graph.keys()))
         } | ({
             f"Value Chain|{self._name}|Demand|{proc}|{flow}": self._demand[proc][flow]
@@ -546,8 +545,8 @@ class LCOXAnalysis(AbstractManipulation):
                  interest_rate: Optional[float] = None, book_lifetime: Optional[float] = None):
         self._reference = reference
         self._value_chains = value_chains
-        self._interest_rate = interest_rate * ureg('') if isinstance(interest_rate, int | float) else interest_rate
-        self._book_lifetime = book_lifetime * ureg('a') if isinstance(book_lifetime, int | float) else book_lifetime
+        self._interest_rate = interest_rate * U('') if isinstance(interest_rate, int | float) else interest_rate
+        self._book_lifetime = book_lifetime * U('a') if isinstance(book_lifetime, int | float) else book_lifetime
 
     # perform
     def perform(self, df: pd.DataFrame) -> pd.DataFrame:
