@@ -823,7 +823,7 @@ class DataSet(TEBase):
             if not rows.empty:
                 # aggregate with weights
                 out = rows \
-                    .groupby(group_cols, dropna=False) \
+                    .groupby(group_cols, dropna=False)[['value', 'weight']] \
                     .apply(lambda cols: pd.Series({
                         'value': np.average(cols['value'], weights=cols['weight']),
                     }))
