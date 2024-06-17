@@ -2,10 +2,7 @@
 % Please edit documentation in R/noslag.R
 \name{normalise_values}
 \alias{normalise_values}
-\title{normalise_values
-
-Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
-columns by the reference value, and updates the 'reference_value' column accordingly.}
+\title{normalise_values}
 \usage{
 normalise_values(df)
 }
@@ -19,8 +16,6 @@ column has been divided by the 'reference_value' column, and the 'reference_valu
 replaced with 1.0 if it was not null.
 }
 \description{
-normalise_values
-
 Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
 columns by the reference value, and updates the 'reference_value' column accordingly.
 }

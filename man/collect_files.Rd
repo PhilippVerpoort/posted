@@ -2,10 +2,7 @@
 % Please edit documentation in R/noslag.R
 \name{collect_files}
 \alias{collect_files}
-\title{collect_files
-
-Takes a parent variable and optional list of databases to include,
-checks for their existence, and collects files and directories based on the parent variable.}
+\title{collect_files}
 \usage{
 collect_files(parent_variable, include_databases = NULL)
 }
@@ -19,8 +16,6 @@ List of tuples. List of tuples containing the parent variable and the
 database ID for each file found in the specified directories.
 }
 \description{
-collect_files
-
 Takes a parent variable and optional list of databases to include,
 checks for their existence, and collects files and directories based on the parent variable.
 }

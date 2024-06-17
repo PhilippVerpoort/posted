@@ -1,4 +1,6 @@
 
+## is_float
+--8<-- "r_functions/is_float.md"
 ## AbstractColumnDefinition
 --8<-- "r_functions/AbstractColumnDefinition.md"
 ## VariableDefinition

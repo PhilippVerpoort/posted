@@ -1,7 +1,6 @@
 ## Description
 
 This class provides methods to store, normalize, select, and aggregate DataSets.
-Create new instance of the DataSet class
 
 
 ## Examples
@@ -43,6 +42,9 @@ dataset$aggregate(override = list("variable1" = "value1"), drop_singular_fields 
 
 <a id="method-DataSet-new"></a>
 ### Method `new()`
+
+Create new instance of the DataSet class
+
 
 <b>Usage</b>
 

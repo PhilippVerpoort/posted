@@ -5,7 +5,6 @@
 \title{DataSet}
 \description{
 This class provides methods to store, normalize, select, and aggregate DataSets.
-Create new instance of the DataSet class
 }
 \examples{
 
@@ -57,6 +56,7 @@ dataset$aggregate(override = list("variable1" = "value1"), drop_singular_fields 
 \if{html}{\out{<a id="method-DataSet-new"></a>}}
 \if{latex}{\out{\hypertarget{method-DataSet-new}{}}}
 \subsection{Method \code{new()}}{
+Create new instance of the DataSet class
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DataSet$new(
   parent_variable,

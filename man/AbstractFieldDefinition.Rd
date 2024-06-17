@@ -91,8 +91,7 @@ Tests if cell is allowed
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{cell}}{cell to test
-Select and expand fields which are valid for multiple periods or other field vals}
+\item{\code{cell}}{cell to test}
 }
 \if{html}{\out{</div>}}
 }
@@ -101,6 +100,7 @@ Select and expand fields which are valid for multiple periods or other field val
 \if{html}{\out{<a id="method-AbstractFieldDefinition-select_and_expand"></a>}}
 \if{latex}{\out{\hypertarget{method-AbstractFieldDefinition-select_and_expand}{}}}
 \subsection{Method \code{select_and_expand()}}{
+Select and expand fields which are valid for multiple periods or other field vals
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AbstractFieldDefinition$select_and_expand(df, col_id, field_vals = NA, ...)}\if{html}{\out{</div>}}
 }

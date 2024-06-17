@@ -66,11 +66,14 @@ AbstractFieldDefinition$is_allowed(cell)
 
 <b>Arguments:</b>
 
-* `cell` cell to test Select and expand fields which are valid for multiple periods or other field vals
+* `cell` cell to test
 
 
 <a id="method-AbstractFieldDefinition-select_and_expand"></a>
 ### Method `select_and_expand()`
+
+Select and expand fields which are valid for multiple periods or other field vals
+
 
 <b>Usage</b>
 

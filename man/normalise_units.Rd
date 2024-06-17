@@ -2,11 +2,7 @@
 % Please edit documentation in R/noslag.R
 \name{normalise_units}
 \alias{normalise_units}
-\title{normalise_units
-
-Takes a DataFrame with reported or reference data, along with
-dictionaries mapping variable units and flow IDs, and normalizes the units of the variables in the
-DataFrame based on the provided mappings.}
+\title{normalise_units}
 \usage{
 normalise_units(df, level, var_units, var_flow_ids)
 }
@@ -23,8 +19,6 @@ normalise_units(df, level, var_units, var_flow_ids)
 DataFrame. Normalized dataframe.
 }
 \description{
-normalise_units
-
 Takes a DataFrame with reported or reference data, along with
 dictionaries mapping variable units and flow IDs, and normalizes the units of the variables in the
 DataFrame based on the provided mappings.
