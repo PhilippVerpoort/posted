@@ -3,21 +3,20 @@ library(dplyr)
 library(assertthat)
 library(GROAN)
 
+#' @title is_float
+#'
+#' @description Checks if a given string can be converted to a floating-point number in Python.
+#'
+#' @param string Character. String to check.
+#'
+#' @return Logical. \code{TRUE} if conversion was successful, \code{FALSE} if not.
+#'
+#' @examples
+#' # Example usage:
+#' is_numeric("3.14")
+#'
+#' @export
 is_float <- function(string) {
-  #' is_float
-  #'
-  #' Checks if a given string can be converted to a floating-point number in Python.
-  #'
-  #' @param string Character. String to check.
-  #'
-  #' @return Logical. \code{TRUE} if conversion was successful, \code{FALSE} if not.
-  #'
-  #' @examples
-  #' # Example usage:
-  #' is_numeric("3.14")
-  #'
-  #' @export
-
   if (length(as.numeric(string)) == 1 && !is.na(as.numeric(string))) {
     return(TRUE)
   } else {
@@ -333,7 +332,7 @@ AbstractFieldDefinition <- R6::R6Class("AbstractFieldDefinition", inherit = Abst
     },
 
 
-    #' Select and expand fields which are valid for multiple periods or other field vals
+    #' @description Select and expand fields which are valid for multiple periods or other field vals
     #'
     #' @param df DataFrame where fields should be selected and expanded
     #' @param col_id col_id of the column to be selected and expanded

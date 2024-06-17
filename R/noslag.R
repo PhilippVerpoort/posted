@@ -5,7 +5,7 @@ library(Deriv)
 
 #' @title collect_files
 #'
-#' Takes a parent variable and optional list of databases to include,
+#' @description Takes a parent variable and optional list of databases to include,
 #' checks for their existence, and collects files and directories based on the parent variable.
 #'
 #' @param parent_variable Character. Variable to collect files on.
@@ -80,7 +80,7 @@ collect_files <- function(parent_variable, include_databases = NULL) {
 
 #' @title normalise_units
 #'
-#' Takes a DataFrame with reported or reference data, along with
+#' @description Takes a DataFrame with reported or reference data, along with
 #' dictionaries mapping variable units and flow IDs, and normalizes the units of the variables in the
 #' DataFrame based on the provided mappings.
 #'
@@ -149,7 +149,7 @@ normalise_units <- function(df, level, var_units, var_flow_ids) {
 
 #' @title normalise_values
 #'
-#' Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
+#' @description Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
 #' columns by the reference value, and updates the 'reference_value' column accordingly.
 #'
 #' @param df DataFrame. Dataframe to be normalized.
@@ -732,7 +732,7 @@ DataSet <- R6::R6Class("DataSet", inherit=TEBase,
   ),
 
   public = list(
-    #' Create new instance of the DataSet class
+    #' @description Create new instance of the DataSet class
     #'
     #' @param parent_variable Character. Variable to collect Data on.
     #' @param include_databases Optional list[Character] | tuple[Character], optional. Databases to load from.

@@ -1,21 +1,20 @@
 library(docstring)
 library(roxygen2)
 
-
+#' apply_cond
+#'
+#' Takes a pandas DataFrame and a condition, which can be a string, dictionary,
+#' or callable, and applies the condition to the DataFrame using \code{eval} or \code{apply}
+#' accordingly.
+#'
+#' @param df DataFrame. A pandas DataFrame containing the data on which the condition will be applied.
+#' @param cond MaskCondition. The condition to be applied on the dataframe. Can be either a string, a dictionary, or a
+#'             callable function.
+#'
+#' @return DataFrame. Dataframe evaluated at the mask condition.
+#'
+#' @export
 apply_cond <- function(df, cond) {
-  #' apply_cond
-  #'
-  #' Takes a pandas DataFrame and a condition, which can be a string, dictionary,
-  #' or callable, and applies the condition to the DataFrame using \code{eval} or \code{apply}
-  #' accordingly.
-  #'
-  #' @param df DataFrame. A pandas DataFrame containing the data on which the condition will be applied.
-  #' @param cond MaskCondition. The condition to be applied on the dataframe. Can be either a string, a dictionary, or a
-  #'             callable function.
-  #'
-  #' @return DataFrame. Dataframe evaluated at the mask condition.
-  #'
-  #' @export
 
   if (class(cond) == "character") {
     return(filter(eval(parse(text = cond))))
