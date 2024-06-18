@@ -60,7 +60,12 @@ class AbstractManipulation:
 
         # determine regex from cmd if necessary
         if regex is None:
-            regex = '^' + r'\|'.join([rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else t for t in cmd.split('|')]) + '$'
+            regex = '^' + r'\|'.join([
+                rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else
+                rf'(?P<{t[1:]}>.*)' if t[0] == '*' else
+                re.escape(t)
+                for t in cmd.split('|')
+            ]) + '$'
 
         cols_extracted = df.columns.str.extract(regex)
         df_new = df[df.columns[cols_extracted.notnull().all(axis=1)]]
@@ -198,7 +203,12 @@ class TEAMAccessor:
 
         # determine regex from cmd if necessary
         if regex is None:
-            regex = '^' + r'\|'.join([rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else t for t in cmd.split('|')]) + '$'
+            regex = '^' + r'\|'.join([
+                rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else
+                rf'(?P<{t[1:]}>.*)' if t[0] == '*' else
+                re.escape(t)
+                for t in cmd.split('|')
+            ]) + '$'
 
         # determine value of new variable column from arguments
         if new_variable is False:
@@ -207,7 +217,7 @@ class TEAMAccessor:
             if cmd is None:
                 new_variable = None
             else:
-                new_variable = '|'.join([t for t in cmd.split('|') if t[0] != '?'])
+                new_variable = '|'.join([t for t in cmd.split('|') if t[0] not in ('?', '*')])
 
         # create dataframe to be returned by applying regex to variable column and dropping unmatched rows
         matched = self._df['variable'].str.extract(regex)
@@ -236,6 +246,13 @@ class TEAMAccessor:
         ret.sort_index(key=lambda cols: [order.index(c) for c in cols], axis=1, inplace=True)
 
         # return
+        return ret
+
+    # combine columns into new variable
+    def varcombine(self, pattern: str, keep_cols: bool = False):
+        ret = self._df.assign(variable=self._df.apply(lambda row: pattern.format(**row), axis=1))
+        if not keep_cols:
+            ret.drop(columns=[col for col in ret if col != 'variable' and f"{{{col}}}" in pattern], inplace=True)
         return ret
 
     # convert units
