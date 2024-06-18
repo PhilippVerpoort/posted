@@ -329,8 +329,8 @@ class LCOX(AbstractManipulation):
     def calc_cost(self, df: pd.DataFrame) -> pd.DataFrame:
         tech = self._varsplit(df, f"Tech|{self._process}|?variable")
         prices = self._varsplit(df, 'Price|?io')
-        iocaps = self._varsplit(df, regex=fr"Tech\|{self._process}\|((?:Input|Output) Capacity\|.*)")
-        ios = self._varsplit(df, regex=fr"Tech\|{self._process}\|((?:Input|Output)\|.*)")
+        iocaps = self._varsplit(df, regex=fr"Tech\|{re.escape(self._process)}\|((?:Input|Output) Capacity\|.*)")
+        ios = self._varsplit(df, regex=fr"Tech\|{re.escape(self._process)}\|((?:Input|Output)\|.*)")
 
         # determine reference capacity and reference of that reference capacity for CAPEX and OPEX Fixed
         if any(c in tech for c in ('CAPEX', 'OPEX Fixed')):
@@ -364,17 +364,22 @@ class LCOX(AbstractManipulation):
             ret['OM Variable'] = tech['OPEX Variable']
 
         # calc input cost
+        unused = []
         for io in ios:
             if io == self._reference:
                 continue
             io_type, io_flow = io.split('|', 2)
             if io_flow not in prices:
-                warnings.warn(
-                    f"'{io}' is ignored in LCOX, because it is neither the reference nor an associated price is given.")
+                unused.append(io)
                 continue
             # inputs are counted as costs, outputs are counted as revenues
             sign = +1 if io_type == 'Input' else -1
-            ret[f"{io_type} Cost|{io_flow}"] = sign * ios[io] * prices[io_flow]
+            ret[f"{io_type} {'Cost' if io_type == 'Input' else 'Revenue'}|{io_flow}"] = sign * ios[io] * prices[io_flow]
+
+        # warn about unused variables
+        if unused:
+            warnings.warn(f"The following inputs/outputs are not used in LCOX, because they are neither the reference "
+                          f"nor an associated price are given: {', '.join(unused)}")
 
         return ret
 
