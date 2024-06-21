@@ -43,8 +43,7 @@ plugins:
       python:
         options:
           docstring_style: numpy
-- social:
-    cards_layout: default
+
 
 repo_name: github/POSTED
 repo_url: https://github.com/PhilippVerpoort/posted/docs
