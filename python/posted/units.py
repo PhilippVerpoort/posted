@@ -224,8 +224,8 @@ def split_off_variant(unit: str):
 
     Parameters
     ----------
-        unit : str
-            String that may contain a unit and its variant separated by a semicolon.
+    unit : str
+        String that may contain a unit and its variant separated by a semicolon.
 
     Returns
     -------

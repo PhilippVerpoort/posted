@@ -4,7 +4,7 @@ extra:
 markdown_extensions:
 - pymdownx.superfences
 - pymdownx.tabbed:
-    alternate_style: yes
+    alternate_style: true
 - pymdownx.snippets:
     base_path: docs
 nav:
@@ -35,16 +35,14 @@ nav:
     - units: python_modules/docs_units.md
 plugins:
 - mkdocs-jupyter:
-    execute: yes
-    include_requirejs: yes
+    execute: true
+    include_requirejs: true
 - search
 - mkdocstrings:
     handlers:
       python:
         options:
           docstring_style: numpy
-
-
 repo_name: github/POSTED
 repo_url: https://github.com/PhilippVerpoort/posted/docs
 site_name: POSTED documentation

@@ -22,10 +22,12 @@ def has_documentable_function_or_class(file_path):
 with open('mkdocs.yml', 'r') as file:
     mkdocs = yaml.safe_load(file)
 
-
-
+file_names = os.listdir(dir_path)
+print(file_names)
+file_names.sort()
+print(file_names)
 # Loop through each file in the directory
-for file_name in os.listdir(dir_path):
+for file_name in file_names:
 
     # Construct the full file path
     file_path = os.path.join(dir_path, file_name)

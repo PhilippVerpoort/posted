@@ -14,16 +14,16 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
 
     Parameters
     ----------
-        definitions_dir : Path
-            Path leading to the definitions
-        flows : dict
-            Dictionary containng the different flow types. Each key represents a flow type, the corresponding
-            value is a dictionary containing key value pairs of attributes like denisty, energycontent and their
-            values.
-        techs : dict
-            Dictionary containing information about different technologies. Each key in the
-            dictionary represents a unique technology ID, and the corresponding value is a dictionary containing
-            various specifications for that technology, like 'description', 'class', 'primary output' etc.
+    definitions_dir : Path
+        Path leading to the definitions
+    flows : dict
+        Dictionary containng the different flow types. Each key represents a flow type, the corresponding
+        value is a dictionary containing key value pairs of attributes like denisty, energycontent and their
+        values.
+    techs : dict
+        Dictionary containing information about different technologies. Each key in the
+        dictionary represents a unique technology ID, and the corresponding value is a dictionary containing
+        various specifications for that technology, like 'description', 'class', 'primary output' etc.
 
     Returns
     -------
@@ -92,13 +92,13 @@ def replace_tags(definitions: dict, tag: str, items: dict[str, dict]):
 
     Parameters
     ----------
-        definitions : dict
-            Dictionary containing the definitions, where the tags should be replaced by the items
-        tag : str
-            String to identify where replacements should be made in the definitions. Specifies
-            the placeholder that needs to be replaced with actual values from the `items` dictionary.
-        items : dict[str, dict]
-            Dictionary containing the items from whith to replace the definitions
+    definitions : dict
+        Dictionary containing the definitions, where the tags should be replaced by the items
+    tag : str
+        String to identify where replacements should be made in the definitions. Specifies
+        the placeholder that needs to be replaced with actual values from the `items` dictionary.
+    items : dict[str, dict]
+        Dictionary containing the items from whith to replace the definitions
 
     Returns
     -------
@@ -139,10 +139,10 @@ def unit_token_func(unit_component: Literal['full', 'raw', 'variant'], flows: di
 
     Parameters
     ----------
-        unit_component : Literal['full', 'raw', 'variant']
-            Specifies the type of unit token to be returned.
-        flows : dict
-            Dictionary containg the flows
+    unit_component : Literal['full', 'raw', 'variant']
+        Specifies the type of unit token to be returned.
+    flows : dict
+        Dictionary containg the flows
 
 
     Returns

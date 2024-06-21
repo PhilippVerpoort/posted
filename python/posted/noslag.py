@@ -87,17 +87,17 @@ def normalise_units(df: pd.DataFrame, level: Literal['reported', 'reference'], v
 
     Parameters
     ----------
-        df : pd.DataFrame
-            Dataframe to be normalised
-        level : Literal['reported', 'reference']
-            Specifies whether the data should be normalised on the reported or reference values
-        var_units : dict[str, str]
-            Dictionary that maps a combination of parent variable and variable
-            to its corresponding unit. The keys in the dictionary are in the format "{parent_variable}|{variable}",
-            and the values are the units associated with that variable.
-        var_flow_ids : dict[str, str]
-            Dictionary that maps a combination of parent variable and variable to a
-            specific flow ID. This flow ID is used for unit conversion in the `normalise_units` function.
+    df : pd.DataFrame
+        Dataframe to be normalised
+    level : Literal['reported', 'reference']
+        Specifies whether the data should be normalised on the reported or reference values
+    var_units : dict[str, str]
+        Dictionary that maps a combination of parent variable and variable
+        to its corresponding unit. The keys in the dictionary are in the format "{parent_variable}|{variable}",
+        and the values are the units associated with that variable.
+    var_flow_ids : dict[str, str]
+        Dictionary that maps a combination of parent variable and variable to a
+        specific flow ID. This flow ID is used for unit conversion in the `normalise_units` function.
 
     Returns
     -------
@@ -193,17 +193,17 @@ class HarmoniseMappingFailure(Warning):
 
     Parameters
     ----------
-        row_data: pd.DataFrame
-            Contains the Data on the rows to map
-        message: str, optional
-            Contains the message of the failure
+    row_data: pd.DataFrame
+        Contains the Data on the rows to map
+    message: str, optional
+        Contains the message of the failure
 
     Attributes
     ----------
-        row_data
-            the data of the row that causes the failure
-        message
-            explanation of the error
+    row_data
+        the data of the row that causes the failure
+    message
+        explanation of the error
     """
     def __init__(self, row_data: pd.DataFrame, message: str = "Failure when selecting from dataset."):
         '''Save constructor arguments as public fields, compose warning message, call super constructor'''
@@ -224,10 +224,10 @@ def combine_units(numerator: str, denominator: str):
 
     Parameters
     ----------
-        numerator: str
-            numerator of the fraction
-        denominator: str
-            denominator of the fraction
+    numerator: str
+        numerator of the fraction
+    denominator: str
+        denominator of the fraction
 
     Returns
     -------
@@ -248,12 +248,20 @@ def combine_units(numerator: str, denominator: str):
 
 class DataSet(TEBase):
     '''Class to store, normalise, select and aggregate DataSets
-
-
-
-    Attributes
+     Parameters
     ----------
-        data
+    parent_variable: str
+        Variable to collect Data on
+    include_databases: Optional[list|str] | tuple[str]], optional
+        Databases to load from
+    file_paths: Optional[list[path]], optional
+        Paths to load data from
+    check_inconsistencies: bool, optional
+        Wether to check for inconsistencies
+    data: Optional[pd.DataFrame], optional
+        Specific data to include in the dataset
+
+
     '''
     _df: None | pd.DataFrame
     _columns: dict[str, AbstractColumnDefinition]
@@ -270,18 +278,6 @@ class DataSet(TEBase):
                  ):
         '''Initialise parent class and fields, load data from specified databases and files
 
-        Parameters
-        ----------
-        parent_variable: str
-            Variable to collect Data on
-        include_databases: Optional[list|str] | tuple[str]], optional
-            Databases to load from
-        file_paths: Optional[list[path]], optional
-            Paths to load data from
-        check_inconsistencies: bool, optional
-            Wether to check for inconsistencies
-        data: Optional[pd.DataFrame], optional
-            Specific data to include in the dataset
 
         '''
         TEBase.__init__(self, parent_variable)
@@ -307,7 +303,7 @@ class DataSet(TEBase):
 
     @property
     def data(self):
-        '''Get or set dataframe'''
+        '''str: Get or set dataframe'''
         return self._df
 
     def set_data(self, df: pd.DataFrame):

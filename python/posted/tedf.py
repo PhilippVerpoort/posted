@@ -65,8 +65,8 @@ class TEBase:
 
     Parameters
     ----------
-        parent_variable: str
-            Variable from which Data should be collected
+    parent_variable: str
+        Variable from which Data should be collected
     """
     # initialise
     def __init__(self, parent_variable: str):
@@ -86,36 +86,27 @@ class TEDF(TEBase):
 
     Parameters
     ----------
-        parent_variable: str
-            Variable from which Data should be collected
-        database_id: str, default: public
-            Database from which to load data
-        file_path: Path, optional
-            File Path from which to load file
-        data: pd.DataFrame, optional
-            Specific Technoeconomic data
-
-    Properties
-    ----------
-        file_path
-            Get or set the file path
-        data
-            Get data
-        inconsistencies
-            Get inconsistencies
+    parent_variable: str
+        Variable from which Data should be collected
+    database_id: str, default: public
+        Database from which to load data
+    file_path: Path, optional
+        File Path from which to load file
+    data: pd.DataFrame, optional
+        Specific Technoeconomic data
 
     Methods
     ----------
-        load
-            Load TEDataFile if it has not been read yet
-        read
-            Read TEDF from CSV file
-        write
-            Write TEDF to CSV file
-        check
-            Check if TEDF is consistent
-        check_row
-            Check that row in TEDF is consistent and return all inconsistencies found for row
+    load
+        Load TEDataFile if it has not been read yet
+    read
+        Read TEDF from CSV file
+    write
+        Write TEDF to CSV file
+    check
+        Check if TEDF is consistent
+    check_row
+        Check that row in TEDF is consistent and return all inconsistencies found for row
     """
 
     # typed delcarations
@@ -161,10 +152,10 @@ class TEDF(TEBase):
 
         Warns
         ----------
-            warning
-                Warns if TEDF is already loaded
+        warning
+            Warns if TEDF is already loaded
         Returns
-        ----------
+        --------
             TEDF
                 Returns the TEDF object it is called on
         """
@@ -181,8 +172,8 @@ class TEDF(TEBase):
 
         Raises
         ------
-            Exception
-                If there is no file path from which to read
+        Exception
+            If there is no file path from which to read
         """
 
         if self._file_path is None:
@@ -216,6 +207,8 @@ class TEDF(TEBase):
         """
         Write TEDF to CSV file
 
+        Raises
+        ------
         Exception
             If there is no file path that specifies where to write
         """
@@ -249,8 +242,8 @@ class TEDF(TEBase):
 
         Parameters
         ----------
-            raise_exception: bool, default: True
-                If exception is to be raised
+        raise_exception: bool, default: True
+            If exception is to be raised
         """
         self._inconsistencies = {}
 
@@ -264,10 +257,10 @@ class TEDF(TEBase):
 
         Parameters
         ----------
-            row_id: int
-                Index of the row to check
-            raise_exception: bool
-                If exception is to be raised
+        row_id: int
+            Index of the row to check
+        raise_exception: bool
+            If exception is to be raised
 
         Returns
         -------

@@ -26,8 +26,8 @@ def read_yml_file(fpath: Path):
 
     Parameters
     ----------
-        fpath: str
-            Path of the file to read
+    fpath: str
+        Path of the file to read
     Returns
     -------
         dict
