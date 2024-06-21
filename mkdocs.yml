@@ -13,25 +13,26 @@ nav:
 - Sources: sources.md
 - Get started: get_started.md
 - Tutorial:
-  - Python: docs_python_tutorial.ipynb
-  - R: docs_r_tutorial.ipynb
+  - Python: docs_python_tutorial.py
+  - R: docs_r_tutorial.py
 - Documentation:
   - R:
     - columns: R_modules/docs_columns.md
+    - definitions: R_modules/docs_definitions.md
     - masking: R_modules/docs_masking.md
     - noslag: R_modules/docs_noslag.md
     - read: R_modules/docs_read.md
     - tedf: R_modules/docs_tedf.md
     - units: R_modules/docs_units.md
   - Python:
-    - units: python_modules/docs_units.md
-    - definitions: python_modules/docs_definitions.md
-    - tedf: python_modules/docs_tedf.md
-    - noslag: python_modules/docs_noslag.md
-    - masking: python_modules/docs_masking.md
     - columns: python_modules/docs_columns.md
-    - sources: python_modules/docs_sources.md
+    - definitions: python_modules/docs_definitions.md
+    - masking: python_modules/docs_masking.md
+    - noslag: python_modules/docs_noslag.md
     - read: python_modules/docs_read.md
+    - sources: python_modules/docs_sources.md
+    - tedf: python_modules/docs_tedf.md
+    - units: python_modules/docs_units.md
 plugins:
 - mkdocs-jupyter:
     execute: yes
@@ -42,6 +43,9 @@ plugins:
       python:
         options:
           docstring_style: numpy
+- social:
+    cards_layout: default
+
 repo_name: github/POSTED
 repo_url: https://github.com/PhilippVerpoort/posted/docs
 site_name: POSTED documentation
