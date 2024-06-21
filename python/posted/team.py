@@ -11,8 +11,7 @@ from pint.errors import DimensionalityError
 from numpy.linalg import solve
 from pandas.core.groupby import DataFrameGroupBy
 
-from posted.units import ureg, unit_convert
-
+from posted.units import ureg, unit_convert, Q, U
 
 try:
     import igraph
@@ -36,14 +35,14 @@ pint_pandas.PintType.ureg = ureg
 
 
 # calculate annuity factor
-def _annuity_factor(ir: ureg.Quantity, n: ureg.Quantity):
+def annuity_factor(ir: Q, n: Q):
     try:
-        n = n.to('a').m
         ir = ir.to('dimensionless').m
+        n = n.to('a').m
     except DimensionalityError:
         return np.nan
 
-    return ir * (1 + ir) ** n / ((1 + ir) ** n - 1) / ureg('a')
+    return ir * (1 + ir) ** n / ((1 + ir) ** n - 1) / Q('1 a')
 
 
 # define abstract manipulation class
@@ -51,6 +50,31 @@ class AbstractManipulation:
     @abstractmethod
     def perform(self, df: pd.DataFrame) -> pd.DataFrame:
         pass
+
+    def _varsplit(self, df: pd.DataFrame, cmd: Optional[str] = None, regex: Optional[str] = None) -> pd.DataFrame:
+        # check that precisely one of the two arguments (cmd and regex) is provided
+        if cmd is not None and regex is not None:
+            raise Exception('Only one of the two arguments may be provided: cmd or regex.')
+        if cmd is None and regex is None:
+            raise Exception('Either a command or a regex string must be provided.')
+
+        # determine regex from cmd if necessary
+        if regex is None:
+            regex = '^' + r'\|'.join([
+                rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else
+                rf'(?P<{t[1:]}>.*)' if t[0] == '*' else
+                re.escape(t)
+                for t in cmd.split('|')
+            ]) + '$'
+
+        cols_extracted = df.columns.str.extract(regex)
+        df_new = df[df.columns[cols_extracted.notnull().all(axis=1)]]
+        df_new.columns = (
+            pd.MultiIndex.from_frame(cols_extracted.dropna())
+            if len(cols_extracted.columns) > 1 else
+            cols_extracted.dropna().iloc[:, 0]
+        )
+        return df_new
 
 
 # pandas dataframe accessor for groupby and perform methods
@@ -64,8 +88,12 @@ class TEAMAccessor:
 
         # check that at least variable, unit, and value are among the columns
         if not all(c in df for c in ('variable', 'unit', 'value')):
-            raise ValueError('Can only use .team accessor with team-like dataframes that contain at least the variable, '
-                             'unit, and value columns.')
+            raise ValueError('Can only use .team accessor with team-like dataframes that contain at least the '
+                             'variable, unit, and value columns.')
+
+        # warn if 'unfielded' column exists
+        if 'unfielded' in df.columns:
+            warnings.warn("Having a column named 'unfielded' in the dataframe may result in unexpected behaviour.")
 
         # store arguments
         self._df = df
@@ -96,11 +124,31 @@ class TEAMAccessor:
 
     # pivot posted-formatted dataframe from long to wide (variables as columns)
     def pivot_wide(self):
-        ret = self.explode().pivot(
-            index=self._fields,
+        # explode
+        ret = self.explode()
+
+        # check units are harmonised across variables before pivot
+        units = ret[['variable', 'unit']].drop_duplicates()
+        if not units['variable'].is_unique:
+            duplicate_units = units.loc[units['variable'].duplicated()]['variable'].tolist()
+            raise Exception(f"Cannot pivot wide on a dataframe where variables have multiple units: "
+                            f"{', '.join(duplicate_units)}")
+
+        # create dummy field if non exists
+        if not self._fields:
+            ret = ret.assign(unfielded=0)
+            fields = self._fields + ['unfielded']
+        else:
+            fields = self._fields
+
+        # pivot dataframe
+        ret = ret.pivot(
+            index=fields,
             columns=['variable', 'unit'],
             values='value',
         )
+
+        # check unit exists for all columns
         if ret.columns.get_level_values(level='unit').isna().any():
             raise Exception('Unit column may not contain NaN entries. Please use "dimensionless" or "No Unit" if the '
                             'variable has no unit.')
@@ -115,6 +163,8 @@ class TEAMAccessor:
         for manipulation in manipulations:
             original_index = df_pivot.index
             df_pivot = manipulation.perform(df_pivot)
+            if not isinstance(df_pivot, pd.DataFrame):
+                raise Exception('Manipulation must return a dataframe.')
             if not df_pivot.index.equals(original_index):
                 raise Exception('Manipulation may not change the index.')
 
@@ -135,6 +185,10 @@ class TEAMAccessor:
         if only_new:
             ret = ret.loc[~ret['variable'].isin(self._df['variable'].unique())]
 
+        # drop unfielded if exists
+        if 'unfielded' in ret.columns:
+            ret = ret.drop(columns='unfielded')
+
         # return
         return ret.reset_index(drop=True)
 
@@ -149,37 +203,57 @@ class TEAMAccessor:
 
         # determine regex from cmd if necessary
         if regex is None:
-            regex = '^' + r'\|'.join([rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else t for t in cmd.split('|')]) + '$'
+            regex = '^' + r'\|'.join([
+                rf'(?P<{t[1:]}>[^|]*)' if t[0] == '?' else
+                rf'(?P<{t[1:]}>.*)' if t[0] == '*' else
+                re.escape(t)
+                for t in cmd.split('|')
+            ]) + '$'
 
         # determine value of new variable column from arguments
         if new_variable is False:
             new_variable = None
         elif new_variable is True:
             if cmd is None:
-                warnings.warn("The variable cannot be set automatically when using a custom regex.")
                 new_variable = None
             else:
-                new_variable = '|'.join([t for t in cmd.split('|') if t[0] != '?'])
+                new_variable = '|'.join([t for t in cmd.split('|') if t[0] not in ('?', '*')])
 
         # create dataframe to be returned by applying regex to variable column and dropping unmatched rows
-        ret = self._df['variable'].str.extract(regex)
-
-        # assign new variable column and drop if all are nan
-        cond = ret.notnull().any(axis=1)
-        ret['variable'] = self._df['variable']
-        ret.loc[cond, 'variable'] = new_variable or np.nan
+        matched = self._df['variable'].str.extract(regex)
 
         # drop unmatched rows if requested
         if not keep_unmatched:
-            ret.dropna(inplace=True)
+            matched.dropna(inplace=True)
+
+        # assign new variable column and drop if all are nan
+        if 'variable' not in matched:
+            cond = matched.notnull().any(axis=1)
+            matched['variable'] = self._df['variable']
+            matched.loc[cond, 'variable'] = new_variable or np.nan
+            if new_variable is None:
+                warnings.warn('New variable could not be set automatically.')
 
         # drop variable column if all nan
-        if ret['variable'].isnull().all():
-            ret.drop(columns='variable', inplace=True)
+        if matched['variable'].isnull().all():
+            matched.drop(columns='variable', inplace=True)
 
-        # combine with original dataframe and return
-        return ret.combine_first(self._df.loc[ret.index].drop(columns='variable'))
+        # combine with original dataframe
+        ret = matched.combine_first(self._df.loc[matched.index].drop(columns='variable'))
 
+        # sort columns
+        order = matched.columns.tolist() + self._df.columns.tolist()
+        ret.sort_index(key=lambda cols: [order.index(c) for c in cols], axis=1, inplace=True)
+
+        # return
+        return ret
+
+    # combine columns into new variable
+    def varcombine(self, pattern: str, keep_cols: bool = False):
+        ret = self._df.assign(variable=self._df.apply(lambda row: pattern.format(**row), axis=1))
+        if not keep_cols:
+            ret.drop(columns=[col for col in ret if col != 'variable' and f"{{{col}}}" in pattern], inplace=True)
+        return ret
 
     # convert units
     def unit_convert(self, to: str | pint.Unit | dict[str, str | pint.Unit], flow_id: Optional[str] = None):
@@ -225,6 +299,89 @@ class CalcVariable(AbstractManipulation):
             df.eval(expr_assignment, inplace=True, engine='python')
         df = df.assign(**self._kw_assignments)
         return df
+
+
+# calculate levelised cost of X
+class LCOX(AbstractManipulation):
+    _name: str
+    _reference: str
+    _process: str
+    _interest_rate: Optional[float]
+    _book_lifetime: Optional[float]
+
+    def __init__(self, name: str, process: str, reference: str,
+                 interest_rate: Optional[float] = None, book_lifetime: Optional[float] = None):
+        self._name = name
+        self._reference = reference
+        self._process = process
+        self._interest_rate = interest_rate * U('') if isinstance(interest_rate, int | float) else interest_rate
+        self._book_lifetime = book_lifetime * U('a') if isinstance(book_lifetime, int | float) else book_lifetime
+
+    # perform
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        # calculate levelised cost, prepend "LCOX|{name}|" before column names, and divide by reference
+        ret = self.calc_cost(df) \
+            .rename(columns=lambda col_name: f"LCOX|{self._name}|{col_name}") \
+            .apply(lambda col: col / df[f"Tech|{self._process}|{self._reference}"])
+        return pd.concat([df, ret], axis=1)
+
+    # calc levelised cost
+    def calc_cost(self, df: pd.DataFrame) -> pd.DataFrame:
+        tech = self._varsplit(df, f"Tech|{self._process}|?variable")
+        prices = self._varsplit(df, 'Price|?io')
+        iocaps = self._varsplit(df, regex=fr"Tech\|{re.escape(self._process)}\|((?:Input|Output) Capacity\|.*)")
+        ios = self._varsplit(df, regex=fr"Tech\|{re.escape(self._process)}\|((?:Input|Output)\|.*)")
+
+        # determine reference capacity and reference of that reference capacity for CAPEX and OPEX Fixed
+        if any(c in tech for c in ('CAPEX', 'OPEX Fixed')):
+            try:
+                cap = iocaps.iloc[:, 0]
+                capref = ios[re.sub(r'(Input|Output) Capacity', r'\1', cap.name)]
+            except IndexError:
+                warnings.warn('Could not find a reference capacity for CAPEX and OPEX columns.')
+                cap = capref = None
+            except KeyError:
+                warnings.warn('Could not find reference matching the reference capacity.')
+                capref = None
+        else:
+            cap = capref = None
+
+        ret = pd.DataFrame(index=df.index)
+
+        # calc capital cost and fixed OM cost
+        if cap is not None and capref is not None:
+            OCF = tech['OCF'] if 'OCF' in tech else 1.0
+
+            if 'CAPEX' in tech:
+                ANF = annuity_factor(self._interest_rate, self._book_lifetime)
+                ret['Capital'] = ANF * tech['CAPEX'] / OCF / cap * capref
+
+            if 'OPEX Fixed' in tech:
+                ret['OM Fixed'] = tech['OPEX Fixed'] / OCF / cap * capref
+
+        # calc var OM cost
+        if 'OPEX Variable' in tech:
+            ret['OM Variable'] = tech['OPEX Variable']
+
+        # calc input cost
+        unused = []
+        for io in ios:
+            if io == self._reference:
+                continue
+            io_type, io_flow = io.split('|', 2)
+            if io_flow not in prices:
+                unused.append(io)
+                continue
+            # inputs are counted as costs, outputs are counted as revenues
+            sign = +1 if io_type == 'Input' else -1
+            ret[f"{io_type} {'Cost' if io_type == 'Input' else 'Revenue'}|{io_flow}"] = sign * ios[io] * prices[io_flow]
+
+        # warn about unused variables
+        if unused:
+            warnings.warn(f"The following inputs/outputs are not used in LCOX, because they are neither the reference "
+                          f"nor an associated price are given: {', '.join(unused)}")
+
+        return ret
 
 
 # building value chains
@@ -387,7 +544,7 @@ class BuildValueChain(AbstractManipulation):
         func_units = solve(tsm, d)
 
         return pd.Series({
-            f"Value Chain|{self._name}|Functional Units|{proc}": func_units[i] * ureg('')
+            f"Value Chain|{self._name}|Functional Units|{proc}": func_units[i] * U('')
             for i, proc in enumerate(list(self._proc_graph.keys()))
         } | ({
             f"Value Chain|{self._name}|Demand|{proc}|{flow}": self._demand[proc][flow]
@@ -410,8 +567,8 @@ class LCOXAnalysis(AbstractManipulation):
                  interest_rate: Optional[float] = None, book_lifetime: Optional[float] = None):
         self._reference = reference
         self._value_chains = value_chains
-        self._interest_rate = interest_rate * ureg('') if isinstance(interest_rate, int | float) else interest_rate
-        self._book_lifetime = book_lifetime * ureg('a') if isinstance(book_lifetime, int | float) else book_lifetime
+        self._interest_rate = interest_rate * U('') if isinstance(interest_rate, int | float) else interest_rate
+        self._book_lifetime = book_lifetime * U('a') if isinstance(book_lifetime, int | float) else book_lifetime
 
     # perform
     def perform(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -512,7 +669,7 @@ class LCOXAnalysis(AbstractManipulation):
 
                     if 'CAPEX' in row_proc:
                         if all(v in row_proc for v in ('Interest Rate', 'Book Lifetime')):
-                            ANF = _annuity_factor(row_proc['Interest Rate'], row_proc['Book Lifetime'])
+                            ANF = annuity_factor(row_proc['Interest Rate'], row_proc['Book Lifetime'])
                             ret['Capital'] = ANF * row_proc['CAPEX'] / reference_capacity * reference
                         else:
                             warnings.warn(f"Annuity factor could not be determined.")
@@ -527,3 +684,21 @@ class LCOXAnalysis(AbstractManipulation):
                     warnings.warn(f"Price not found corresponding to Input: {var_io}")
 
         return ret
+
+
+# calculate fuel-switching carbon price
+class FSCP(AbstractManipulation):
+    _fuels: tuple[str]
+
+    def __init__(self, *fuels: str):
+        self._fuels = fuels
+
+    # perform
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        for id_x, fuel_x in enumerate(self._fuels):
+            for id_y, fuel_y in enumerate(self._fuels):
+                if id_x < id_y:
+                    df[f"FSCP|{fuel_x} to {fuel_y}"] = (df[f"Cost|{fuel_y}"] - df[f"Cost|{fuel_x}"]) / (
+                                df[f"GHGI|{fuel_x}"] - df[f"GHGI|{fuel_y}"])
+
+        return df

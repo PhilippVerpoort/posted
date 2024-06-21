@@ -18,6 +18,11 @@ ureg.Unit.default_format = "~P"
 pint.set_application_registry(ureg)
 
 
+# define shorthand notations for quantities and units
+Q = ureg.Quantity
+U = ureg.Unit
+
+
 # define unit variants
 unit_variants = {
     'LHV': {'param': 'energycontent', 'value': 'energycontent_LHV', 'dimension': 'energy', },
