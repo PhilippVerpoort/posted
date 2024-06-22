@@ -193,8 +193,8 @@ class TEAMAccessor:
         return ret.reset_index(drop=True)
 
     # for splitting variable components into separate columns
-    def varsplit(self, cmd: Optional[str] = None, regex: Optional[str] = None,
-                 new_variable: Optional[str | bool] = True, keep_unmatched: bool = False):
+    def varsplit(self, cmd: Optional[str] = None, regex: Optional[str] = None, target: str = 'variable',
+                 new: Optional[str | bool] = True, keep_unmatched: bool = False):
         # check that precisely one of the two arguments (cmd and regex) is provided
         if cmd is not None and regex is not None:
             raise Exception('Only one of the two arguments may be provided: cmd or regex.')
@@ -211,35 +211,35 @@ class TEAMAccessor:
             ]) + '$'
 
         # determine value of new variable column from arguments
-        if new_variable is False:
-            new_variable = None
-        elif new_variable is True:
+        if new is False:
+            new = None
+        elif new is True:
             if cmd is None:
-                new_variable = None
+                new = None
             else:
-                new_variable = '|'.join([t for t in cmd.split('|') if t[0] not in ('?', '*')])
+                new = '|'.join([t for t in cmd.split('|') if t[0] not in ('?', '*')])
 
         # create dataframe to be returned by applying regex to variable column and dropping unmatched rows
-        matched = self._df['variable'].str.extract(regex)
+        matched = self._df[target].str.extract(regex)
 
         # drop unmatched rows if requested
         if not keep_unmatched:
             matched.dropna(inplace=True)
 
         # assign new variable column and drop if all are nan
-        if 'variable' not in matched:
+        if target not in matched:
             cond = matched.notnull().any(axis=1)
-            matched['variable'] = self._df['variable']
-            matched.loc[cond, 'variable'] = new_variable or np.nan
-            if new_variable is None:
-                warnings.warn('New variable could not be set automatically.')
+            matched[target] = self._df[target]
+            matched.loc[cond, target] = new or np.nan
+            if new is None:
+                warnings.warn('New target column could not be set automatically.')
 
         # drop variable column if all nan
-        if matched['variable'].isnull().all():
-            matched.drop(columns='variable', inplace=True)
+        if matched[target].isnull().all():
+            matched.drop(columns=target, inplace=True)
 
         # combine with original dataframe
-        ret = matched.combine_first(self._df.loc[matched.index].drop(columns='variable'))
+        ret = matched.combine_first(self._df.loc[matched.index].drop(columns=target))
 
         # sort columns
         order = matched.columns.tolist() + self._df.columns.tolist()
@@ -249,11 +249,14 @@ class TEAMAccessor:
         return ret
 
     # combine columns into new variable
-    def varcombine(self, pattern: str, keep_cols: bool = False):
-        ret = self._df.assign(variable=self._df.apply(lambda row: pattern.format(**row), axis=1))
-        if not keep_cols:
-            ret.drop(columns=[col for col in ret if col != 'variable' and f"{{{col}}}" in pattern], inplace=True)
-        return ret
+    def varcombine(self, cmd: str | Callable, keep_cols: bool = False, target: str = 'variable'):
+        ret = self._df.assign(**{
+            target: self._df.apply(lambda row: cmd.format(**row) if isinstance(cmd, str) else cmd(row), axis=1),
+        })
+        return ret if keep_cols else ret.filter([
+            col for col in ret
+            if col == target or (isinstance(cmd, Callable) or f"{{{col}}}" not in cmd)
+        ])
 
     # convert units
     def unit_convert(self, to: str | pint.Unit | dict[str, str | pint.Unit], flow_id: Optional[str] = None):
