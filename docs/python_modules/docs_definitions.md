@@ -1,3 +1,2 @@
-# `definitions`
 ::: python.posted.definitions
         

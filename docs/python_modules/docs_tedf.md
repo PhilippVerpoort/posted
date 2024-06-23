@@ -1,3 +1,2 @@
-# `tedf`
 ::: python.posted.tedf
         

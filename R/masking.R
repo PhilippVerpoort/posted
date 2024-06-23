@@ -1,9 +1,9 @@
 library(docstring)
 library(roxygen2)
 
-#' apply_cond
+#' @title apply_cond
 #'
-#' Takes a pandas DataFrame and a condition, which can be a string, dictionary,
+#' @description Takes a pandas DataFrame and a condition, which can be a string, dictionary,
 #' or callable, and applies the condition to the DataFrame using \code{eval} or \code{apply}
 #' accordingly.
 #'
@@ -28,7 +28,7 @@ apply_cond <- function(df, cond) {
   }
 }
 
-#' @title Class for Masks
+#' @title Mask
 #'
 #' @description Class to define masks with conditions and weights to apply to DataFiles
 Mask <- R6::R6Class("Mask",

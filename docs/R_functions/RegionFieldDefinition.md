@@ -1,17 +1,18 @@
-## Description
+## `RegionFieldDefinition`
+### Description
 
 Class to store Region fields
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`RegionFieldDefinition$new()`](#method-RegionFieldDefinition-new)
 * [`RegionFieldDefinition$clone()`](#method-RegionFieldDefinition-clone)
 
 <a id="method-RegionFieldDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the RegionFieldDefinition class
 
@@ -29,7 +30,7 @@ RegionFieldDefinition$new(name, description)
 
 
 <a id="method-RegionFieldDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

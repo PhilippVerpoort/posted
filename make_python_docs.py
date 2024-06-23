@@ -47,8 +47,7 @@ for file_name in file_names:
 
 
             # Define the content of the markdown file
-            content = f"""# `{modified_name}`
-::: python.posted.{modified_name}
+            content = f"""::: python.posted.{modified_name}
         """
 
             # Define the path of the folder and file

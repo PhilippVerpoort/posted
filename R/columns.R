@@ -89,7 +89,7 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
 
   ),
   active = list(
-    #' @field col_type (`character(1)`)\cr
+    #' @field col_type (`character(1)`)
     #' Type of the column, Read-only
     col_type = function() {
       private$..col_type
@@ -101,25 +101,25 @@ AbstractColumnDefinition <- R6::R6Class("AbstractColumnDefinition",
       private$..name
     },
 
-    #' @field description (`character(1)`)\cr
+    #' @field description (`character(1)`)
     #' Description of the column, Read-only
     description = function() {
       private$..description
     },
 
-    #' @field dtype (`character(1)`)\cr
+    #' @field dtype (`character(1)`)
     #' Data type of the column, Read-only
     dtype = function() {
       private$..dtype
     },
 
-    #' @field required (`logical`)\cr
+    #' @field required (`logical`)
     #' If the column is required, Read-only
     required = function() {
       private$..required
     },
 
-    #' @field default (`character(1)`)\cr
+    #' @field default (`character(1)`)
     #' The default of the column, Read-only
     default = function() {
       NA
@@ -722,9 +722,6 @@ base_columns <- list(
     required = TRUE
   )
 )
-
-
-
 
 
 read_fields <- function(variable) {

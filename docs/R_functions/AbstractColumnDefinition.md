@@ -1,18 +1,19 @@
-## Description
+## `AbstractColumnDefinition`
+### Description
 
 Abstract class to store columns
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`AbstractColumnDefinition$new()`](#method-AbstractColumnDefinition-new)
 * [`AbstractColumnDefinition$is_allowed()`](#method-AbstractColumnDefinition-is_allowed)
 * [`AbstractColumnDefinition$clone()`](#method-AbstractColumnDefinition-clone)
 
 <a id="method-AbstractColumnDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the AbstractColumnDefinition class
 
@@ -33,7 +34,7 @@ AbstractColumnDefinition$new(col_type, name, description, dtype, required)
 
 
 <a id="method-AbstractColumnDefinition-is_allowed"></a>
-### Method `is_allowed()`
+#### Method `is_allowed()`
 
 Tests if cell is allowed
 
@@ -50,7 +51,7 @@ AbstractColumnDefinition$is_allowed(cell)
 
 
 <a id="method-AbstractColumnDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

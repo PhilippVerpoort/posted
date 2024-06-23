@@ -1,18 +1,19 @@
-## Description
+## `CommentDefinition`
+### Description
 
 Class to store comment columns
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`CommentDefinition$new()`](#method-CommentDefinition-new)
 * [`CommentDefinition$is_allowed()`](#method-CommentDefinition-is_allowed)
 * [`CommentDefinition$clone()`](#method-CommentDefinition-clone)
 
 <a id="method-CommentDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the CommentDefinition Class
 
@@ -31,7 +32,7 @@ CommentDefinition$new(name, description, required)
 
 
 <a id="method-CommentDefinition-is_allowed"></a>
-### Method `is_allowed()`
+#### Method `is_allowed()`
 
 Tests if cell is allowed
 
@@ -48,7 +49,7 @@ CommentDefinition$is_allowed(cell)
 
 
 <a id="method-CommentDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

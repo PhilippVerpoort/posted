@@ -1,26 +1,26 @@
-# `normalise_values`
+## `normalise_values`
 
 normalise_values
 
-## Description
+### Description
 
 Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
 columns by the reference value, and updates the 'reference_value' column accordingly.
 
 
-## Usage
+### Usage
 
 ```r
 normalise_values(df)
 ```
 
-## Arguments
+### Arguments
 
 Argument      |Description
 ------------- |----------------
 `df` | DataFrame. Dataframe to be normalized.
 
-## Return Value
+### Return Value
 
 DataFrame. Returns a modified DataFrame where the 'value' column has been
 divided by the 'reference_value' column (or 1.0 if 'reference_value' is null), the 'uncertainty'
@@ -28,10 +28,10 @@ column has been divided by the 'reference_value' column, and the 'reference_valu
 replaced with 1.0 if it was not null.
 
 
-## Examples
+### Examples
 
 ```r
-# Example usage:
+## Example usage:
 normalized_df <- normalize_values(df)
 ```
 

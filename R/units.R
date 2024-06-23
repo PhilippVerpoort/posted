@@ -21,7 +21,7 @@ unit_variants <- list(
 
 #' @title unit_convert
 #'
-#' Converts units with optional flow context handling based on
+#' @description Converts units with optional flow context handling based on
 #' specified variants and flow ID. The function checks if the input units are not NaN,
 #' then it proceeds to handle different cases based on the presence of a flow context and unit
 #' variants.

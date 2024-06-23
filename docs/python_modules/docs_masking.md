@@ -1,3 +1,2 @@
-# `masking`
 ::: python.posted.masking
         

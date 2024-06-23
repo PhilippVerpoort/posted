@@ -1,22 +1,23 @@
-## Description
+## `AbstractFieldDefinition`
+### Description
 
 Abstract class to store fields
 
 
-## Examples
+### Examples
 
 ```r
-## ------------------------------------------------
-## Method `AbstractFieldDefinition$select_and_expand`
-## ------------------------------------------------
+### ------------------------------------------------
+### Method `AbstractFieldDefinition$select_and_expand`
+### ------------------------------------------------
 
-# Example usage:
-# select_and_expand(df, "col_id", field_vals = NULL)
+## Example usage:
+## select_and_expand(df, "col_id", field_vals = NULL)
 ```
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`AbstractFieldDefinition$new()`](#method-AbstractFieldDefinition-new)
 * [`AbstractFieldDefinition$is_allowed()`](#method-AbstractFieldDefinition-is_allowed)
@@ -24,7 +25,7 @@ Abstract class to store fields
 * [`AbstractFieldDefinition$clone()`](#method-AbstractFieldDefinition-clone)
 
 <a id="method-AbstractFieldDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the AbstractFieldDefinition Class
 
@@ -53,7 +54,7 @@ AbstractFieldDefinition$new(
 
 
 <a id="method-AbstractFieldDefinition-is_allowed"></a>
-### Method `is_allowed()`
+#### Method `is_allowed()`
 
 Tests if cell is allowed
 
@@ -70,7 +71,7 @@ AbstractFieldDefinition$is_allowed(cell)
 
 
 <a id="method-AbstractFieldDefinition-select_and_expand"></a>
-### Method `select_and_expand()`
+#### Method `select_and_expand()`
 
 Select and expand fields which are valid for multiple periods or other field vals
 
@@ -92,8 +93,8 @@ AbstractFieldDefinition$select_and_expand(df, col_id, field_vals = NA, ...)
 <b>Example:</b>
 
 ```r
-# Example usage:
-# select_and_expand(df, "col_id", field_vals = NULL)
+## Example usage:
+## select_and_expand(df, "col_id", field_vals = NULL)
 ```
 
 <b>Returns:</b>
@@ -103,7 +104,7 @@ DataFrame where fields are selected and expanded
 
 
 <a id="method-AbstractFieldDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

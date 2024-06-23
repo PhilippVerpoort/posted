@@ -1,17 +1,18 @@
-## Description
+## `SourceFieldDefinition`
+### Description
 
 Class to store Source fields
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`SourceFieldDefinition$new()`](#method-SourceFieldDefinition-new)
 * [`SourceFieldDefinition$clone()`](#method-SourceFieldDefinition-clone)
 
 <a id="method-SourceFieldDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the SourceFieldDefinition class
 
@@ -29,7 +30,7 @@ SourceFieldDefinition$new(name, description)
 
 
 <a id="method-SourceFieldDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

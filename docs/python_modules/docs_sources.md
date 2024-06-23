@@ -1,3 +1,2 @@
-# `sources`
 ::: python.posted.sources
         

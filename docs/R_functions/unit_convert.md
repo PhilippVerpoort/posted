@@ -1,8 +1,8 @@
-# `unit_convert`
+## `unit_convert`
 
-Conversion of units with or withour flow ID
+unit_convert
 
-## Description
+### Description
 
 Converts units with optional flow context handling based on
 specified variants and flow ID. The function checks if the input units are not NaN,
@@ -10,13 +10,13 @@ then it proceeds to handle different cases based on the presence of a flow conte
 variants.
 
 
-## Usage
+### Usage
 
 ```r
 unit_convert(unit_from, unit_to, flow_id = NULL)
 ```
 
-## Arguments
+### Arguments
 
 Argument      |Description
 ------------- |----------------
@@ -24,15 +24,15 @@ Argument      |Description
 `unit_to` | Character or numeric. Unit to convert to.
 `flow_id` | Character or NULL. Identifier for the specific flow or process.
 
-## Return Value
+### Return Value
 
 Numeric. Conversion factor between `unit_from` and `unit_to`.
 
 
-## Examples
+### Examples
 
 ```r
-# Example usage:
+## Example usage:
 unit_convert("m", "km", flow_id = NULL)
 ```
 

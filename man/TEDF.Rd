@@ -200,7 +200,7 @@ tedf$check(raise_exception = TRUE)
 \if{html}{\out{<a id="method-TEDF-check_row"></a>}}
 \if{latex}{\out{\hypertarget{method-TEDF-check_row}{}}}
 \subsection{Method \code{check_row()}}{
-checks if row of dataframe has issues
+checks if row of dataframe has issues - NOT IMPLEMENTED YET
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TEDF$check_row(row_id, raise_exception = TRUE)}\if{html}{\out{</div>}}
 }

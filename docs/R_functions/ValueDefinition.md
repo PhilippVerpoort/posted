@@ -1,18 +1,19 @@
-## Description
+## `ValueDefinition`
+### Description
 
 Class to store Value columns
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`ValueDefinition$new()`](#method-ValueDefinition-new)
 * [`ValueDefinition$is_allowed()`](#method-ValueDefinition-is_allowed)
 * [`ValueDefinition$clone()`](#method-ValueDefinition-clone)
 
 <a id="method-ValueDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the ValueDefinition class
 
@@ -31,7 +32,7 @@ ValueDefinition$new(name, description, required)
 
 
 <a id="method-ValueDefinition-is_allowed"></a>
-### Method `is_allowed()`
+#### Method `is_allowed()`
 
 Tests if cell is allowed
 
@@ -48,7 +49,7 @@ ValueDefinition$is_allowed(cell)
 
 
 <a id="method-ValueDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

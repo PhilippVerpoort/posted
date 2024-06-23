@@ -1,33 +1,33 @@
-# `is_float`
+## `is_float`
 
 is_float
 
-## Description
+### Description
 
 Checks if a given string can be converted to a floating-point number in Python.
 
 
-## Usage
+### Usage
 
 ```r
 is_float(string)
 ```
 
-## Arguments
+### Arguments
 
 Argument      |Description
 ------------- |----------------
 `string` | Character. String to check.
 
-## Return Value
+### Return Value
 
 Logical. `TRUE` if conversion was successful, `FALSE` if not.
 
 
-## Examples
+### Examples
 
 ```r
-# Example usage:
+## Example usage:
 is_numeric("3.14")
 ```
 

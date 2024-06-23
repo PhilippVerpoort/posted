@@ -1,18 +1,19 @@
-## Description
+## `PeriodFieldDefinition`
+### Description
 
 Class to store Period fields
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`PeriodFieldDefinition$new()`](#method-PeriodFieldDefinition-new)
 * [`PeriodFieldDefinition$is_allowed()`](#method-PeriodFieldDefinition-is_allowed)
 * [`PeriodFieldDefinition$clone()`](#method-PeriodFieldDefinition-clone)
 
 <a id="method-PeriodFieldDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the PeriodFieldDefinition Class
 
@@ -30,7 +31,7 @@ PeriodFieldDefinition$new(name, description)
 
 
 <a id="method-PeriodFieldDefinition-is_allowed"></a>
-### Method `is_allowed()`
+#### Method `is_allowed()`
 
 Tests if cell is allowed
 
@@ -47,7 +48,7 @@ PeriodFieldDefinition$is_allowed(cell)
 
 
 <a id="method-PeriodFieldDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

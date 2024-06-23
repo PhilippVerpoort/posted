@@ -9,22 +9,22 @@ Abstract class to store columns
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{col_type}}{(\code{character(1)})\cr
+\item{\code{col_type}}{(\code{character(1)})
 Type of the column, Read-only}
 
 \item{\code{name}}{(\code{character(1)})\cr
 Name of the column, Read-only}
 
-\item{\code{description}}{(\code{character(1)})\cr
+\item{\code{description}}{(\code{character(1)})
 Description of the column, Read-only}
 
-\item{\code{dtype}}{(\code{character(1)})\cr
+\item{\code{dtype}}{(\code{character(1)})
 Data type of the column, Read-only}
 
-\item{\code{required}}{(\code{logical})\cr
+\item{\code{required}}{(\code{logical})
 If the column is required, Read-only}
 
-\item{\code{default}}{(\code{character(1)})\cr
+\item{\code{default}}{(\code{character(1)})
 The default of the column, Read-only}
 }
 \if{html}{\out{</div>}}

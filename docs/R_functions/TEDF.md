@@ -1,12 +1,13 @@
-## Description
+## `TEDF`
+### Description
 
 This class is used to store Technoeconomic DataFiles.
 
 
-## Examples
+### Examples
 
 ```r
-# Example usage:
+## Example usage:
 tedf <- TEDF$new("variable_name")
 tedf$load()
 tedf$read("file_path.csv")
@@ -15,41 +16,41 @@ tedf$check()
 tedf$check_row()
 
 
-## ------------------------------------------------
-## Method `TEDF$load`
-## ------------------------------------------------
+### ------------------------------------------------
+### Method `TEDF$load`
+### ------------------------------------------------
 
-# Example usage:
+## Example usage:
 tedf$load()
 
 
-## ------------------------------------------------
-## Method `TEDF$read`
-## ------------------------------------------------
+### ------------------------------------------------
+### Method `TEDF$read`
+### ------------------------------------------------
 
-# Example usage:
+## Example usage:
 tedf$read()
 
 
-## ------------------------------------------------
-## Method `TEDF$write`
-## ------------------------------------------------
+### ------------------------------------------------
+### Method `TEDF$write`
+### ------------------------------------------------
 
-# Example usage:
+## Example usage:
 tedf$write()
 
 
-## ------------------------------------------------
-## Method `TEDF$check`
-## ------------------------------------------------
+### ------------------------------------------------
+### Method `TEDF$check`
+### ------------------------------------------------
 
-# Example usage:
+## Example usage:
 tedf$check(raise_exception = TRUE)
 ```
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`TEDF$new()`](#method-TEDF-new)
 * [`TEDF$load()`](#method-TEDF-load)
@@ -60,7 +61,7 @@ tedf$check(raise_exception = TRUE)
 * [`TEDF$clone()`](#method-TEDF-clone)
 
 <a id="method-TEDF-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Create new instance of TEDF class. Initialise parent class and object fields
 
@@ -85,7 +86,7 @@ TEDF$new(
 
 
 <a id="method-TEDF-load"></a>
-### Method `load()`
+#### Method `load()`
 
 Load TEDataFile (only if it has not been read yet)
 
@@ -99,7 +100,7 @@ TEDF$load()
 <b>Example:</b>
 
 ```r
-# Example usage:
+## Example usage:
 tedf$load()
 ```
 
@@ -110,7 +111,7 @@ TEDF. Returns the TEDF object it is called on.
 
 
 <a id="method-TEDF-read"></a>
-### Method `read()`
+#### Method `read()`
 
 This method reads TEDF from a CSV file.
 
@@ -124,12 +125,12 @@ TEDF$read()
 <b>Example:</b>
 
 ```r
-# Example usage:
+## Example usage:
 tedf$read()
 ```
 
 <a id="method-TEDF-write"></a>
-### Method `write()`
+#### Method `write()`
 
 write TEDF to CSV file.
 
@@ -143,12 +144,12 @@ TEDF$write()
 <b>Example:</b>
 
 ```r
-# Example usage:
+## Example usage:
 tedf$write()
 ```
 
 <a id="method-TEDF-check"></a>
-### Method `check()`
+#### Method `check()`
 
 Check that TEDF is consistent and add inconsistencies to internal parameter
 
@@ -167,14 +168,14 @@ TEDF$check(raise_exception = TRUE)
 <b>Example:</b>
 
 ```r
-# Example usage:
+## Example usage:
 tedf$check(raise_exception = TRUE)
 ```
 
 <a id="method-TEDF-check_row"></a>
-### Method `check_row()`
+#### Method `check_row()`
 
-checks if row of dataframe has issues
+checks if row of dataframe has issues - NOT IMPLEMENTED YET
 
 
 <b>Usage</b>
@@ -190,7 +191,7 @@ TEDF$check_row(row_id, raise_exception = TRUE)
 
 
 <a id="method-TEDF-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

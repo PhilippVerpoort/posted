@@ -1,17 +1,18 @@
-## Description
+## `TEDFInconsistencyException`
+### Description
 
 This is a class to store inconsistencies in the TEDFs
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`TEDFInconsistencyException$new()`](#method-TEDFInconsistencyException-new)
 * [`TEDFInconsistencyException$clone()`](#method-TEDFInconsistencyException-clone)
 
 <a id="method-TEDFInconsistencyException-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Create instance of TEDFInconsistencyException class
 
@@ -36,7 +37,7 @@ TEDFInconsistencyException$new(
 
 
 <a id="method-TEDFInconsistencyException-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

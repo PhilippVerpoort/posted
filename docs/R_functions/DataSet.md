@@ -1,38 +1,39 @@
-## Description
+## `DataSet`
+### Description
 
 This class provides methods to store, normalize, select, and aggregate DataSets.
 
 
-## Examples
+### Examples
 
 ```r
-## ------------------------------------------------
-## Method `DataSet$normalise`
-## ------------------------------------------------
+### ------------------------------------------------
+### Method `DataSet$normalise`
+### ------------------------------------------------
 
-# Example usage:
+## Example usage:
 dataset$normalize(override = list("variable1" = "value1"), inplace = FALSE)
 
 
-## ------------------------------------------------
-## Method `DataSet$select`
-## ------------------------------------------------
+### ------------------------------------------------
+### Method `DataSet$select`
+### ------------------------------------------------
 
-# Example usage:
+## Example usage:
 dataset$select(override = list("variable1" = "value1"), drop_singular_fields = TRUE, extrapolate_period = FALSE, field1 = "value1")
 
 
-## ------------------------------------------------
-## Method `DataSet$aggregate`
-## ------------------------------------------------
+### ------------------------------------------------
+### Method `DataSet$aggregate`
+### ------------------------------------------------
 
-# Example usage:
+## Example usage:
 dataset$aggregate(override = list("variable1" = "value1"), drop_singular_fields = TRUE, extrapolate_period = FALSE, agg = "field", masks = list(mask1, mask2), masks_database = TRUE)
 ```
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`DataSet$new()`](#method-DataSet-new)
 * [`DataSet$normalise()`](#method-DataSet-normalise)
@@ -41,7 +42,7 @@ dataset$aggregate(override = list("variable1" = "value1"), drop_singular_fields 
 * [`DataSet$clone()`](#method-DataSet-clone)
 
 <a id="method-DataSet-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Create new instance of the DataSet class
 
@@ -68,7 +69,7 @@ DataSet$new(
 
 
 <a id="method-DataSet-normalise"></a>
-### Method `normalise()`
+#### Method `normalise()`
 
 Normalize data: default reference units, reference value equal to 1.0, default reported units
 
@@ -88,7 +89,7 @@ DataSet$normalise(override = NULL, inplace = FALSE)
 <b>Example:</b>
 
 ```r
-# Example usage:
+## Example usage:
 dataset$normalize(override = list("variable1" = "value1"), inplace = FALSE)
 ```
 
@@ -99,7 +100,7 @@ DataFrame. If `inplace` is `FALSE`, returns normalized dataframe.
 
 
 <a id="method-DataSet-select"></a>
-### Method `select()`
+#### Method `select()`
 
 Select desired data from the dataframe
 
@@ -126,7 +127,7 @@ DataSet$select(
 <b>Example:</b>
 
 ```r
-# Example usage:
+## Example usage:
 dataset$select(override = list("variable1" = "value1"), drop_singular_fields = TRUE, extrapolate_period = FALSE, field1 = "value1")
 ```
 
@@ -137,7 +138,7 @@ DataFrame. DataFrame with selected values.
 
 
 <a id="method-DataSet-aggregate"></a>
-### Method `aggregate()`
+#### Method `aggregate()`
 
 Aggregates data based on specified parameters, applies masks,
 and cleans up the resulting DataFrame.
@@ -171,7 +172,7 @@ DataSet$aggregate(
 <b>Example:</b>
 
 ```r
-# Example usage:
+## Example usage:
 dataset$aggregate(override = list("variable1" = "value1"), drop_singular_fields = TRUE, extrapolate_period = FALSE, agg = "field", masks = list(mask1, mask2), masks_database = TRUE)
 ```
 
@@ -182,7 +183,7 @@ DataFrame. The `aggregate` method returns a pandas DataFrame that has been clean
 
 
 <a id="method-DataSet-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

@@ -1,18 +1,19 @@
-## Description
+## `UnitDefinition`
+### Description
 
 Class to store Unit columns
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`UnitDefinition$new()`](#method-UnitDefinition-new)
 * [`UnitDefinition$is_allowed()`](#method-UnitDefinition-is_allowed)
 * [`UnitDefinition$clone()`](#method-UnitDefinition-clone)
 
 <a id="method-UnitDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the UnitDefinition class
 
@@ -31,7 +32,7 @@ UnitDefinition$new(name, description, required)
 
 
 <a id="method-UnitDefinition-is_allowed"></a>
-### Method `is_allowed()`
+#### Method `is_allowed()`
 
 Tests if cell is allowed
 
@@ -48,7 +49,7 @@ UnitDefinition$is_allowed(cell)
 
 
 <a id="method-UnitDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

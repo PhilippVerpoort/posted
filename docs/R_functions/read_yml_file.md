@@ -1,7 +1,3 @@
-# `read_yml_file`
-
-read_yaml_file
-
 ## Description
 
 read YAML config file

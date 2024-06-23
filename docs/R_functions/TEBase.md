@@ -1,24 +1,25 @@
-## Description
+## `TEBase`
+### Description
 
 This is the base class for technoeconomic data.
 
 
-## Examples
+### Examples
 
 ```r
-# Example usage:
+## Example usage:
 base_technoeconomic_data <- TEBase$new("variable_name")
 ```
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`TEBase$new()`](#method-TEBase-new)
 * [`TEBase$clone()`](#method-TEBase-clone)
 
 <a id="method-TEBase-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Create new instance of TEBase class. Set parent variable and technology specifications (var_specs) from input
 
@@ -35,7 +36,7 @@ TEBase$new(parent_variable)
 
 
 <a id="method-TEBase-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

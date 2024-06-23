@@ -237,9 +237,8 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
     # TODO implement check_row function
     # check that row in TEDF is consistent and return all inconsistencies found for row
 
-    #' @title check_row - NOT IMPLEMENtED YET
-    #'
-    #' @description checks if row of dataframe has issues
+
+    #' @description checks if row of dataframe has issues - NOT IMPLEMENTED YET
     #'
     #' @param row_id Id of the row
     #' @param raise_exception (`logical`) If exception is to be raised
@@ -272,4 +271,3 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
   )
 
 )
-

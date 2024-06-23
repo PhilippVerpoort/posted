@@ -1,5 +1,4 @@
 
-## Class for Masks
---8<-- "r_functions/Class for Masks.md"
-## read_masks
+--8<-- "r_functions/apply_cond.md"
+--8<-- "r_functions/Mask.md"
 --8<-- "r_functions/read_masks.md"

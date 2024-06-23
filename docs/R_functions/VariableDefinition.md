@@ -1,18 +1,19 @@
-## Description
+## `VariableDefinition`
+### Description
 
 Class to store variable columns
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`VariableDefinition$new()`](#method-VariableDefinition-new)
 * [`VariableDefinition$is_allowed()`](#method-VariableDefinition-is_allowed)
 * [`VariableDefinition$clone()`](#method-VariableDefinition-clone)
 
 <a id="method-VariableDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the VariableDefinition class
 
@@ -31,7 +32,7 @@ VariableDefinition$new(name, description, required)
 
 
 <a id="method-VariableDefinition-is_allowed"></a>
-### Method `is_allowed()`
+#### Method `is_allowed()`
 
 Tests if cell is allowed
 
@@ -48,7 +49,7 @@ VariableDefinition$is_allowed(cell)
 
 
 <a id="method-VariableDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

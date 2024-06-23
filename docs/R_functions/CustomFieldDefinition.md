@@ -1,17 +1,18 @@
-## Description
+## `CustomFieldDefinition`
+### Description
 
 Class to store Custom fields
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`CustomFieldDefinition$new()`](#method-CustomFieldDefinition-new)
 * [`CustomFieldDefinition$clone()`](#method-CustomFieldDefinition-clone)
 
 <a id="method-CustomFieldDefinition-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Creates a new instance of the CustomFieldDefinition class
 
@@ -28,7 +29,7 @@ CustomFieldDefinition$new(field_specs)
 
 
 <a id="method-CustomFieldDefinition-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 

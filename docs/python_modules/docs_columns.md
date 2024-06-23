@@ -1,3 +1,2 @@
-# `columns`
 ::: python.posted.columns
         

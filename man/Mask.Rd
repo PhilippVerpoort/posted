@@ -2,7 +2,7 @@
 % Please edit documentation in R/masking.R
 \name{Mask}
 \alias{Mask}
-\title{Class for Masks}
+\title{Mask}
 \description{
 Class to define masks with conditions and weights to apply to DataFiles
 }

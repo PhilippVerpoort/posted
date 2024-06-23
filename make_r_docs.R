@@ -21,7 +21,7 @@ extract_function_titles <- function(r_file) {
 }
 
 # Generate R documentation with Roxagen2
-document()
+# document()
 
 
 # Define the path to the directory
@@ -65,7 +65,7 @@ for (title_name in names(file_titles_list)) {
 
   for (name in file_titles_list[[title_name]]) {
     markdown_file_content <- c(markdown_file_content,
-      paste0("## ", name),
+      # paste0("## ", name),
       paste0('--8<-- "r_functions/', name,'.md"')
     )
     # print(file_list)
@@ -78,6 +78,25 @@ for (title_name in names(file_titles_list)) {
     modified_name <- name
     # convert file to md file and save in docs/R_functions
     system(paste('rd2md man docs/R_functions', modified_name))
+
+    function_markdown <- readLines(paste0("docs/R_functions/", name, ".md"))
+
+    if (length(function_markdown) == 0 || function_markdown[1] != paste0("# `", name, "`")) {
+      print("should be class")
+      print(name)
+    # If not, add "# file_name" as the first line
+    function_markdown <- c(paste0("# `", name, "`"), function_markdown)
+
+    }
+    function_markdown <- sapply(function_markdown, function(line) {
+    if (startsWith(line, "#")) {
+      return(paste0("#", line))
+    } else {
+      return(line)
+    }
+    })
+    # Write the modified lines back to the file
+    writeLines(function_markdown, paste0("docs/R_functions/", name, ".md"))
 
     # Find the 'Documentation' section and add the new item to the 'R' subsection
     for (i in seq_along(yaml_content$nav)) {

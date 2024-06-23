@@ -1,11 +1,12 @@
-## Description
+## `Mask`
+### Description
 
 Class to define masks with conditions and weights to apply to DataFiles
 
 
-## Methods
+### Methods
 
-### Public Methods
+#### Public Methods
 
 * [`Mask$new()`](#method-Mask-new)
 * [`Mask$matches()`](#method-Mask-matches)
@@ -13,7 +14,7 @@ Class to define masks with conditions and weights to apply to DataFiles
 * [`Mask$clone()`](#method-Mask-clone)
 
 <a id="method-Mask-new"></a>
-### Method `new()`
+#### Method `new()`
 
 Create a new mask object
 
@@ -34,7 +35,7 @@ Mask$new(where = NULL, use = NULL, weight = NULL, other = NaN, comment = "")
 
 
 <a id="method-Mask-matches"></a>
-### Method `matches()`
+#### Method `matches()`
 
 Check if a mask matches a dataframe by verifying if all 'where' conditions match across all rows.
 
@@ -57,7 +58,7 @@ Logical. If the mask matches the dataframe.
 
 
 <a id="method-Mask-get_weights"></a>
-### Method `get_weights()`
+#### Method `get_weights()`
 
 Apply weights to the dataframe
 
@@ -80,7 +81,7 @@ Dataframe. Dataframe with applied weights
 
 
 <a id="method-Mask-clone"></a>
-### Method `clone()`
+#### Method `clone()`
 
 The objects of this class are cloneable with this method.
 
