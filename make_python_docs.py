@@ -1,9 +1,5 @@
 import os
-
 import yaml
-
-
-
 import ast
 
 def has_documentable_function_or_class(file_path):
