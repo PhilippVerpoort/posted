@@ -44,7 +44,7 @@ plugins:
         options:
           docstring_style: numpy
 repo_name: github/POSTED
-repo_url: https://github.com/PhilippVerpoort/posted/docs
+repo_url: https://github.com/PhilippVerpoort/posted/
 site_name: POSTED documentation
 site_url: https://philipp.verpoort.online/posted/
 theme:
