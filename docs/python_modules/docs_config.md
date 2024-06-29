@@ -1,3 +1,0 @@
-# `config`
-::: python.posted.config
-        

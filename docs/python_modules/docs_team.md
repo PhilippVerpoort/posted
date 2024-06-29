@@ -1,3 +1,0 @@
-# `team`
-::: python.posted.team
-        

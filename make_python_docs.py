@@ -1,5 +1,5 @@
 import os
-# print(os.listdir())
+
 import yaml
 
 
@@ -44,12 +44,12 @@ for file_name in code_file_names:
     code_file_path = os.path.join(code_dir_path, file_name)
 
     # Ensure we are working with a (python) file (not a directory)
-    if os.path.isfile(file_path) and file_name.endswith(".py"):
+    if os.path.isfile(code_file_path) and file_name.endswith(".py"):
         if file_name == "__init__.py":
             continue
 
         # process files that have documentable functions or classes
-        if has_documentable_function_or_class(file_path):
+        if has_documentable_function_or_class(code_file_path):
 
             modified_name = file_name
             modified_name = modified_name[:-3] # cut of .py suffix

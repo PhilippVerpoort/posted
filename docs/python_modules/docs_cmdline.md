@@ -1,3 +1,0 @@
-# `cmdline`
-::: python.posted.cmdline
-        
