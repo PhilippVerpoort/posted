@@ -194,6 +194,8 @@ or \
 
 ### How to work with POSTED
 
+This should be in the tutorials section and deleted here once the tutorials are completed
+
 You can create TEDFs via
 
 === "Python"
