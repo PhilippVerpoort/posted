@@ -98,7 +98,7 @@ for file_name in code_file_names:
 with open('mkdocs.yml', 'w') as file:
     yaml.dump(mkdocs, file)
 
-
+print("made python docs")
 
 
 

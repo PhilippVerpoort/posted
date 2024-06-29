@@ -269,5 +269,4 @@ TEDF <- R6::R6Class("TEDF", inherit = TEBase,
       return(private$..inconsistencies)
     }
   )
-
 )

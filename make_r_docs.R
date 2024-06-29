@@ -59,8 +59,6 @@ r_files <- list.files(r_dir, pattern = "\\.R$", full.names = TRUE)
 # Extract function titles for each R script
 file_titles_list <- lapply(r_files, extract_function_titles)
 names(file_titles_list) <- basename(r_files)
-print("file_titles_list")
-print(file_titles_list)
 
 # list of all .Rd files in the man/ directory
 rd_file_list <- dir_ls("man", type = "file")
@@ -108,15 +106,11 @@ yaml_content <- read_yaml(yaml_file)
 # add module to the navigation section of the mkdocs.yml file
 # create markdown files whith snippets linking to all functions/classes belonging to this module
 for (title_name in names(file_titles_list)) {
-  print("start loop")
-  print(title_name)
+
   # check if there is at least one documentable function in the file, if not, skip.
   if(length(file_titles_list[[title_name]]) == 0) {
     next
   }
-
-  print(typeof(file_titles_list[[title_name]]))
-  print(file_titles_list[[title_name]])
 
   mod_title_name <- substr(title_name, 1, nchar(title_name) - 2) # remove .R suffix
 
@@ -141,7 +135,6 @@ for (title_name in names(file_titles_list)) {
         subitem <- item$Documentation[[j]]
 
         if (is.list(subitem) && "R" %in% names(subitem)) {
-          # print(subitem$R)
           temp_list <- list()
           temp_list[[mod_title_name]] <- paste0('R_modules/docs_', mod_title_name, '.md')
 
@@ -150,17 +143,13 @@ for (title_name in names(file_titles_list)) {
 
           # loop through directory and override file with modified_name with the new version
           for (k in seq_along(subitem$R)) {
-            print(k)
-            print(names(subitem$R[[k]]))
             if(names(subitem$R[[k]]) == mod_title_name) {
-                print("override")
 
                 # if the page exists, override the entry with the new version
                 subitem$R[[k]] <- temp_list
                 dir_exists_counter <- TRUE
             }
           }
-          print("after loop")
           # if there was no file to override add a new entry with the new file
           if(dir_exists_counter == FALSE) {
             subitem$R[[length(subitem$R) + 1]] <- temp_list
@@ -182,4 +171,4 @@ for (title_name in names(file_titles_list)) {
 write_yaml(yaml_content, yaml_file)
 
 
-print("finished writing")
+print("made_r_docs")

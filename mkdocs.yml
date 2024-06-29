@@ -4,7 +4,7 @@ extra:
 markdown_extensions:
 - pymdownx.superfences
 - pymdownx.tabbed:
-    alternate_style: true
+    alternate_style: yes
 - pymdownx.snippets:
     base_path: docs
 nav:
@@ -35,8 +35,8 @@ nav:
     - units: python_modules/docs_units.md
 plugins:
 - mkdocs-jupyter:
-    execute: true
-    include_requirejs: true
+    execute: yes
+    include_requirejs: yes
 - search
 - mkdocstrings:
     handlers:
