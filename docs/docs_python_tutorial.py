@@ -19,12 +19,6 @@ import sys
 # confiure display options
 pd.options.plotting.backend = "plotly"
 pd.set_option('display.max_rows', None)
-# set right path for module
-
-module_path = os.path.abspath(os.path.join('.'))
-module_path = module_path + "/python"
-if module_path not in sys.path:
-    sys.path.append(module_path)
 
 # +
 from matplotlib import pyplot as plt

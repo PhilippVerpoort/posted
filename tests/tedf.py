@@ -10,10 +10,10 @@ class tedf(unittest.TestCase):
     # load all ted files
     def test_ted(self):
         from posted.tedf import TEDF
-        tedf = TEDF('Tech|ELH2')
+        tedf = TEDF('Tech|Electrolysis')
         tedf.load()
         tedf.check()
-        tedf = TEDF('Tech|DAC')
+        tedf = TEDF('Tech|Direct Air Capture')
         tedf.load()
         tedf.check()
 
