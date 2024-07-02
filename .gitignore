@@ -3,6 +3,8 @@
 *.bib~*
 .jupyter/
 
+/man
+
 /python/posted/data
 
 
