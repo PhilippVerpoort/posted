@@ -4,6 +4,10 @@
 .jupyter/
 
 /man
+*.ipynb
+/docs/R_functions/**
+/docs/R_modules/**
+/docs/python_modules/**
 
 /python/posted/data
 
@@ -408,9 +412,6 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
-
-# pkgdown site
-docs/
 
 # translation temp files
 po/*~

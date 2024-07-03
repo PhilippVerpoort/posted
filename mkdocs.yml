@@ -8,22 +8,15 @@ markdown_extensions:
 - pymdownx.snippets:
     base_path: docs
 nav:
-- Home: index.md
-- Overview: overview.md
-- Sources: sources.md
-- Get started: get_started.md
-- Tutorial:
-  - Python: docs_python_tutorial.py
-  - R: docs_r_tutorial.py
-- Documentation:
+- Home: home.md
+- Installation: installation.md
+- Methodology: methodology.md
+- Tutorials:
+  - Python:
+    - Overview: tutorials/python/overview.py
   - R:
-    - columns: R_modules/docs_columns.md
-    - definitions: R_modules/docs_definitions.md
-    - masking: R_modules/docs_masking.md
-    - noslag: R_modules/docs_noslag.md
-    - read: R_modules/docs_read.md
-    - tedf: R_modules/docs_tedf.md
-    - units: R_modules/docs_units.md
+    - Overview: tutorials/R/overview.py
+- Code:
   - Python:
     - columns: python_modules/docs_columns.md
     - definitions: python_modules/docs_definitions.md
@@ -43,10 +36,10 @@ plugins:
       python:
         options:
           docstring_style: numpy
-repo_name: github/POSTED
+repo_name: POSTED
 repo_url: https://github.com/PhilippVerpoort/posted/
-site_name: POSTED documentation
-site_url: https://philipp.verpoort.online/posted/
+site_name: POSTED Documentation
+site_url: https://posted.verpoort.online/
 theme:
   features:
   - content.tabs.link
@@ -66,3 +59,4 @@ theme:
     toggle:
       icon: material/weather-sunny
       name: Switch to light mode
+copyright: '<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0 2024</a> — P.C. Verpoort'
