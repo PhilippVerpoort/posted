@@ -19,11 +19,7 @@ r_docs: $(R_FILES) $(PYTHON_POSTED_FILES)
 python_docs: $(R_FILES) $(PYTHON_POSTED_FILES)
 	python $(PYTHON_DOC_SCRIPT)
 
-
-
 # Clean target (optional)
 .PHONY: clean
 clean:
 	rm -f $(R_DOC_SCRIPT) $(PYTHON_DOC_SCRIPT)
-
-
