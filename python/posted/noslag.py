@@ -559,7 +559,10 @@ class DataSet(TEBase):
 
                 # Multiply 'value' by conversion factor
                 rows.loc[cond, 'value'] *= rows.loc[cond].apply(
-                    lambda row: unit_convert(var_units[row['variable']], 'a'),
+                    lambda row: unit_convert(
+                        var_units[row['variable']] + '/a',
+                        var_units[row['variable'].replace('|FLH', '|OCF')],
+                    ),
                     axis=1,
                 )
 
