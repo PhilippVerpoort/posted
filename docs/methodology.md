@@ -150,6 +150,44 @@ To be written.
 
 ## The Techno-economic Assessment and Manipulation (TEAM) framework
 
-To be written.
 
-Value chains are defined as follows.
+#### Levelised Cost of X (LCOX)
+
+The levelised cost of activity X can be calculated via POSTED based on the following convention:
+$$
+\mathrm{LCOX} = \frac{\mathrm{Capital~Cost} + \mathrm{OM~Fixed} + \mathrm{OM~Variable} + \sum_f \mathrm{Input~Cost}_f - \sum_f \mathrm{Output~Revenue}_f}{\mathrm{Activity}_X}
+$$
+
+This is based on the following cost components:
+
+$$
+\mathrm{Capital~Cost} = \frac{\mathrm{ANF} \times \mathrm{CAPEX}}{\mathrm{OCF} \times \mathrm{Reference~Capacity}} \times \mathrm{Reference~Flow}
+$$
+
+$$
+\mathrm{OM~Fixed} = \frac{\mathrm{OPEX~Fixed}}{\mathrm{OCF} \times \mathrm{Reference~Capacity}} \times \mathrm{Reference~Flow}
+$$
+
+$$
+\mathrm{OM~Variable} = \mathrm{OPEX~Variable}
+$$
+
+$$
+\mathrm{Input~Cost}_f = \mathrm{Price}_f \times \mathrm{Input}_f
+$$
+
+$$
+\mathrm{Output~Revenue}_f = \mathrm{Price}_f \times \mathrm{Output}_f
+$$
+
+with $\mathrm{ANF} = \frac{\mathrm{IR} * (1 + \mathrm{IR})^\mathrm{BL} / ((1 + \mathrm{IR})^\mathrm{BL} - 1)}{\mathrm{yr}}$ based on the `Interest Rate` (IR) and `Book Lifetime` (BL). The $\mathrm{Reference~Capacity}$ is the capacity that the `CAPEX` and `OPEX Fixed` variables are defined in reference to (e.g. `Input Capacity|Electricity` or `Output Capacity|Methanol`), and the `\mathrm{Reference~Flow}` is the associated flow. Moreover, $\mathrm{Activity}_X$ is one of `Output|X` (with `X` being `Hydrogen`, `Methanol`, `Ammonia`, etc), `Input|X` (with `X` being e.g. `Waste`), or `Service|X` (with `X` being e.g. `Passenger Kilometers`).
+
+
+#### Process chains
+Process chains, i.e. a combination of processes that feed inputs and outputs into each other, can be define in POSTED before performing LCOX analysis.
+
+For a process chain consisting of processes $P = \{p_1, p_2, \ldots\}$ we can define feeds $C^\mathrm{Flow}_{p_1\rightarrow p_2}$ for `Flow` being fed from process $p_1$ to process $p_2$. Moreover, we can define demand $\mathrm{Demand|Flow}_{p_1}$ for the `Flow` demanded from process $p_1$. This results in the following linear equation for functional process units $\mathrm{Functional~Unit}_{p_1}$:
+
+$$
+\mathrm{Output|Flow}_{p_1} \times \mathrm{Functional~Unit}_{p_1} = \sum_{p_2} \mathrm{Input|Flow}_{p_2} \times \mathrm{Functional~Unit}_{p_2} \times C^\mathrm{Flow}_{p_1\rightarrow p_2} + \mathrm{Demand|Flow}_{p_1}
+$$
