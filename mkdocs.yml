@@ -19,10 +19,7 @@ nav:
 - Installation: installation.md
 - Methodology: methodology.md
 - Tutorials:
-  - Python:
-    - Overview: tutorials/python/overview.py
-  - R:
-    - Overview: tutorials/R/overview.py
+  - Python: tutorials/python/overview.py
 plugins:
 - mkdocs-jupyter:
     execute: true
