@@ -180,7 +180,7 @@ $$
 \mathrm{Output~Revenue}_f = \mathrm{Price}_f \times \mathrm{Output}_f
 $$
 
-with $\mathrm{ANF} = \frac{\mathrm{IR} * (1 + \mathrm{IR})^\mathrm{BL} / ((1 + \mathrm{IR})^\mathrm{BL} - 1)}{\mathrm{yr}}$ based on the `Interest Rate` (IR) and `Book Lifetime` (BL). The $\mathrm{Reference~Capacity}$ is the capacity that the `CAPEX` and `OPEX Fixed` variables are defined in reference to (e.g. `Input Capacity|Electricity` or `Output Capacity|Methanol`), and the `\mathrm{Reference~Flow}` is the associated flow. Moreover, $\mathrm{Activity}_X$ is one of `Output|X` (with `X` being `Hydrogen`, `Methanol`, `Ammonia`, etc), `Input|X` (with `X` being e.g. `Waste`), or `Service|X` (with `X` being e.g. `Passenger Kilometers`).
+with $\mathrm{ANF} = \frac{\mathrm{IR} * (1 + \mathrm{IR})^\mathrm{BL} / ((1 + \mathrm{IR})^\mathrm{BL} - 1)}{\mathrm{yr}}$ based on the `Interest Rate` (IR) and `Book Lifetime` (BL). The $\mathrm{Reference~Capacity}$ is the capacity that the `CAPEX` and `OPEX Fixed` variables are defined in reference to (e.g. `Input Capacity|Electricity` or `Output Capacity|Methanol`), and the $\mathrm{Reference~Flow}$ is the associated flow. Moreover, $\mathrm{Activity}_X$ is one of `Output|X` (with `X` being `Hydrogen`, `Methanol`, `Ammonia`, etc), `Input|X` (with `X` being e.g. `Waste`), or `Service|X` (with `X` being e.g. `Passenger Kilometers`).
 
 
 #### Process chains
