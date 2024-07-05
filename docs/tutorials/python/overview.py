@@ -6,18 +6,20 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.2
+#       jupytext_version: 1.16.1
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
 # ---
 
-# # Some POSTED working examples
+# # Overview of working with POSTED
 
 # ## Prerequisits
 
-# First, we import some general-purpose libraries. POSTED depends on `pandas` for working with dataframes. Here we also use `plotly` and `itables` here for plotting and inspecting data, but `posted` does not depend on those and other tools can be used as well. The package `igraph` is an optional dependency used for representing the interlinkages in value chains. The package `matplotlib` is only used for plotting igraphs.
+# #### Dependencies
+
+# First, we import some general-purpose libraries. The python-side of `posted` depends on `pandas` for working with dataframes. Here we also use `plotly` and `itables` for plotting and inspecting data, but `posted` does not depend on those and other tools could be used instead. The package `igraph` is an optional dependency used for representing the interlinkages in value chains. The package `matplotlib` is only used for plotting igraphs, which is again optional.
 
 # +
 import pandas as pd
@@ -33,7 +35,9 @@ import igraph as ig
 import matplotlib.pyplot as plt
 # -
 
-# The `posted` package has to be installed in the current python environment. If it is not installed yet, you can easily install it from the GitHub source code using `pip`.
+# #### Importing POSTED
+
+# The `posted` package has to be installed in the python environment. If it is not installed yet, you can easily install it from the GitHub source code using `pip`.
 
 try:
     import posted
@@ -45,11 +49,13 @@ except ImportError:
 from posted.tedf import TEDF
 from posted.noslag import DataSet
 from posted.units import Q, U
-from posted.team import CalcVariable, LCOX, FSCP, BuildValueChain, LCOXAnalysis, annuity_factor
+from posted.team import CalcVariable, LCOX, FSCP, ProcessChain, annuity_factor
 
 # Use some basic plotly and pandas functions for plotting and output analysis
 
-# ## Some NOSLAG examples
+# ## NOSLAG
+
+# #### Electrolysis CAPEX
 
 # Let's compare CAPEX data for electrolysis in years 2020–2050 for Alkaline and PEM across different sources (Danish Energy Agency, Breyer, Fraunhofer, IRENA) for different electrolyser plant sizes.
 
@@ -86,6 +92,8 @@ DataSet('Tech|Electrolysis').aggregate(
     ).team.varsplit('Tech|Electrolysis|*variable') \
     .query(f"variable.isin({['CAPEX', 'Output Capacity|Hydrogen']})")
 
+# #### Energy demand of green vs. blue hydrogen production
+
 # Next, let's compare the energy demand of methane reforming (for blue hydrogen) and different types of electrolysis (for green hydrogen).
 
 pd.concat([
@@ -101,6 +109,8 @@ pd.concat([
         yaxis_title='Energy demand  ( MWh<sub>LHV</sub> / MWh<sub>LHV</sub> H<sub>2</sub> )',
         legend_title='Energy carriers',
     )
+
+# #### Energy demand of iron direct reduction
 
 # Next, let's compare the energy demand of iron direct reduction (production of low-carbon crude iron) across sources.
 
@@ -119,15 +129,17 @@ DataSet('Tech|Iron Direct Reduction') \
 # We can also compare the energy demand for operation with hydrogen or with fossil gas for only one source.
 
 DataSet('Tech|Iron Direct Reduction') \
-    .aggregate(period=2030, source='Jacobasch21') \
+    .select(period=2030, source='Jacobasch21') \
     .team.varsplit('Tech|Iron Direct Reduction|Input|?fuel') \
-    .query(f"fuel != 'Iron Ore'") \
+    .query(f"fuel.isin({['Electricity', 'Fossil Gas', 'Hydrogen']})") \
     .plot.bar(x='mode', y='value', color='fuel') \
     .update_layout(
         xaxis_title='Mode of operation',
         yaxis_title='Energy demand  ( MWh<sub>LHV</sub> / t<sub>DRI</sub> )',
         legend_title='Energy carriers'
     )
+
+# #### Energy demand of Haber-Bosch synthesis
 
 # Finally, let's compare the energy demand of Haber-Bosch synthesis between an integrated SMR plant and a plant running on green hydrogen.
 
@@ -145,11 +157,12 @@ pd.concat([
         legend_title='Energy carriers'
     )
 
-# ## Some TEAM examples
+# ## TEAM
+
+# #### CalcVariable
 
 # New variables can be calculated manually via the `CalcVariable` class. The next example demonstrates this for calculating the levelised cost of hydrogen.
 
-# +
 assumptions = pd.DataFrame.from_records([
     {'elec_price_case': f"Case {i}", 'variable': 'Price|Electricity', 'unit': 'EUR_2020/MWh', 'value': 30 + (i-1)*25}
     for i in range(1, 4)
@@ -159,20 +172,25 @@ assumptions = pd.DataFrame.from_records([
 ])
 display(assumptions)
 
+# +
 df_calc = pd.concat([
         DataSet('Tech|Electrolysis').aggregate(period=[2030, 2040, 2050], subtech=['AEL', 'PEM'], agg=['size', 'source']),
         assumptions,
     ]).team.perform(CalcVariable(**{
         'LCOX|Green Hydrogen|Capital Cost': lambda x: (x['Annuity Factor'] * x['Tech|Electrolysis|CAPEX'] / x['Tech|Electrolysis|Output Capacity|Hydrogen'] / x['Tech|Electrolysis|OCF']),
         'LCOX|Green Hydrogen|OM Cost Fixed': lambda x: x['Tech|Electrolysis|OPEX Fixed'] / x['Tech|Electrolysis|Output Capacity|Hydrogen'] / x['Tech|Electrolysis|OCF'],
-        'LCOX|Green Hydrogen|Input Electricity': lambda x: x['Price|Electricity'] * x['Tech|Electrolysis|Input|Electricity'] / x['Tech|Electrolysis|Output|Hydrogen'],
+        'LCOX|Green Hydrogen|Input Cost|Electricity': lambda x: x['Price|Electricity'] * x['Tech|Electrolysis|Input|Electricity'] / x['Tech|Electrolysis|Output|Hydrogen'],
     }), only_new=True) \
     .team.unit_convert(to='EUR_2020/MWh')
 
 display(df_calc.sample(15).sort_index())
-
-df_calc.sort_values(by=['elec_price_case', 'value']).plot.bar(x='period', y='value', color='variable', facet_col='elec_price_case', facet_row='subtech')
 # -
+
+df_calc.team.varsplit('LCOX|Green Hydrogen|?component') \
+    .sort_values(by=['elec_price_case', 'value']) \
+    .plot.bar(x='period', y='value', color='component', facet_col='elec_price_case', facet_row='subtech')
+
+# #### Pivot
 
 # POSTED uses the `pivot` dataframe method to bring the data into a usable format.
 
@@ -181,10 +199,12 @@ pd.concat([
         assumptions,
     ]).team.pivot_wide().pint.dequantify()
 
+# #### LCOX of blue and green hydrogen
+
 # POSTED also contains predefined methods for calculating LCOX. Here we apply it to blue and green hydrogen.
 
 # +
-df_lcox = pd.concat([
+df_lcox_bluegreen = pd.concat([
         pd.DataFrame.from_records([
             {'elec_price_case': f"Case {i}", 'variable': 'Price|Electricity', 'unit': 'EUR_2020/MWh', 'value': 30 + (i-1)*25}
             for i in range(1, 4)
@@ -206,60 +226,72 @@ df_lcox = pd.concat([
     ) \
     .team.unit_convert(to='EUR_2022/MWh')
 
-display(df_lcox)
+display(df_lcox_bluegreen)
 # -
 
-df_lcox.team.varsplit('LCOX|?fuel|*comp') \
+df_lcox_bluegreen.team.varsplit('LCOX|?fuel|*comp') \
     .plot.bar(x='fuel', y='value', color='comp', facet_col='elec_price_case', facet_row='ng_price_case')
 
-# Let's calculate the levelised cost of green methanol (from electrolytic hydrogen). First we can do this simply based on a hydrogen price (i.e. if you know what you LCOH is).
+# #### LCOX of Methanol
 
-pd.concat([
+# Let's calculate the levelised cost of green methanol (from electrolytic hydrogen). First we can do this simply based on a hydrogen price (i.e. without accounting for electrolysis).
+
+# +
+df_lcox_meoh = pd.concat([
         DataSet('Tech|Methanol Synthesis').aggregate(period=[2030, 2050]),
         pd.DataFrame.from_records([
-            {'period': 2030, 'variable': 'Price|Hydrogen', 'unit': 'EUR_2022/MWh', 'value': 30},
-            {'period': 2050, 'variable': 'Price|Hydrogen', 'unit': 'EUR_2022/MWh', 'value': 30},
-            {'variable': 'Price|Captured CO2', 'unit': 'EUR_2022/t', 'value': 40}
+            {'period': 2030, 'variable': 'Price|Hydrogen', 'unit': 'EUR_2022/MWh', 'value': 120},
+            {'period': 2050, 'variable': 'Price|Hydrogen', 'unit': 'EUR_2022/MWh', 'value': 80},
+            {'period': 2030, 'variable': 'Price|Captured CO2', 'unit': 'EUR_2022/t', 'value': 150},
+            {'period': 2050, 'variable': 'Price|Captured CO2', 'unit': 'EUR_2022/t', 'value': 100},
         ]),
     ]) \
     .team.perform(LCOX(
         'Output|Methanol', 'Methanol Synthesis', name='Green Methanol',
         interest_rate=0.1, book_lifetime=10.0), only_new=True,
     ) \
-    .team.unit_convert('EUR_2022/MWh') \
-    .team.varsplit('LCOX|Green Methanol|*component') \
+    .team.unit_convert('EUR_2022/MWh')
+
+display(df_lcox_meoh)
+# -
+
+df_lcox_meoh.team.varsplit('LCOX|Green Methanol|*component') \
     .plot.bar(x='period', y='value', color='component')
 
+# Next, we can calculate the LCOX of green methanol for a the value chain consisting of electrolysis, low-temperature direct air capture, and methanol synthesis. The heat for the direct air capture will be provided by an industrial heat pump.
+
 # +
-vc = BuildValueChain(
+pc = ProcessChain(
     'Green Methanol',
     {'Methanol Synthesis': {'Methanol': Q('1 MWh')}},
-    'Electrolysis -> Hydrogen => Methanol Synthesis -> Methanol',
+    'Heatpump for DAC -> Heat => Direct Air Capture -> Captured CO2 => Methanol Synthesis;Electrolysis -> Hydrogen => Methanol Synthesis -> Methanol',
 )
 
-g, lay = vc.igraph()
+g, lay = pc.igraph()
 fig, ax = plt.subplots()
-ax.set_title(vc.name)
+ax.set_title(pc.name)
 ig.plot(g, target=ax, layout=lay, vertex_label=[n.replace(' ', '\n') for n in g.vs['name']], edge_label=[n.replace(' ', '\n') for n in g.es['name']], vertex_label_size=8, edge_label_size=6)
 
 # +
-# lcox calculations
-lcox = pd.concat([
+df_lcox_meohvc = pd.concat([
         DataSet('Tech|Electrolysis').aggregate(period=[2030, 2050], subtech=['AEL', 'PEM'], size=['1 MW', '100 MW'], agg=['subtech', 'size', 'source']),
+        DataSet('Tech|Direct Air Capture').aggregate(period=[2030, 2050], subtech='LT-DAC'),
+        DataSet('Tech|Heatpump for DAC').aggregate(period=[2030, 2050]),
         DataSet('Tech|Methanol Synthesis').aggregate(period=[2030, 2050]),
         pd.DataFrame.from_records([
-            {'period': 2030, 'variable': 'Price|Hydrogen', 'unit': 'EUR_2022/MWh', 'value': 30},
-            {'period': 2050, 'variable': 'Price|Hydrogen', 'unit': 'EUR_2022/MWh', 'value': 30},
-            {'variable': 'Price|Captured CO2', 'unit': 'EUR_2022/t', 'value': 40}
+            {'period': 2030, 'variable': 'Price|Electricity', 'unit': 'EUR_2022/MWh', 'value': 50},
+            {'period': 2050, 'variable': 'Price|Electricity', 'unit': 'EUR_2022/MWh', 'value': 30},
         ]),
     ]) \
-    .team.perform(vc) \
+    .team.perform(pc) \
     .team.perform(LCOX(
-        'Methanol Synthesis|Output|Methanol', vc='Green Methanol',
+        'Methanol Synthesis|Output|Methanol', process_chain='Green Methanol',
         interest_rate=0.1, book_lifetime=10.0,
-    ), only_new=True)
-display(lcox)
+    ), only_new=True) \
+    .team.unit_convert('EUR_2022/MWh')
 
-lcox.team.unit_convert('EUR_2022/MWh') \
-    .team.varsplit('LCOX|Green Methanol|?process|*component') \
+display(df_lcox_meohvc)
+# -
+
+df_lcox_meohvc.team.varsplit('LCOX|Green Methanol|?process|*component') \
     .plot.bar(x='period', y='value', color='component', hover_data='process')
