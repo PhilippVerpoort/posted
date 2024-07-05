@@ -23,28 +23,10 @@ nav:
     - Overview: tutorials/python/overview.py
   - R:
     - Overview: tutorials/R/overview.py
-- Code:
-  - Python:
-    - columns: code/python/columns.md
-    - definitions: code/python/definitions.md
-    - masking: code/python/masking.md
-    - noslag: code/python/noslag.md
-    - read: code/python/read.md
-    - sources: code/python/sources.md
-    - tedf: code/python/tedf.md
-    - units: code/python/units.md
-  - R:
-    - columns: code/R/modules/columns.md
-    - definitions: code/R/modules/definitions.md
-    - masking: code/R/modules/masking.md
-    - noslag: code/R/modules/noslag.md
-    - read: code/R/modules/read.md
-    - tedf: code/R/modules/tedf.md
-    - units: code/R/modules/units.md
 plugins:
 - mkdocs-jupyter:
-    execute: no
-    include_requirejs: no
+    execute: true
+    include_requirejs: true
 - search
 - mkdocstrings:
     handlers:

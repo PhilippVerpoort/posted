@@ -25,6 +25,9 @@ def has_documentable_function_or_class(file_path):
 
 # Define the path to the directory with the python code
 code_dir_path = 'python/posted'
+
+# define the path for the documentation of the python code
+doc_folder_path = "docs/code/python/"
 # load mkdocs.yml file
 with open('mkdocs.yml', 'r') as file:
     mkdocs = yaml.safe_load(file)
@@ -56,7 +59,6 @@ for file_name in code_file_names:
         """
 
             # Define the path where to save the markdown file of the module
-            doc_folder_path = "docs/code/python"
             doc_file_name = f"{modified_name}.md"
             doc_file_path = os.path.join(doc_folder_path, doc_file_name)
 
@@ -91,14 +93,13 @@ for file_name in code_file_names:
             for k in range(len(mkdocs["nav"][code_index]["Code"])):
                 if "Python" in mkdocs["nav"][code_index]["Code"][k]: # go into python section
                     python_index = k
-            print(python_index)
+
             # if there is no python section, create it
             if python_index is None:
                 python_index = len(mkdocs["nav"][code_index]["Code"])
                 mkdocs["nav"][code_index]["Code"].append({"Python":[]})
 
 
-            print
             # if there is a python section, but it has no content, create a list to be filled
             if mkdocs["nav"][code_index]["Code"][python_index]["Python"] is None:
                 mkdocs["nav"][code_index]["Code"][python_index]["Python"] = []
@@ -109,12 +110,12 @@ for file_name in code_file_names:
                 # go to the section of the modified_name file and override it
                 if modified_name in mkdocs["nav"][code_index]["Code"][python_index]["Python"][l]:
                     #print(True)
-                    mkdocs["nav"][code_index]["Code"][python_index]["Python"][l] = {modified_name: f'code/python/{doc_file_name}'}
+                    mkdocs["nav"][code_index]["Code"][python_index]["Python"][l] = {modified_name: doc_folder_path.split('/', 1)[-1] + doc_file_name}
                     exists_counter = True
                     break
             # if there was no file found with the name, create a new entry in the navigation section
             if exists_counter is False:
-                mkdocs["nav"][code_index]["Code"][python_index]["Python"].append({modified_name: f'code/python/{doc_file_name}'})
+                mkdocs["nav"][code_index]["Code"][python_index]["Python"].append({modified_name: doc_folder_path.split('/', 1)[-1] + doc_file_name})
 
 
 # Save the modified YAML file
