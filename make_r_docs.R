@@ -28,9 +28,9 @@ r_dir <- "R"
 # Define the path to the mkdocs.yml file
 yaml_file <- "mkdocs.yml"
 # define the path for the r module files
-module_file_path <- "docs/R_modules/"
+module_file_path <- "docs/code/R/modules/"
 # define the path for the r function files
-function_file_path <- "docs/R_functions/"
+function_file_path <- "docs/code/R/functions/"
 
 
 # Check if the module path exists
@@ -69,10 +69,10 @@ rd_file_list <- dir_ls("man", type = "file")
 for (rd_file in rd_file_list) {
   # remove the man/ prefix and the .Rd
   name <- sub("^man/(.*)\\.Rd$", "\\1", rd_file)
-  system(paste('rd2md man docs/R_functions', name))
+  system(paste('rd2md man', function_file_path, name))
 
   # read in the markdown file of the function/class
-  function_markdown <- readLines(paste0("docs/R_functions/", name, ".md"))
+  function_markdown <- readLines(paste0(function_file_path, name, ".md"))
 
   # add title line to all R6 classes (because somehow this is not done by default, contrary to functions)
   if (length(function_markdown) == 0 || function_markdown[1] != paste0("# `", name, "`")) {
@@ -93,7 +93,7 @@ for (rd_file in rd_file_list) {
   })
 
   # Write the modified lines back to the .md file
-  writeLines(function_markdown, paste0("docs/R_functions/", name, ".md"))
+  writeLines(function_markdown, paste0(function_file_path, name, ".md"))
 }
 
 print(".Rd processing complete")
@@ -105,8 +105,9 @@ yaml_content <- read_yaml(yaml_file)
 # Loop through all R modules. title name is the name of the R file
 # add module to the navigation section of the mkdocs.yml file
 # create markdown files whith snippets linking to all functions/classes belonging to this module
+# print(names(file_titles_list))
 for (title_name in names(file_titles_list)) {
-
+  print(title_name)
   # check if there is at least one documentable function in the file, if not, skip.
   if(length(file_titles_list[[title_name]]) == 0) {
     next
@@ -121,64 +122,76 @@ for (title_name in names(file_titles_list)) {
 
     # add snippet for each function/class to the module file
     markdown_file_content <- c(markdown_file_content,
-      paste0('--8<-- "R_functions/', name,'.md"') #
+      paste0('--8<-- "', sub("^[^/]+/", "", function_file_path), name,'.md"') #
     )
   }
   # write the markdown file
-  writeLines(markdown_file_content, paste0(module_file_path, "docs_", mod_title_name, ".md"))
-  r_doc_index <- FALSE
+  writeLines(markdown_file_content, paste0(module_file_path, mod_title_name, ".md"))
+
+  code_index <- NA
+  r_doc_index <- NA
   print("find_docs")
-  # Find the 'Documentation' section in the mkdocs.yml file and add the new item to the 'R' subsection
+  # Find the  index of the 'Code' section in the mkdocs.yml file
   for (i in seq_along(yaml_content$nav)) {
-    item <- yaml_content$nav[[i]]
-    if (is.list(item) && "Code" %in% names(item)) {
-      print("code in names")
-      print(item$Code)
-      for (j in seq_along(item$Code)) {
-        # print(subitem)
-        if (is.list(item$Code[[j]]) && "R" %in% names(item$Code[[j]])) {
-          print("is in names")
-          r_doc_index <- j
-          #print(subitem$R)
-        }
-      }
-      if (r_doc_index == FALSE) {
-        print("r index false")
-        item$Code <- append(item$Code , list(list(R=NULL)))
-        print(item$Code)
-        r_doc_index <- length(item$Code)
-      }
-      print("r_doc_index")
-      print(r_doc_index)
-
-      subitem <- item$Code[[r_doc_index]]
-      temp_list <- list()
-      temp_list[[mod_title_name]] <- paste0('R_modules/docs_', mod_title_name, '.md')
-
-      # counter to check if a page with modified_name already exists
-      dir_exists_counter <- FALSE
-
-      # loop through directory and override file with modified_name with the new version
-      for (k in seq_along(subitem$R)) {
-        if(names(subitem$R[[k]]) == mod_title_name) {
-
-            # if the page exists, override the entry with the new version
-            subitem$R[[k]] <- temp_list
-            dir_exists_counter <- TRUE
-        }
-      }
-      print("after loop")
-      print(item$Code)
-      # if there was no file to override add a new entry with the new file
-      if(dir_exists_counter == FALSE) {
-        subitem$R[[length(subitem$R) + 1]] <- temp_list
-      }
-
-      yaml_content$nav[[i]]$Code[[r_doc_index]] <- subitem
-      break
+    if (is.list(yaml_content$nav[[i]]) && "Code" %in% names(yaml_content$nav[[i]])) {
+      code_index = i
     }
   }
+  # if there is no Äcode section, create it
+  if (is.na(code_index)) {
+    yaml_content$nav <- append(yaml_content$nav, list(list(Code = NULL)))
+    code_index <- length(yaml_content$nav)
+  }
+
+  item <- yaml_content$nav[[code_index]]
+
+  # finde the index of the 'R' section in the code section
+  for (j in seq_along(item$Code)) {
+    if (is.list(item$Code[[j]]) && "R" %in% names(item$Code[[j]])) {
+      print("is in names")
+      r_doc_index <- j
+      #print(subitem$R)
+    }
+  }
+
+  # if there is no 'R section', create it
+  if (is.na(r_doc_index)) {
+    print("r index false")
+    item$Code <- append(item$Code , list(list(R=NULL)))
+
+    r_doc_index <- length(item$Code)
+  }
+  print("r_doc_index")
+  print(r_doc_index)
+
+  subitem <- item$Code[[r_doc_index]]
+  temp_list <- list()
+  temp_list[[mod_title_name]] <- paste0(sub("^[^/]+/", "", module_file_path), mod_title_name, '.md')
+
+  # counter to check if a page with modified_name already exists
+  dir_exists_counter <- FALSE
+
+  # loop through directory and override file with modified_name with the new version
+  for (k in seq_along(subitem$R)) {
+    if(names(subitem$R[[k]]) == mod_title_name) {
+
+        # if the page exists, override the entry with the new version
+        subitem$R[[k]] <- temp_list
+        dir_exists_counter <- TRUE
+    }
+  }
+  print("after loop")
+  # print(item$Code)
+  # if there was no file to override add a new entry with the new file
+  if(dir_exists_counter == FALSE) {
+    subitem$R[[length(subitem$R) + 1]] <- temp_list
+  }
+
+  yaml_content$nav[[code_index]]$Code[[r_doc_index]] <- subitem
+
 }
+
+
 
 
 

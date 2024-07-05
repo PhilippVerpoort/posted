@@ -56,8 +56,9 @@ for file_name in code_file_names:
         """
 
             # Define the path where to save the markdown file of the module
-            doc_folder_path = "docs/python_modules"
-            doc_file_path = os.path.join(doc_folder_path, f"docs_{modified_name}.md")
+            doc_folder_path = "docs/code/python"
+            doc_file_name = f"{modified_name}.md"
+            doc_file_path = os.path.join(doc_folder_path, doc_file_name)
 
             # Create the folder if it doesn't exist
             os.makedirs(doc_folder_path, exist_ok=True)
@@ -67,27 +68,53 @@ for file_name in code_file_names:
                 file.write(content)
 
 
+            code_index = None
+            python_index = None
 
-            # Check if the "Python" section exists in the mkdocs file:
+            # find index of Code section in the mkdocs file
             for i in range(len(mkdocs["nav"])):
-                if "Code" in mkdocs["nav"][i]: # go  into Documentation section
-                    for k in range(len(mkdocs["nav"][i]["Code"])):
-                        if "Python" in mkdocs["nav"][i]["Code"][k]: # go into python section
-                            if mkdocs["nav"][i]["Code"][k]["Python"] is None:
-                                mkdocs["nav"][i]["Code"][k]["Python"] = []
+                if "Code" in mkdocs["nav"][i]:
+                    code_index = i
 
-                            exists_counter = False # tracks if file already exists in the navigation tree
-                            for l in range(len(mkdocs["nav"][i]["Code"][k]["Python"])):
+            # if there is no code section, create it
+            if code_index is None:
+                code_index = len(mkdocs["nav"])
+                mkdocs["nav"].append({"Code":[]})
 
-                                # go to the section of the modified_name file and override it
-                                if modified_name in mkdocs["nav"][i]["Code"][k]["Python"][l]:
-                                    #print(True)
-                                    mkdocs["nav"][i]["Code"][k]["Python"][l] = {modified_name: f'python_modules/docs_{modified_name}.md'}
-                                    exists_counter = True
-                                    break
-                            # if there was no file found with the name, create a new entry in the navigation section
-                            if exists_counter is False:
-                                mkdocs["nav"][i]["Code"][k]["Python"].append({modified_name: f'python_modules/docs_{modified_name}.md'})
+
+            # if there is a code section, but it has no content, create a list to be filled
+            if mkdocs["nav"][code_index]["Code"] is None:
+                mkdocs["nav"][code_index]["Code"] = []
+
+
+            # find index of the python section
+            for k in range(len(mkdocs["nav"][code_index]["Code"])):
+                if "Python" in mkdocs["nav"][code_index]["Code"][k]: # go into python section
+                    python_index = k
+            print(python_index)
+            # if there is no python section, create it
+            if python_index is None:
+                python_index = len(mkdocs["nav"][code_index]["Code"])
+                mkdocs["nav"][code_index]["Code"].append({"Python":[]})
+
+
+            print
+            # if there is a python section, but it has no content, create a list to be filled
+            if mkdocs["nav"][code_index]["Code"][python_index]["Python"] is None:
+                mkdocs["nav"][code_index]["Code"][python_index]["Python"] = []
+
+            exists_counter = False # tracks if file already exists in the navigation tree
+            for l in range(len(mkdocs["nav"][code_index]["Code"][python_index]["Python"])):
+
+                # go to the section of the modified_name file and override it
+                if modified_name in mkdocs["nav"][code_index]["Code"][python_index]["Python"][l]:
+                    #print(True)
+                    mkdocs["nav"][code_index]["Code"][python_index]["Python"][l] = {modified_name: f'code/python/{doc_file_name}'}
+                    exists_counter = True
+                    break
+            # if there was no file found with the name, create a new entry in the navigation section
+            if exists_counter is False:
+                mkdocs["nav"][code_index]["Code"][python_index]["Python"].append({modified_name: f'code/python/{doc_file_name}'})
 
 
 # Save the modified YAML file

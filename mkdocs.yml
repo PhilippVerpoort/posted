@@ -1,17 +1,19 @@
+copyright: <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0 2024</a>
+  — P.C. Verpoort
 extra:
   version:
     provider: mike
 extra_javascript:
-  - javascripts/mathjax.js
-  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+- javascripts/mathjax.js
+- https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 markdown_extensions:
 - pymdownx.superfences
 - pymdownx.tabbed:
-    alternate_style: true
+    alternate_style: yes
 - pymdownx.snippets:
     base_path: docs
 - pymdownx.arithmatex:
-    generic: true
+    generic: yes
 nav:
 - Home: home.md
 - Installation: installation.md
@@ -21,20 +23,10 @@ nav:
     - Overview: tutorials/python/overview.py
   - R:
     - Overview: tutorials/R/overview.py
-- Code:
-  - Python:
-    - columns: python_modules/docs_columns.md
-    - definitions: python_modules/docs_definitions.md
-    - masking: python_modules/docs_masking.md
-    - noslag: python_modules/docs_noslag.md
-    - read: python_modules/docs_read.md
-    - sources: python_modules/docs_sources.md
-    - tedf: python_modules/docs_tedf.md
-    - units: python_modules/docs_units.md
 plugins:
 - mkdocs-jupyter:
-    execute: true
-    include_requirejs: true
+    execute: no
+    include_requirejs: no
 - search
 - mkdocstrings:
     handlers:
@@ -64,4 +56,3 @@ theme:
     toggle:
       icon: material/weather-sunny
       name: Switch to light mode
-copyright: '<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0 2024</a> — P.C. Verpoort'
