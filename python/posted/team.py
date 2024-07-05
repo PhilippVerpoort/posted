@@ -35,14 +35,14 @@ pint_pandas.PintType.ureg = ureg
 
 
 # calculate annuity factor
-def annuity_factor(ir: Q, n: Q):
+def annuity_factor(ir: Q, bl: Q):
     try:
         ir = ir.to('dimensionless').m
-        n = n.to('a').m
+        bl = bl.to('a').m
     except DimensionalityError:
         return np.nan
 
-    return ir * (1 + ir) ** n / ((1 + ir) ** n - 1) / Q('1 a')
+    return ir * (1 + ir) ** bl / ((1 + ir) ** bl - 1) / Q('1 a')
 
 
 # define abstract manipulation class
@@ -304,91 +304,8 @@ class CalcVariable(AbstractManipulation):
         return df
 
 
-# calculate levelised cost of X
-class LCOX(AbstractManipulation):
-    _name: str
-    _reference: str
-    _process: str
-    _interest_rate: Optional[float]
-    _book_lifetime: Optional[float]
-
-    def __init__(self, name: str, process: str, reference: str,
-                 interest_rate: Optional[float] = None, book_lifetime: Optional[float] = None):
-        self._name = name
-        self._reference = reference
-        self._process = process
-        self._interest_rate = interest_rate * U('') if isinstance(interest_rate, int | float) else interest_rate
-        self._book_lifetime = book_lifetime * U('a') if isinstance(book_lifetime, int | float) else book_lifetime
-
-    # perform
-    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
-        # calculate levelised cost, prepend "LCOX|{name}|" before column names, and divide by reference
-        ret = self.calc_cost(df) \
-            .rename(columns=lambda col_name: f"LCOX|{self._name}|{col_name}") \
-            .apply(lambda col: col / df[f"Tech|{self._process}|{self._reference}"])
-        return pd.concat([df, ret], axis=1)
-
-    # calc levelised cost
-    def calc_cost(self, df: pd.DataFrame) -> pd.DataFrame:
-        tech = self._varsplit(df, f"Tech|{self._process}|?variable")
-        prices = self._varsplit(df, 'Price|?io')
-        iocaps = self._varsplit(df, regex=fr"Tech\|{re.escape(self._process)}\|((?:Input|Output) Capacity\|.*)")
-        ios = self._varsplit(df, regex=fr"Tech\|{re.escape(self._process)}\|((?:Input|Output)\|.*)")
-
-        # determine reference capacity and reference of that reference capacity for CAPEX and OPEX Fixed
-        if any(c in tech for c in ('CAPEX', 'OPEX Fixed')):
-            try:
-                cap = iocaps.iloc[:, 0]
-                capref = ios[re.sub(r'(Input|Output) Capacity', r'\1', cap.name)]
-            except IndexError:
-                warnings.warn('Could not find a reference capacity for CAPEX and OPEX columns.')
-                cap = capref = None
-            except KeyError:
-                warnings.warn('Could not find reference matching the reference capacity.')
-                capref = None
-        else:
-            cap = capref = None
-
-        ret = pd.DataFrame(index=df.index)
-
-        # calc capital cost and fixed OM cost
-        if cap is not None and capref is not None:
-            OCF = tech['OCF'] if 'OCF' in tech else 1.0
-
-            if 'CAPEX' in tech:
-                ANF = annuity_factor(self._interest_rate, self._book_lifetime)
-                ret['Capital'] = ANF * tech['CAPEX'] / OCF / cap * capref
-
-            if 'OPEX Fixed' in tech:
-                ret['OM Fixed'] = tech['OPEX Fixed'] / OCF / cap * capref
-
-        # calc var OM cost
-        if 'OPEX Variable' in tech:
-            ret['OM Variable'] = tech['OPEX Variable']
-
-        # calc input cost
-        unused = []
-        for io in ios:
-            if io == self._reference:
-                continue
-            io_type, io_flow = io.split('|', 2)
-            if io_flow not in prices:
-                unused.append(io)
-                continue
-            # inputs are counted as costs, outputs are counted as revenues
-            sign = +1 if io_type == 'Input' else -1
-            ret[f"{io_type} {'Cost' if io_type == 'Input' else 'Revenue'}|{io_flow}"] = sign * ios[io] * prices[io_flow]
-
-        # warn about unused variables
-        if unused:
-            warnings.warn(f"The following inputs/outputs are not used in LCOX, because they are neither the reference "
-                          f"nor an associated price are given: {', '.join(unused)}")
-
-        return ret
-
-
-# building value chains
-class BuildValueChain(AbstractManipulation):
+# building process chains
+class ProcessChain(AbstractManipulation):
     _name: str
     _demand: dict[str, dict[str, pint.Quantity]]
     _sc_demand: dict[str, dict[str, pint.Quantity]] | None
@@ -475,7 +392,7 @@ class BuildValueChain(AbstractManipulation):
     def _read_diagram(diagram: str) -> dict[str, dict[str, list[str]]]:
         out = {}
         for diagram in diagram.split(';'):
-            for proc, flow, proc2 in BuildValueChain._reduce_subdiagram(diagram):
+            for proc, flow, proc2 in ProcessChain._reduce_subdiagram(diagram):
                 if flow is None:
                     continue
                 if proc in out:
@@ -547,144 +464,123 @@ class BuildValueChain(AbstractManipulation):
         func_units = solve(tsm, d)
 
         return pd.Series({
-            f"Value Chain|{self._name}|Functional Units|{proc}": func_units[i] * U('')
+            f"Process Chain|{self._name}|Functional Unit|{proc}": func_units[i] * U('')
             for i, proc in enumerate(list(self._proc_graph.keys()))
         } | ({
-            f"Value Chain|{self._name}|Demand|{proc}|{flow}": self._demand[proc][flow]
+            f"Process Chain|{self._name}|Demand|{proc}|{flow}": self._demand[proc][flow]
             for proc in self._demand
             for flow in self._demand[proc]
         } if self._demand is not None else {}) | ({
-            f"Value Chain|{self._name}|SC Demand|{proc}|{flow}": self._sc_demand[proc][flow]
+            f"Process Chain|{self._name}|SC Demand|{proc}|{flow}": self._sc_demand[proc][flow]
             for proc in self._sc_demand
             for flow in self._sc_demand[proc]
         } if self._sc_demand is not None else {}))
 
 
-class LCOXAnalysis(AbstractManipulation):
-    _reference: Optional[str]
-    _value_chains: Optional[list[str]]
+# calculate levelised cost of X
+class LCOX(AbstractManipulation):
+    _name: str
+    _reference: str
+    _process: str
     _interest_rate: Optional[float]
     _book_lifetime: Optional[float]
 
-    def __init__(self, value_chains: Optional[list[str]] = None, reference: Optional[str] = None,
-                 interest_rate: Optional[float] = None, book_lifetime: Optional[float] = None):
+    def __init__(self, reference: str, process: Optional[str] = None, process_chain: Optional[str] = None,
+                 name: Optional[str] = None, interest_rate: Optional[float] = None,
+                 book_lifetime: Optional[float] = None):
+        if process is None and process_chain is None:
+            raise Exception('Either process or vc must be provided as an argument.')
+        elif process is not None and process_chain is not None:
+            raise Exception('Only one of process and vc must be provided as an argument.')
+
         self._reference = reference
-        self._value_chains = value_chains
+        self._process = process
+        self._process_chain = process_chain
+        self._name = name if name is not None else process if process is not None else process_chain
         self._interest_rate = interest_rate * U('') if isinstance(interest_rate, int | float) else interest_rate
         self._book_lifetime = book_lifetime * U('a') if isinstance(book_lifetime, int | float) else book_lifetime
 
     # perform
     def perform(self, df: pd.DataFrame) -> pd.DataFrame:
-        return df.apply(self._perform_row, axis=1).combine_first(df)
+        if self._process is not None:
+            # calculate levelised cost of process, prepend "LCOX|{name}|" before variable names, and divide by reference
+            ret = self.calc_cost(df, self._process) \
+                .rename(columns=lambda col_name: f"LCOX|{self._name}|{col_name}") \
+                .apply(lambda col: col / df[f"Tech|{self._process}|{self._reference}"])
+            return pd.concat([df, ret], axis=1)
+        else:
+            # get functional units
+            func_units = self._varsplit(df, f"Process Chain|{self._process_chain}|Functional Unit|?process")
+            if func_units.empty:
+                raise Exception(f"Process chain '{self._process_chain}' could not be found. Make sure you performed "
+                                f"performed the process chain manipulation on the dataframe first to determine the "
+                                f"functional units and make sure the spelling of the process chain is correct.")
+            # loop over processes in process chain
+            ret_list = []
+            for process in func_units.columns:
+                # calculate levelised cost of process, prepend "LCOX|{name}|{process}|" before variable names, divide
+                # by reference, and multiply by functional unit
+                ret = self.calc_cost(df, process) \
+                    .rename(columns=lambda var: f"LCOX|{self._name}|{process}|{var}") \
+                    .apply(lambda col: col / df[f"Tech|{self._reference}"] * func_units[process])
+                ret_list.append(ret)
+            return pd.concat([df] + ret_list, axis=1)
 
-    # perform LCOX calculation for every value chain
-    def _perform_row(self, row: pd.Series) -> pd.Series:
-        value_chains: list[str] = self._value_chains or list({
-            var.split('|')[1]
-            for var in row.index
-            if var.startswith('Value Chain|')
-        })
+    # calc levelised cost
+    def calc_cost(self, df: pd.DataFrame, process: str) -> pd.DataFrame:
+        tech = self._varsplit(df, f"Tech|{process}|?variable")
+        prices = self._varsplit(df, 'Price|?io')
+        iocaps = self._varsplit(df, regex=fr"Tech\|{re.escape(process)}\|((?:Input|Output) Capacity\|.*)")
+        ios = self._varsplit(df, regex=fr"Tech\|{re.escape(process)}\|((?:Input|Output)\|.*)")
 
-        return pd.Series({
-            variable: value.to_base_units()
-            for vc in value_chains
-            for variable, value in self._calc(vc, row).items()
-        })
-
-    # calculate LCOX for one value chain
-    def _calc(self, vc: str, row: pd.Series) -> dict[str, pint.Quantity]:
-        reference = self._reference
-        if reference is None:
+        # determine reference capacity and reference of that reference capacity for CAPEX and OPEX Fixed
+        if any(c in tech for c in ('CAPEX', 'OPEX Fixed')):
             try:
-                reference = next(var for var in row.index if var.startswith(f"Value Chain|{vc}|Demand|"))
-            except StopIteration:
-                try:
-                    reference = next(var for var in row.index if var.startswith(f"Value Chain|{vc}|SC Demand|"))
-                except StopIteration:
-                    raise Exception('The LCOX Analysis requires a reference (demand or supply-chain demand provided as '
-                                    'either argument or one of the dataframe variables).')
+                cap = iocaps.iloc[:, 0]
+                capref = ios[re.sub(r'(Input|Output) Capacity', r'\1', cap.name)]
+            except IndexError:
+                warnings.warn('Could not find a reference capacity for CAPEX and OPEX columns.')
+                cap = capref = None
+            except KeyError:
+                warnings.warn('Could not find reference matching the reference capacity.')
+                capref = None
+        else:
+            cap = capref = None
 
-        ret = {}
-        for func_unit_tech, func_unit in row[row.index.str.startswith(f"Value Chain|{vc}|Functional Units|")].items():
-            proc_id = func_unit_tech.split('|')[-1]
-            row_proc = {
-                key.removeprefix(f"Tech|{proc_id}|"): value
-                for key, value in row.items()
-                if key.startswith(f"Tech|{proc_id}|")
-            }
+        ret = pd.DataFrame(index=df.index)
 
-            if 'CAPEX' in row_proc:
-                if 'Interest Rate' not in row_proc:
-                    if f"Techno-economic Assumptions|Interest Rate|{proc_id}" in row:
-                        row_proc['Interest Rate'] = row[f"Techno-economic Assumptions|Interest Rate|{proc_id}"]
-                    elif f"Techno-economic Assumptions|Interest Rate" in row:
-                        row_proc['Interest Rate'] = row[f"Techno-economic Assumptions|Interest Rate"]
-                    elif self._interest_rate is not None:
-                        row_proc['Interest Rate'] = self._interest_rate
+        # calc capital cost and fixed OM cost
+        if cap is not None and capref is not None:
+            OCF = tech['OCF'] if 'OCF' in tech else 1.0
 
-                    if f"Techno-economic Assumptions|Book Lifetime|{proc_id}" in row:
-                        row_proc['Book Lifetime'] = row[f"Techno-economic Assumptions|Book Lifetime|{proc_id}"]
-                    elif f"Techno-economic Assumptions|Book Lifetime" in row:
-                        row_proc['Book Lifetime'] = row[f"Techno-economic Assumptions|Book Lifetime"]
-                    elif self._book_lifetime is not None:
-                        row_proc['Book Lifetime'] = self._book_lifetime
-                    elif 'Lifetime' in row:
-                        row_proc['Book Lifetime'] = row['Lifetime']
+            if 'CAPEX' in tech:
+                ANF = annuity_factor(self._interest_rate, self._book_lifetime)
+                ret['Capital'] = ANF * tech['CAPEX'] / OCF / cap * capref
 
-            for var_io_type, sign in [('Input', +1), ('Output', -1)]:
-                for var_io in [v for v in row_proc if v.startswith(f"{var_io_type}|")]:
-                    flow_io = var_io.split('|')[1]
-                    if f"Price|{flow_io}|{proc_id}" in row:
-                        row_proc[f"Price|{flow_io}"] = row[f"Price|{flow_io}|{proc_id}"]
-                    elif f"Price|{flow_io}" in row:
-                        row_proc[f"Price|{flow_io}"] = row[f"Price|{flow_io}"]
+            if 'OPEX Fixed' in tech:
+                ret['OM Fixed'] = tech['OPEX Fixed'] / OCF / cap * capref
 
-            for component, value in self._calc_proc(row_proc).items():
-                ret[f"{proc_id}|{component}"] = value
+        # calc var OM cost
+        if 'OPEX Variable' in tech:
+            ret['OM Variable'] = tech['OPEX Variable']
 
-        return {f"Value Chain|{vc}|LCOX|{k}": v / row[reference] for k, v in ret.items()}
+        # calc input cost
+        unused = []
+        for io in ios:
+            if io == self._reference:
+                continue
+            io_type, io_flow = io.split('|', 2)
+            if io_flow not in prices:
+                unused.append(io)
+                continue
+            # inputs are counted as costs, outputs are counted as revenues
+            sign = +1 if io_type == 'Input' else -1
+            ret[f"{io_type} {'Cost' if io_type == 'Input' else 'Revenue'}|{io_flow}"] = sign * ios[io] * prices[io_flow]
 
-    # calculate LCOX for a single process in a value chain
-    def _calc_proc(self, row_proc: dict):
-        ret = {}
-
-        if 'CAPEX' in row_proc or 'OPEX Fixed' in row_proc:
-            try:
-                reference_capacity_var = next(
-                    v for v in row_proc
-                    if v.startswith('Input Capacity|') or v.startswith('Output Capacity|')
-                )
-                reference_capacity = row_proc[reference_capacity_var]
-            except StopIteration:
-                warnings.warn(f"No reference capacity found but CAPEX and/or OPEX Fixed variables provided for.")
-                reference_capacity = np.nan
-
-            if not pd.isnull(reference_capacity):
-                try:
-                    reference = row_proc[re.sub(r'(Input|Output) Capacity', r'\1', reference_capacity_var)]
-                except KeyError:
-                    warnings.warn(f"No reference input/output found matching the reference capacity.")
-                    reference = np.nan
-
-                if not pd.isnull(reference):
-                    if 'OPEX Fixed' in row_proc:
-                        ret['OM Fixed'] = row_proc['OPEX Fixed'] / reference_capacity * reference
-
-                    if 'CAPEX' in row_proc:
-                        if all(v in row_proc for v in ('Interest Rate', 'Book Lifetime')):
-                            ANF = annuity_factor(row_proc['Interest Rate'], row_proc['Book Lifetime'])
-                            ret['Capital'] = ANF * row_proc['CAPEX'] / reference_capacity * reference
-                        else:
-                            warnings.warn(f"Annuity factor could not be determined.")
-
-        for var_io_type, sign in [('Input', +1), ('Output', -1)]:
-            for var_io in [v for v in row_proc if v.startswith(f"{var_io_type}|")]:
-                flow_io = var_io.split('|')[1]
-                var_io_price = f"Price|{flow_io}"
-                if var_io_price in row_proc:
-                    ret[f"{var_io_type} Cost"] = sign * row_proc[var_io_price] * row_proc[var_io]
-                elif var_io_type == 'Input':
-                    warnings.warn(f"Price not found corresponding to Input: {var_io}")
+        # warn about unused variables
+        if unused:
+            warnings.warn(f"The following inputs/outputs are not used in LCOX, because they are neither the reference "
+                          f"nor is an associated price given: {', '.join(unused)}")
 
         return ret
 
