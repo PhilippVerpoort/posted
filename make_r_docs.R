@@ -21,7 +21,7 @@ extract_function_titles <- function(r_file) {
 }
 
 # Generate R documentation with Roxygen2
-document()
+# document()
 
 # define the Directory containing the R scripts
 r_dir <- "R"
@@ -126,39 +126,56 @@ for (title_name in names(file_titles_list)) {
   }
   # write the markdown file
   writeLines(markdown_file_content, paste0(module_file_path, "docs_", mod_title_name, ".md"))
-
+  r_doc_index <- FALSE
+  print("find_docs")
   # Find the 'Documentation' section in the mkdocs.yml file and add the new item to the 'R' subsection
   for (i in seq_along(yaml_content$nav)) {
     item <- yaml_content$nav[[i]]
-    if (is.list(item) && "Documentation" %in% names(item)) {
-      for (j in seq_along(item$Documentation)) {
-        subitem <- item$Documentation[[j]]
-
-        if (is.list(subitem) && "R" %in% names(subitem)) {
-          temp_list <- list()
-          temp_list[[mod_title_name]] <- paste0('R_modules/docs_', mod_title_name, '.md')
-
-          # counter to check if a page with modified_name already exists
-          dir_exists_counter <- FALSE
-
-          # loop through directory and override file with modified_name with the new version
-          for (k in seq_along(subitem$R)) {
-            if(names(subitem$R[[k]]) == mod_title_name) {
-
-                # if the page exists, override the entry with the new version
-                subitem$R[[k]] <- temp_list
-                dir_exists_counter <- TRUE
-            }
-          }
-          # if there was no file to override add a new entry with the new file
-          if(dir_exists_counter == FALSE) {
-            subitem$R[[length(subitem$R) + 1]] <- temp_list
-          }
-
-          yaml_content$nav[[i]]$Documentation[[j]] <- subitem
-          break
+    if (is.list(item) && "Code" %in% names(item)) {
+      print("code in names")
+      print(item$Code)
+      for (j in seq_along(item$Code)) {
+        # print(subitem)
+        if (is.list(item$Code[[j]]) && "R" %in% names(item$Code[[j]])) {
+          print("is in names")
+          r_doc_index <- j
+          #print(subitem$R)
         }
       }
+      if (r_doc_index == FALSE) {
+        print("r index false")
+        item$Code <- append(item$Code , list(list(R=NULL)))
+        print(item$Code)
+        r_doc_index <- length(item$Code)
+      }
+      print("r_doc_index")
+      print(r_doc_index)
+
+      subitem <- item$Code[[r_doc_index]]
+      temp_list <- list()
+      temp_list[[mod_title_name]] <- paste0('R_modules/docs_', mod_title_name, '.md')
+
+      # counter to check if a page with modified_name already exists
+      dir_exists_counter <- FALSE
+
+      # loop through directory and override file with modified_name with the new version
+      for (k in seq_along(subitem$R)) {
+        if(names(subitem$R[[k]]) == mod_title_name) {
+
+            # if the page exists, override the entry with the new version
+            subitem$R[[k]] <- temp_list
+            dir_exists_counter <- TRUE
+        }
+      }
+      print("after loop")
+      print(item$Code)
+      # if there was no file to override add a new entry with the new file
+      if(dir_exists_counter == FALSE) {
+        subitem$R[[length(subitem$R) + 1]] <- temp_list
+      }
+
+      yaml_content$nav[[i]]$Code[[r_doc_index]] <- subitem
+      break
     }
   }
 }
