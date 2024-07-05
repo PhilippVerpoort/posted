@@ -1,4 +1,6 @@
-#' Read a csv datafile
+#' @title read_csv_file
+#'
+#' @description Read a csv datafile
 #'
 #' @param fpath path of the csv file
 #' @export
@@ -11,7 +13,9 @@ read_csv_file <- function (fpath) {
     ))
 }
 
-# read YAML config file
+#' @title read_yaml_file
+#'
+#' @description read YAML config file
 #'
 #' @param fpath path of the YAML file
 #' @export

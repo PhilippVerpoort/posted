@@ -34,6 +34,14 @@ matplotlib = "^3.8.2"
 openpyxl = "^3.1.2"
 itables = "^2.1.1"
 
+[tool.poetry.group.documentation.dependencies]
+mkdocs-material = "^9.5.26"
+mkdocstrings = "^0.25.1"
+mkdocstrings-python = "^1.10.3"
+mkdocs-jupyter = "^0.24.7"
+pymdown-extensions = "^10.8.1"
+mike = "^2.1.2"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

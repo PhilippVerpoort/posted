@@ -6,12 +6,12 @@ import yaml
 
 def read_csv_file(fpath: str):
     """
-    Read CSF data file
+    Read CSV data file
 
     Parameters
     ----------
-        fpath: str
-            Path of the file to read
+    fpath: str
+        Path of the file to read
     Returns
     -------
         pd.DataFrame
@@ -26,8 +26,8 @@ def read_yml_file(fpath: Path):
 
     Parameters
     ----------
-        fpath: str
-            Path of the file to read
+    fpath: str
+        Path of the file to read
     Returns
     -------
         dict

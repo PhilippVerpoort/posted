@@ -17,11 +17,11 @@ def apply_cond(df: pd.DataFrame, cond: MaskCondition):
 
     Parameters
     ----------
-        df : pd.DataFrame
-            A pandas DataFrame containing the data on which the condition will be applied.
-        cond : MaskCondition
-            The condition to be applied on the dataframe. Can be either a string, a dictionary, or a
-            callable function.
+    df : pd.DataFrame
+        A pandas DataFrame containing the data on which the condition will be applied.
+    cond : MaskCondition
+        The condition to be applied on the dataframe. Can be either a string, a dictionary, or a
+        callable function.
 
     Returns
     -------
@@ -44,15 +44,15 @@ class Mask:
 
     Parameters
     ----------
-        where: MaskCondition | list[MaskCondition], optional
-            Where the mask should be applied
-        use:  MaskCondition | list[MaskCondition], optional
-            Condition on where to use the masks
-        weight: None | float | str | list[float | str], optional
-            Weights to apply
-        other: float, optional
+    where: MaskCondition | list[MaskCondition], optional
+        Where the mask should be applied
+    use:  MaskCondition | list[MaskCondition], optional
+        Condition on where to use the masks
+    weight: None | float | str | list[float | str], optional
+        Weights to apply
+    other: float, optional
 
-        comment: str, optional
+    comment: str, optional
             Comment
     '''
     def __init__(self,
@@ -89,8 +89,8 @@ class Mask:
 
         Parameters
         ----------
-            df: pd.Dataframe
-                Dataframe to check for matches
+        df: pd.Dataframe
+            Dataframe to check for matches
         Returns
         -------
             bool
@@ -106,8 +106,8 @@ class Mask:
 
         Parameters
         ----------
-            df: pd.Dataframe
-                Dataframe to apply weights on
+        df: pd.Dataframe
+            Dataframe to apply weights on
 
         Returns
         -------
@@ -128,8 +128,8 @@ def read_masks(variable: str):
 
     Parameters
     ----------
-        variable : str
-            Variable to be read
+    variable : str
+        Variable to be read
 
     Returns
     -------

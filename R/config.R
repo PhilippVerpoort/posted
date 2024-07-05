@@ -44,4 +44,3 @@ for (database_path in databases) {
   # Load variable definitions
   variables <-  c(variables, read_definitions(file.path(database_path, 'definitions', 'variable'), flows, techs))
 }
-

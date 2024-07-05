@@ -3,24 +3,24 @@ library(purrr)
 library(tidyr)
 library(stringr)
 
-
+#' @title read_definitions
+#'
+#' @description Reads YAML files from definitions directory, extracts tags, inserts tags into
+#' definitions, replaces tokens in definitions, and returns the updated definitions.
+#'
+#' @param definitions_dir Character. Path leading to the definitions.
+#' @param flows List. Dictionary containing the different flow types. Each key represents a flow type, the corresponding
+#'              value is a dictionary containing key value pairs of attributes like density, energy content and their
+#'              values.
+#' @param techs List. Dictionary containing information about different technologies. Each key in the
+#'              dictionary represents a unique technology ID, and the corresponding value is a dictionary containing
+#'              various specifications for that technology, like 'description', 'class', 'primary output' etc.
+#'
+#' @return List. Dictionary containing the definitions after processing and replacing tags and tokens.
+#'
+#' @export
 read_definitions <- function(definitions_dir, flows, techs) {
-  #' read_definitions
-  #'
-  #' Reads YAML files from definitions directory, extracts tags, inserts tags into
-  #' definitions, replaces tokens in definitions, and returns the updated definitions.
-  #'
-  #' @param definitions_dir Character. Path leading to the definitions.
-  #' @param flows List. Dictionary containing the different flow types. Each key represents a flow type, the corresponding
-  #'              value is a dictionary containing key value pairs of attributes like density, energy content and their
-  #'              values.
-  #' @param techs List. Dictionary containing information about different technologies. Each key in the
-  #'              dictionary represents a unique technology ID, and the corresponding value is a dictionary containing
-  #'              various specifications for that technology, like 'description', 'class', 'primary output' etc.
-  #'
-  #' @return List. Dictionary containing the definitions after processing and replacing tags and tokens.
-  #'
-  #' @export
+
 
   # chek that variables exists and is a directory
   if(!dir.exists(definitions_dir)) {
@@ -84,21 +84,21 @@ read_definitions <- function(definitions_dir, flows, techs) {
 
 
 
-
+#' @title replace_tags
+#'
+#' @description Replaces specified tags in dictionary keys and values with corresponding
+#' items from another dictionary.
+#'
+#' @param definitions List. Dictionary containing the definitions, where the tags should be replaced by the items.
+#' @param tag Character. String to identify where replacements should be made in the definitions. Specifies
+#'            the placeholder that needs to be replaced with actual values from the \code{items} dictionary.
+#' @param items List. Dictionary containing the items from which to replace the definitions.
+#'
+#' @return List. Dictionary containing the definitions with replacements based on the provided tag and items.
+#'
+#' @export
 replace_tags <- function(definitions, tag, items) {
-  #' replace_tags
-  #'
-  #' Replaces specified tags in dictionary keys and values with corresponding
-  #' items from another dictionary.
-  #'
-  #' @param definitions List. Dictionary containing the definitions, where the tags should be replaced by the items.
-  #' @param tag Character. String to identify where replacements should be made in the definitions. Specifies
-  #'            the placeholder that needs to be replaced with actual values from the \code{items} dictionary.
-  #' @param items List. Dictionary containing the items from which to replace the definitions.
-  #'
-  #' @return List. Dictionary containing the definitions with replacements based on the provided tag and items.
-  #'
-  #' @export
+
 
   definitions_with_replacements <- list()
 
@@ -137,21 +137,21 @@ replace_tags <- function(definitions, tag, items) {
   return(definitions_with_replacements)
 }
 
-unit_token_func <- function(unit_component, flows) {
-  #' unit_token_func
-  #'
-  #' Takes a unit component type and a dictionary of flows, and returns a lambda function
-  #' that extracts the default unit based on the specified component type from the flow
-  #' dictionary.
-  #'
-  #' @param unit_component Character. Specifies the type of unit token to be returned. Possible values are 'full', 'raw', 'variant'.
-  #' @param flows List. Dictionary containing the flows.
-  #'
-  #' @return Function. Lambda function that takes a dictionary \code{def_specs} as input. The lambda function
-  #' will return different values based on the \code{unit_component} parameter.
-  #'
-  #' @export
 
+#' @title unit_token_func
+#'
+#' @description Takes a unit component type and a dictionary of flows, and returns a lambda function
+#' that extracts the default unit based on the specified component type from the flow
+#' dictionary.
+#'
+#' @param unit_component Character. Specifies the type of unit token to be returned. Possible values are 'full', 'raw', 'variant'.
+#' @param flows List. Dictionary containing the flows.
+#'
+#' @return Function. Lambda function that takes a dictionary \code{def_specs} as input. The lambda function
+#' will return different values based on the \code{unit_component} parameter.
+#'
+#' @export
+unit_token_func <- function(unit_component, flows) {
   return(function(def_specs) {
     if (!('flow_id' %in% names(def_specs)) || !(def_specs$flow_id %in% names(flows))) {
       return('ERROR')
@@ -171,5 +171,3 @@ unit_token_func <- function(unit_component, flows) {
     }
   })
 }
-
-
