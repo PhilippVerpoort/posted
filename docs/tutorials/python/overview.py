@@ -1,7 +1,7 @@
 # ---
 # jupyter:
 #   jupytext:
-#     formats: ipynb,py
+#     formats: py:light
 #     text_representation:
 #       extension: .py
 #       format_name: light
@@ -13,7 +13,7 @@
 #     name: python3
 # ---
 
-# # Overview of working with POSTED
+# # Main POSTED tutorial for python
 
 # ## Prerequisits
 
@@ -25,12 +25,9 @@
 import pandas as pd
 
 import plotly
-from itables import init_notebook_mode
-
-init_notebook_mode(all_interactive=True)
 pd.options.plotting.backend = "plotly"
 
-# for value chains only
+# for process chains only
 import igraph as ig
 import matplotlib.pyplot as plt
 # -
@@ -232,7 +229,7 @@ display(df_lcox_bluegreen)
 df_lcox_bluegreen.team.varsplit('LCOX|?fuel|*comp') \
     .plot.bar(x='fuel', y='value', color='comp', facet_col='elec_price_case', facet_row='ng_price_case')
 
-# #### LCOX of Methanol
+# #### LCOX of methanol
 
 # Let's calculate the levelised cost of green methanol (from electrolytic hydrogen). First we can do this simply based on a hydrogen price (i.e. without accounting for electrolysis).
 
@@ -261,19 +258,19 @@ df_lcox_meoh.team.varsplit('LCOX|Green Methanol|*component') \
 # Next, we can calculate the LCOX of green methanol for a the value chain consisting of electrolysis, low-temperature direct air capture, and methanol synthesis. The heat for the direct air capture will be provided by an industrial heat pump.
 
 # +
-pc = ProcessChain(
+pc_green_meoh = ProcessChain(
     'Green Methanol',
     {'Methanol Synthesis': {'Methanol': Q('1 MWh')}},
     'Heatpump for DAC -> Heat => Direct Air Capture -> Captured CO2 => Methanol Synthesis;Electrolysis -> Hydrogen => Methanol Synthesis -> Methanol',
 )
 
-g, lay = pc.igraph()
+g, lay = pc_green_meoh.igraph()
 fig, ax = plt.subplots()
-ax.set_title(pc.name)
+ax.set_title(pc_green_meoh.name)
 ig.plot(g, target=ax, layout=lay, vertex_label=[n.replace(' ', '\n') for n in g.vs['name']], edge_label=[n.replace(' ', '\n') for n in g.es['name']], vertex_label_size=8, edge_label_size=6)
 
 # +
-df_lcox_meohvc = pd.concat([
+df_lcox_meoh_pc = pd.concat([
         DataSet('Tech|Electrolysis').aggregate(period=[2030, 2050], subtech=['AEL', 'PEM'], size=['1 MW', '100 MW'], agg=['subtech', 'size', 'source']),
         DataSet('Tech|Direct Air Capture').aggregate(period=[2030, 2050], subtech='LT-DAC'),
         DataSet('Tech|Heatpump for DAC').aggregate(period=[2030, 2050]),
@@ -283,15 +280,96 @@ df_lcox_meohvc = pd.concat([
             {'period': 2050, 'variable': 'Price|Electricity', 'unit': 'EUR_2022/MWh', 'value': 30},
         ]),
     ]) \
-    .team.perform(pc) \
+    .team.perform(pc_green_meoh) \
     .team.perform(LCOX(
         'Methanol Synthesis|Output|Methanol', process_chain='Green Methanol',
         interest_rate=0.1, book_lifetime=10.0,
     ), only_new=True) \
     .team.unit_convert('EUR_2022/MWh')
 
-display(df_lcox_meohvc)
+display(df_lcox_meoh_pc)
 # -
 
-df_lcox_meohvc.team.varsplit('LCOX|Green Methanol|?process|*component') \
+df_lcox_meoh_pc.team.varsplit('LCOX|Green Methanol|?process|*component') \
     .plot.bar(x='period', y='value', color='component', hover_data='process')
+
+# #### LCOX of green ethylene (from green methanol)
+
+# +
+pc_green_ethylene = ProcessChain(
+    'Green Ethylene',
+    {'Electric Arc Furnace': {'Ethylene': Q('1t')}},
+    'Electrolysis -> Hydrogen => Methanol Synthesis; Heatpump for DAC -> Heat => Direct Air Capture -> Captured CO2 => Methanol Synthesis -> Methanol => Methanol to Olefines -> Ethylene',
+)
+
+g, lay = pc_green_ethylene.igraph()
+fig, ax = plt.subplots()
+ax.set_title(pc_green_ethylene.name)
+ig.plot(g, target=ax, layout=lay, vertex_label=[n.replace(' ', '\n') for n in g.vs['name']], edge_label=[n.replace(' ', '\n') for n in g.es['name']], vertex_label_size=8, edge_label_size=6)
+# -
+
+# #### LCOX of green steel
+
+# +
+pc_green_steel = ProcessChain(
+    'Green Steel (H2-DR)',
+    {'Steel Hot Rolling': {'Steel Hot-rolled Coil': Q('1t')}},
+    'Electrolysis -> Hydrogen => Iron Direct Reduction -> Directly Reduced Iron => Electric Arc Furnace -> Steel Liquid => Steel Casting -> Steel Slab => Steel Hot Rolling -> Steel Hot-rolled Coil',
+)
+
+g, lay = pc_green_steel.igraph()
+fig, ax = plt.subplots()
+ax.set_title(pc_green_steel.name)
+ig.plot(g, target=ax, layout=lay, vertex_label=[n.replace(' ', '\n') for n in g.vs['name']], edge_label=[n.replace(' ', '\n') for n in g.es['name']], vertex_label_size=8, edge_label_size=6)
+
+# +
+df_lcox_green_steel = pd.concat([
+        DataSet('Tech|Electrolysis').aggregate(period=2030, subtech=['AEL', 'PEM'], size=['1 MW', '100 MW'], agg=['subtech', 'size', 'source'], override={'Tech|ELH2|Output Capacity|Hydrogen': 'kW;LHV'}),
+        DataSet('Tech|Iron Direct Reduction').aggregate(period=2030, mode='h2'),
+        DataSet('Tech|Electric Arc Furnace').aggregate(period=2030, mode='Primary'),
+        DataSet('Tech|Steel Casting').aggregate(period=2030),
+        DataSet('Tech|Steel Hot Rolling').aggregate(period=2030),
+        pd.DataFrame({'price_case': range(30, 60, 10), 'variable': 'Price|Electricity', 'unit': 'EUR_2020/MWh', 'value': range(30, 60, 10)}),
+    ]) \
+    .team.perform(pc_green_steel) \
+    .team.perform(LCOX(
+        'Steel Hot Rolling|Output|Steel Hot-rolled Coil', process_chain='Green Steel (H2-DR)',
+        interest_rate=0.1, book_lifetime=10.0,
+    ), only_new=True) \
+    .team.unit_convert('EUR_2022/t')
+
+display(df_lcox_green_steel)
+# -
+
+df_lcox_green_steel.team.varsplit('LCOX|Green Steel (H2-DR)|?process|*component') \
+    .plot.bar(x='price_case', y='value', color='component', hover_data='process', facet_col='reheating')
+
+# #### LCOX of cement w/ and w/o CC
+
+# +
+df_lcox_cement = pd.concat([
+        DataSet('Tech|Cement Production').aggregate(period=2030),
+        pd.DataFrame.from_records([
+            {'variable': 'Price|Electricity', 'unit': 'EUR_2022/MWh', 'value': 50},
+            {'variable': 'Price|Coal', 'unit': 'EUR_2022/GJ', 'value': 3},
+            {'variable': 'Price|Oxygen', 'unit': 'EUR_2022/t', 'value': 30},
+            {'variable': 'Price|Captured CO2', 'unit': 'EUR_2022/t', 'value': -30},
+        ]),
+    ]) \
+    .team.perform(LCOX(
+        'Output|Cement', 'Cement Production',
+        interest_rate=0.1, book_lifetime=10.0,
+    ), only_new=True) \
+    .team.unit_convert('EUR_2022/t')
+
+display(df_lcox_cement)
+# -
+
+# We first sort the dataframe by total LCOX for each subtech.
+
+df_lcox_cement.team.varsplit('?variable|?process|*component') \
+    .groupby('subtech') \
+    .apply(lambda df: df.assign(order=df['value'].sum()), include_groups=False) \
+    .sort_values(by='order') \
+    .reset_index() \
+    .plot.bar(x='subtech', y='value', color='component', hover_data='process')

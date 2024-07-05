@@ -20,7 +20,7 @@ par(bg = "white")
 plot(1:10)
 
 # + vscode={"languageId": "r"}
-tedf <- TEDF$new("tech/Electrolysis")$load()
+tedf <- TEDF$new("Tech|Electrolysis")$load()
 tedf$data
 
 # + vscode={"languageId": "r"}
