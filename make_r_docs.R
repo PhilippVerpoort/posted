@@ -21,7 +21,7 @@ extract_function_titles <- function(r_file) {
 }
 
 # Generate R documentation with Roxygen2
-# document()
+document()
 
 # define the Directory containing the R scripts
 r_dir <- "R"
