@@ -5,9 +5,7 @@
 
 /man
 *.ipynb
-/docs/R_functions/**
-/docs/R_modules/**
-/docs/python_modules/**
+/docs/code/**
 
 /python/posted/data
 
