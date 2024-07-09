@@ -41,6 +41,7 @@ mkdocstrings-python = "^1.10.3"
 mkdocs-jupyter = "^0.24.7"
 pymdown-extensions = "^10.8.1"
 mike = "^2.1.2"
+rd2md = "^1.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -11,10 +11,10 @@ POSTED was created and is maintained by researchers at the [Potsdam Institute fo
 You can install the `posted` Python package via:
 ```bash
 # when using poetry
-poetry add git+https://github.com:PhilippVerpoort/posted.git
+poetry add git+https://github.com/PhilippVerpoort/posted.git
 
 # when using pip
-pip install git+https://github.com:PhilippVerpoort/posted.git
+pip install git+https://github.com/PhilippVerpoort/posted.git
 ```
 
 You can install the `posted` R package using `install_github` from `devtools` via:

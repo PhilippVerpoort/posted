@@ -2344,6 +2344,16 @@ files = [
 cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
+name = "rd2md"
+version = "1.0.1"
+description = "Converter from R docs to markdown"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "rd2md-1.0.1-py3-none-any.whl", hash = "sha256:e15ee45e57968bb0f8fcfda537047820949a2f45dee26f12e3737b74325e212d"},
+]
+
+[[package]]
 name = "referencing"
 version = "0.35.1"
 description = "JSON Referencing + Python"
@@ -2868,4 +2878,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.12"
-content-hash = "c81f67d8475a743bd7af5c2a17e536de15664055adfea964ef4e5ebeba8316af"
+content-hash = "3963e28fd4a41d47e7991c95e2e67ad078c5ae0d0d1eb497b4839aa8d00418a0"
