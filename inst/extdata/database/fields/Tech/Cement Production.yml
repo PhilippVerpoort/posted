@@ -4,10 +4,10 @@ subtech:
   type: case
   coded: True
   codes:
-    Standard: Standard cement plant, no CC
-    Tail-end CaL 20% IL: Tail-end Calcium looping CC with fluidized bed reactors, 20% integration level
-    Tail-end CaL 50% IL: Tail-end Calcium looping CC with fluidized bed reactors, 50% integration level
-    Integrated CaL: Integrated Calcium looping CC with entrained flow reactors
+    Standard (w/o CC): Standard cement plant, no CC
+    Tail-end CaL 20% IL (w/ CC): Tail-end Calcium looping CC with fluidized bed reactors, 20% integration level
+    Tail-end CaL 50% IL (w/ CC): Tail-end Calcium looping CC with fluidized bed reactors, 50% integration level
+    Integrated CaL (w/ CC): Integrated Calcium looping CC with entrained flow reactors
 component:
   name: Component
   description: Component
