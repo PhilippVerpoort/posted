@@ -1,6 +1,7 @@
 # dimensionless stuff
 percent = 1e-2 = pct
 ppm = 1e-6
+PAX = 1
 
 year = 8760 * hour = a
 

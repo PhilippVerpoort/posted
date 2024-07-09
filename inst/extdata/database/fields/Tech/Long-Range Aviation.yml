@@ -1,0 +1,10 @@
+fuel:
+  name: Fuel
+  description: What fuel this type of aircraft operates on.
+  type: case
+  coded: False
+component:
+  name: Component
+  description: Component
+  type: component
+  coded: False
