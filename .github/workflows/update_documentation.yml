@@ -43,13 +43,22 @@ jobs:
         run: |
           sudo apt-get update  # Update package lists (for Debian/Ubuntu)
           sudo apt-get install -y libcurl4-openssl-dev
-        
-      - name: Install dependencies
+
+      
+      - name: Install harfbuzz, fribidi, freetype2 development packages
+        run: |
+          sudo apt-get update  # Update package lists (for Debian/Ubuntu)
+          sudo apt-get install -y libharfbuzz-dev libfribidi-dev libfreetype6-dev
+  
+      - name: Install renv
         run: |
           install.packages('remotes')
           remotes::install_version('renv', version = '0.15.0')
+  
+      - name: Restore R dependencies
+        run: |
           renv::restore()
-        shell: Rscript {0}
+
 
       - name: Deploy
         run: |
