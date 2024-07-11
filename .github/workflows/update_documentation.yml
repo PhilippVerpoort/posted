@@ -39,6 +39,11 @@ jobs:
         with:
           r-version: ${{ matrix.r-version }}
 
+      - name: Install libcurl development package
+        run: |
+          sudo apt-get update  # Update package lists (for Debian/Ubuntu)
+          sudo apt-get install -y libcurl4-openssl-dev
+        
       - name: Install dependencies
         run: |
           install.packages('remotes')
