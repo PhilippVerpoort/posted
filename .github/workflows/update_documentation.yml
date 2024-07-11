@@ -50,10 +50,13 @@ jobs:
           sudo apt-get update  # Update package lists (for Debian/Ubuntu)
           sudo apt-get install -y libharfbuzz-dev libfribidi-dev libfreetype6-dev
   
-      - name: Install renv
+      - name: Install R dependencies
+        if: matrix.language == 'r'
         run: |
           install.packages('remotes')
           remotes::install_version('renv', version = '0.15.0')
+          renv::restore()
+        shell: Rscript {0}
   
       - name: Restore R dependencies
         run: |
