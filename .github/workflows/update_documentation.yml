@@ -17,8 +17,8 @@ jobs:
     strategy:
       matrix:
         language: [python, r]
-        python-version: [3.7, 3.8, 3.9, 3.10]
-        r-version: [ '4.0.5', '4.1.0' ]
+        python-version: [3.10.12]
+        r-version: [4.3.3]
     
     steps:
       - name: Checkout Master
