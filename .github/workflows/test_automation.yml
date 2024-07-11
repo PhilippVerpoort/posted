@@ -30,7 +30,11 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install
-
+        
+    - name: Lint with flake8
+      run: |
+        poetry run flake8 .
+        
     - name: Run tests
       run: |
          poetry run python -m unittest discover
