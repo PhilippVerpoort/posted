@@ -49,6 +49,11 @@ jobs:
         run: |
           sudo apt-get update  # Update package lists (for Debian/Ubuntu)
           sudo apt-get install -y libharfbuzz-dev libfribidi-dev libfreetype6-dev
+
+      - name: Install devtools package
+        run: |
+          sudo apt-get update  # Update package lists (for Debian/Ubuntu)
+          sudo apt-get install -y devtools
   
       - name: Install R dependencies
         if: matrix.language == 'r'
