@@ -38,6 +38,7 @@ jobs:
 
       - name: Install R dependencies and IRkernel
         run: |
+          poetry run pip install jupyter
           R -e 'install.packages(c("renv", "IRkernel"))'
           R -e 'IRkernel::installspec(user = FALSE)'
           R -e "renv::restore()"
