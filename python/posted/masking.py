@@ -38,7 +38,6 @@ def apply_cond(df: pd.DataFrame, cond: MaskCondition):
         return df.apply(cond)
 
 
-
 class Mask:
     '''Class to define masks with conditions and weights to apply to DataFiles
 
@@ -55,6 +54,7 @@ class Mask:
     comment: str, optional
             Comment
     '''
+
     def __init__(self,
                  where: MaskCondition | list[MaskCondition] = None,
                  use: MaskCondition | list[MaskCondition] = None,
@@ -63,8 +63,10 @@ class Mask:
                  comment: str = ''):
         '''set fields from constructor arguments, perform consistency checks on fields,
         set default weight to 1 if not set otherwise'''
-        self._where: list[MaskCondition] = [] if where is None else where if isinstance(where, list) else [where]
-        self._use: list[MaskCondition] = [] if use is None else use if isinstance(use, list) else [use]
+        self._where: list[MaskCondition] = [] if where is None else where if isinstance(
+            where, list) else [where]
+        self._use: list[MaskCondition] = [] if use is None else use if isinstance(
+            use, list) else [use]
         self._weight: list[float] = (
             None
             if weight is None else
@@ -77,12 +79,12 @@ class Mask:
 
         # perform consistency checks on fields
         if self._use and self._weight and len(self._use) != len(self._weight):
-            raise Exception(f"Must provide same length of 'use' conditions as 'weight' values.")
+            raise Exception(
+                f"Must provide same length of 'use' conditions as 'weight' values.")
 
         # set default weight to 1 if not set otherwise
         if not self._weight:
             self._weight = len(self._use) * [1.0]
-
 
     def matches(self, df: pd.DataFrame):
         '''Check if a mask matches a dataframe (all 'where' conditions match across all rows)
@@ -99,7 +101,6 @@ class Mask:
             if not apply_cond(df, w).all():
                 return False
         return True
-
 
     def get_weights(self, df: pd.DataFrame):
         '''Apply weights to the dataframe
@@ -140,7 +141,8 @@ def read_masks(variable: str):
     ret: list[Mask] = []
 
     for database_id in databases:
-        fpath = databases[database_id] / 'masks' / ('/'.join(variable.split('|')) + '.yml')
+        fpath = databases[database_id] / 'masks' / \
+            ('/'.join(variable.split('|')) + '.yml')
         if fpath.exists():
             if not fpath.is_file():
                 raise Exception(f"Expected YAML file, but not a file: {fpath}")

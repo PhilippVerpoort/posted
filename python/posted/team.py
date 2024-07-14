@@ -54,9 +54,11 @@ class AbstractManipulation:
     def _varsplit(self, df: pd.DataFrame, cmd: Optional[str] = None, regex: Optional[str] = None) -> pd.DataFrame:
         # check that precisely one of the two arguments (cmd and regex) is provided
         if cmd is not None and regex is not None:
-            raise Exception('Only one of the two arguments may be provided: cmd or regex.')
+            raise Exception(
+                'Only one of the two arguments may be provided: cmd or regex.')
         if cmd is None and regex is None:
-            raise Exception('Either a command or a regex string must be provided.')
+            raise Exception(
+                'Either a command or a regex string must be provided.')
 
         # determine regex from cmd if necessary
         if regex is None:
@@ -93,11 +95,13 @@ class TEAMAccessor:
 
         # warn if 'unfielded' column exists
         if 'unfielded' in df.columns:
-            warnings.warn("Having a column named 'unfielded' in the dataframe may result in unexpected behaviour.")
+            warnings.warn(
+                "Having a column named 'unfielded' in the dataframe may result in unexpected behaviour.")
 
         # store arguments
         self._df = df
-        self._fields = [c for c in self._df if c not in ('variable', 'unit', 'value')]
+        self._fields = [c for c in self._df if c not in (
+            'variable', 'unit', 'value')]
 
     @property
     def fields(self):
@@ -106,11 +110,13 @@ class TEAMAccessor:
     # explode rows with nan entries
     def explode(self, fields: Optional[str | list[str]] = None) -> pd.DataFrame:
         df = self._df
-        fields = self._fields if fields is None else [fields] if isinstance(fields, str) else fields
+        fields = self._fields if fields is None else [
+            fields] if isinstance(fields, str) else fields
         for field in fields:
             df = df \
                 .assign(**{field: lambda df: df[field].apply(
-                    lambda cell: df[field].dropna().unique().tolist() if pd.isnull(cell) else cell
+                    lambda cell: df[field].dropna().unique(
+                    ).tolist() if pd.isnull(cell) else cell
                 )}) \
                 .explode(field)
 
@@ -119,7 +125,8 @@ class TEAMAccessor:
     # for grouping rows by fields (region, period, other...), including an `explode` statement for `nan` entries
     def groupby_fields(self, **kwargs) -> DataFrameGroupBy:
         if 'by' in kwargs:
-            raise Exception("The 'by' argument is determined by team, you cannot provide it manually.")
+            raise Exception(
+                "The 'by' argument is determined by team, you cannot provide it manually.")
         return self.explode().groupby(by=self._fields, **kwargs)
 
     # pivot posted-formatted dataframe from long to wide (variables as columns)
@@ -130,7 +137,8 @@ class TEAMAccessor:
         # check units are harmonised across variables before pivot
         units = ret[['variable', 'unit']].drop_duplicates()
         if not units['variable'].is_unique:
-            duplicate_units = units.loc[units['variable'].duplicated()]['variable'].tolist()
+            duplicate_units = units.loc[units['variable'].duplicated(
+            )]['variable'].tolist()
             raise Exception(f"Cannot pivot wide on a dataframe where variables have multiple units: "
                             f"{', '.join(duplicate_units)}")
 
@@ -197,9 +205,11 @@ class TEAMAccessor:
                  new: Optional[str | bool] = True, keep_unmatched: bool = False):
         # check that precisely one of the two arguments (cmd and regex) is provided
         if cmd is not None and regex is not None:
-            raise Exception('Only one of the two arguments may be provided: cmd or regex.')
+            raise Exception(
+                'Only one of the two arguments may be provided: cmd or regex.')
         if cmd is None and regex is None:
-            raise Exception('Either a command or a regex string must be provided.')
+            raise Exception(
+                'Either a command or a regex string must be provided.')
 
         # check that target is in columns of dataframe
         if target not in self._df.columns:
@@ -221,7 +231,8 @@ class TEAMAccessor:
             if cmd is None:
                 new = None
             else:
-                new = '|'.join([t for t in cmd.split('|') if t[0] not in ('?', '*')])
+                new = '|'.join([t for t in cmd.split(
+                    '|') if t[0] not in ('?', '*')])
 
         # create dataframe to be returned by applying regex to variable column and dropping unmatched rows
         matched = self._df[target].str.extract(regex)
@@ -236,7 +247,8 @@ class TEAMAccessor:
             matched[target] = self._df[target]
             matched.loc[cond, target] = new or np.nan
             if new is None:
-                warnings.warn('New target column could not be set automatically.')
+                warnings.warn(
+                    'New target column could not be set automatically.')
 
         # drop variable column if all nan
         if matched[target].isnull().all():
@@ -251,7 +263,8 @@ class TEAMAccessor:
 
         # sort columns
         order = matched.columns.tolist() + self._df.columns.tolist()
-        ret.sort_index(key=lambda cols: [order.index(c) for c in cols], axis=1, inplace=True)
+        ret.sort_index(key=lambda cols: [order.index(c)
+                       for c in cols], axis=1, inplace=True)
 
         # return
         return ret
@@ -269,13 +282,13 @@ class TEAMAccessor:
     # convert units
     def unit_convert(self, to: str | pint.Unit | dict[str, str | pint.Unit], flow_id: Optional[str] = None):
         return self._df.assign(
-                unit_to=to if not isinstance(to, dict) else self._df.apply(
-                    lambda row: to[row['variable']] if row['variable'] in to else row['unit'], axis=1,
-                ),
-                value=lambda df: df.apply(
-                    lambda row: row['value'] * unit_convert(row['unit'], row['unit_to'], flow_id=flow_id), axis=1,
-                ),
-            ) \
+            unit_to=to if not isinstance(to, dict) else self._df.apply(
+                lambda row: to[row['variable']] if row['variable'] in to else row['unit'], axis=1,
+            ),
+            value=lambda df: df.apply(
+                lambda row: row['value'] * unit_convert(row['unit'], row['unit_to'], flow_id=flow_id), axis=1,
+            ),
+        ) \
             .drop(columns='unit') \
             .rename(columns={'unit_to': 'unit'})
 
@@ -299,7 +312,8 @@ class CalcVariable(AbstractManipulation):
         # check all supplied arguments are valid
         for expr_assignment in self._expr_assignments:
             if not isinstance(expr_assignment, str):
-                raise Exception(f"Expression assignments must be of type str, but found: {type(expr_assignment)}")
+                raise Exception(
+                    f"Expression assignments must be of type str, but found: {type(expr_assignment)}")
         for kw_assignment in self._kw_assignments.values():
             if not (isinstance(kw_assignment, int | float | str) or callable(kw_assignment)):
                 raise Exception(f"Keyword assignments must be of type int, float, string, or callable, but found: "
@@ -323,18 +337,23 @@ class ProcessChain(AbstractManipulation):
                  name: str,
                  demand: dict[str, dict[str, pint.Quantity]],
                  process_diagram: Optional[str] = None,
-                 process_tree: Optional[dict[str, dict[str, list[str]]]] = None,
-                 sc_demand: Optional[dict[str, dict[str, pint.Quantity]]] = None,
+                 process_tree: Optional[dict[str,
+                                             dict[str, list[str]]]] = None,
+                 sc_demand: Optional[dict[str,
+                                          dict[str, pint.Quantity]]] = None,
                  ):
         if process_diagram is None and process_tree is None:
-            raise Exception('Either the process_diagram or the process_tree argument must be provided.')
+            raise Exception(
+                'Either the process_diagram or the process_tree argument must be provided.')
         if process_diagram is not None and process_tree is not None:
-            raise Exception('The process_diagram and process_tree arguments cannot both be provided.')
+            raise Exception(
+                'The process_diagram and process_tree arguments cannot both be provided.')
 
         self._name = name
         self._demand = demand
         self._sc_demand = sc_demand
-        self._proc_graph = self._read_diagram(process_diagram) if process_diagram is not None else process_tree
+        self._proc_graph = self._read_diagram(
+            process_diagram) if process_diagram is not None else process_tree
         self._flows = list({
             flow
             for proc_edges in self._proc_graph.values()
@@ -368,7 +387,8 @@ class ProcessChain(AbstractManipulation):
             ],
         )
         graph.vs['name'] = procs
-        graph.es['name'] = [flow for p1 in procs for flow in self._proc_graph[p1]]
+        graph.es['name'] = [
+            flow for p1 in procs for flow in self._proc_graph[p1]]
 
         layout = graph.layout_reingold_tilford(root=[len(graph.vs) - 1])
         layout.rotate(angle=90)
@@ -384,7 +404,8 @@ class ProcessChain(AbstractManipulation):
             if len(components) == 1:
                 processes.append((token.strip(' '), None))
             elif len(components) == 2:
-                processes.append((components[0].strip(' '), components[1].strip(' ')))
+                processes.append(
+                    (components[0].strip(' '), components[1].strip(' ')))
             else:
                 raise Exception(f"Too many consecutive `->` in diagram.")
 
@@ -392,7 +413,8 @@ class ProcessChain(AbstractManipulation):
             proc, flow = processes[i]
             proc2 = processes[i + 1][0] if i + 1 < len(processes) else None
             if flow is None and i + 1 < len(processes):
-                raise Exception(f"Flow must be provided for processes feeding into downstream processes: {subdiagram}")
+                raise Exception(
+                    f"Flow must be provided for processes feeding into downstream processes: {subdiagram}")
             yield proc, flow, proc2
 
     # read the full diagram
@@ -408,7 +430,8 @@ class ProcessChain(AbstractManipulation):
                         if proc2 is not None:
                             out[proc][flow].append(proc2)
                     else:
-                        out[proc] |= {flow: ([proc2] if proc2 is not None else [])}
+                        out[proc] |= {
+                            flow: ([proc2] if proc2 is not None else [])}
                 else:
                     out[proc] = {flow: ([proc2] if proc2 is not None else [])}
                 if proc2 is not None and proc2 not in out:
@@ -437,7 +460,8 @@ class ProcessChain(AbstractManipulation):
 
         # obtain demand
         d = np.array([
-            self._demand[proc1][flow].to(row[f"Tech|{proc1}|Output|{flow}"].u).m
+            self._demand[proc1][flow].to(
+                row[f"Tech|{proc1}|Output|{flow}"].u).m
             if proc1 in self._demand and flow in self._demand[proc1] else
             0.0
             for proc1 in self._proc_graph
@@ -462,7 +486,8 @@ class ProcessChain(AbstractManipulation):
             d = np.concatenate([
                 d,
                 [
-                    self._sc_demand[proc1][flow].to(row[f"Tech|{proc1}|Output|{flow}"].u).m
+                    self._sc_demand[proc1][flow].to(
+                        row[f"Tech|{proc1}|Output|{flow}"].u).m
                     for proc1 in self._sc_demand
                     for flow in self._sc_demand[proc1]
                 ]
@@ -497,16 +522,20 @@ class LCOX(AbstractManipulation):
                  name: Optional[str] = None, interest_rate: Optional[float] = None,
                  book_lifetime: Optional[float] = None):
         if process is None and process_chain is None:
-            raise Exception('Either process or vc must be provided as an argument.')
+            raise Exception(
+                'Either process or vc must be provided as an argument.')
         elif process is not None and process_chain is not None:
-            raise Exception('Only one of process and vc must be provided as an argument.')
+            raise Exception(
+                'Only one of process and vc must be provided as an argument.')
 
         self._reference = reference
         self._process = process
         self._process_chain = process_chain
         self._name = name if name is not None else process if process is not None else process_chain
-        self._interest_rate = interest_rate * U('') if isinstance(interest_rate, int | float) else interest_rate
-        self._book_lifetime = book_lifetime * U('a') if isinstance(book_lifetime, int | float) else book_lifetime
+        self._interest_rate = interest_rate * \
+            U('') if isinstance(interest_rate, int | float) else interest_rate
+        self._book_lifetime = book_lifetime * \
+            U('a') if isinstance(book_lifetime, int | float) else book_lifetime
 
     # perform
     def perform(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -518,7 +547,8 @@ class LCOX(AbstractManipulation):
             return pd.concat([df, ret], axis=1)
         else:
             # get functional units
-            func_units = self._varsplit(df, f"Process Chain|{self._process_chain}|Functional Unit|?process")
+            func_units = self._varsplit(
+                df, f"Process Chain|{self._process_chain}|Functional Unit|?process")
             if func_units.empty:
                 raise Exception(f"Process chain '{self._process_chain}' could not be found. Make sure you performed "
                                 f"performed the process chain manipulation on the dataframe first to determine the "
@@ -538,19 +568,24 @@ class LCOX(AbstractManipulation):
     def calc_cost(self, df: pd.DataFrame, process: str) -> pd.DataFrame:
         tech = self._varsplit(df, f"Tech|{process}|?variable")
         prices = self._varsplit(df, 'Price|?io')
-        iocaps = self._varsplit(df, regex=fr"Tech\|{re.escape(process)}\|((?:Input|Output) Capacity\|.*)")
-        ios = self._varsplit(df, regex=fr"Tech\|{re.escape(process)}\|((?:Input|Output)\|.*)")
+        iocaps = self._varsplit(
+            df, regex=fr"Tech\|{re.escape(process)}\|((?:Input|Output) Capacity\|.*)")
+        ios = self._varsplit(
+            df, regex=fr"Tech\|{re.escape(process)}\|((?:Input|Output)\|.*)")
 
         # determine reference capacity and reference of that reference capacity for CAPEX and OPEX Fixed
         if any(c in tech for c in ('CAPEX', 'OPEX Fixed')):
             try:
                 cap = iocaps.iloc[:, 0]
-                capref = ios[re.sub(r'(Input|Output) Capacity', r'\1', cap.name)]
+                capref = ios[re.sub(
+                    r'(Input|Output) Capacity', r'\1', cap.name)]
             except IndexError:
-                warnings.warn('Could not find a reference capacity for CAPEX and OPEX columns.')
+                warnings.warn(
+                    'Could not find a reference capacity for CAPEX and OPEX columns.')
                 cap = capref = None
             except KeyError:
-                warnings.warn('Could not find reference matching the reference capacity.')
+                warnings.warn(
+                    'Could not find reference matching the reference capacity.')
                 capref = None
         else:
             cap = capref = None
@@ -583,7 +618,8 @@ class LCOX(AbstractManipulation):
                 continue
             # inputs are counted as costs, outputs are counted as revenues
             sign = +1 if io_type == 'Input' else -1
-            ret[f"{io_type} {'Cost' if io_type == 'Input' else 'Revenue'}|{io_flow}"] = sign * ios[io] * prices[io_flow]
+            ret[f"{io_type} {'Cost' if io_type == 'Input' else 'Revenue'}|{io_flow}"] = sign * \
+                ios[io] * prices[io_flow]
 
         # warn about unused variables
         if unused:
@@ -606,6 +642,6 @@ class FSCP(AbstractManipulation):
             for id_y, fuel_y in enumerate(self._fuels):
                 if id_x < id_y:
                     df[f"FSCP|{fuel_x} to {fuel_y}"] = (df[f"Cost|{fuel_y}"] - df[f"Cost|{fuel_x}"]) / (
-                                df[f"GHGI|{fuel_x}"] - df[f"GHGI|{fuel_y}"])
+                        df[f"GHGI|{fuel_x}"] - df[f"GHGI|{fuel_y}"])
 
         return df

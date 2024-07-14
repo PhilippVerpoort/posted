@@ -7,7 +7,7 @@ from pybtex.plugin import find_plugin
 from posted.path import databases
 
 
-def format_sources(bib_data, style, form, exclude_fields = None):
+def format_sources(bib_data, style, form, exclude_fields=None):
     '''
     Takes bibliographic data, a citation style, a citation form, and
     optional excluded fields, and returns a formatted list of sources based on the specified style and
@@ -54,7 +54,6 @@ def format_sources(bib_data, style, form, exclude_fields = None):
         })
 
     return ret
-
 
 
 def dump_sources(file_path: str | Path):

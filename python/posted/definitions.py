@@ -80,7 +80,8 @@ def read_definitions(definitions_dir: Path, flows: dict, techs: dict):
         for def_property, def_value in def_specs.items():
             for token_key, token_func in tokens.items():
                 if isinstance(def_value, str) and f"{{{token_key}}}" in def_value:
-                    def_specs[def_property] = def_specs[def_property].replace(f"{{{token_key}}}", token_func(def_specs))
+                    def_specs[def_property] = def_specs[def_property].replace(
+                        f"{{{token_key}}}", token_func(def_specs))
 
     return definitions
 
@@ -118,14 +119,17 @@ def replace_tags(definitions: dict, tag: str, items: dict[str, dict]):
                 def_specs_new |= item_specs
 
                 # replace tags in description
-                def_specs_new['description'] = def_specs['description'].replace(f"{{{tag}}}", item_desc)
+                def_specs_new['description'] = def_specs['description'].replace(
+                    f"{{{tag}}}", item_desc)
 
                 # replace tags in other specs
                 for k, v in def_specs_new.items():
                     if k == 'description' or not isinstance(v, str):
                         continue
-                    def_specs_new[k] = def_specs_new[k].replace(f"{{{tag}}}", item_name)
-                    def_specs_new[k] = def_specs_new[k].replace('{parent variable}', def_name[:def_name.find(f"{{{tag}}}")-1])
+                    def_specs_new[k] = def_specs_new[k].replace(
+                        f"{{{tag}}}", item_name)
+                    def_specs_new[k] = def_specs_new[k].replace(
+                        '{parent variable}', def_name[:def_name.find(f"{{{tag}}}")-1])
                 definitions_with_replacements[def_name_new] = def_specs_new
 
     return definitions_with_replacements
@@ -160,7 +164,8 @@ def unit_token_func(unit_component: Literal['full', 'raw', 'variant'], flows: di
             if unit_component == 'full' else
             flows[def_specs['flow_id']]['default_unit'].split(';')[0]
             if unit_component == 'raw' else
-            ';'.join([''] + flows[def_specs['flow_id']]['default_unit'].split(';')[1:2])
+            ';'.join([''] + flows[def_specs['flow_id']]
+                     ['default_unit'].split(';')[1:2])
             if unit_component == 'variant' else
             'UNKNOWN'
         )

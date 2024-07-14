@@ -19,6 +19,7 @@ class TEDFInconsistencyException(Exception):
         col_id -- column where the inconsistency occurs
         file_path -- path to the file where the inconsistency occurs
     """
+
     def __init__(self, message: str = "Inconsistency detected", row_id: None | int = None,
                  col_id: None | str = None, file_path: None | Path = None):
         self.message: str = message
@@ -38,7 +39,8 @@ class TEDFInconsistencyException(Exception):
         # compose error message from tokens
         exception_message: str = message
         if message_tokens:
-            exception_message += f"\n    " + (", ".join(message_tokens)).capitalize()
+            exception_message += f"\n    " + \
+                (", ".join(message_tokens)).capitalize()
 
         super().__init__(exception_message)
 
@@ -58,7 +60,6 @@ def new_inconsistency(raise_exception: bool, **kwargs) -> TEDFInconsistencyExcep
         return exception
 
 
-
 class TEBase:
     """
     Base Class for Technoeconomic Data
@@ -69,10 +70,12 @@ class TEBase:
         Variable from which Data should be collected
     """
     # initialise
+
     def __init__(self, parent_variable: str):
         """ Set parent variable and technology specifications (var_specs) from input"""
         self._parent_variable: str = parent_variable
-        self._var_specs: dict = {key: val for key, val in variables.items() if key.startswith(self._parent_variable)}
+        self._var_specs: dict = {key: val for key, val in variables.items(
+        ) if key.startswith(self._parent_variable)}
 
     @property
     def parent_variable(self) -> str:
@@ -116,7 +119,6 @@ class TEDF(TEBase):
     _fields: dict[str, AbstractFieldDefinition]
     _columns: dict[str, AbstractColumnDefinition]
 
-
     def __init__(self,
                  parent_variable: str,
                  database_id: str = 'public',
@@ -131,7 +133,8 @@ class TEDF(TEBase):
         self._file_path = (
             None if data is not None else
             file_path if file_path is not None else
-            databases[database_id] / 'tedfs' / ('/'.join(self._parent_variable.split('|')) + '.csv')
+            databases[database_id] / 'tedfs' /
+            ('/'.join(self._parent_variable.split('|')) + '.csv')
         )
         self._fields, comments = read_fields(self._parent_variable)
         self._columns = self._fields | base_columns | comments
@@ -144,7 +147,6 @@ class TEDF(TEBase):
     @file_path.setter
     def file_path(self, file_path: Path):
         self._file_path = file_path
-
 
     def load(self):
         """
@@ -162,7 +164,8 @@ class TEDF(TEBase):
         if self._df is None:
             self.read()
         else:
-            warnings.warn('TEDF is already loaded. Please execute .read() if you want to load from file again.')
+            warnings.warn(
+                'TEDF is already loaded. Please execute .read() if you want to load from file again.')
 
         return self
 
@@ -177,7 +180,8 @@ class TEDF(TEBase):
         """
 
         if self._file_path is None:
-            raise Exception('Cannot read from file, as this TEDF object has been created from a dataframe.')
+            raise Exception(
+                'Cannot read from file, as this TEDF object has been created from a dataframe.')
 
         # read CSV file
         self._df = pd.read_csv(
@@ -189,7 +193,8 @@ class TEDF(TEBase):
 
         # check column IDs match base columns and fields
         if not all(c in self._columns for c in self._df.columns):
-            raise Exception(f"Column IDs used in CSV file do not match columns definition: {self._df.columns.tolist()}")
+            raise Exception(
+                f"Column IDs used in CSV file do not match columns definition: {self._df.columns.tolist()}")
 
         # adjust row index to start at 1 instead of 0
         self._df.index += 1
@@ -225,7 +230,6 @@ class TEDF(TEBase):
             na_rep='',
         )
 
-
     @property
     def data(self) -> pd.DataFrame:
         """Get data, i.e. access dataframe"""
@@ -249,7 +253,8 @@ class TEDF(TEBase):
 
         # check row consistency for each row individually
         for row_id in self._df.index:
-            self._inconsistencies[row_id] = self.check_row(row_id, raise_exception=raise_exception)
+            self._inconsistencies[row_id] = self.check_row(
+                row_id, raise_exception=raise_exception)
 
     def check_row(self, row_id: int, raise_exception: bool) -> list[TEDFInconsistencyException]:
         """
@@ -268,14 +273,16 @@ class TEDF(TEBase):
                 List of inconsistencies
         """
         row = self._df.loc[row_id]
-        ikwargs = {'row_id': row_id, 'file_path': self._file_path, 'raise_exception': raise_exception}
+        ikwargs = {'row_id': row_id, 'file_path': self._file_path,
+                   'raise_exception': raise_exception}
         ret = []
 
         # check whether fields are among those defined in the technology specs
         for col_id, col in self._columns.items():
             cell = row[col_id]
             if col.col_type == 'variable':
-                cell = cell if pd.isnull(cell) else self.parent_variable + '|' + cell
+                cell = cell if pd.isnull(
+                    cell) else self.parent_variable + '|' + cell
             if not col.is_allowed(cell):
                 ret.append(new_inconsistency(
                     message=f"Invalid cell for column of type '{col.col_type}': {cell}", col_id=col_id, **ikwargs,
@@ -304,8 +311,10 @@ class TEDF(TEBase):
             dimension = var_specs['dimension']
 
             flow_id = var_specs['flow_id'] if 'flow_id' in var_specs else None
-            allowed, message = unit_allowed(unit=unit, flow_id=flow_id, dimension=dimension)
+            allowed, message = unit_allowed(
+                unit=unit, flow_id=flow_id, dimension=dimension)
             if not allowed:
-                ret.append(new_inconsistency(message=message, col_id=col_id, **ikwargs))
+                ret.append(new_inconsistency(
+                    message=message, col_id=col_id, **ikwargs))
 
         return ret
