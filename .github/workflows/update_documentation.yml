@@ -36,7 +36,7 @@ jobs:
         run: |
           pip install jupyter
           R -e 'install.packages(c("renv", "IRkernel"))'
-          R -e 'IRkernel::installspec(user = FALSE)'
+          R -e 'IRkernel::installspec(user = TRUE)'
 
       - name: Install R dependencies
         run: |
