@@ -32,6 +32,10 @@ jobs:
           pip install poetry
           poetry install  # Ensure all dependencies are installed
 
+      - name: Debug
+          run: |
+            echo $PATH
+            which jupyter
       - name: Verify pyyaml installation
         run: |
           poetry run python -c "import yaml; print('pyyaml installed successfully')"
