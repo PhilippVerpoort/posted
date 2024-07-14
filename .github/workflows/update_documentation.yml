@@ -46,8 +46,9 @@ jobs:
 
       - name: Deploy documentation to GitHub Pages
         run: |
+          poetry run mike deploy develop
           poetry run mike set-default develop
-          poetry run mike deploy develop -p
+          
 
       - name: Configure Git
         run: |
