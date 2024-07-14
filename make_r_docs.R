@@ -69,7 +69,7 @@ rd_file_list <- dir_ls("man", type = "file")
 for (rd_file in rd_file_list) {
   # remove the man/ prefix and the .Rd
   name <- sub("^man/(.*)\\.Rd$", "\\1", rd_file)
-  system(paste('rd2md man', function_file_path, name))
+  system(paste('poetry run rd2md man', function_file_path, name))
 
   # read in the markdown file of the function/class
   function_markdown <- readLines(paste0(function_file_path, name, ".md"))
