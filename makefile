@@ -15,7 +15,7 @@ all: python_docs r_docs
 
 # Define the targets
 python_docs: $(R_FILES) $(PYTHON_POSTED_FILES)
-	python $(PYTHON_DOC_SCRIPT)
+	poetry run python $(PYTHON_DOC_SCRIPT)
 
 r_docs: $(R_FILES) $(PYTHON_POSTED_FILES)
 	Rscript $(R_DOC_SCRIPT)
