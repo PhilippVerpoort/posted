@@ -43,6 +43,7 @@ jobs:
           R -e 'IRkernel::installspec(user = FALSE)'
 
       - name: Install R dependencies
+        run: |
           R -e "renv::restore()"
 
       - name: Run Makefile
