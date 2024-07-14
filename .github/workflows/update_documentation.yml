@@ -43,8 +43,14 @@ jobs:
           R -e "renv::restore()"
 
       - name: Run Makefile
-        run: make
-
+        run: |
+          make
+          ls -la
+          ls -la docs/code/R/modules
+          ls -la docs/code/R/functions
+          ls -l docs/code/python
+          cat mkdocs.yml
+    
       - uses: actions/checkout@v4
       - name: Configure Git Credentials
         run: |
