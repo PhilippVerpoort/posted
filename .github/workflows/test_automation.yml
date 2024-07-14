@@ -27,14 +27,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry install  # Ensure all dependencies are installed
+
+    - name: Run tests
+      if: always()
+      run: |
+         poetry run python - m unittest discover
         
     - name: Lint python code with flake8
+      if: always()
       run: |
         poetry run flake8 .
         
-    - name: Run tests
-      run: |
-         poetry run python - m unittest discover
+
         
     - uses: actions/checkout@v4
     - uses: r-lib/actions/setup-r@v2
