@@ -36,9 +36,9 @@ jobs:
         run: |
           poetry run python -c "import yaml; print('pyyaml installed successfully')"
 
-      - name: Install R dependencies
+      - name: Install R dependencies and IRkernel
         run: |
-          R -e "install.packages('renv')"
+          R -e "install.packages('renv' 'IRkernel)"
           R -e "renv::restore()"
 
       - name: Run Makefile
