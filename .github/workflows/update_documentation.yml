@@ -51,7 +51,8 @@ jobs:
 
       - name: Deploy documentation to GitHub Pages
         run: |
-          mike deploy --push --update-aliases
+          mike set-default develop
+          mike deploy develop -p
 
       - name: Configure Git
         run: |
