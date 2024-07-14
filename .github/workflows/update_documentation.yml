@@ -31,10 +31,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install poetry
           poetry install  # Ensure all dependencies are installed
-        
-      - name: Verify pyyaml installation
-        run: |
-          poetry run python -c "import yaml; print('pyyaml installed successfully')"
 
       - name: Install IRkernel
         run: |
