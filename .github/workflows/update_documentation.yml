@@ -45,21 +45,26 @@ jobs:
       - name: Run Makefile
         run: make
 
-      - name: Deploy documentation to GitHub Pages
+      - uses: actions/checkout@v4
+      - name: Configure Git Credentials
         run: |
-          poetry run mike deploy develop
-          poetry run mike set-default develop
-          
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV 
 
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
 
-      - name: Push changes to gh-pages
-        run: |
-          git add .
-          git commit -m "Update documentation"
-          git push origin gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/cache@v4
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
+      - run: pip install mkdocs-material 
+
+
+      - run: mkdocs gh-deploy --force
+
+
