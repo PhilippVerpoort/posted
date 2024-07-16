@@ -201,6 +201,10 @@ class TEAMAccessor:
         if cmd is None and regex is None:
             raise Exception('Either a command or a regex string must be provided.')
 
+        # check that target is in columns of dataframe
+        if target not in self._df.columns:
+            raise Exception(f"Could not find column of name '{target}' in dataframe.")
+
         # determine regex from cmd if necessary
         if regex is None:
             regex = '^' + r'\|'.join([
@@ -223,8 +227,8 @@ class TEAMAccessor:
         matched = self._df[target].str.extract(regex)
 
         # drop unmatched rows if requested
-        if not keep_unmatched:
-            matched.dropna(inplace=True)
+        is_unmatched = matched.isna().any(axis=1)
+        matched = matched.drop(index=matched.loc[is_unmatched].index)
 
         # assign new variable column and drop if all are nan
         if target not in matched:
@@ -239,7 +243,11 @@ class TEAMAccessor:
             matched.drop(columns=target, inplace=True)
 
         # combine with original dataframe
-        ret = matched.combine_first(self._df.loc[matched.index].drop(columns=target))
+        if keep_unmatched:
+            df_combine = self._df.assign(**{target: lambda df: df[target].where(is_unmatched)})
+        else:
+            df_combine = self._df.loc[matched.index].drop(columns=target)
+        ret = matched.combine_first(df_combine)
 
         # sort columns
         order = matched.columns.tolist() + self._df.columns.tolist()
