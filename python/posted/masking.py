@@ -113,7 +113,7 @@ class Mask:
         -------
             pd.DataFrame
                 Dataframe with applied weights'''
-        ret = pd.Series(index=df.index, data=np.nan)
+        ret = pd.Series(index=df.index, data=self._other)
 
         # apply weights where the use condition matches
         for u, w in zip(self._use, self._weight):
