@@ -69,8 +69,7 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mkdocs-material 
-
-
+      - run: mkdocs build
       - run: poetry run mkdocs gh-deploy --force
 
 
