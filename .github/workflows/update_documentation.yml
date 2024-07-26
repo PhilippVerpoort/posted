@@ -62,6 +62,7 @@ jobs:
       - name: Make file and deploy documentation
         run: |
           make
+          git pull
           poetry run mike deploy develop -p
           
 
