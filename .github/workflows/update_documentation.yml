@@ -42,15 +42,6 @@ jobs:
         run: |
           R -e "renv::restore()"
 
-      - name: Run Makefile
-        run: |
-          make
-          ls -la
-          ls -la docs/code/R/modules
-          ls -la docs/code/R/functions
-          ls -l docs/code/python
-          cat mkdocs.yml
-    
       - uses: actions/checkout@v2
       - name: Configure Git Credentials
         run: |
@@ -68,9 +59,8 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
+      - name: Make file and deploy documentation
       - run: pip install mkdocs-material
       - run: make
-      - run: cat mkdocs.yml
-      - run: poetry run mkdocs build
       - run: poetry run mkdocs gh-deploy --force
 
