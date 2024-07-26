@@ -60,7 +60,7 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - name: Make file and deploy documentation
-      - run: pip install mkdocs-material
-      - run: make
-      - run: poetry run mkdocs gh-deploy --force
+        run: |
+          make
+          poetry run mkdocs gh-deploy --force
 
