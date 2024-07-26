@@ -62,7 +62,7 @@ jobs:
       - name: Make file and deploy documentation
         run: |
           make
-          git pull
+          git fetch origin gh-pages --depth=1
           poetry run mike deploy develop -p
           
 
