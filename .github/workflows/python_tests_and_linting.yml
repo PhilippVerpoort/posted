@@ -1,9 +1,9 @@
 name: test_automation
 
 on:
-  push:
-    branches:
-      - develop  # or the branch you want to trigger the workflow on pull requests
+  pull_request:
+    branches: 
+      - develop
 
 jobs:
   test:
