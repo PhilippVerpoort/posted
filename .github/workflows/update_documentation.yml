@@ -51,7 +51,7 @@ jobs:
           ls -l docs/code/python
           cat mkdocs.yml
     
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
@@ -69,6 +69,7 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mkdocs-material
+      - run: make
       - run: cat mkdocs.yml
       - run: poetry run mkdocs build
       - run: poetry run mkdocs gh-deploy --force
