@@ -62,8 +62,6 @@ jobs:
       - name: Make file and deploy documentation
         run: |
           make
-          poetry run mike deploy develop
-          poetry run mike set-default develop 
           poetry run mike deploy develop -p
           
 
