@@ -11,24 +11,25 @@ MaskCondition = str | dict | Callable
 
 
 def apply_cond(df: pd.DataFrame, cond: MaskCondition):
-    '''Takes a pandas DataFrame and a condition, which can be a string, dictionary,
-    or callable, and applies the condition to the DataFrame using `eval` or `apply`
-    accordingly.
+    """
+    Takes a pandas DataFrame and a condition, which can be a string,
+    dictionary, or callable, and applies the condition to the DataFrame
+    using `eval` or `apply` accordingly.
 
     Parameters
     ----------
     df : pd.DataFrame
-        A pandas DataFrame containing the data on which the condition will be applied.
+        A pandas DataFrame containing the data on which the condition
+        will be applied.
     cond : MaskCondition
-        The condition to be applied on the dataframe. Can be either a string, a dictionary, or a
-        callable function.
+        The condition to be applied on the dataframe. Can be either a
+        string, a dictionary, or a callable function.
 
     Returns
     -------
         pd.DataFrame
             Dataframe evaluated at the mask condition
-
-    '''
+    """
     if isinstance(cond, str):
         return df.eval(cond)
     elif isinstance(cond, dict):
@@ -38,8 +39,11 @@ def apply_cond(df: pd.DataFrame, cond: MaskCondition):
         return df.apply(cond)
 
 
+
 class Mask:
-    '''Class to define masks with conditions and weights to apply to DataFiles
+    """
+    Class to define masks with conditions and weights to apply to
+    DataFiles
 
     Parameters
     ----------
@@ -53,41 +57,44 @@ class Mask:
 
     comment: str, optional
             Comment
-    '''
-
+    """
     def __init__(self,
                  where: MaskCondition | list[MaskCondition] = None,
                  use: MaskCondition | list[MaskCondition] = None,
                  weight: None | float | str | list[float | str] = None,
                  other: float = np.nan,
                  comment: str = ''):
-        '''set fields from constructor arguments, perform consistency checks on fields,
-        set default weight to 1 if not set otherwise'''
-        self._where: list[MaskCondition] = [] if where is None else where if isinstance(
-            where, list) else [where]
-        self._use: list[MaskCondition] = [] if use is None else use if isinstance(
-            use, list) else [use]
+        """Set fields from constructor arguments, perform consistency
+        checks on fields, set default weight to 1 if not set
+        otherwise"""
+        self._where: list[MaskCondition] = (
+            [] if where is None else where
+            if isinstance(where, list) else [where]
+        )
+        self._use: list[MaskCondition] = (
+            [] if use is None else use
+            if isinstance(use, list) else [use]
+        )
         self._weight: list[float] = (
-            None
-            if weight is None else
-            [float(w) for w in weight]
-            if isinstance(weight, list) else
-            [float(weight)]
+            None if weight is None else [float(w) for w in weight]
+            if isinstance(weight, list) else [float(weight)]
         )
         self._other: float = other
         self._comment: str = comment
 
         # perform consistency checks on fields
         if self._use and self._weight and len(self._use) != len(self._weight):
-            raise Exception(
-                f"Must provide same length of 'use' conditions as 'weight' values.")
+            raise Exception(f"Must provide same length of 'use' conditions as "
+                            f"'weight' values.")
 
         # set default weight to 1 if not set otherwise
         if not self._weight:
             self._weight = len(self._use) * [1.0]
 
+
     def matches(self, df: pd.DataFrame):
-        '''Check if a mask matches a dataframe (all 'where' conditions match across all rows)
+        """
+        Check if a mask matches a dataframe (all 'where' conditions match across all rows)
 
         Parameters
         ----------
@@ -96,14 +103,17 @@ class Mask:
         Returns
         -------
             bool
-                If the mask matches the dataframe'''
+                If the mask matches the dataframe
+        """
         for w in self._where:
             if not apply_cond(df, w).all():
                 return False
         return True
 
+
     def get_weights(self, df: pd.DataFrame):
-        '''Apply weights to the dataframe
+        """
+        Apply weights to the dataframe
 
         Parameters
         ----------
@@ -113,7 +123,8 @@ class Mask:
         Returns
         -------
             pd.DataFrame
-                Dataframe with applied weights'''
+                Dataframe with applied weights
+        """
         ret = pd.Series(index=df.index, data=self._other)
 
         # apply weights where the use condition matches
@@ -124,7 +135,8 @@ class Mask:
 
 
 def read_masks(variable: str):
-    '''Reads YAML files containing mask specifications from multiple databases
+    """
+    Reads YAML files containing mask specifications from multiple databases
     and returns a list of Mask objects.
 
     Parameters
@@ -136,13 +148,11 @@ def read_masks(variable: str):
     -------
         list
             List with masks for the variable
-
-    '''
+    """
     ret: list[Mask] = []
 
     for database_id in databases:
-        fpath = databases[database_id] / 'masks' / \
-            ('/'.join(variable.split('|')) + '.yml')
+        fpath = databases[database_id] / 'masks' / ('/'.join(variable.split('|')) + '.yml')
         if fpath.exists():
             if not fpath.is_file():
                 raise Exception(f"Expected YAML file, but not a file: {fpath}")

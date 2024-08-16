@@ -177,20 +177,56 @@ for flow_type in flows.keys():
                 conversions.append(conversion)
 
 # ----- Add combinations of units that are not contained in the data
-conversions.append(
-    dict(unit_from="percent", unit_to="dimensionless", flow_type=''))
-conversions.append(dict(unit_from="dimensionless",
-                   unit_to="percent", flow_type=''))
-conversions.append(
-    dict(unit_from="pct", unit_to="dimensionless", flow_type=''))
-conversions.append(dict(unit_from="dimensionless",
-                   unit_to="pct", flow_type=''))
-conversions.append(dict(unit_from="percent", unit_to="pct", flow_type=''))
-conversions.append(dict(unit_from="pct", unit_to="percent", flow_type=''))
-conversions.append(dict(unit_from="hour", unit_to="h", flow_type=''))
-conversions.append(dict(unit_from="h", unit_to="hour", flow_type=''))
-conversions.append(dict(unit_from="a", unit_to="h", flow_type=''))
-conversions.append(dict(unit_from="h", unit_to="a", flow_type=''))
+conversions.append(dict(
+    unit_from='percent',
+    unit_to='dimensionless',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='dimensionless',
+    unit_to='percent',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='pct',
+    unit_to='dimensionless',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='dimensionless',
+    unit_to='pct',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='percent',
+    unit_to='pct',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='pct',
+    unit_to='percent',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='hour',
+    unit_to='h',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='h',
+    unit_to='hour',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='a',
+    unit_to='h',
+    flow_type='',
+))
+conversions.append(dict(
+    unit_from='h',
+    unit_to='a',
+    flow_type='',
+))
 # ----- Call convUnit for each of the conversions and
 # save the result in the cache dataframe
 
@@ -205,35 +241,32 @@ for conversion in conversions:
     # combinations will end up in cache and
     #  no logic is needed here to check validity
     try:
-
         if conversion['flow_type'] == '':
             result = unit_convert(unit_from, unit_to)
-
         else:
-
             flow_type = conversion['flow_type']
             result = unit_convert(unit_from, unit_to, flow_type)
-        # TODO check if there should be a specific
-        #  error as in previous version: pint.errors.DimensionalityError:
-        # skip this conversion and dont add it to cache
+        # TODO: check if there should be a specific error as in previous
+        # version: pint.errors.DimensionalityError: skip this conversion and
+        # dont add it to cache
     except:
         continue
     new_row = {
-        "from": unit_from,
-        "to": unit_to,
-        "ft": flow_type,
-        "factor": "{:.9f}".format(result)
+        'from': unit_from,
+        'to': unit_to,
+        'ft': flow_type,
+        'factor': f"{result:.9f}"
     }
-    # Append the new row to the dictionary list
+
+    # Append the new row to the dictionary list.
     new_row_list.append(new_row)
 
-# generate dataframe
-dfCache = pd.DataFrame.from_dict(new_row_list)
+# Generate dataframe.
+df_cache = pd.DataFrame.from_dict(new_row_list)
 
-# save dataframe to csv file
+# Save dataframe to CSV file.
 path = DATA_PATH / 'R_unit_cache.csv'
-
-dfCache.to_csv(
+df_cache.to_csv(
     path,
     index=False,
     sep=',',

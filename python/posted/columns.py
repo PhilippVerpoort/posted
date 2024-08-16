@@ -11,8 +11,8 @@ from posted.units import ureg, unit_variants
 
 
 def is_float(string: str) -> bool:
-    '''Checks if a given string can be converted to a floating-point number in
-    Python.
+    """Checks if a given string can be converted to a floating-point
+    number in Python.
 
     Parameters
     ----------
@@ -23,7 +23,7 @@ def is_float(string: str) -> bool:
     -------
         bool
             True if conversion was successful, False if not
-    '''
+    """
     try:
         float(string)
         return True
@@ -32,7 +32,7 @@ def is_float(string: str) -> bool:
 
 
 class AbstractColumnDefinition:
-    '''
+    """
     Abstract class to store columns
 
     Parameters
@@ -52,24 +52,29 @@ class AbstractColumnDefinition:
     -------
         is_allowed
             Check if cell is allowed
-    '''
+    """
 
-    def __init__(self, col_type: str, name: str, description: str, dtype: str, required: bool):
+    def __init__(self,
+                 col_type: str,
+                 name: str,
+                 description: str,
+                 dtype: str,
+                 required: bool):
         if col_type not in ['field', 'variable', 'unit', 'value', 'comment']:
-            raise Exception(
-                f"Columns must be of type field, variable, unit, value, or comment but found: {col_type}")
+            raise Exception(f"Columns must be of type field, variable, unit, "
+                            f"value, or comment but found: {col_type}")
         if not isinstance(name, str):
-            raise Exception(
-                f"The 'name' must be a string but found type {type(name)}: {name}")
+            raise Exception(f"The 'name' must be a string but found type "
+                            f"{type(name)}: {name}")
         if not isinstance(description, str):
-            raise Exception(
-                f"The 'name' must be a string but found type {type(description)}: {description}")
+            raise Exception(f"The 'name' must be a string but found type "
+                            f"{type(description)}: {description}")
         if not (isinstance(dtype, str) and dtype in ['float', 'str', 'category']):
-            raise Exception(
-                f"The 'dtype' must be a valid data type but found: {dtype}")
+            raise Exception(f"The 'dtype' must be a valid data type but "
+                            f"found: {dtype}")
         if not isinstance(required, bool):
-            raise Exception(
-                f"The 'required' argument must be a bool but found: {required}")
+            raise Exception(f"The 'required' argument must be a bool but "
+                            f"found: {required}")
 
         self._col_type: str = col_type
         self._name: str = name
@@ -79,36 +84,36 @@ class AbstractColumnDefinition:
 
     @property
     def col_type(self):
-        '''Get col type'''
+        """Get col type"""
         return self._col_type
 
     @property
     def name(self):
-        '''Get name of the column'''
+        """Get name of the column"""
         return self._name
 
     @property
     def description(self):
-        '''Get description of the column'''
+        """Get description of the column"""
         return self._description
 
     @property
     def dtype(self):
-        '''Get data type of the column'''
+        """Get data type of the column"""
         return self._dtype
 
     @property
     def required(self):
-        '''Return if column is required'''
+        """Return if column is required"""
         return self._required
 
     @property
     def default(self):
-        '''Get default value of the column'''
+        """Get default value of the column"""
         return np.nan
 
     def is_allowed(self, cell: str | float | int) -> bool:
-        '''Check if Cell is allowed
+        """Check if Cell is allowed
 
         Parameters
         ----------
@@ -118,12 +123,12 @@ class AbstractColumnDefinition:
         -------
             bool
                 If the cell is allowed
-        '''
+        """
         return True
 
 
 class VariableDefinition(AbstractColumnDefinition):
-    '''
+    """
     Class to store variable columns
 
     Parameters
@@ -141,7 +146,7 @@ class VariableDefinition(AbstractColumnDefinition):
     -------
     is_allowed
         Check if cell is allowed
-    '''
+    """
 
     def __init__(self, name: str, description: str, required: bool):
         super().__init__(
@@ -159,7 +164,7 @@ class VariableDefinition(AbstractColumnDefinition):
 
 
 class UnitDefinition(AbstractColumnDefinition):
-    '''
+    """
     Class to store Unit columns
 
     Parameters
@@ -177,7 +182,7 @@ class UnitDefinition(AbstractColumnDefinition):
     -------
     is_allowed
         Check if cell is allowed
-    '''
+    """
 
     def __init__(self, name: str, description: str, required: bool):
         super().__init__(
@@ -203,7 +208,7 @@ class UnitDefinition(AbstractColumnDefinition):
 
 
 class ValueDefinition(AbstractColumnDefinition):
-    '''
+    """
     Class to store Value columns
 
     Parameters
@@ -221,7 +226,7 @@ class ValueDefinition(AbstractColumnDefinition):
     -------
     is_allowed
         Check if cell is allowed
-    '''
+    """
 
     def __init__(self, name: str, description: str, required: bool):
         super().__init__(
@@ -239,7 +244,7 @@ class ValueDefinition(AbstractColumnDefinition):
 
 
 class CommentDefinition(AbstractColumnDefinition):
-    '''
+    """
     Class to store comment columns
 
     Parameters
@@ -257,7 +262,7 @@ class CommentDefinition(AbstractColumnDefinition):
     -------
     is_allowed
         Check if cell is allowed
-    '''
+    """
 
     def __init__(self, name: str, description: str, required: bool):
         super().__init__(
@@ -273,7 +278,7 @@ class CommentDefinition(AbstractColumnDefinition):
 
 
 class AbstractFieldDefinition(AbstractColumnDefinition):
-    '''
+    """
     Abstract class to store fields
 
     Parameters
@@ -299,7 +304,7 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
     select_and_expand
         Select and expand fields
 
-    '''
+    """
 
     def __init__(self, field_type: str, name: str, description: str, dtype: str, coded: bool,
                  codes: Optional[dict[str, str]] = None):
@@ -319,26 +324,26 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
 
     @property
     def field_type(self) -> str:
-        '''Get field type'''
+        """Get field type"""
         return self._field_type
 
     @property
     def coded(self) -> bool:
-        '''Return if field is coded'''
+        """Return if field is coded"""
         return self._coded
 
     @property
     def codes(self) -> None | dict[str, str]:
-        '''Get field codes'''
+        """Get field codes"""
         return self._codes
 
     @property
     def default(self):
-        '''Get symbol for default value'''
+        """Get symbol for default value"""
         return '*' if self._field_type == 'case' else '#'
 
     def is_allowed(self, cell: str | float | int) -> bool:
-        ''' Chek if cell is allowed'''
+        """ Chek if cell is allowed"""
         if pd.isnull(cell):
             return False
         if self._coded:
@@ -360,7 +365,7 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
         return df.query(f"{col_id}.isin({field_vals})").reset_index(drop=True)
 
     def select_and_expand(self, df: pd.DataFrame, col_id: str, field_vals: None | list, **kwargs) -> pd.DataFrame:
-        '''
+        """
         Select and expand fields which are valid for multiple periods or other field vals
 
         Parameters
@@ -379,7 +384,7 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
         pd.DataFrame
             Dataframe where fields are selected and expanded
 
-        '''
+        """
         # get list of selected field values
         if field_vals is None:
             if col_id == 'period':
@@ -387,8 +392,10 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
             elif self._coded:
                 field_vals = list(self._codes.keys())
             else:
-                field_vals = [v for v in df[col_id].unique(
-                ) if v != '*' and not pd.isnull(v)]
+                field_vals = [
+                    v for v in df[col_id].unique()
+                    if v != '*' and not pd.isnull(v)
+                ]
         else:
             # ensure that field values is a list of elements (not tuple, not single value)
             if isinstance(field_vals, tuple):
@@ -398,11 +405,12 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
             # check that every element is of allowed type
             for val in field_vals:
                 if not self.is_allowed(val):
-                    raise Exception(
-                        f"Invalid type selected for field '{col_id}': {val}")
+                    raise Exception(f"Invalid type selected for field "
+                                    f"'{col_id}': {val}")
             if '*' in field_vals:
-                raise Exception(f"Selected values for field '{col_id}' must not contain the asterisk."
-                                f"Omit the '{col_id}' argument to select all entries.")
+                raise Exception(f"Selected values for field '{col_id}' must "
+                                f"not contain the asterisk. Omit the "
+                                f"'{col_id}' argument to select all entries.")
 
         df = self._expand(df, col_id, field_vals, **kwargs)
         df = self._select(df, col_id, field_vals, **kwargs)
@@ -411,7 +419,7 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
 
 
 class RegionFieldDefinition(AbstractFieldDefinition):
-    '''
+    """
     Class to store Region fields
 
     Parameters
@@ -420,10 +428,10 @@ class RegionFieldDefinition(AbstractFieldDefinition):
         Name of the field
     description: str
         Description of the field
-    '''
+    """
 
     def __init__(self, name: str, description: str):
-        '''Initialize parent class'''
+        """Initialize parent class"""
         super().__init__(
             field_type='case',
             name=name,
@@ -436,7 +444,7 @@ class RegionFieldDefinition(AbstractFieldDefinition):
 
 
 class PeriodFieldDefinition(AbstractFieldDefinition):
-    '''
+    """
     Class to store Period fields
 
     Parameters
@@ -450,10 +458,10 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
     -------
     is_allowed
         Checks if cell is allowed
-    '''
+    """
 
     def __init__(self, name: str, description: str):
-        '''Initialize parent class'''
+        """Initialize parent class"""
         super().__init__(
             field_type='case',
             name=name,
@@ -463,7 +471,7 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
         )
 
     def is_allowed(self, cell: str | float | int) -> bool:
-        '''Check if cell is a flowat or *'''
+        """Check if cell is a float or *"""
         return is_float(cell) or cell == '*'
 
     def _expand(self, df: pd.DataFrame, col_id: str, field_vals: list, **kwargs) -> pd.DataFrame:
@@ -508,8 +516,10 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
 
             # check case
             cond_match = req_rows[col_id].isin(periods_exist)
-            cond_extrapolate = (req_rows[f"{col_id}_upper"].isna(
-            ) | req_rows[f"{col_id}_lower"].isna())
+            cond_extrapolate = (
+                    req_rows[f"{col_id}_upper"].isna()
+                  | req_rows[f"{col_id}_lower"].isna()
+            )
 
             # match
             rows_match = req_rows.loc[cond_match] \
@@ -517,33 +527,52 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
 
             # extrapolate
             rows_extrapolate = (
-                req_rows.loc[~cond_match & cond_extrapolate]
-                .assign(
+                req_rows.loc[~cond_match & cond_extrapolate].assign(
                     period_combined=lambda x: np.where(
                         x.notna()[f"{col_id}_upper"],
                         x[f"{col_id}_upper"],
                         x[f"{col_id}_lower"],
-                    )
+                    ),
+                ).merge(
+                    rows.rename(columns={col_id: f"{col_id}_combined"}),
+                    on=f"{col_id}_combined",
                 )
-                .merge(rows.rename(columns={col_id: f"{col_id}_combined"}), on=f"{col_id}_combined")
-                if 'extrapolate_period' not in kwargs or kwargs['extrapolate_period'] else
+                if 'extrapolate_period' not in kwargs or
+                   kwargs['extrapolate_period'] else
                 pd.DataFrame()
             )
 
             # interpolate
             rows_interpolate = req_rows.loc[~cond_match & ~cond_extrapolate] \
-                .merge(rows.rename(columns={c: f"{c}_upper" for c in rows.columns}), on=f"{col_id}_upper") \
-                .merge(rows.rename(columns={c: f"{c}_lower" for c in rows.columns}), on=f"{col_id}_lower") \
-                .assign(value=lambda row: row['value_lower'] + (row[f"{col_id}_upper"] - row[col_id]) /
-                        (row[f"{col_id}_upper"] - row[f"{col_id}_lower"]) * (row['value_upper'] - row['value_lower']))
+                .merge(
+                    rows.rename(columns={c: f"{c}_upper" for c in rows.columns}),
+                    on=f"{col_id}_upper",
+                ) \
+                .merge(
+                    rows.rename(columns={c: f"{c}_lower" for c in rows.columns}),
+                    on=f"{col_id}_lower",
+                ) \
+                .assign(
+                    value=lambda row: row['value_lower']
+                        + (row[f"{col_id}_upper"]
+                           - row[col_id]) /
+                          (row[f"{col_id}_upper"]
+                           - row[f"{col_id}_lower"]) *
+                          (row['value_upper']
+                           - row['value_lower'])
+                )
 
             # combine into one dataframe and drop unused columns
-            rows_to_concat = [df for df in [
-                rows_match, rows_extrapolate, rows_interpolate] if not df.empty]
+            rows_to_concat = [
+                df for df in [rows_match, rows_extrapolate, rows_interpolate]
+                if not df.empty
+            ]
             if rows_to_concat:
                 rows_append = pd.concat(rows_to_concat)
                 rows_append.drop(columns=[
-                    c for c in [f"{col_id}_upper", f"{col_id}_lower", f"{col_id}_combined", 'value_upper', 'value_lower']
+                    c for c in [f"{col_id}_upper", f"{col_id}_lower",
+                                f"{col_id}_combined", 'value_upper',
+                                'value_lower']
                     if c in rows_append.columns
                 ], inplace=True)
 
@@ -555,7 +584,7 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
 
 
 class SourceFieldDefinition(AbstractFieldDefinition):
-    '''
+    """
     Class to store Source fields
 
     Parameters
@@ -564,10 +593,9 @@ class SourceFieldDefinition(AbstractFieldDefinition):
         Name of the field
     description: str
         Description of the field
-    '''
-
+    """
     def __init__(self, name: str, description: str):
-        '''Initialize parent class'''
+        """Initialize parent class"""
         super().__init__(
             field_type='case',
             name=name,
@@ -578,32 +606,36 @@ class SourceFieldDefinition(AbstractFieldDefinition):
 
 
 class CustomFieldDefinition(AbstractFieldDefinition):
-    '''
+    """
     Class to store Custom fields
 
     Parameters
     ----------
     **field_specs:
         Specs of the custom fields
-    '''
+    """
 
     def __init__(self, **field_specs):
-        '''Check if the field specs are of the required type and format,
-        initialize parent class'''
-        if not ('type' in field_specs and isinstance(field_specs['type'], str) and
+        """Check if the field specs are of the required type and format,
+        initialize parent class"""
+        if not ('type' in field_specs and
+                isinstance(field_specs['type'], str) and
                 field_specs['type'] in ['case', 'component']):
-            raise Exception(
-                "Field type must be provided and equal to 'case' or 'component'.")
-        if not ('name' in field_specs and isinstance(field_specs['name'], str)):
+            raise Exception("Field type must be provided and equal to 'case' "
+                            "or 'component'.")
+        if not ('name' in field_specs and
+                isinstance(field_specs['name'], str)):
             raise Exception('Field name must be provided and of type string.')
-        if not ('description' in field_specs and isinstance(field_specs['description'], str)):
-            raise Exception(
-                'Field description must be provided and of type string.')
-        if not ('coded' in field_specs and isinstance(field_specs['coded'], bool)):
+        if not ('description' in field_specs and
+                isinstance(field_specs['description'], str)):
+            raise Exception('Field description must be provided and of type '
+                            'string.')
+        if not ('coded' in field_specs and
+                isinstance(field_specs['coded'], bool)):
             raise Exception('Field coded must be provided and of type bool.')
         if field_specs['coded'] and not ('codes' in field_specs and isinstance(field_specs['codes'], dict)):
-            raise Exception(
-                'Field codes must be provided and contain a dict of possible codes.')
+            raise Exception('Field codes must be provided and contain a dict '
+                            'of possible codes.')
 
         super().__init__(
             field_type=field_specs['type'],
@@ -680,7 +712,7 @@ base_columns = {
 
 
 def read_fields(variable: str):
-    '''
+    """
     Read the fields of a variable
 
     Parameters
@@ -694,14 +726,16 @@ def read_fields(variable: str):
             Dictionary containing the fields
         comments
             Dictionary containing the comments
-
-    '''
+    """
     fields: dict[str, CustomFieldDefinition] = {}
     comments: dict[str, CommentDefinition] = {}
 
     for database_id in databases:
-        fpath = databases[database_id] / 'fields' / \
+        fpath = (
+            databases[database_id] /
+            'fields' /
             ('/'.join(variable.split('|')) + '.yml')
+        )
         if fpath.exists():
             if not fpath.is_file():
                 raise Exception(f"Expected YAML file, but not a file: {fpath}")
@@ -715,12 +749,12 @@ def read_fields(variable: str):
                         required=False,
                     )
                 else:
-                    raise Exception(f"Unkown field type: {col_id}")
+                    raise Exception(f"Unknown field type: {col_id}")
 
     # make sure the field ID is not the same as for a base column
     for col_id in fields:
         if col_id in base_columns:
-            raise Exception(
-                f"Field ID cannot be equal to a base column ID: {col_id}")
+            raise Exception(f"Field ID cannot be equal to a base column ID: "
+                            f"{col_id}")
 
     return fields, comments
