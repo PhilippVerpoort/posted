@@ -7,9 +7,8 @@ import numpy as np
 import pandas as pd
 from sigfig import round
 
-from posted.config import variables
-from posted.settings import default_periods
-from posted.columns import AbstractFieldDefinition, CustomFieldDefinition, read_fields, AbstractColumnDefinition, base_columns
+from posted.columns import AbstractFieldDefinition, CustomFieldDefinition, \
+    read_fields, AbstractColumnDefinition, base_columns
 from posted.path import databases
 from posted.masking import Mask, read_masks
 from posted.tedf import TEBase, TEDF
@@ -17,9 +16,12 @@ from posted.units import unit_convert, ureg
 
 
 # get list of TEDFs potentially containing variable
-def collect_files(parent_variable: str, include_databases: Optional[list[str]] = None):
-    '''Takes a parent variable and optional list of databases to include,
-    checks for their existence, and collects files and directories based on the parent variable.
+def collect_files(parent_variable: str,
+                  include_databases: Optional[list[str]] = None):
+    """
+    Takes a parent variable and optional list of databases to include,
+    checks for their existence, and collects files and directories
+    based on the parent variable.
 
     Parameters
     ----------
@@ -32,22 +34,24 @@ def collect_files(parent_variable: str, include_databases: Optional[list[str]] =
     -------
         list[tuple]
             List of tuples containing the parent variable and the
-        database ID for each file found in the specified directories.
-
-    '''
+            database ID for each file found in the specified
+            directories.
+    """
     if not parent_variable:
         raise Exception('Variable may not me empty.')
 
     # check that the requested database to include can be found
     if include_databases is not None:
         for database_id in include_databases:
-            if not (database_id in databases and databases[database_id].exists()):
+            if not (database_id in databases and
+                    databases[database_id].exists()):
                 raise Exception(f"Could not find database '{database_id}'.")
 
     ret = []
     for database_id, database_path in databases.items():
         # skip ted paths not requested to include
-        if include_databases is not None and database_id not in include_databases: continue
+        if (include_databases is not None and
+            database_id not in include_databases): continue
 
         # find top-level file and directory
         top_path = '/'.join(parent_variable.split('|'))
@@ -61,7 +65,9 @@ def collect_files(parent_variable: str, include_databases: Optional[list[str]] =
         # add all files contained in top-level directory
         if top_directory.exists() and top_directory.is_dir():
             for sub_file in top_directory.rglob('*.csv'):
-                sub_variable = parent_variable + '|' + sub_file.relative_to(top_directory).name.rstrip('.csv')
+                child_variable = sub_file.relative_to(top_directory) \
+                    .name.rstrip('.csv')
+                sub_variable = f"{parent_variable}|{child_variable}"
                 ret.append((sub_variable, database_id))
 
         # loop over levels
@@ -78,33 +84,39 @@ def collect_files(parent_variable: str, include_databases: Optional[list[str]] =
 
     return ret
 
-def normalise_units(df: pd.DataFrame, level: Literal['reported', 'reference'], var_units: dict[str, str],
-                       var_flow_ids: dict[str, str]):
-    '''
+def normalise_units(
+        df: pd.DataFrame,
+        level: Literal['reported', 'reference'],
+        var_units: dict[str, str],
+        var_flow_ids: dict[str, str]):
+    """
     Takes a DataFrame with reported or reference data, along with
-    dictionaries mapping variable units and flow IDs, and normalizes the units of the variables in the
-    DataFrame based on the provided mappings.
+    dictionaries mapping variable units and flow IDs, and normalizes
+    the units of the variables in the DataFrame based on the provided
+    mappings.
 
     Parameters
     ----------
     df : pd.DataFrame
         Dataframe to be normalised
     level : Literal['reported', 'reference']
-        Specifies whether the data should be normalised on the reported or reference values
+        Specifies whether the data should be normalised on the reported
+        or reference values
     var_units : dict[str, str]
-        Dictionary that maps a combination of parent variable and variable
-        to its corresponding unit. The keys in the dictionary are in the format "{parent_variable}|{variable}",
-        and the values are the units associated with that variable.
+        Dictionary that maps a combination of parent variable and
+        variable to its corresponding unit. The keys in the dictionary
+        are in the format "{parent_variable}|{variable}", and the values
+        are the units associated with that variable.
     var_flow_ids : dict[str, str]
-        Dictionary that maps a combination of parent variable and variable to a
-        specific flow ID. This flow ID is used for unit conversion in the `normalise_units` function.
+        Dictionary that maps a combination of parent variable and
+        variable to a specific flow ID. This flow ID is used for unit
+        conversion in the `normalise_units` function.
 
     Returns
     -------
         pd.DataFrame
             Normalised dataframe
-
-    '''
+    """
 
     prefix = '' if level == 'reported' else 'reference_'
     var_col_id = prefix + 'variable'
@@ -140,17 +152,19 @@ def normalise_units(df: pd.DataFrame, level: Literal['reported', 'reference'], v
     if level == 'reported':
         df_tmp['uncertainty'] *= conv_factor
 
-    # Uupdate unit columns
+    # Update unit columns
     df_tmp[unit_col_id] = df_tmp['target_unit']
 
-    # Drop unneccessary columns and return
+    # Drop unnecessary columns and return
     return df_tmp.drop(columns=['target_unit', 'target_flow_id'])
 
 
 
 def normalise_values(df: pd.DataFrame):
-    '''Takes a DataFrame as input, normalizes the 'value' and 'uncertainty'
-    columns by the reference value, and updates the 'reference_value' column accordingly.
+    """
+    Takes a DataFrame as input, normalizes the 'value' and
+    'uncertainty' columns by the reference value, and updates the
+    'reference_value' column accordingly.
 
     Parameters
     ----------
@@ -160,12 +174,14 @@ def normalise_values(df: pd.DataFrame):
     Returns
     -------
         pd.DataFrame
-            Returns a modified DataFrame where the 'value' column has been
-            divided by the 'reference_value' column (or 1.0 if 'reference_value' is null), the 'uncertainty'
-            column has been divided by the 'reference_value' column, and the 'reference_value' column has been
-            replaced with 1.0 if it was not null, otherwise
+            Returns a modified DataFrame where the 'value' column has
+            been divided by the 'reference_value' column (or 1.0 if
+            'reference_value' is null), the 'uncertainty' column has
+            been divided by the 'reference_value' column, and the
+            'reference_value' column has been replaced with 1.0 if it
+            was not null.
+    """
 
-    '''
     # Calculate reference value
     reference_value =  df.apply(
         lambda row:
@@ -174,6 +190,7 @@ def normalise_values(df: pd.DataFrame):
             1.0,
         axis=1,
     )
+
     # Calculate new value, reference value and uncertainty
     value_new = df['value'] / reference_value
     uncertainty_new = df['uncertainty'] / reference_value
@@ -184,12 +201,18 @@ def normalise_values(df: pd.DataFrame):
             np.nan,
         axis=1,
     )
+
     # Assign new values to dataframe and return
-    return df.assign(value=value_new, uncertainty=uncertainty_new, reference_value=reference_value_new)
+    return df.assign(
+        value=value_new,
+        uncertainty=uncertainty_new,
+        reference_value=reference_value_new,
+    )
 
 
 class HarmoniseMappingFailure(Warning):
-    """Warning raised for rows in TEDataSets where mappings fail.
+    """
+    Warning raised for rows in TEDataSets where mappings fail.
 
     Parameters
     ----------
@@ -205,8 +228,10 @@ class HarmoniseMappingFailure(Warning):
     message
         explanation of the error
     """
-    def __init__(self, row_data: pd.DataFrame, message: str = "Failure when selecting from dataset."):
-        '''Save constructor arguments as public fields, compose warning message, call super constructor'''
+    def __init__(self,
+                 row_data: pd.DataFrame,
+                 message: str = "Failure when selecting from dataset."):
+        """Create failure warning and attach row data."""
         # save constructor arguments as public fields
         self.row_data: pd.DataFrame = row_data
         self.message: str = message
@@ -218,9 +243,9 @@ class HarmoniseMappingFailure(Warning):
         super().__init__(warning_message)
 
 
-
 def combine_units(numerator: str, denominator: str):
-    '''Combine fraction of two units into updated unit string
+    """
+    Combine fraction of two units into updated unit string
 
     Parameters
     ----------
@@ -233,11 +258,10 @@ def combine_units(numerator: str, denominator: str):
     -------
         str
             updated unit string after simplification
-    '''
-
-
+    """
     ret = ureg(f"{numerator}/({denominator})").u
-    # chekc if ret is dimensionless, if not return ret, else return the explicit quotient
+    # Check if ret is dimensionless, if not return ret, else return the
+    # explicit quotient
     if not ret.dimensionless:
         return str(ret)
     else:
@@ -247,8 +271,10 @@ def combine_units(numerator: str, denominator: str):
 
 
 class DataSet(TEBase):
-    '''Class to store, normalise, select and aggregate DataSets
-     Parameters
+    """
+    Class to store, normalise, select and aggregate DataSets
+
+    Parameters
     ----------
     parent_variable: str
         Variable to collect Data on
@@ -257,12 +283,10 @@ class DataSet(TEBase):
     file_paths: Optional[list[path]], optional
         Paths to load data from
     check_inconsistencies: bool, optional
-        Wether to check for inconsistencies
+        Whether to check for inconsistencies
     data: Optional[pd.DataFrame], optional
         Specific data to include in the dataset
-
-
-    '''
+    """
     _df: None | pd.DataFrame
     _columns: dict[str, AbstractColumnDefinition]
     _fields: dict[str, AbstractFieldDefinition]
@@ -276,13 +300,11 @@ class DataSet(TEBase):
                  check_inconsistencies: bool = False,
                  data: Optional[pd.DataFrame] = None,
                  ):
-        '''Initialise parent class and fields, load data from specified databases and files
-
-
-        '''
+        """Initialise parent class and fields, load data from specified
+        databases and files"""
         TEBase.__init__(self, parent_variable)
 
-        # initialise fields
+        # Initialise fields
         self._df = None
         self._columns = base_columns
         self._fields = {
@@ -297,34 +319,52 @@ class DataSet(TEBase):
             self._df = data
         else:
             # read TEDataFiles and combine into dataset
-            include_databases = list(include_databases) if include_databases is not None else list(databases.keys())
-            self._df = self._load_files(include_databases, file_paths or [], check_inconsistencies)
-
+            include_databases = (
+                list(include_databases)
+                if include_databases is not None else
+                list(databases.keys())
+            )
+            self._df = self._load_files(
+                include_databases=include_databases,
+                file_paths=file_paths or [],
+                check_inconsistencies=check_inconsistencies,
+            )
 
     @property
     def data(self):
-        '''str: Get or set dataframe'''
+        """str: Get or set dataframe"""
         return self._df
 
     def set_data(self, df: pd.DataFrame):
         self._df = df
 
-
-    def _load_files(self, include_databases: list[str], file_paths: list[Path], check_inconsistencies: bool):
+    def _load_files(self,
+                    include_databases: list[str],
+                    file_paths: list[Path],
+                    check_inconsistencies: bool):
         # Load TEDFs and compile into NSHADataSet
-
         files: list[TEDF] = []
 
         # collect TEDF and append to list
-        collected_files = collect_files(parent_variable=self._parent_variable, include_databases=include_databases)
+        collected_files = collect_files(
+            parent_variable=self._parent_variable,
+            include_databases=include_databases,
+        )
         for file_variable, file_database_id in collected_files:
-            files.append(TEDF(parent_variable=file_variable, database_id=file_database_id))
+            files.append(TEDF(
+                parent_variable=file_variable,
+                database_id=file_database_id,
+            ))
         for file_path in file_paths:
-            files.append(TEDF(parent_variable=self._parent_variable, file_path=file_path))
+            files.append(TEDF(
+                parent_variable=self._parent_variable,
+                file_path=file_path,
+            ))
 
         # raise exception if no TEDF can be loaded
         if not files:
-            raise Exception(f"No TEDF to load for variable '{self._parent_variable}'.")
+            raise Exception(f"No TEDF to load for variable "
+                            f"'{self._parent_variable}'.")
 
         # get fields and masks from databases
         files_vars: set[str] = {f.parent_variable for f in files}
@@ -332,12 +372,14 @@ class DataSet(TEBase):
             new_fields, new_comments = read_fields(v)
             for col_id in new_fields | new_comments:
                 if col_id in self._columns:
-                    raise Exception(f"Cannot load TEDFs due to multiple columns with same ID defined: {col_id}")
+                    raise Exception(f"Cannot load TEDFs due to multiple "
+                                    f"columns with same ID defined: {col_id}")
             self._fields = new_fields | self._fields
             self._columns = new_fields | self._columns | new_comments
             self._masks += read_masks(v)
 
-        # load all TEDFs: load from file, check for inconsistencies (if requested), expand cases and variables
+        # load all TEDFs: load from file, check for inconsistencies (if
+        # requested), expand cases and variables
         file_dfs: list[pd.DataFrame] = []
         for f in files:
             # load
@@ -354,7 +396,8 @@ class DataSet(TEBase):
             # append to dataframe list
             file_dfs.append(df_tmp)
 
-        # compile dataset from the dataframes loaded from the individual files
+        # compile dataset from the dataframes loaded from the
+        # individual files
         data = pd.concat(file_dfs)
 
         # query relevant variables
@@ -371,22 +414,25 @@ class DataSet(TEBase):
         # return
         return data
 
-
-    def normalise(self, override: Optional[dict[str, str]] = None, inplace: bool = False) -> pd.DataFrame | None:
-        '''
-        normalise data: default reference units, reference value equal to 1.0, default reported units
+    def normalise(self,
+                  override: Optional[dict[str, str]] = None,
+                  inplace: bool = False) -> pd.DataFrame | None:
+        """
+        Normalise data: default reference units, reference value equal
+        to 1.0, default reported units
 
         Parameters
         ----------
         override: Optional[dict[str,str]], optional
             Dictionary with key, value pairs of variables to override
         inplace: bool, optional
-            Wether to do the normalisation in place
+            Whether to do the normalisation in place
 
         Returns
         -------
         pd.DataFrame
-            if inplace is false, returns normalised dataframe'''
+            If inplace is false, returns normalised dataframe
+        """
         normalised, _ = self._normalise(override)
         if inplace:
             self._df = normalised
@@ -394,13 +440,16 @@ class DataSet(TEBase):
         else:
             return normalised
 
-    def _normalise(self, override: Optional[dict[str, str]]) -> tuple[pd.DataFrame, dict[str, str]]:
+    def _normalise(self, override: Optional[dict[str, str]]) \
+            -> tuple[pd.DataFrame, dict[str, str]]:
         if override is None:
             override = {}
 
         # get overridden var specs
         var_flow_ids = {
-            var_name: var_specs['flow_id'] if 'flow_id' in var_specs else np.nan
+            var_name: (var_specs['flow_id']
+                       if 'flow_id' in var_specs else
+                       np.nan)
             for var_name, var_specs in self._var_specs.items()
         }
         var_units = {
@@ -410,9 +459,11 @@ class DataSet(TEBase):
 
         # normalise reference units, normalise reference values, and normalise reported units
         normalised = self._df \
-            .pipe(normalise_units, level='reference', var_units=var_units, var_flow_ids=var_flow_ids) \
+            .pipe(normalise_units, level='reference',
+                  var_units=var_units, var_flow_ids=var_flow_ids) \
             .pipe(normalise_values) \
-            .pipe(normalise_units, level='reported', var_units=var_units, var_flow_ids=var_flow_ids)
+            .pipe(normalise_units, level='reported',
+                  var_units=var_units, var_flow_ids=var_flow_ids)
 
         # return normalised data and variable units
         return normalised, var_units
@@ -423,7 +474,8 @@ class DataSet(TEBase):
                drop_singular_fields: bool = True,
                extrapolate_period: bool = True,
                **field_vals_select) -> pd.DataFrame:
-        '''Select desired data from the dataframe
+        """
+        Select desired data from the dataframe
 
         Parameters
         ----------
@@ -440,7 +492,7 @@ class DataSet(TEBase):
         -------
         pd.DataFrame
             DataFrame with selected Values
-            '''
+        """
         selected, var_units, var_references = self._select(
             override,
             drop_singular_fields,
@@ -461,9 +513,13 @@ class DataSet(TEBase):
         selected = normalised
 
         # drop unit columns and reference value column
-        selected.drop(columns=['unit', 'reference_unit', 'reference_value'], inplace=True)
+        selected.drop(
+            columns=['unit', 'reference_unit', 'reference_value'],
+            inplace=True,
+        )
 
-        # drop columns containing comments and uncertainty field (which is currently unsupported)
+        # drop columns containing comments and uncertainty field (which
+        # is currently unsupported)
         selected.drop(
             columns=['uncertainty'] + [
                 col_id for col_id, field in self._columns.items()
@@ -475,28 +531,50 @@ class DataSet(TEBase):
         # add parent variable as prefix to other variable columns
         selected['variable'] = selected['parent_variable'] + '|' + selected['variable']
         selected['reference_variable'] = selected['parent_variable'] + '|' + selected['reference_variable']
-        selected.drop(columns=['parent_variable'], inplace=True)
+        selected.drop(
+            columns=['parent_variable'],
+            inplace=True,
+        )
 
         # raise exception if fields listed in arguments that are unknown
         for field_id in field_vals_select:
             if not any(field_id == col_id for col_id in self._fields):
-                raise Exception(f"Field '{field_id}' does not exist and cannot be used for selection.")
+                raise Exception(f"Field '{field_id}' does not exist and "
+                                f"cannot be used for selection.")
 
         # order fields for selection: period must be expanded last due to the interpolation
-        fields_select = ({col_id: self._fields[col_id] for col_id in field_vals_select} |
-                         {col_id: field for col_id, field in self._fields.items() if col_id != 'period' and col_id not in field_vals_select} |
-                         {'period': self._fields['period']})
+        fields_select = ({
+            col_id: self._fields[col_id]
+            for col_id in field_vals_select
+        } | {
+            col_id: field
+            for col_id, field in self._fields.items()
+            if col_id != 'period' and col_id not in field_vals_select
+        } | {
+            'period': self._fields['period']
+        })
 
         # select and expand fields
         for col_id, field in fields_select.items():
-            field_vals = field_vals_select[col_id] if col_id in field_vals_select else None
-            selected = field.select_and_expand(selected, col_id, field_vals, extrapolate_period=extrapolate_period)
+            field_vals = (
+                field_vals_select[col_id]
+                if col_id in field_vals_select else
+                None
+            )
+            selected = field.select_and_expand(
+                selected,
+                col_id,
+                field_vals,
+                extrapolate_period=extrapolate_period,
+            )
 
-        # drop custom fields with only one value if specified in method argument
+        # drop custom fields with only one value if specified in method
+        # argument
         if drop_singular_fields:
             selected.drop(columns=[
                 col_id for col_id, field in self._fields.items()
-                if isinstance(field, CustomFieldDefinition) and selected[col_id].nunique() < 2
+                if isinstance(field, CustomFieldDefinition) and
+                selected[col_id].nunique() < 2
             ], inplace=True)
 
         # apply mappings
@@ -513,7 +591,8 @@ class DataSet(TEBase):
 
         # Check for multiple reference variables per reported variable
         if not var_references.index.is_unique:
-            raise Exception(f"Multiple reference variables per reported variable found: {var_references}")
+            raise Exception(f"Multiple reference variables per reported "
+                            f"variable found: {var_references}")
         var_references = var_references.to_dict()
 
         # Remove 'reference_variable column
@@ -546,7 +625,8 @@ class DataSet(TEBase):
         # loop over groups
         for keys, ids in grouped.groups.items():
             # get rows in group
-            rows = expanded.loc[ids, [c for c in expanded if c not in group_cols]].copy()
+            cs = [c for c in expanded if c not in group_cols]
+            rows = expanded.loc[ids, cs].copy()
 
             # 1. convert FLH to OCF
             cond = rows['variable'].str.endswith('|FLH')
@@ -728,7 +808,8 @@ class DataSet(TEBase):
                   masks: Optional[list[Mask]] = None,
                   masks_database: bool = True,
                   **field_vals_select) -> pd.DataFrame:
-        '''Aggregates data based on specified parameters, applies masks,
+        """
+        Aggregates data based on specified parameters, applies masks,
         and cleans up the resulting DataFrame.
 
         Parameters
@@ -738,38 +819,45 @@ class DataSet(TEBase):
         drop_singular_fields: bool, optional
             If True, drop custom fields with only one value
         extrapolate_period: bool, optional
-            If True, extrapolate values by extrapolation, if no value for this period is given
+            If True, extrapolate values by extrapolation, if no value
+            for this period is given
         agg : Optional[str | list[str] | tuple[str]]
             Specifies which fields to aggregate over.
         masks : Optional[list[Mask]]
-            Specifies a list of Mask objects that will be applied to the data during aggregation.
-            These masks can be used to filter or weight the
-            data based on certain conditions defined in the Mask objects.
+            Specifies a list of Mask objects that will be applied to the
+            data during aggregation. These masks can be used to filter
+            or weight the data based on certain conditions defined in
+            the Mask objects.
         masks_database : bool, optional
-            Determines whether to include masks from databases in the aggregation process.
-            If set to `True`, masks from databases will be included along with any masks provided as function arguments.
-            If set to `False`, only the masks provided as function argruments will be applied
+            Determines whether to include masks from databases in the
+            aggregation process. If set to `True`, masks from databases
+            will be included along with any masks provided as function
+            arguments. If set to `False`, only the masks provided as
+            function arguments will be applied.
 
         Returns
         -------
         pd.DataFrame
-            The `aggregate` method returns a pandas DataFrame that has been cleaned up and aggregated based
-            on the specified parameters and input data. The method performs aggregation over component
-            fields and cases fields, applies weights based on masks, drops rows with NaN weights, aggregates
-            with weights, inserts reference variables, sorts columns and rows, rounds values, and inserts
-            units before returning the final cleaned and aggregated DataFrame.
-
-        '''
+            The `aggregate` method returns a pandas DataFrame that has
+            been cleaned up and aggregated based on the specified
+            parameters and input data. The method performs aggregation
+            over component fields and cases fields, applies weights
+            based on masks, drops rows with NaN weights, aggregates with
+            weights, inserts reference variables, sorts columns and
+            rows, rounds values, and inserts units before returning the
+            final cleaned and aggregated DataFrame.
+        """
 
         # get selection
-        selected, var_units, var_references = self._select(override,
-                                                           extrapolate_period,
-                                                           drop_singular_fields,
-                                                           **field_vals_select)
+        selected, var_units, var_references = self._select(
+            override, extrapolate_period,
+            drop_singular_fields, **field_vals_select
+        )
 
         # compile masks from databases and function argument into one list
         if masks is not None and any(not isinstance(m, Mask) for m in masks):
-            raise Exception("Function argument 'masks' must contain a list of posted.masking.Mask objects.")
+            raise Exception("Function argument 'masks' must contain a list of "
+                            "posted.masking.Mask objects.")
         masks = (self._masks if masks_database else []) + (masks or [])
 
         # aggregation
@@ -786,9 +874,11 @@ class DataSet(TEBase):
                 agg = [agg]
             for a in agg:
                 if not isinstance(a, str):
-                    raise Exception(f"Field ID in argument 'agg' must be a string but found: {a}")
+                    raise Exception(f"Field ID in argument 'agg' must be a "
+                                    f"string but found: {a}")
                 if not any(a == col_id for col_id in self._fields):
-                    raise Exception(f"Field ID in argument 'agg' is not a valid field: {a}")
+                    raise Exception(f"Field ID in argument 'agg' is not a "
+                                    f"valid field: {a}")
 
         # aggregate over component fields
         group_cols = [
@@ -823,7 +913,10 @@ class DataSet(TEBase):
                 out = rows \
                     .groupby(group_cols, dropna=False)[['value', 'weight']] \
                     .apply(lambda cols: pd.Series({
-                        'value': np.average(cols['value'], weights=cols['weight']),
+                        'value': np.average(
+                            cols['value'],
+                            weights=cols['weight'],
+                        ),
                     }))
 
                 # add to return list
@@ -843,14 +936,19 @@ class DataSet(TEBase):
                 'value': [1.0],
             } | {
                 col_id: ['*']
-                for col_id, field in self._fields.items() if col_id in aggregated
+                for col_id, field in self._fields.items()
+                if col_id in aggregated
             }))
         if agg_append:
             agg_append = pd.concat(agg_append).reset_index(drop=True)
             for col_id, field in self._fields.items():
                 if col_id not in aggregated:
                     continue
-                agg_append = field.select_and_expand(agg_append, col_id, aggregated[col_id].unique().tolist())
+                agg_append = field.select_and_expand(
+                    agg_append,
+                    col_id,
+                    aggregated[col_id].unique().tolist(),
+                )
         else:
             agg_append = None
 
@@ -858,28 +956,39 @@ class DataSet(TEBase):
         return self._cleanup(pd.concat([aggregated, agg_append]), var_units)
 
     # clean up: sort columns and rows, round values, insert units
-    def _cleanup(self, df: pd.DataFrame, var_units: dict[str, str]) -> pd.DataFrame:
+    def _cleanup(self, df: pd.DataFrame, var_units: dict[str, str]) \
+            -> pd.DataFrame:
         # sort columns and rows
-        cols_sorted = (
-            [col_id for col_id, field in self._fields.items() if isinstance(field, CustomFieldDefinition)] +
-            ['source', 'variable', 'reference_variable', 'region', 'period', 'value']
-        )
+        cols_sorted = ([
+            col_id for col_id, field in self._fields.items()
+            if isinstance(field, CustomFieldDefinition)
+        ] + [
+            'source', 'variable', 'reference_variable',
+            'region', 'period', 'value',
+        ])
         cols_sorted = [c for c in cols_sorted if c in df.columns]
         df = df[cols_sorted]
-        df = df \
-            .sort_values(by=[c for c in cols_sorted if c in df and c != 'value']) \
+        df = df.sort_values(by=[
+                c for c in cols_sorted
+                if c in df and c != 'value'
+            ]) \
             .reset_index(drop=True)
 
-        # round values
+        # Round values
         df['value'] = df['value'].apply(
-            lambda cell: cell if pd.isnull(cell) else round(cell, sigfigs=4, warn=False)
+            lambda cell: (
+                cell
+                if pd.isnull(cell) else
+                round(cell, sigfigs=4, warn=False)
+            )
         )
 
-        # insert column containing units
+        # Insert column containing units
         df.insert(df.columns.tolist().index('value'), 'unit', np.nan)
         if 'reference_variable' in df:
             df['unit'] = df.apply(
-                lambda row: combine_units(var_units[row['variable']], var_units[row['reference_variable']])
+                lambda row: combine_units(var_units[row['variable']],
+                                          var_units[row['reference_variable']])
                             if not pd.isnull(row['reference_variable']) else
                             var_units[row['variable']],
                 axis=1,

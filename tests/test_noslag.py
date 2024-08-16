@@ -1,7 +1,11 @@
 import unittest
 import os
 from posted.noslag import DataSet
-tech_directory = '../inst/extdata/database/tedfs/Tech'
+from posted.path import databases
+
+database = databases["public"]
+tech_directory = f"{database}/tedfs/Tech"
+
 tech_files = os.listdir(tech_directory)
 tech_files = [filename.split('.')[0] for filename in tech_files]
 

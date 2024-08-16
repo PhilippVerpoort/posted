@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-and-deploy-python:
+    name: Build and Deploy Python Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.12'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Build package
+        run: poetry build
+
+      - name: Publish package to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: poetry publish --username $TWINE_USERNAME --password $TWINE_PASSWORD
+
+  build-and-deploy-r:
+    name: Build and Deploy R Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install dependencies
+        run: |
+          Rscript -e 'install.packages("devtools")'
+
+      - name: Build package
+        run: |
+          R CMD build .
+
+      - name: Check package
+        run: |
+          R CMD check *.tar.gz
+
+      - name: Publish package to CRAN
+        run: |
+          Rscript -e 'devtools::release()'
+        env:
+          CRAN_USERNAME: ${{ secrets.CRAN_USERNAME }}
+          CRAN_PASSWORD: ${{ secrets.CRAN_PASSWORD }}

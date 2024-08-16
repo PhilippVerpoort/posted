@@ -2,8 +2,12 @@ import unittest
 import os
 
 from posted.tedf import TEDF
+from posted.path import databases
 
-tech_directory = '../inst/extdata/database/tedfs/Tech'
+
+database = databases["public"]
+tech_directory = f"{database}/tedfs/Tech"
+
 tech_files = os.listdir(tech_directory)
 tech_files = [filename.split('.')[0] for filename in tech_files]
 
