@@ -139,12 +139,15 @@ class TEAMAccessor:
             if isinstance(fields, str) else fields
         )
         for field in fields:
-            df = df \
-                .assign(**{field: lambda df: df[field].apply(
-                    lambda cell: df[field].dropna().unique().tolist()
-                    if pd.isnull(cell) else cell
-                )}) \
+            explodable = pd.Series(
+                index=df.index,
+                data=len(df)*[df[field].dropna().unique().tolist()],
+            )
+            df = (
+                df
+                .assign(**{field: df[field].fillna(explodable)})
                 .explode(field)
+            )
 
         return df.reset_index(drop=True)
 
