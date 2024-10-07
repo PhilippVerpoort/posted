@@ -531,7 +531,34 @@ class CalcVariable(AbstractManipulation):
         return df
 
 
-# building process chains
+# Generic manipulation for applying functions.
+class Apply(AbstractManipulation):
+    _callable: Callable | None
+    _callables: dict[str, Callable]
+    def __init__(self,
+                 callable: Callable | None = None,
+                 **kwargs: Callable):
+        if (callable and kwargs) or (not callable and not kwargs):
+            ex_msg = ('Please provide either one callable for all columns or '
+                      'specifiy callables for different columns by their names '
+                      'as keyword arguments.')
+            if callable and kwargs:
+                ex_msg += ' You cannot provide both at the same time.'
+            raise Exception(ex_msg)
+
+        self._callable = callable
+        self._callables = kwargs
+
+    def perform(self, df: pd.DataFrame) -> pd.DataFrame:
+        if self._callable:
+            return df.apply(self._callable)
+        else:
+            for col_id, col_callable in self._callables.items():
+                df = df.assign(col_id=col_callable(df[col_id]))
+            return df
+
+
+# Build process chain.
 class ProcessChain(AbstractManipulation):
     _name: str
     _demand: dict[str, dict[str, pint.Quantity]]
