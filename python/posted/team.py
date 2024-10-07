@@ -1,6 +1,7 @@
 import re
 import warnings
 from abc import abstractmethod
+from itertools import product
 from typing import Optional, Callable, TypeAlias, Tuple
 
 import numpy as np
@@ -101,6 +102,17 @@ class TEAMAccessor:
                              'dataframes that contain at least the variable, '
                              'unit, and value columns.')
 
+        # Check that there are no nans among variable, unit, and value columns.
+        for c in ('variable', 'unit', 'value'):
+            if df[c].isnull().any():
+                ex_msg = ('Can only use .team accessor with team-like '
+                          'dataframes in which there are no nan entries in '
+                          'the variable, unit, and value columns.')
+                if c == 'unit':
+                    ex_msg += (' Please use "dimensionless" or "No Unit" if '
+                               'the variable has no unit.')
+                raise ValueError(ex_msg)
+
         # Warn if 'unfielded' column exists.
         if 'unfielded' in df.columns:
             warnings.warn("Having a column named 'unfielded' in the dataframe "
@@ -182,16 +194,6 @@ class TEAMAccessor:
         """
         ret = self.explode()
 
-        # Check units are harmonised across variables before pivot.
-        units = ret[['variable', 'unit']].drop_duplicates()
-        if not units['variable'].is_unique:
-            duplicate_units = units.loc[units['variable'].duplicated()] \
-                .loc[:, 'variable'] \
-                .tolist()
-            raise Exception(f"Cannot pivot wide on a dataframe where "
-                            f"variables have multiple units: "
-                            f"{', '.join(duplicate_units)}")
-
         # Create dummy field if non exists.
         if not self._fields:
             ret = ret.assign(unfielded=0)
@@ -206,17 +208,19 @@ class TEAMAccessor:
             values='value',
         )
 
-        # Check unit exists for all columns.
-        if ret.columns.get_level_values(level='unit').isna().any():
-            raise Exception('Unit column may not contain NaN entries. Please '
-                            'use "dimensionless" or "No Unit" if the variable '
-                            'has no unit.')
+        # Raise exception if duplicate cases exist.
+        if ret.index.has_duplicates:
+            raise ValueError('Performed pivot_wide on dataframe with '
+                             'duplicate cases. Each variable should only be '
+                             'defined once for each combination of field '
+                             'values.')
+
         return ret.pint.quantify()
 
     # for performing analyses
     def perform(self,
                 *manipulations: AbstractManipulation,
-                dropna: bool = False,
+                dropna: bool = True,
                 only_new: bool = False):
         """
         Perform manipulation(s).
@@ -238,28 +242,66 @@ class TEAMAccessor:
         # Pivot dataframe before manipulation.
         df_pivot = self.pivot_wide()
 
-        # Perform analysis or manipulation and bring rows back to
-        # original long dataframe format.
-        for manipulation in manipulations:
-            original_index = df_pivot.index
-            df_pivot = manipulation.perform(df_pivot)
-            if not isinstance(df_pivot, pd.DataFrame):
-                raise Exception('Manipulation must return a dataframe.')
-            if not df_pivot.index.equals(original_index):
-                raise Exception('Manipulation may not change the index.')
-
-        # Ensure that the axis label still exists before melt.
-        df_pivot.rename_axis('variable', axis=1, inplace=True)
-
-        # Pivot back.
-        ret = df_pivot \
-            .pint.dequantify() \
-            .melt(ignore_index=False) \
+        # Create list of column groups of variables and units.
+        col_groups = (
+            pd.Series(df_pivot.columns)
             .reset_index()
+            .groupby('variable')
+            .groups
+        )
+
+        # Raise exception in case of duplicate variables with different units.
+        for col_name in col_groups:
+            df_pivot_sub = df_pivot[col_name]
+            if isinstance(df_pivot_sub, pd.Series):
+                continue
+            duplicate_indexes = (df_pivot_sub.notnull().sum(axis=1) > 1)
+            if duplicate_indexes.any():
+                warnings.warn(f"Duplicate units in variable '{col_name}' for "
+                              f"fields: {df_pivot.index[duplicate_indexes]}")
+
+        # Loop over groups.
+        df_pivot_list = []
+        for col_ids in product(*col_groups.values()):
+            df_pivot_group = df_pivot.iloc[:, list(col_ids)].dropna(how='all')
+
+            # Perform analysis or manipulation and bring rows back to
+            # original long dataframe format.
+            for manipulation in manipulations:
+                original_index = df_pivot_group.index
+                df_pivot_group = manipulation.perform(df_pivot_group)
+                if not isinstance(df_pivot_group, pd.DataFrame):
+                    raise Exception('Manipulation must return a dataframe.')
+                if not df_pivot_group.index.equals(original_index):
+                    raise Exception('Manipulation may not change the index.')
+
+            # Ensure that the axis label still exists before melt.
+            df_pivot_group.rename_axis('variable', axis=1, inplace=True)
+
+            # Pivot back and append.
+            df_pivot_list.append(
+                df_pivot_group
+                    .pint.dequantify()
+                    .melt(ignore_index=False)
+                    .reset_index()
+            )
+
+        # Combine groups into single dataframe.
+        ret = pd.concat(df_pivot_list)
 
         # Drop rows with nan entries in unit or value columns.
         if dropna:
-            ret.dropna(subset=['unit', 'value'], inplace=True)
+            ret.dropna(subset='value', inplace=True)
+
+        # Drop duplicates arising from multiple var-unit groups.
+        ret.drop_duplicates(inplace=True)
+
+        # Raise exception if index has duplicates after the above.
+        duplicates = ret.duplicated(subset=self._fields + ['variable'])
+        if duplicates.any():
+            duplicate_labels = ret.loc[duplicates, self._fields + ['variable']]
+            raise Exception(f"Internal error: variables should only exist "
+                            f"once per case: {duplicate_labels}")
 
         # Keep only new variables if requested.
         if only_new:
@@ -305,11 +347,11 @@ class TEAMAccessor:
         # Check that precisely one of the two arguments (either `cmd`
         # or `regex`) is provided.
         if cmd is not None and regex is not None:
-            raise Exception(
-                'Only one of the two arguments may be provided: cmd or regex.')
+            raise Exception('Only one of the two arguments may be provided: '
+                            'cmd or regex.')
         if cmd is None and regex is None:
-            raise Exception(
-                'Either a command or a regex string must be provided.')
+            raise Exception('Either a command or a regex string must be '
+                            'provided.')
 
         # Check that target is in columns of dataframe.
         if target not in self._df.columns:
@@ -413,6 +455,7 @@ class TEAMAccessor:
 
     def unit_convert(self,
                      to: str | pint.Unit | dict[str, str | pint.Unit],
+
                      flow_id: Optional[str] = None):
         """
         Convert units in dataframe.
@@ -458,7 +501,7 @@ ExprAssignment: TypeAlias = str
 KeywordAssignment: TypeAlias = int | float | str | Callable
 
 
-# generic manipulation for calculating variables
+# Generic manipulation for calculating variables.
 class CalcVariable(AbstractManipulation):
     _expr_assignments: tuple[ExprAssignment]
     _kw_assignments: dict[str, KeywordAssignment]
