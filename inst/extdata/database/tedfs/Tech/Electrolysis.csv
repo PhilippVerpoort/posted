@@ -39,6 +39,11 @@ SOEC,1 MW,CAPEX,Output Capacity|Hydrogen,2020,8047.0,2163.0,EUR_2020,1.0,kg/d,,D
 SOEC,1 MW,CAPEX,Output Capacity|Hydrogen,2030,3279.0,,EUR_2020,1.0,kg/d,,DEARF23,"Sheet 86 SOEC 1MW, Row 23"
 SOEC,1 MW,CAPEX,Output Capacity|Hydrogen,2040,2273.0,,EUR_2020,1.0,kg/d,,DEARF23,"Sheet 86 SOEC 1MW, Row 23"
 SOEC,1 MW,CAPEX,Output Capacity|Hydrogen,2050,1303.0,368.0,EUR_2020,1.0,kg/d,,DEARF23,"Sheet 86 SOEC 1MW, Row 23"
+AEL,*,CAPEX,Input Capacity|Electricity,2018,1100.0,,EUR_2015,1.0,kW,,Brynolf18,"Table 3"
+AEL,*,CAPEX,Input Capacity|Electricity,2030,700.0,,EUR_2015,1.0,kW,,Brynolf18,"Table 3"
+PEM,*,CAPEX,Input Capacity|Electricity,2018,2400.0,,EUR_2015,1.0,kW,,Brynolf18,"Table 3"
+PEM,*,CAPEX,Input Capacity|Electricity,2030,800.0,,EUR_2015,1.0,kW,,Brynolf18,"Table 3"
+SOEC,*,CAPEX,Input Capacity|Electricity,2030,700.0,,EUR_2015,1.0,kW,,Brynolf18,"Table 3"
 AEL,100 MW,OPEX Fixed,Input Capacity|Electricity,2020,6.0,,EUR_2020/a,1.0,kW,1.5% of CAPEX; reported in units of electric capacity,Vartiainen22,Page 4
 AEL,100 MW,OPEX Fixed,Input Capacity|Electricity,2030,2.1,,EUR_2020/a,1.0,kW,10% LR decrease,Vartiainen22,Page 4
 AEL,100 MW,OPEX Fixed,Input Capacity|Electricity,2040,0.73,,EUR_2020/a,1.0,kW,10% LR decrease,Vartiainen22,Page 4
@@ -51,6 +56,11 @@ AEL,100 MW,OPEX Fixed Relative,,*,2.0,,percent,,,,DEARF23,"Sheet 86 AEC 100MW, R
 PEM,1 MW,OPEX Fixed Relative,,*,7.0,,percent,,,,DEARF23,"Sheet 86 PEM 1MW, Row 27"
 PEM,100 MW,OPEX Fixed Relative,,*,4.0,,percent,,,,DEARF23,"Sheet 86 PEM 100MW, Row 27"
 SOEC,1 MW,OPEX Fixed Relative,,*,12.0,,percent,,,,DEARF23,"Sheet 86 SOEC 1MW, Row 26"
+AEL,*,OPEX Fixed Relative,,2018,3.5,1.5,percent,,,,Brynolf18,"Table 3"
+AEL,*,OPEX Fixed Relative,,2030,3.5,1.5,percent,,,,Brynolf18,"Table 3"
+PEM,*,OPEX Fixed Relative,,2018,3.5,1.5,percent,,,,Brynolf18,"Table 3"
+PEM,*,OPEX Fixed Relative,,3.5,1.5,percent,,,,,Brynolf18,"Table 3"
+SOEC,*,OPEX Fixed Relative,,2030,2.5,0.5,percent,,,,Brynolf18,"Table 3"
 AEL,100 MW,Output|Hydrogen,Input|Electricity,2020,67.0,,pct kWh;LHV,100.0,pct kWh,1.5% of CAPEX; reported in units of electric capacity; 67% assumes the LHV,Vartiainen22,Page 4
 AEL,100 MW,Output|Hydrogen,Input|Electricity,2030,70.0,,pct kWh;LHV,100.0,pct kWh,10% LR decrease,Vartiainen22,Page 4
 AEL,100 MW,Output|Hydrogen,Input|Electricity,2040,73.0,,pct kWh;LHV,100.0,pct kWh,10% LR decrease,Vartiainen22,Page 4
@@ -67,6 +77,12 @@ SOEC,*,Output|Hydrogen,Input|Electricity,2020,23.3,1.0,kg,1.0,MWh,,DEARF23,"Shee
 SOEC,*,Output|Hydrogen,Input|Electricity,2030,24.2,,kg,1.0,MWh,,DEARF23,"Sheet 86 SOEC 1MW, Row 16"
 SOEC,*,Output|Hydrogen,Input|Electricity,2040,24.6,,kg,1.0,MWh,,DEARF23,"Sheet 86 SOEC 1MW, Row 16"
 SOEC,*,Output|Hydrogen,Input|Electricity,2050,25.1,0.5,kg,1.0,MWh,,DEARF23,"Sheet 86 SOEC 1MW, Row 16"
+
+AEL,,Output|Hydrogen,Input|Electricity,2018,65.0,,pct kWh;LHV,100.0,pct kWh,"Efficiency assumes the LHV",Brynolf18,Table 3
+AEL,,Output|Hydrogen,Input|Electricity,2030,66.0,,pct kWh;LHV,100.0,pct kWh,"Efficiency assumes the LHV",Brynolf18,Table 3
+PEM,,Output|Hydrogen,Input|Electricity,2018,65.0,,pct kWh;LHV,100.0,pct kWh,"Efficiency assumes the LHV",Brynolf18,Table 3
+PEM,,Output|Hydrogen,Input|Electricity,2030,66.0,,pct kWh;LHV,100.0,pct kWh,"Efficiency assumes the LHV",Brynolf18,Table 3
+
 SOEC,*,Input|Heat,Input|Electricity,2020,20.5,2.0,pct MWh,79.5,pct MWh,,DEARF23,"Sheet 86 SOEC 1MW, Rows 9 and 10"
 SOEC,*,Input|Heat,Input|Electricity,2030,19.5,,pct MWh,80.5,pct MWh,,DEARF23,"Sheet 86 SOEC 1MW, Rows 9 and 10"
 SOEC,*,Input|Heat,Input|Electricity,2040,18.6,,pct MWh,81.4,pct MWh,,DEARF23,"Sheet 86 SOEC 1MW, Rows 9 and 10"
