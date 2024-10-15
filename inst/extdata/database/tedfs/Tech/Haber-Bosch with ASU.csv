@@ -7,7 +7,7 @@ OPEX Fixed Relative,,2022,#,3.0,,percent,,,,ArnaizdelPozo22,"Supplementary Infor
 OPEX Fixed Relative,,2025,#,4.0,,percent,,,,Grahn22,"Table7"
 OPEX Fixed Relative,,2040,#,4.0,,percent,,,,Grahn22,"Table7"
 OPEX Fixed,Output Capacity|Ammonia,2018,#,17.0,,EUR_2018/a,1.0,kW;LHV,"Cost basis not given in the paper, assumed to be 2018.",Ikaheimo18,"Page 7, Table 3"
-OPEX Variable,Output|Ammonia,2022,#,0.6,,EUR_2020,1.0,kWh;LHV,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.",ArnaizdelPozo22,"Supplementary Information, Table 2"
+OPEX Variable,Output|Ammonia,2022,#,0.6,,EUR_2020,1.0,MWh;LHV,"Includes Ammonia catalyst and make up water. Wrongly reported as EUR/kWh, is EUR/MWh according to the Authors' excel worksheets. As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value.",ArnaizdelPozo22,"Supplementary Information, Table 2"
 Input|Hydrogen,Output|Ammonia,2015,#,0.178,,t,1.0,t,,Matzen15,Page 9 / Table 13
 Input|Hydrogen,Output|Ammonia,2018,#,1.148,,kWh,1,kWh;LHV,Found in supplementary information,Stolz22,Table 5
 Input|Electricity,Output|Ammonia,2015,Air-separation unit,3.1,,MJ,1.19,kg,"This source claims 3.1 MJ/kg electricity denand for the ASU. Assuming a nitrogen demand of 0.84 tonnes per tonne of ammonia, this amounts of an electricity demand of 3.1×0.85 GJ per tonne of ammonia.",Matzen15,Page 8 / Table 9
