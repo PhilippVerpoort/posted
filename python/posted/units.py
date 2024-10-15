@@ -32,7 +32,6 @@ unit_variants = {
 }
 
 
-
 def unit_allowed(unit: str, flow_id: None | str, dimension: str):
     '''Checks if a given unit is allowed for a specific dimension and flow ID,
     handling unit variants and compatibility checks.
@@ -186,7 +185,6 @@ def unit_convert(unit_from: str | float, unit_to: str | float, flow_id: None | s
     return ureg(unit_from).to(unit_to, 'flocon', **ctx_kwargs).magnitude
 
 
-
 def ctx_kwargs_for_variants(variants: list[str | None], flow_id: str):
     '''
     Generates a dictionary of context key-word arguments for unit conversion for context from flow specs
@@ -214,7 +212,6 @@ def ctx_kwargs_for_variants(variants: list[str | None], flow_id: str):
         for v in variants if v is not None
     }
     return ctx_kwargs
-
 
 
 def split_off_variant(unit: str):

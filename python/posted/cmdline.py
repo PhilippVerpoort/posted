@@ -12,9 +12,11 @@ def main():
     parser = argparse.ArgumentParser(
         prog='posted',
         description='Potsdam open-source techno-economic database',
-        epilog='For further details, please consult the source code or code documentation.',
+        epilog='For further details, please consult the source code or code \
+              documentation.',
     )
-    subparsers = parser.add_subparsers(title='commands', dest='command', help='sub-command help')
+    subparsers = parser.add_subparsers(title='commands', dest='command',
+                                       help='sub-command help')
 
     # create the parser for the "conv" command
     parser_conv = subparsers.add_parser('conv')
