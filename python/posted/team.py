@@ -496,13 +496,18 @@ class TEAMAccessor:
                     for c in range(len(df_pivot_group.columns))
                 }
 
-                df_pivot_group = pd.concat([
-                    df_pivot_group.iloc[:, [
-                        col_id for col_id, col_dim in cols_dims.items()
-                        if dim == col_dim
-                    ]].sum(axis=1)
-                    for dim in set(cols_dims.values())
-                ], axis=1).pint.dequantify()
+                df_pivot_group = (
+                    pd.concat([
+                        sum(
+                            df_pivot_group.iloc[:, col_id]
+                            for col_id, col_dim in cols_dims.items()
+                            if dim == col_dim
+                        )
+                        for dim in set(cols_dims.values())
+                    ], axis=1)
+                    .rename_axis('variable', axis=1)
+                    .pint.dequantify()
+                )
 
             # Pivot back and append.
             df_pivot_list.append(
