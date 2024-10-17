@@ -1,8 +1,8 @@
 library(docstring)
 library(roxygen2)
 
-# Read in converion factors from R_unit_cache
-cached_units_path <- file.path(BASE_PATH, "R_unit_cache.csv")
+# Read in conversion factors from R_unit_cache
+cached_units_path <- system.file("extdata", "R_unit_cache.csv", package="posted")
 cached_units <- read.csv(
     cached_units_path,
     sep=',',
