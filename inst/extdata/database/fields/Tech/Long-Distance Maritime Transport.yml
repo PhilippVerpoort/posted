@@ -1,0 +1,20 @@
+engine_type:
+  name: Engine type
+  description: Type of engine used on the vessel
+  type: case
+  coded: True
+  codes:
+    Two-stroke: ICE, for bulk carrier/ container ships
+    Four-stroke: ICE for general cargo ships (higher power density than two-stroke)
+    PEMFC: LT/HT proton exchange membrane fuel cell
+    SOFC: Solid oxide fuel cell
+fuel:
+  name: Fuel
+  description: Fuel used with the engine
+  type: case
+  coded: False
+component:
+  name: Component
+  description: Component
+  type: component
+  coded: False
