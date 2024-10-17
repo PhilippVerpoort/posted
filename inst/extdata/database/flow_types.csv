@@ -387,3 +387,5 @@ NGL,name,Natural gas liquids,,
 NGL,default_unit,t,,
 Naphtha,name,Naphtha
 Naphtha,default_unit,t
+Person-km,name,Person-km
+Person-km,default_unit,PAX*km

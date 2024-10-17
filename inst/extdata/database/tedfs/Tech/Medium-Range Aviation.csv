@@ -1,0 +1,13 @@
+fuel,variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+Kerosene,OPEX Variable,Output|Person-km,2021,Depreciation,2.104,,cUSD_2010,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Kerosene,OPEX Variable,Output|Person-km,2021,Interest,1.637,,cUSD_2010,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Kerosene,OPEX Variable,Output|Person-km,2021,Insurance,0.031,,cUSD_2010,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Kerosene,OPEX Variable,Output|Person-km,2021,Staff,0.428,,cUSD_2010,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Kerosene,OPEX Variable,Output|Person-km,2021,Fees,1.330,,cUSD_2010,1.0,PAX*km,"Navigation fees, landing fees, ground handling fees.",Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Hydrogen,OPEX Variable,Output|Person-km,2021,Depreciation,2.485,,cUSD_2010,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Hydrogen,OPEX Variable,Output|Person-km,2021,Interest,1.933,,cUSD_2010,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Hydrogen,OPEX Variable,Output|Person-km,2021,Insurance,0.037,,cUSD_2010,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Hydrogen,OPEX Variable,Output|Person-km,2021,Staff,0.428,,cUSD_2010,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Hydrogen,OPEX Variable,Output|Person-km,2021,Fees,1.318,,cUSD_2010,1.0,PAX*km,"Navigation fees, landing fees, ground handling fees.",Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Kerosene,Input|Kerosene,Output|Person-km,2021,#,0.63,,MJ,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
+Hydrogen,Input|Liquid Hydrogen,Output|Person-km,2021,#,0.743,,MJ,1.0,PAX*km,,Dahal21,"calculated from the assumptions found in the paper, and following the AEA's methodology"
