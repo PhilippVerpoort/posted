@@ -1,5 +1,18 @@
 variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Methanol,2017,400.0,,EUR_2015,1,metric_ton/a,"Depreciated over 10 years with an interest rate of 10%. Units given as EUR/t, but should be EUR/t/a",Bazzanella17,Table 35
-OPEX Fixed Specific,Output|Methanol,2017,60.0,,EUR_2015,1,metric_ton,,Bazzanella17,Table 35
+CAPEX,Output Capacity|Methanol,2017,400,,EUR_2015,1,metric_ton/a,"Depreciated over 10 years with an interest rate of 10%. Units given as EUR/t, but should be EUR/t/a",Bazzanella17,Table 35
+OPEX Fixed Specific,Output|Methanol,2017,60,,EUR_2015,1,metric_ton,,Bazzanella17,Table 35
 Input|Electricity,Output|Methanol,2017,0.6,,GJ,1,metric_ton,,Bazzanella17,Section 4.4.1
 Input|Fossil Gas,Output|Methanol,2017,12.5,,GJ,1,metric_ton,,Bazzanella17,Section 4.4.1
+CAPEX,Output Capacity|Methanol,2020,310,,USD_2017,1,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+CAPEX,Output Capacity|Methanol,2030,310,,USD_2017,1,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+CAPEX,Output Capacity|Methanol,2050,310,,USD_2017,1,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Specific,Output Capacity|Methanol,2020,2.5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Specific,Output Capacity|Methanol,2030,2.5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Specific,Output Capacity|Methanol,2050,2.5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Electricity,Output|Methanol,2020,0.3,,GJ,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Fossil Gas,Output|Methanol,2020,33.9,,GJ,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Fossil Gas,Output|Methanol,2030,33,,GJ,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Fossil Gas,Output|Methanol,2050,31.5,,GJ,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Emission factor ,Output|Methanol,2020,0.8,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Emission factor ,Output|Methanol,2030,0.7,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Emission factor ,Output|Methanol,2050,0.6,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
