@@ -453,6 +453,76 @@ class TEAMAccessor:
                (isinstance(cmd, Callable) or f"{{{col}}}" not in cmd)
         ])
 
+    def sum_over(self, over: str | list[str] | tuple[str]):
+        """
+        Sum up values over specified fields.
+
+        Parameters
+        ----------
+        over : str | list[str] | tuple[str]
+            The name of the field (column) to sum over.
+
+        Returns
+        -------
+            pd.DataFrame
+                The aggregated dataframe.
+        """
+        # Convert single string to list of strings.
+        if isinstance(over, str):
+            over = [over]
+
+        # Pivot into wide format and aggregate over requested columns.
+        df_pivot = (
+            self._df
+            .pivot_table(
+                index=[c for c in self._fields if c not in over],
+                columns=['variable', 'unit'],
+                values='value',
+                aggfunc=pd.Series.sum,
+            )
+        )
+
+        # Loop over variables and combine columns with different units.
+        df_pivot_list = []
+        for col_name in df_pivot.columns.unique(level='variable'):
+            df_pivot_group = df_pivot.loc[:, [col_name]]
+
+            # Sum columns of compatibles units (same dimensionality).
+            if len(df_pivot_group.columns) > 1:
+                df_pivot_group = df_pivot_group.pint.quantify()
+
+                cols_dims = {
+                    c: df_pivot_group.iloc[:, c].pint.dimensionality
+                    for c in range(len(df_pivot_group.columns))
+                }
+
+                df_pivot_group = (
+                    pd.concat([
+                        sum(
+                            df_pivot_group.iloc[:, col_id]
+                            for col_id, col_dim in cols_dims.items()
+                            if dim == col_dim
+                        )
+                        for dim in set(cols_dims.values())
+                    ], axis=1)
+                    .rename_axis('variable', axis=1)
+                    .pint.dequantify()
+                )
+
+            # Pivot back and append.
+            df_pivot_list.append(
+                df_pivot_group
+                    .melt(ignore_index=False)
+                    .reset_index()
+            )
+
+        # Combine groups into single dataframe and return.
+        return (
+            pd.concat(df_pivot_list)
+            .dropna()
+            .reset_index(drop=True)
+        )
+
     def unit_convert(self,
                      to: str | pint.Unit | dict[str, str | pint.Unit],
 
