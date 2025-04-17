@@ -126,13 +126,19 @@ def normalise_units(
         df,
         df.apply(
             lambda row: var_units[f"{row['parent_variable']}|{row[var_col_id]}"]
-            if isinstance(row[var_col_id], str) else np.nan,
+            if isinstance(row[var_col_id], str) else
+            var_units[row['parent_variable']]
+            if level == 'reported' else
+            np.nan,
             axis=1,
         )
         .to_frame('target_unit'),
         df.apply(
             lambda row: var_flow_ids[f"{row['parent_variable']}|{row[var_col_id]}"]
-            if isinstance(row[var_col_id], str) else np.nan,
+            if isinstance(row[var_col_id], str) else
+            var_flow_ids[row['parent_variable']]
+            if level == 'reported' else
+            np.nan,
             axis=1,
         )
         .to_frame('target_flow_id'),
@@ -529,8 +535,18 @@ class DataSet(TEBase):
         )
 
         # add parent variable as prefix to other variable columns
-        selected['variable'] = selected['parent_variable'] + '|' + selected['variable']
-        selected['reference_variable'] = selected['parent_variable'] + '|' + selected['reference_variable']
+        selected['variable'] = selected.apply(
+            lambda row: row['parent_variable'] + '|' + row['variable']
+            if isinstance(row['variable'], str) else
+            row['parent_variable'],
+            axis=1,
+        )
+        selected['reference_variable'] = selected.apply(
+            lambda row: row['parent_variable'] + '|' + row['reference_variable']
+            if isinstance(row['reference_variable'], str) else
+            np.nan,
+            axis=1,
+        )
         selected.drop(
             columns=['parent_variable'],
             inplace=True,
