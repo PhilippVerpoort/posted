@@ -157,9 +157,12 @@ def read_masks(variable: str):
             if not fpath.is_file():
                 raise Exception(f"Expected YAML file, but not a file: {fpath}")
 
-            ret += [
-                Mask(**mask_specs)
-                for mask_specs in read_yml_file(fpath)
-            ]
+            fcontents = read_yml_file(fpath)
+
+            if fcontents is not None:
+                ret += [
+                    Mask(**mask_specs)
+                    for mask_specs in fcontents
+                ]
 
     return ret
