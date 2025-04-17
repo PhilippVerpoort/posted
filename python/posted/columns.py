@@ -437,9 +437,9 @@ class RegionFieldDefinition(AbstractFieldDefinition):
             name=name,
             description=description,
             dtype='category',
-            coded=True,
+            coded=False,
             # TODO: Insert list of country names here.
-            codes={'World': 'World'},
+            # codes={'World': 'World'},
         )
 
 
