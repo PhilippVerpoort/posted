@@ -1,0 +1,12 @@
+variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|Methanol,2020,#,295,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+CAPEX,Output Capacity|Methanol,2030,#,295,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+CAPEX,Output Capacity|Methanol,2050,#,295,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,,2020,#,2.5,,percent,,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,,2030,#,2.5,,percent,,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,,2040,#,2.5,,percent,,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+Input|Oil,Output|Methanol,2020,,10.1,Average:14.8,GJ;LHV,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A4
+Input|Electricity,Output|Methanol,2020,,2,,GJ,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A4
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,

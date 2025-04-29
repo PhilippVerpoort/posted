@@ -1,0 +1,17 @@
+variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|Ammonia,2020,#,2175,,USD_2017,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+CAPEX,Output Capacity|Ammonia,2030,#,2175,,USD_2017,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2020.",PAGE | 5
+CAPEX,Output Capacity|Ammonia,2050,#,2175,,USD_2017,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2021.",PAGE | 5
+OPEX Fixed Relative,,2020,#,5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Relative,,2030,#,5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Relative,,2040,#,5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Coal,Output|Ammonia,2020,,38.4,,GJ;LHV,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Input|Coal,Output|Ammonia,2030,,38.4,,GJ;LHV,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Input|Coal,Output|Ammonia,2050,,38.4,,GJ;LHV,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Input|Electricity,Output|Ammonia,2020,,3.7,,GJ,1,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 4
+Input|Coal,Output|Ammonia,2021,Feedstock,18.6,,GJ;LHV,1,t,,IEA-Ammonia21,Table 1.2
+Input|Coal,Output|Ammonia,2021,Fuel,15.1,,GJ;LHV,1,t,,IEA-Ammonia21,Table 1.2
+Emission factor ,Output|Ammonia,2021,,3.2,,kgCO2,1,kg,,IEA-Ammonia21,Table 1.2
+Emission factor ,Output|Ammonia,2020,,3.9,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Emission factor ,Output|Ammonia,2030,,3.9,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Emission factor ,Output|Ammonia,2050,,3.9,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 

@@ -1,0 +1,14 @@
+variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|Ethylene,2020,#,1900.0,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+CAPEX,Output Capacity|Ethylene,2030,#,1900.0,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2019.",Table A3
+CAPEX,Output Capacity|Ethylene,2040,#,1900.0,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2020.",Table A3
+CAPEX,Output Capacity|Ethylene,2050,#,1900.0,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2021.",Table A3
+OPEX Fixed Relative,Output Capacity|Ethylene,2020,#,2.5,,percent,1,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2022.",Table A3
+OPEX Fixed Relative,Output Capacity|Ethylene,2030,#,2.5,,percent,1,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2023.",Table A3
+OPEX Fixed Relative,Output Capacity|Ethylene,2040,#,2.5,,percent,1,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2024.",Table A3
+OPEX Fixed Relative,Output Capacity|Ethylene,2050,#,2.5,,percent,1,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2025.",Table A3
+Input|Butane,Output|Ethylene,2017,#,2.5,,t,,t,,"A. Boulamanti and J. A. Moya, Renew. Sustain. Energy Rev., 2017, 68, 1205–1212.",Table2
+Input|Electricity,Output|Ethylene,2017,#,0.2,,MWh,,t,,"A. Boulamanti and J. A. Moya, Renew. Sustain. Energy Rev., 2017, 68, 1205–1213.",Table2
+Input|Fuel,Output|Ethylene,2017,#,24.8,,GJ,,t,790-850 heat,"A. Boulamanti and J. A. Moya, Renew. Sustain. Energy Rev., 2017, 68, 1205–1214.",Table2
+Input|Water,Output|Ethylene,2017,#,206.0,,t,,t,,"A. Boulamanti and J. A. Moya, Renew. Sustain. Energy Rev., 2017, 68, 1205–1215.",Table2
+Lifetime,,2017,#,25.0,,year,,,,Spallina17,Table 8

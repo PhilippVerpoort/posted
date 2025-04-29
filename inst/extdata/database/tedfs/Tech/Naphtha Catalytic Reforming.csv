@@ -1,0 +1,17 @@
+variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|BTX,2020,#,3000.0,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+CAPEX,Output Capacity|BTX,2030,#,3000.0,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+CAPEX,Output Capacity|BTX,2040,#,3000.0,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+CAPEX,Output Capacity|BTX,2050,#,3000.0,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,Output Capacity|BTX,2020,#,2.5,,percent,1,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,Output Capacity|BTX,2030,#,2.5,,percent,1,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,Output Capacity|BTX,2040,#,2.5,,percent,1,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,Output Capacity|BTX,2050,#,2.5,,percent,1,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+Input|Naphtha,Output|BTX,2017,#,3.5,,kg,1,kg,,"J. Jiang, X. Feng, M. Yang and Y. Wang, J. Clean. Prod., 2020, 277, 123525.",Table S9 
+Input|Electricity,Output|BTX,2017,#,1.2,,MJ,1,kg,,"J. Jiang, X. Feng, M. Yang and Y. Wang, J. Clean. Prod., 2020, 277, 123525.",Table S9 
+Input|MP steam,Output|BTX,2017,#,1.1,,MJ,1,kg,,"J. Jiang, X. Feng, M. Yang and Y. Wang, J. Clean. Prod., 2020, 277, 123525.",Table S9 
+Input|HP steam,Output|BTX,2017,#,6.2,,MJ,1,kg,,"J. Jiang, X. Feng, M. Yang and Y. Wang, J. Clean. Prod., 2020, 277, 123525.",Table S9 
+Input|Fired heat,Output|BTX,2017,#,4.7,,MJ,1,kg,,"J. Jiang, X. Feng, M. Yang and Y. Wang, J. Clean. Prod., 2020, 277, 123525.",Table S9 
+Input|Naphtha,Output|BTX,2017,#,10.9,,GJ,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A4
+Input|Electricity,Output|BTX,2017,#,0.3,,GJ,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A4
+Lifetime,,2017,#,25.0,,year,,,,Spallina17,Table 8
