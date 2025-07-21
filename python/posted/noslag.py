@@ -866,8 +866,10 @@ class DataSet(TEBase):
 
         # get selection
         selected, var_units, var_references = self._select(
-            override, extrapolate_period,
-            drop_singular_fields, **field_vals_select
+            override=override,
+            extrapolate_period=extrapolate_period,
+            drop_singular_fields=drop_singular_fields,
+            **field_vals_select
         )
 
         # compile masks from databases and function argument into one list
