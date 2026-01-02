@@ -1,0 +1,14 @@
+append_unmatched: false
+use_page_title: true
+
+nav:
+- Home: index.md
+- User Guide:
+    - Overview: guide/overview.md
+    - Format: guide/format.md
+    - Contribute: guide/contribute.md
+- Data:
+    - data/index.md
+    - "data/*.ipynb"
+- API Reference: api.md
+- Sources: sources.md

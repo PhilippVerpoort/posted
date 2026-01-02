@@ -1,9 +1,0 @@
-region,period,reported_value,reported_unc,reported_unit,comment,source,source_detail
-EUR,2020,30,,EUR_2020/metric_ton,,Pietzker21,
-EUR,2025,134,,EUR_2020/metric_ton,,Pietzker21,
-EUR,2030,201,,EUR_2020/metric_ton,,Pietzker21,
-EUR,2035,268,,EUR_2020/metric_ton,,Pietzker21,
-EUR,2040,335,,EUR_2020/metric_ton,,Pietzker21,
-EUR,2045,402,,EUR_2020/metric_ton,,Pietzker21,
-EUR,2050,469,,EUR_2020/metric_ton,,Pietzker21,
-EUR,2055,536,,EUR_2020/metric_ton,,Pietzker21,

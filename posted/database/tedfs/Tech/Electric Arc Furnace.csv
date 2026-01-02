@@ -1,0 +1,54 @@
+source,source_detail,mode,reheating,component,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+Agora-KSV-2023,"Page 72 of 88, Document Page 72, Abbildung 26",*,*,#,2022,CAPEX,Output Capacity|Steel Liquid,331.2,,EUR_2010,1,t/year,"This reference assumes the value provided by Wörtler et al., 2013 (184 EUR/tLS) but with an additional integration factor of 1.8."
+Agora-KSV-2023,"Page 72 of 88, Document Page 72, Abbildung 26",*,*,#,2022,Input|Alloys,Output|Steel Liquid,0.01,,t,1,t,
+Agora-KSV-2023,"Page 80 of 88, Document Page 80, Tabelle 13",Primary,w/ reheating,#,2022,Input|Electricity,Output|Steel Liquid,0.75,,MWh,1,t,Reheating of cold DRI. Values based on Vogl et al (2018) but is misquoted- See note on Vogl-2018 electricity demand row.
+Agora-KSV-2023,"Page 80 of 88, Document Page 80, Tabelle 13",Primary,w/o reheating,#,2022,Input|Electricity,Output|Steel Liquid,0.59,,MWh,1,t,Without reheating of DRI. Values based on Vogl et al (2018) but is misquoted- See note on Vogl-2018 electricity demand row.
+Agora-KSV-2023,"Page 72 of 88, Document Page 72, Abbildung 26",*,*,#,2022,Input|Graphite Electrode,Output|Steel Liquid,0.002,,t,1,t,
+Agora-KSV-2023,"Page 72 of 88, Document Page 72, Abbildung 26",*,*,#,2022,Input|Lime,Output|Steel Liquid,0.05,,t,1,t,
+Agora-KSV-2023,"Page 72 of 88, Document Page 72, Abbildung 26",*,*,#,2022,Input|Oxygen,Output|Steel Liquid,0.05,,t_O2,1,t,
+Agora-KSV-2023,"Page 72 of 88, Document Page 72, Abbildung 26",Primary,*,#,2022,Input|Steel Scrap,Output|Steel Liquid,0.17,,t,1,t,
+Devlin-2022,Section 2.2.2,Primary,*,#,2022,Input|Direct Reduced Iron,Output|Steel Liquid,1.1,,t,1,t,
+Devlin-2022,Section 2.2.2,Primary,*,#,2022,Input|Electricity,Output|Steel Liquid,2.4,,MJ,,kg,
+ECORYS-2008,Table 3.1,*,*,#,2008,Input|Alloys,Output|Steel Liquid,0.011,,t,1,t,
+ECORYS-2008,Table 3.1,Secondary,*,#,2008,Input|Electricity,Output|Steel Liquid,0.4,,MWh,1,t,
+ECORYS-2008,Table 3.1,*,*,#,2008,Input|Graphite Electrode,Output|Steel Liquid,0.003,,t,1,t,
+ECORYS-2008,Table 3.1,Secondary,*,#,2008,Input|Heat,Output|Steel Liquid,0.43,,GJ,1,t,
+ECORYS-2008,Table 3.1,*,*,#,2008,Input|Oxygen,Output|Steel Liquid,50,,cubic_meter_O2_norm,1,t,
+ECORYS-2008,Table 3.1,Secondary,*,#,2008,Input|Steel Scrap,Output|Steel Liquid,1.09,,t,1,t,
+ECORYS-2008,Table 3.1,*,*,Labour,2008,OPEX Fixed,Output Capacity|Steel Liquid,2.7,,EUR_2008/a,1,t/year,"Labour cost. This line should be an OPEX Fixed Specific but throws an error, as no OCF was found in the source. Assumed to be 0.9 (original value is 3 EUR/t). Results from this table were obtained from steelonthenet."
+ECORYS-2008,Table 3.1,*,*,#,2008,OPEX Variable,Output|Steel Liquid,9,,EUR_2008,1,t,Labour cost
+Fischedick-2014,"Page 15 of 18, Document Page 577, Table-A 2",*,*,Maintenance,2014,OPEX Fixed Relative,,3,,percent,,,The value reported by the source is based on a common assumption for all steel production routes.
+Fischedick-2014,"Page 15 of 18, Document Page 577, Table-A 2",*,*,Labour,2014,OPEX Fixed,Output Capacity|Steel Liquid,19,,EUR_2014/year,1,t/year,"The value reported by the source is based on a common assumption for all steel production routes. Here we divide this reported value by a factor of 2 to account for the fact that the full route reported by the source consists of a direct reduction furnace and an electric arc furnace, whereas here we only report direct reduction."
+Jacobasch-2021,"Page 9, Table 6",*,*,#,2021,CAPEX,Output Capacity|Steel Liquid,479.89,,MEUR_2020,2,Mt/year,
+Jacobasch-2021,"Page 6, Table 2",Primary,*,#,2021,Input|Coal,Output|Steel Liquid,20814.54,,t_coal,2000000,t,
+Jacobasch-2021,"Page 6, Table 2",Primary,*,#,2021,Input|Direct Reduced Iron,Output|Steel Liquid,1744694.39,,t,2000000,t,
+Jacobasch-2021,"Page 6, Table 2",Primary,*,#,2021,Input|Electricity,Output|Steel Liquid,1047946.52,,MWh,2000000,t,
+Jacobasch-2021,"Page 6, Table 2",*,*,#,2021,Input|Graphite Electrode,Output|Steel Liquid,3000,,t,2000000,t,
+Jacobasch-2021,"Page 6, Table 2",*,*,#,2021,Input|Oxygen,Output|Steel Liquid,8349.01,,t_O2,2000000,t,
+Jacobasch-2021,"Page 6, Table 2",Primary,*,#,2021,Input|Steel Scrap,Output|Steel Liquid,400220.06,,t,2000000,t,
+Otto-2017,Figure 6,Primary,*,#,2017,Input|Coal,Output|Steel Liquid,0.284,,MWh_coal_LHV,1,t,"According to the source, additional coal is needed to achieve 2% carbon content in steel and 100% charge of sponge iron in the EAF."
+Otto-2017,Figure 6,Primary,*,#,2017,Input|Direct Reduced Iron,Output|Steel Liquid,1.03,,t,1,t,
+Otto-2017,Figure 6,Primary,*,#,2017,Input|Electricity,Output|Steel Liquid,2.07,,GJ,1,t,
+Otto-2017,Figure 6,Primary,*,#,2017,Input|Fossil Gas,Output|Steel Liquid,0.78,,GJ_NG_LHV,1,t,
+Otto-2017,Figure 6,*,*,#,2017,Input|Nitrogen,Output|Steel Liquid,0.5,,t,1,t,
+Otto-2017,Figure 6,*,*,#,2017,Input|Oxygen,Output|Steel Liquid,0.5,,t_O2,1,t,
+Rechberger-2020,Section 4.2.1,Primary,*,#,2020,Input|Electricity,Output|Steel Liquid,475,165,kWh,1,t,
+Rosner-2023,"Supplementary Information, Pages 9 and 10 of 14, Tables S6 and S8",*,*,Maintenance,2022,OPEX Fixed,Output Capacity|Steel Liquid,6330.5,,kUSD_2022/year,1162120,t/year,"The value reported by the source accounts for property tax and insurance of 2% of the total plan cost. Here we divide this reported value by a factor of 2 to account for the fact that the full route reported by the source consists of a direct reduction furnace and an electric arc furnace, whereas here we only report direct reduction."
+Rosner-2023,"Supplementary Information, Pages 9 and 10 of 14, Tables S6 and S8",*,*,Labour,2022,OPEX Fixed,Output Capacity|Steel Liquid,46860,,kUSD_2022/year,1278332,t/year,"The value reported by the source accounts for property tax and insurance of 2% of the total plan cost. Here we divide this reported value by a factor of 2 to account for the fact that the full route reported by the source consists of a direct reduction furnace and an electric arc furnace, whereas here we only report direct reduction."
+Vogl-2018,"Page 6 of 10, Document Page 741, Section 3.3",*,*,#,2018,CAPEX,Output Capacity|Steel Liquid,184,,EUR_2010,1,t/year,"This reference assumes the value provided by Wörtler et al., 2013."
+Vogl-2018,"Page 4 of 10, Document Page 739, Section 2.1",*,*,#,2018,Input|Alloys,Output|Steel Liquid,11,,kg,1,t,
+Vogl-2018,"Page 5 of 10, Document Page 740, Section 3.1",Primary,w/ reheating,#,2018,Input|Electricity,Output|Steel Liquid,0.912,,MWh,1,t,"Cold DRI case: An additional 159kWh/t LS is needed. This is not explicit in the paper, but was clarified by an exchange with the author."
+Vogl-2018,"Page 5 of 10, Document Page 740, Section 3.1",Primary,w/o reheating,#,2018,Input|Electricity,Output|Steel Liquid,0.753,,MWh,1,t,"Hot DRI case. This is not explicit in the paper, but was clarified by an exchange with the author."
+Vogl-2018,"Page 5 of 10, Document Page 740, Section 3.1",Secondary,*,#,2018,Input|Electricity,Output|Steel Liquid,0.667,,MWh,1,t,
+Vogl-2018,"Page 4 of 10, Document Page 739, Section 2.1",*,*,#,2018,Input|Graphite Electrode,Output|Steel Liquid,2,,kg,1,t,
+Vogl-2018,"Page 3 of 10, Document Page 738, Section 2",*,*,#,2018,Input|Lime,Output|Steel Liquid,50,,kg,1,t,
+Vogl-2018,"Page 4 of 10, Document Page 739, Section 2.1",*,*,Operation and maintenance incl. refractory lining w/o labour,2018,OPEX Fixed,Output Capacity|Steel Liquid,5.52,,EUR_2010/a,1,t/year,"Manually calculated, is originally defined as 3% of CAPEX."
+Vogl-2018,"Page 4 of 10, Document Page 739, Section 2.1",*,*,Labour,2018,OPEX Fixed Specific,Output|Steel Liquid,53.2,,EUR_2010,1,t,
+Worrell-2007,Table 2.1.5,Primary,*,#,2007,Input|Electricity,Output|Steel Liquid,1.7,,GJ,1,t,
+Worrell-2007,Section 2.1.4,Secondary,*,Electric arc,2007,Input|Electricity,Output|Steel Liquid,409,,kWh,1,t,
+Worrell-2007,Section 2.1.4,Secondary,*,Gas cleaning and ladle refining,2007,Input|Electricity,Output|Steel Liquid,65,,kWh,1,t,
+Worrell-2007,Section 2.1.4,Secondary,*,#,2007,Input|Fossil Gas,Output|Steel Liquid,0.15,,GJ_NG_LHV,1,t,
+Worrell-2007,Table 2.1.5,Primary,*,#,2007,Input|Heat,Output|Steel Liquid,0.6,,GJ,1,t,
+Wortler-2013,"Page 24 of 52, Document Page 22, Exhibit 8",*,*,#,2013,CAPEX,Output Capacity|Steel Liquid,184,,EUR_2010,1,t/year,
+Zang-2023,"Page 8 of 17, Document Page 2200297, Table 6",*,*,Labour,2023,OPEX Fixed,Output Capacity|Steel Liquid,6659,,kUSD_2019/year,4.92,Mt/year,
+Zang-2023,"Page 8 of 17, Document Page 2200297, Table 6",*,*,Maintenance,2023,OPEX Fixed,Output Capacity|Steel Liquid,24988,,kUSD_2019/year,4.92,Mt/year,

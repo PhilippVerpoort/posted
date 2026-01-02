@@ -1,0 +1,11 @@
+source,source_detail,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+Palys-2023,"Section 2.3, Page 6",2023,CAPEX,Output Capacity|Urea,4.05,,MUSD_2022,1000,t/year,
+Fiamelda-2020,"Section 3.5, Page 5",2020,Input|Electricity,Output|Urea,173.7,27.2,kWh,1,t,
+Jarvis-2018,Section 2.1.2,2018,Input|Electricity,Output|Urea,91.5,68.5,kWh,1,t,
+Palys-2023,"Section 2.3, Page 6",2023,Input|Electricity,Output|Urea,0.18,,MWh,1,t,
+Bazzanella-2017,Section 4.3.1,2015,Input|Heat,Output|Urea,3.29,,GJ,1,t,
+Palys-2023,"Section 2.3, Page 6",2023,Input|Heat,Output|Urea,0.95,,MWh,1,t,
+Bazzanella-2017,Section 4.3.1,2015,Input|Ammonia,Output|Urea,0.57,,t_NH3,1,t,
+Jarvis-2018,Section 2.1.2,2018,Input|Captured CO2,Output|Urea,0.7425,0.0075,t,1,t,
+Bazzanella-2017,Section 4.3.1,2017,Input|Captured CO2,Output|Urea,0.73,,t,1,t,
+Jarvis-2018,Table 2,2018,Lifetime,,20,,year,,,

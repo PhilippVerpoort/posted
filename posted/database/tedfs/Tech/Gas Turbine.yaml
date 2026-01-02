@@ -1,0 +1,28 @@
+columns:
+    subtech:
+        name: Subtechnology
+        description: Subtechnology distinguishing between H2-readiness and carbon capture capability.
+        type: case
+        coded: True
+        codes:
+            CCGT conventional: Conventional CCGT w/o carbon capture and non-H2-ready.
+            CCGT H2-ready: CCGT that is H2-ready.
+            CCGT CC: CCGT with carbon capture.
+    mode_h2:
+        name: Hydrogen operation mode
+        description: Whether the plant is operated with hydrogen or natural gas.
+        type: case
+        coded: True
+        codes:
+            NG: 0% hydrogen, 100% natural gas.
+            H2: 100% hydrogen, 0% natural gas.
+    period: period
+variables:
+    predefined:
+        - technology
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities

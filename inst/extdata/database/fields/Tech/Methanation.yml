@@ -1,8 +1,0 @@
-subtech:
-  name: Subtechnology
-  description: Subtechnology
-  type: case
-  coded: True
-  codes:
-    CAT: Catalytic
-    BIO: Biological

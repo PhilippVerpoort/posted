@@ -1,0 +1,38 @@
+source,source_detail,component,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+Perez-Fortes-2016,Table 3,#,2014,CAPEX,Output Capacity|Methanol,496.5,,EUR_2014,1,t_MeOH/year,
+Nyari-2020,Table A4,#,2018,CAPEX,Output Capacity|Methanol,209.5,,EUR_2018,1,t_MeOH/year,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant."
+Bos-2020,Table S8,#,2020,CAPEX,Output Capacity|Methanol,169,,EUR_2020,1,t_MeOH/year,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant. No cost basis cited, assumed to be year of publication."
+Grahn-2022,Table 3,#,2025,CAPEX,Output Capacity|Methanol,700,,EUR_2019,1,kW_MeOH_LHV,
+Grahn-2022,Table 3,#,2040,CAPEX,Output Capacity|Methanol,300,,EUR_2019,1,kW_MeOH_LHV,
+Perez-Fortes-2016,Table 3,#,2014,OPEX Fixed,Output Capacity|Methanol,11,,MEUR_2014/a,440,kt_MeOH/year,
+Nyari-2020,Table 5,Admin,2018,OPEX Fixed,Output Capacity|Methanol,0.94,,EUR_2018/a,1,t_MeOH/year,"Reported as OPEX Fixed relative (0.45%), manually converted to OPEX FIxed. Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * om = 0.45% of TPC ."
+Nyari-2020,Table 5,Operation & Maintenance,2018,OPEX Fixed,Output Capacity|Methanol,3.14,,EUR_2018/a,1,t_MeOH/year,"Reported as OPEX Fixed relative (1.5%), manually converted to OPEX Fixed. Operation and maintenance. Percentage of the total plant cost (TPC)"
+Nyari-2020,Table 5,Tax,2018,OPEX Fixed,Output Capacity|Methanol,2.10,,EUR_2018/a,1,t_MeOH/year,"Reported as OPEX Fixed relative (1%), manually converted to OPEX Fixed. In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)"
+Grahn-2022,Table 7,#,2025,OPEX Fixed Relative,,4,,percent,,,
+Grahn-2022,Table 7,#,2040,OPEX Fixed Relative,,4,,percent,,,
+Perez-Fortes-2016,"Table 3, Figure 6",#,2014,OPEX Variable,Output|Methanol,11.6,,MEUR_2014,402,kt_MeOH,Utilities and consumables ammount to 4.1% of variable operating costs (Fig. 6). 4.1% of 283 MEUR is 11.6 MEUR (see Table 3). A plant of capacity 440 kt/a produces 402 kt in 8000 full-load hours.
+Nyari-2020,Table 5,Labour,2018,OPEX Variable,Output|Methanol,2.01,,EUR_2018,1,t_MeOH,"Nyari misquotes the result from Collodi (2017). There are in fact 61 workers * 60 000 mean salary =3.66MEUR/a. Production of 5000 MTPD => 1.825e6 t/a.Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t "
+Nyari-2020,Table 5,Admin,2018,OPEX Variable,Output|Methanol,0.6,,EUR_2018,1,t_MeOH,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * direct labour.Production of 5000 MTPD => 1.825e6 t/a. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t"
+Bazzanella-2017,Section 4.4.3,#,2017,Input|Electricity,Output|Methanol,1.5,,MWh,1,t_MeOH,
+Soler-2022,Table 3,#,2020,Input|Electricity,Output|Methanol,1.07,,MJ,1,kg_MeOH,Value based on JEC 2020
+Nyari-2020,Table 6,#,2018,Input|Electricity,Output|Methanol,0.175,,kWh,1,kg_MeOH,
+Stolz-2022,Table 5,#,2018,Input|Electricity,Output|Methanol,0.067,,kWh,1,kWh_MeOH_LHV,Found in supplementary information
+Perez-Fortes-2016,Table 1,#,2014,Input|Electricity,Output|Methanol,0.169,,MWh,1,t_MeOH,
+Perez-Fortes-2016,Table 1,#,2014,Input|Captured CO2,Output|Methanol,1.46,,t,1,t_MeOH,
+Bazzanella-2017,Section 4.4.3,#,2017,Input|Captured CO2,Output|Methanol,1.373,,t,1,t_MeOH,
+Soler-2022,Table 3,#,2015,Input|Captured CO2,Output|Methanol,1.4,,t,1,t_MeOH,Values based on Stefansson 2020
+Nyari-2020,Table 6,#,2018,Input|Captured CO2,Output|Methanol,1.397,,t,1,t_MeOH,
+Stolz-2022,Table 5,#,2018,Input|Captured CO2,Output|Methanol,0.27,,kg,1,kWh_MeOH_LHV,Found in supplementary information
+Perez-Fortes-2016,Table 1,#,2014,Input|Hydrogen,Output|Methanol,0.199,,t_H2,1,t_MeOH,
+Soler-2022,Table 3,#,2020,Input|Hydrogen,Output|Methanol,0.193,,t_H2,1,t_MeOH,Values based on Stefansson 2020
+Bazzanella-2017,Section 4.4.3,#,2017,Input|Hydrogen,Output|Methanol,189,,kg_H2,1,t_MeOH,
+Nyari-2020,Table 6,#,2018,Input|Hydrogen,Output|Methanol,0.192,,t_H2,1,t_MeOH,
+Stolz-2022,Table 5,#,2018,Input|Hydrogen,Output|Methanol,1.23,,kWh_H2_LHV,1,kWh_MeOH_LHV,Found in supplementary information
+Grahn-2022,Table 7,#,2025,Output|Methanol,Input|Hydrogen,0.84,,MWh_MeOH_LHV,1,MWh_H2_LHV,84% process efficiency
+Grahn-2022,Table 7,#,2040,Output|Methanol,Input|Hydrogen,0.84,,MWh_MeOH_LHV,1,MWh_H2_LHV,84% process efficiency
+Perez-Fortes-2016,"Section 5, Page 727",#,2014,Output|Heat,Output|Methanol,0.68,,MWh,1,t_MeOH,
+Stolz-2022,Table 5,#,2018,Output|Heat,Output|Methanol,0.086,,kWh,1,kWh_MeOH_LHV,Found in supplementary information
+Nyari-2020,Table 6,#,2018,Emissions|CO2,Output|Methanol,0.023,,kg CO2,1,kg_MeOH,
+Perez-Fortes-2016,Table 4,#,2014,Emissions|CO2,Output|Methanol,0.09,,kg CO2,1,kg_MeOH,"Only direct emissions, no upstream emissions."
+Perez-Fortes-2016,Section 3.1,#,2014,FLH,,8000,,hour,,,
+Perez-Fortes-2016,"Section 3.3, Page 723",#,2014,Lifetime,,20,,year,,,

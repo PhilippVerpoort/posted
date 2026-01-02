@@ -1,0 +1,49 @@
+source,source_detail,carbon_capture,period,component,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+DeLena-2019,Table 1 and 7,Integrated CaL,2019,#,CAPEX,Output Capacity|Cement,423.6,,mnEUR_2014,3822.3,t/day,"Clinker Capacity taken from table 1 (2817tpd) and manually converted to tpd cement using the reported clinker/cement factor of 0.737, total CAPEX from Table 7"
+DeLena-2019,Table 2,Integrated CaL,2019,#,Input|Coal,Output|Cement,5.44,,MJ_coal_LHV,1.36,kg,Manually converted from reference kg clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Integrated CaL,2019,#,Input|Electricity,Output|Cement,173.9,,kWh,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Integrated CaL,2019,#,Input|Oxygen,Output|Cement,0.38,,kg,1.36,kg,Manually converted from reference kg clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 4,Integrated CaL,2019,#,Lifetime,,25,,yr,,,
+DeLena-2019,Table 4,Integrated CaL,2019,#,OCF,,91.3,,percent,,,
+DeLena-2019,Table 2,Integrated CaL,2019,#,Output|Captured CO2,Output|Cement,997.1,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Integrated CaL,2019,CO2 purification unit,GHG Emissions|CO2,Output|Cement,31.3,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Integrated CaL,2019,Flue gas,GHG Emissions|CO2,Output|Cement,25.7,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 8,Integrated CaL,2019,O&M labour and insurances,OPEX Variable,Output|Cement,31.63,,EUR_2014,1.36,t,"Is actually fixed OPEX, variable def should be changed. Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737"
+DeLena-2019,Table 8,Integrated CaL,2019,Other,OPEX Variable,Output|Cement,1.74,,EUR_2014,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 8,Integrated CaL,2019,Raw meal,OPEX Variable,Output|Cement,5,,EUR_2014,1.36,t,"The cost of raw meal assumed is also given, in Table 5. The raw meal demand could be calculated from this. Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737"
+DeLena-2019,Table 1 and 7,No Capture,2019,#,CAPEX,Output Capacity|Cement,203.7,,mnEUR_2014,3822.3,t/day,"Clinker Capacity taken from table 1 (2817tpd) and manually converted to tpd cement using the reported clinker/cement factor of 0.737, total CAPEX from Table 7"
+DeLena-2019,Table 2,No Capture,2019,#,Input|Coal,Output|Cement,3.24,,MJ_coal_LHV,1.36,kg,Manually converted from reference kg clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,No Capture,2019,#,Input|Electricity,Output|Cement,131.6,,kWh,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,No Capture,2019,#,Input|Oxygen,Output|Cement,0.51,,kg,1.36,kg,Manually converted from reference kg clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 4,No Capture,2019,#,Lifetime,,25,,yr,,,
+DeLena-2019,Table 4,No Capture,2019,#,OCF,,91.3,,percent,,,
+DeLena-2019,Table 2,No Capture,2019,#,Output|Captured CO2,Output|Cement,0,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,No Capture,2019,CO2 purification unit,GHG Emissions|CO2,Output|Cement,0,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,No Capture,2019,Flue gas,GHG Emissions|CO2,Output|Cement,865.2,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 8,No Capture,2019,O&M labour and insurances,OPEX Variable,Output|Cement,18.67,,EUR_2014,1.36,t,"Is actually fixed OPEX, variable def should be changed. Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737"
+DeLena-2019,Table 8,No Capture,2019,Other,OPEX Variable,Output|Cement,1.74,,EUR_2014,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 8,No Capture,2019,Raw meal,OPEX Variable,Output|Cement,5,,EUR_2014,1.36,t,"The cost of raw meal assumed is also given, in Table 5. The raw meal demand could be calculated from this. Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737"
+DeLena-2019,Table 1 and 7,Tail-end 20%,2019,#,CAPEX,Output Capacity|Cement,434.7,,mnEUR_2014,3822.3,t/day,"Clinker Capacity taken from table 1 (2817tpd) and manually converted to tpd cement using the reported clinker/cement factor of 0.737, total CAPEX from Table 7"
+DeLena-2019,Table 2,Tail-end 20%,2019,#,Input|Coal,Output|Cement,8.72,,MJ_coal_LHV,1.36,kg,"Refered to as 'fuel consumption', but Table 5 indicates the fuel used is indeed coal. Manually converted from reference kg clinker to cement using the reported clinker/cement factor of 0.737"
+DeLena-2019,Table 2,Tail-end 20%,2019,#,Input|Oxygen,Output|Cement,0.51,,kg,1.36,kg,Manually converted from reference kg clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 4,Tail-end 20%,2019,#,Lifetime,,25,,yr,,,
+DeLena-2019,Table 4,Tail-end 20%,2019,#,OCF,,91.3,,percent,,,
+DeLena-2019,Table 2,Tail-end 20%,2019,#,Output|Captured CO2,Output|Cement,1256.6,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Tail-end 20%,2019,#,Output|Electricity,Output|Cement,110.3,,kWh,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Tail-end 20%,2019,CO2 purification unit,GHG Emissions|CO2,Output|Cement,39,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Tail-end 20%,2019,Flue gas,GHG Emissions|CO2,Output|Cement,79.5,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 8,Tail-end 20%,2019,O&M labour and insurances,OPEX Variable,Output|Cement,32.01,,EUR_2014,1.36,t,"Is actually fixed OPEX, variable def should be changed. Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737"
+DeLena-2019,Table 8,Tail-end 20%,2019,Other,OPEX Variable,Output|Cement,1.74,,EUR_2014,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 8,Tail-end 20%,2019,Raw meal,OPEX Variable,Output|Cement,4.88,,EUR_2014,1.36,t,"The cost of raw meal assumed is also given, in Table 5. The raw meal demand could be calculated from this. Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737"
+DeLena-2019,Table 1 and 7,Tail-end 50%,2019,#,CAPEX,Output Capacity|Cement,406,,mnEUR_2014,3822.3,t/day,"Clinker Capacity taken from table 1 (2817tpd) and manually converted to tpd cement using the reported clinker/cement factor of 0.737, total CAPEX from Table 7"
+DeLena-2019,Table 2,Tail-end 50%,2019,#,Input|Coal,Output|Cement,7.1,,MJ_coal_LHV,1.36,kg,Manually converted from reference kg clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Tail-end 50%,2019,#,Input|Electricity,Output|Cement,57.7,,kWh,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Tail-end 50%,2019,#,Input|Oxygen,Output|Cement,0.44,,kg,1.36,kg,Manually converted from reference kg clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 4,Tail-end 50%,2019,#,Lifetime,,25,,yr,,,
+DeLena-2019,Table 4,Tail-end 50%,2019,#,OCF,,91.3,,percent,,,
+DeLena-2019,Table 2,Tail-end 50%,2019,#,Output|Captured CO2,Output|Cement,1155.5,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Tail-end 50%,2019,CO2 purification unit,GHG Emissions|CO2,Output|Cement,31.1,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 2,Tail-end 50%,2019,Flue gas,GHG Emissions|CO2,Output|Cement,48,,kg,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 8,Tail-end 50%,2019,O&M labour and insurances,OPEX Variable,Output|Cement,30.64,,EUR_2014,1.36,t,"Is actually fixed OPEX, variable def should be changed. Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737"
+DeLena-2019,Table 8,Tail-end 50%,2019,Other,OPEX Variable,Output|Cement,1.74,,EUR_2014,1.36,t,Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737
+DeLena-2019,Table 8,Tail-end 50%,2019,Raw meal,OPEX Variable,Output|Cement,4.92,,EUR_2014,1.36,t,"The cost of raw meal assumed is also given, in Table 5. The raw meal demand could be calculated from this. Manually converted from reference ton clinker to cement using the reported clinker/cement factor of 0.737"
