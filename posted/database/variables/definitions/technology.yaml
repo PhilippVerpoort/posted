@@ -1,0 +1,99 @@
+CAPEX:
+    description: CAPital EXpenditure (in reference to capacity specified by reference variable)
+    reference: capacity
+    dimension: "[currency]"
+    default_unit: "{default currency}"
+CAPEX Annualised:
+    description: Annualised CAPital EXpenditure (in reference to capacity specified by reference variable)
+    reference: capacity
+    dimension: "[currency]"
+    default_unit: "{default currency}"
+OPEX Fixed:
+    description: OPerational EXpenditure fixed (in reference to capacity specified by reference variable)
+    reference: capacity
+    dimension: "[currency]/[time]"
+    default_unit: "{default currency}/a"
+OPEX Fixed Specific:
+    description: OPerational EXpenditure fixed (in reference to input or output specified by reference variable)
+    reference: activity
+    dimension: "[currency]"
+    default_unit: "{default currency}"
+OPEX Fixed Relative:
+    description: Annual Fixed OPerational EXpenditure as relative share of CAPEX
+    dimension: "dimensionless"
+    default_unit: "pct"
+OPEX Variable:
+    description: Variable OPerational EXpenditure (non-energy, non-feedstock)
+    reference: activity
+    dimension: "[currency]"
+    default_unit: "{default currency}"
+Lifetime:
+    description: Expected time a facility can be in production for
+    dimension: "[time]"
+    default_unit: "a"
+OCF:
+    description: Operational capacity factor
+    dimension: "dimensionless"
+    default_unit: "pct"
+FLH:
+    description: Full-load hours
+    dimension: "[time]"
+    default_unit: "h"
+Input|?flow_type:
+    description: Input (energy or feedstock) needed
+    reference: activity
+    dimension: "[{flow_type_dimension}]"
+    default_unit: "{flow_type_default_unit}"
+Input Capacity|?flow_type:
+    description: Capacity per input (energy or feedstock)
+    reference: capacity
+    dimension: "[{flow_type_dimension}]/[time]"
+    default_unit: "{flow_type_default_unit}/a"
+Output|?flow_type:
+    description: Output (energy or feedstock) produced
+    reference: activity
+    dimension: "[{flow_type_dimension}]"
+    default_unit: "{flow_type_default_unit}"
+Output Capacity|?flow_type:
+    description: Capacity per output (energy or feedstock)
+    reference: capacity
+    dimension: "[{flow_type_dimension}]/[time]"
+    default_unit: "{flow_type_default_unit}/a"
+Output|All Products Mass:
+    description: Mass of all outputs produced
+    reference: activity
+    dimension: "[mass]"
+    default_unit: "t"
+Output Capacity|All Products Mass:
+    description: Capacity per mass of all outputs produced
+    reference: capacity
+    dimension: "[mass]/[time]"
+    default_unit: "t/a"
+Storage Capacity|?flow_type:
+    description: Capacity per storage volume (energy or feedstock)
+    reference: capacity
+    dimension: "[{flow_type_dimension}]"
+    default_unit: "{flow_type_default_unit}"
+Total Input Capacity|?flow_type:
+    description: Total capacity per input (energy or feedstock) of described plant
+    dimension: "[{flow_type_dimension}]/[time]"
+    default_unit: "{flow_type_default_unit}/a"
+Total Output Capacity|?flow_type:
+    description: Total capacity per output (energy or feedstock) of described plant
+    dimension: "[{flow_type_dimension}]/[time]"
+    default_unit: "{flow_type_default_unit}/a"
+Emissions|?emission_type:
+    description: Emissions emitted during operation
+    reference: activity
+    dimension: "[{emission_type_dimension}]"
+    default_unit: "{emission_type_default_unit}"
+Capacity Emissions|?emission_type:
+    description: Emissions emitted during construction
+    reference: capacity
+    dimension: "[{emission_type_dimension}]"
+    default_unit: "{emission_type_default_unit}"
+Capture Rate:
+    description: Share of CO2 emissions captured
+    reference: intensive
+    dimension: "dimensionless"
+    default_unit: "pct"

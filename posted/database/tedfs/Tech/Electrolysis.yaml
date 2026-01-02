@@ -1,0 +1,19 @@
+columns:
+    subtech:
+        name: Subtechnology
+        description: Subtechnology
+        type: case
+        coded: True
+        codes:
+            AEL: Alkaline electrolysis
+            PEM: Proton-exchange membrane electrolysis
+            SOEC: High-temperature solid-oxide electrolysis
+    size:
+        name: Plant size
+        description: Total size (capacity) of the assumed plant
+        type: case
+        coded: False
+    period: period
+variables:
+    predefined:
+        - technology

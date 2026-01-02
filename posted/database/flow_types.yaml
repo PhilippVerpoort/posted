@@ -1,0 +1,8 @@
+Electricity:
+    dimension: energy
+Heat:
+    dimension: energy
+Hydrogen:
+    dimension: amount_of_hydrogen
+Natural Gas:
+    dimension: amount_of_natural_gas

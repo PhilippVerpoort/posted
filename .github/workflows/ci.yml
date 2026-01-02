@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Tests, Lint, Docs
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Sync dependencies
+        run: |
+          uv sync --group dev
+
+      - name: Ruff lint
+        run: |
+          uv run ruff check .
+
+      - name: Ruff format check
+        run: |
+          uv run ruff format --check .
+
+      - name: Sync dependencies
+        run: |
+          uv sync --group generate
+
+      - name: Run unit tests
+        run: |
+          uv run python -m unittest discover -v
+
+      - name: Sync dependencies
+        run: |
+          uv sync --group docs
+
+      - name: Build documentation
+        run: |
+          uv run mkdocs build --strict
