@@ -45,6 +45,6 @@ jobs:
 
       - name: Deploy versioned docs
         run: |
-          uv run mike deploy ${{ steps.version.outputs.version }} latest --update-aliases
+          uv run mike deploy ${{ steps.version.outputs.version }} stable --alias-type=symlink --update-aliases
           uv run mike set-default latest
           git push origin gh-pages

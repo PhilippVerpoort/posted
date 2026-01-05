@@ -1,10 +1,15 @@
 append_unmatched: false
-use_index_title: true
+use_page_title: true
 
 nav:
 - Home: index.md
-- Installation: installation.md
+- User Guide:
+    - Overview: guide/overview.md
+    - Format: guide/format.md
+    - Contribute: guide/contribute.md
 - Methodology: methodology.md
 - Data:
-    - "Data/*.ipynb"
+    - data/index.md
+    - "data/*.ipynb"
+- API Reference: api/index.md
 - Sources: sources.md

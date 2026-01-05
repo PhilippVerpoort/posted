@@ -90,39 +90,59 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
         """Check if cell is allowed"""
         if pd.isnull(cell):
             return False
-        if self._coded:
-            return (
-                cell in self._codes
-                or cell == "*"
-                or (cell == "#" and self.col_type == "component")
-            )
-        else:
+        if not self._coded:
             return True
+        if cell == "*" or (cell == "#" and self.col_type == "component"):
+            return True
+        elements = str(cell).split(",")
+        return all(
+            e.strip() in self._codes
+            for e in elements
+        )
 
     def _expand(
-        self, df: pd.DataFrame, col_id: str, field_vals: list, **kwargs
+            self,
+            df: pd.DataFrame,
+            col_id: str,
+            field_vals: list[str],
+            **kwargs,
     ) -> pd.DataFrame:
-        # Expand fields.
-        return pd.concat(
-            [
-                df[df[col_id].isin(field_vals)],
-                df[df[col_id] == "*"]
-                .drop(columns=[col_id])
-                .merge(
-                    pd.DataFrame.from_dict({col_id: field_vals}),
-                    how="cross",
-                ),
-            ]
+        # Convert comma-separated values to multiple rows.
+        df = (
+            df
+            .assign(**{
+                col_id: df[col_id].str.split(","),
+            })
+            .explode(col_id)
         )
+
+        # Convert asterisk into multiple values.
+        locs_asterisk = df[col_id] == "*"
+        df.loc[locs_asterisk, col_id] = pd.Series([field_vals] * locs_asterisk.sum(), index=df.index[locs_asterisk])
+        df = df.explode(col_id)
+
+        # Convert `period` column to integers.
+        if isinstance(self, PeriodFieldDefinition):
+            df[col_id] = df[col_id].astype(int)
+
+        return df
 
     def _select(
         self, df: pd.DataFrame, col_id: str, field_vals: list, **kwargs
     ):
         # Select fields.
-        return df.loc[df[col_id].isin(field_vals)].reset_index(drop=True)
+        return (
+            df
+            .loc[df[col_id].isin(field_vals)]
+            .reset_index(drop=True)
+        )
 
     def select_and_expand(
-        self, df: pd.DataFrame, col_id: str, field_vals: None | list, **kwargs
+        self,
+        df: pd.DataFrame,
+        col_id: str,
+        field_vals: None | list,
+        **kwargs,
     ) -> pd.DataFrame:
         """
         Select and expand fields which are valid for multiple periods or other
@@ -155,7 +175,7 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
                 field_vals = [
                     v
                     for v in df[col_id].unique()
-                    if v != "*" and not pd.isnull(v)
+                    if not (pd.isnull(v) or v in ["*", "#"])
                 ]
         else:
             # Ensure that `field_vals` is a list of elements (not tuple or
@@ -238,20 +258,6 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
     def is_allowed(self, cell: str | float | int) -> bool:
         """Check if cell is a float or *"""
         return is_float(cell) or cell == "*"
-
-    def _expand(
-        self, df: pd.DataFrame, col_id: str, field_vals: list, **kwargs
-    ) -> pd.DataFrame:
-        return pd.concat(
-            [
-                df[df[col_id] != "*"],
-                df[df[col_id] == "*"]
-                .drop(columns=[col_id])
-                .merge(
-                    pd.DataFrame.from_dict({col_id: field_vals}), how="cross"
-                ),
-            ]
-        ).astype({"period": "float"})
 
     def _select(
         self,

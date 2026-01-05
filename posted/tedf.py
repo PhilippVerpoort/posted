@@ -1,12 +1,13 @@
 from pathlib import Path
 from re import escape
-from typing import Optional
+from typing import Optional, Any, Literal
 from warnings import warn
 
 import numpy as np
 import pandas as pd
 
-from units import ureg
+from cet_units import ureg
+from pandas import DataFrame
 
 from . import databases, defaults, POSTEDException, POSTEDWarning
 from .fields import (
@@ -184,6 +185,12 @@ class TEDF:
             self._columns += unknown_cols
 
         self._df = df[self._columns]
+
+        # Value, uncertainty, and reference value must be floats.
+        for col_id in ["value", "uncertainty", "reference_value"]:
+            self._df[col_id] = pd.to_numeric(df[col_id])
+
+        # TODO: Turn fields into categories.
 
     @property
     def raw(self) -> pd.DataFrame:
@@ -418,9 +425,11 @@ class TEDF:
         reference_activity: Optional[str] = None,
         reference_capacity: Optional[str] = None,
         drop_singular_fields: bool = True,
-        extrapolate_period: bool = True,
-        with_parent: bool = False,
+        interpolate_period: bool = True,
+        extrapolate_period: bool = False,
         expand_not_specified: bool | list[str] = True,
+        with_parent: bool = False,
+        append_references: bool = False,
         **field_vals_select,
     ) -> pd.DataFrame:
         """
@@ -436,14 +445,21 @@ class TEDF:
             Reference capacity.
         drop_singular_fields: bool, optional
             If True, drop custom fields with only one value
+        interpolate_period: bool, optional
+            If True, determine values by interpolation between known points,
+            if no value for a requested period is given. Default is True.
         extrapolate_period: bool, optional
-            If True, extrapolate values by extrapolation, if no value for this period is given
+            If True, determine values by extrapolation outside of range of
+            known data, if no value for a requested period is given. Default
+            is False.
+        expand_not_specified: bool | list[str], optional
+            Whether to expand fields with value `N/S` (not specified) to all
+            allowed values. If `True` is passed, then allow `N/S` is expanded
+            for all fields. If a list of strings is passed, then only the
+            contained fields are expanded. If False is passed, then no field
+            is expanded. Default is True.
         with_parent: bool, optional
             Whether to prepend the parent variable. Default is False.
-        expand_not_specified: bool | list[str], optional
-            Whether to expand fields with value `N/S` (not specified) to all allowed values. If `True` is passed, then
-            allow `N/S` is expanded for all fields. If a list of strings is passed, then only the contained fields are
-            expanded. If False is passed, then no field is expanded. Default is True.
         **field_vals_select
             IDs of values to select
 
@@ -457,30 +473,21 @@ class TEDF:
             reference_activity=reference_activity,
             reference_capacity=reference_capacity,
             drop_singular_fields=drop_singular_fields,
+            interpolate_period=interpolate_period,
             extrapolate_period=extrapolate_period,
             expand_not_specified=expand_not_specified,
             **field_vals_select,
         )
 
-        # Insert reference variable, unit, and reference unit.
-        selected["reference_variable"] = selected["variable"].map(ref_vars)
-        selected["unit"] = selected["variable"].map(units)
-        selected["reference_unit"] = selected["reference_variable"].map(units)
-
-        # Prepend parent variable.
-        if with_parent:
-            if self._parent_variable is None:
-                raise Exception(
-                    "Can only prepend parent variable if not None."
-                )
-            selected["variable"] = selected["variable"].str.cat(
-                [self._parent_variable], sep="|"
-            )
-
-        # Order columns.
-        selected = selected[[col for col in self._columns if col in selected]]
-
-        return selected
+        # Finalise dataframe and return.
+        return self._finalise(
+            df=selected,
+            append_references=append_references,
+            group_cols=[c for c in self._fields if c in selected],
+            ref_vars=ref_vars,
+            units=units,
+            with_parent=with_parent,
+        )
 
     def _select(
         self,
@@ -488,6 +495,7 @@ class TEDF:
         reference_activity: str | None,
         reference_capacity: str | None,
         drop_singular_fields: bool,
+        interpolate_period: bool,
         extrapolate_period: bool,
         expand_not_specified: bool | list[str],
         **field_vals_select,
@@ -506,19 +514,15 @@ class TEDF:
         for field_id in field_vals_select:
             if not any(field_id == col_id for col_id in self._fields):
                 raise Exception(
-                    f"Field '{field_id}' does not exist and cannot be used for selection."
+                    f"Field '{field_id}' does not exist and cannot be used for "
+                    f"selection."
                 )
 
         # Order fields for selection: period must be selected last due to the interpolation.
-        fields_select_order = (
-            list(field_vals_select)
-            + [
-                col
-                for col in self._fields
-                if col not in field_vals_select and col != "period"
-            ]
-            + (["period"] if "period" in self._fields else [])
-        )
+        fields_select_order = list(set(field_vals_select) | set(self._fields))
+        if "period" in fields_select_order:
+            fields_select_order.remove("period")
+            fields_select_order.append("period")
 
         # Expand non-specified values in fields if requested.
         if expand_not_specified is True:
@@ -540,6 +544,7 @@ class TEDF:
                 df=selected,
                 col_id=field_id,
                 field_vals=field_vals_select.get(field_id, None),
+                interpolate_period=interpolate_period,
                 extrapolate_period=extrapolate_period,
                 expand_not_specified=expand_not_specified,
             )
@@ -632,11 +637,14 @@ class TEDF:
         reference_activity: Optional[str] = None,
         reference_capacity: Optional[str] = None,
         drop_singular_fields: bool = True,
-        extrapolate_period: bool = True,
+        interpolate_period: bool = True,
+        extrapolate_period: bool = False,
         agg: Optional[str | list[str] | tuple[str]] = None,
         masks: Optional[list[Mask]] = None,
         masks_database: bool = True,
         expand_not_specified: bool | list[str] = True,
+        with_parent: bool = False,
+        append_references: bool = False,
         **field_vals_select,
     ) -> pd.DataFrame:
         """
@@ -657,9 +665,11 @@ class TEDF:
             If True, extrapolate values by extrapolation, if no value
             for this period is given
         expand_not_specified: bool | list[str], optional
-            Whether to expand fields with value `N/S` (not specified) to all allowed values. If `True` is passed, then
-            allow `N/S` is expanded for all fields. If a list of strings is passed, then only the contained fields are
-            expanded. If False is passed, then no field is expanded. Default is True.
+            Whether to expand fields with value `N/S` (not specified) to all
+            allowed values. If `True` is passed, then allow `N/S` is expanded
+            for all fields. If a list of strings is passed, then only the
+            contained fields are expanded. If False is passed, then no field
+            is expanded. Default is True.
         agg : Optional[str | list[str] | tuple[str]]
             Specifies which fields to aggregate over.
         masks : Optional[list[Mask]]
@@ -692,6 +702,7 @@ class TEDF:
             units=units,
             reference_activity=reference_activity,
             reference_capacity=reference_capacity,
+            interpolate_period=interpolate_period,
             extrapolate_period=extrapolate_period,
             drop_singular_fields=drop_singular_fields,
             expand_not_specified=expand_not_specified,
@@ -776,56 +787,100 @@ class TEDF:
 
                 # Add to return list.
                 ret.append(out)
+
+        # If nothing is found, return empty dataframe.
         if not ret:
+            add_cols = (
+                []
+                if append_references
+                else ["reference_variable", "reference_unit"]
+            )
             return pd.DataFrame(
-                columns=group_cols + ["variable", "value", "unit"]
+                columns=group_cols + ["variable", "value", "unit"] + add_cols
             )
         aggregated = pd.concat(ret).reset_index()
 
+        # Finalise dataframe and return.
+        return self._finalise(
+            df=aggregated,
+            append_references=append_references,
+            group_cols=group_cols,
+            ref_vars=ref_vars,
+            units=units,
+            with_parent=with_parent,
+        )
+
+    def _finalise(
+        self,
+        df: pd.DataFrame,
+        append_references: bool,
+        group_cols: list[str],
+        ref_vars: dict[str, str],
+        units: dict[str, str],
+        with_parent: bool,
+    ) -> DataFrame:
         # Append reference variables.
-        var_ref_unique = {
-            ref_vars[var]
-            for var in aggregated["variable"].unique()
-            if not pd.isnull(ref_vars[var])
-        }
-        agg_append = []
-        for ref_var in var_ref_unique:
-            agg_append.append(
-                pd.DataFrame(
-                    {
-                        "variable": [ref_var],
-                        "value": [1.0],
-                    }
-                    | {
-                        col_id: ["*"]
-                        for col_id, field in self._fields.items()
-                        if col_id in aggregated
-                    }
+        if append_references:
+            var_ref_unique = {
+                ref_vars[var]
+                for var in df["variable"].unique()
+                if not pd.isnull(ref_vars[var])
+            }
+            to_append = []
+            for ref_var in var_ref_unique:
+                to_append.append(
+                    pd.DataFrame(
+                        {
+                            "variable": [ref_var],
+                            "value": [1.0],
+                        }
+                        | {
+                            col_id: ["*"]
+                            for col_id, field in self._fields.items()
+                            if col_id in df
+                        }
+                    )
                 )
+
+            if to_append:
+                to_append = pd.concat(to_append, ignore_index=True)
+                for col_id, field in self._fields.items():
+                    if col_id not in df.columns:
+                        continue
+                    to_append = field.select_and_expand(
+                        to_append,
+                        col_id,
+                        df[col_id].unique().tolist(),
+                    )
+                df = (
+                    pd.concat([df, to_append], ignore_index=True)
+                    .sort_values(by=group_cols + ["variable"])
+                    .reset_index(drop=True)
+                )
+        else:
+            df["reference_variable"] = (
+                df["variable"].map(ref_vars)
             )
-        if agg_append:
-            agg_append = pd.concat(agg_append).reset_index(drop=True)
-            for col_id, field in self._fields.items():
-                if col_id not in aggregated:
-                    continue
-                agg_append = field.select_and_expand(
-                    agg_append,
-                    col_id,
-                    aggregated[col_id].unique().tolist(),
-                )
-            aggregated = (
-                pd.concat([aggregated, agg_append], ignore_index=True)
-                .sort_values(by=group_cols + ["variable"])
-                .reset_index(drop=True)
+            df["reference_unit"] = (
+                df["reference_variable"].map(units)
             )
 
-        # Insert unit.
-        aggregated["unit"] = aggregated["variable"].map(units)
+        # Insert unit(s).
+        df["unit"] = df["variable"].map(units)
+
+        # Prepend parent variable.
+        if with_parent:
+            if self._parent_variable is None:
+                raise Exception(
+                    "Can only prepend parent variable if not None."
+                )
+            df["variable"] = df["variable"].str.cat(
+                [self._parent_variable], sep="|"
+            )
 
         # Order columns.
-        aggregated = aggregated[
-            [col for col in self._columns if col in aggregated]
+        df = df[
+            [col for col in self._columns if col in df]
         ]
 
-        # Return.
-        return aggregated
+        return df

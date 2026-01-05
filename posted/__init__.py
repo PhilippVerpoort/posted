@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Final
 from warnings import warn
 
-from units import ureg
+from cet_units import ureg
 
 
 # Define path to public database.

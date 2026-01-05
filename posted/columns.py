@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from units import ureg
+from cet_units import ureg
 
 
 def is_float(string: str) -> bool:

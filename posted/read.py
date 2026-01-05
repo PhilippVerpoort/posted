@@ -22,6 +22,7 @@ def read_csv_file(fpath: str):
         sep=",",
         quotechar='"',
         encoding="utf-8",
+        dtype=str,
     )
 
 

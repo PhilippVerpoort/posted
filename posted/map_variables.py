@@ -7,7 +7,8 @@ from posted import POSTEDWarning
 
 
 class AbstractVariableMapper(ABC):
-    _selected: pd.DataFrame
+    _df: pd.DataFrame
+    _group: list[pd.Series]
     _units: dict[str, str]
     _cond: pd.Series
     _warning_types: dict[str, str] = {}
@@ -15,31 +16,23 @@ class AbstractVariableMapper(ABC):
 
     def __init__(
         self,
-        selected: pd.DataFrame,
+        df: pd.DataFrame,
+        groups: list[pd.Series],
         units: dict[str, str],
         activities: list[str],
         capacities: list[str],
         reference_activity: str,
         reference_capacity: str,
     ):
-        self._selected = selected
+        self._df = df
+        self._groups = groups
         self._units = units
         self._activities = activities
         self._capacities = capacities
         self._reference_activity = reference_activity
         self._reference_capacity = reference_capacity
 
-        self._cond = self._condition(selected)
-        if not self._cond.any():
-            return
-
-        self._prepare_units()
-        self._warning_types = self._prepare_warnings()
         self._warnings = {}
-
-    @property
-    def cond(self) -> pd.Series:
-        return self._cond
 
     def _add_warning(self, warn_id: str, warn_loc: pd.Series) -> None:
         if warn_id not in self._warnings:
@@ -50,46 +43,51 @@ class AbstractVariableMapper(ABC):
     def raise_warnings(self) -> None:
         for warn_id, warn_locs in self._warnings.items():
             locs = pd.concat(warn_locs)
-            rows = self._selected.loc[
-                locs.reindex(self._selected.index, fill_value=False)
+            rows = self._df.loc[
+                locs.reindex(self._df.index, fill_value=False)
             ]
             warn(
-                self._warning_types[warn_id] + "\n" + str(rows), POSTEDWarning
+                self._warning_types[warn_id] + "\n" + str(rows),
+                POSTEDWarning,
             )
 
     @abstractmethod
-    def _condition(self, selected: pd.DataFrame) -> pd.Series:
+    def _condition(self) -> pd.Series:
         pass
 
     def _prepare_units(self) -> None:
         return
 
-    def _prepare_warnings(self) -> dict[str, str]:
-        return {}
-
     @abstractmethod
-    def _map(self, group: pd.DataFrame, cond: pd.Series) -> pd.DataFrame:
+    def _map(self, df: pd.DataFrame, cond: pd.Series) -> pd.DataFrame:
         pass
 
-    def map(self, group: pd.DataFrame) -> pd.DataFrame:
-        group_cond = self._cond.loc[group.index]
-        if not group_cond.any():
-            return group
+    def map(self) -> pd.DataFrame:
+        cond = self._condition()
+        if not cond.any():
+            return self._df
+        self._prepare_units()
+        mapped = self._map(self._df.copy(), cond)
+        return mapped.where(cond, other=self._df)
 
-        mapped = self._map(group, group_cond)
-        return mapped.where(group_cond, other=group)
 
+class AbstractVariableGroupMapper(AbstractVariableMapper):
+    @abstractmethod
+    def _map(self, group: pd.DataFrame, cond_group: pd.Series) -> pd.DataFrame:
+        pass
 
-def _apply_mappers(
-    group: pd.DataFrame, mappers: list[AbstractVariableMapper]
-) -> pd.DataFrame:
-    orig_index = group.index.copy()
-    ret = group
-    for mapper in mappers:
-        ret = mapper.map(ret)
-        if not ret.index.equals(orig_index):
-            raise Exception("Index mistmatch.")
-    return ret
+    def map(self) -> pd.DataFrame:
+        cond = self._condition()
+        if not cond.any():
+            return self._df
+        self._prepare_units()
+        df = self._df.copy()
+        for idx in self._groups:
+            group_cond = cond.loc[idx]
+            if not group_cond.any():
+                continue
+            df.loc[idx] = self._map(df.loc[idx], group_cond)
+        return df.where(cond, other=self._df)
 
 
 def map_variables(
@@ -101,9 +99,17 @@ def map_variables(
     reference_activity: str,
     reference_capacity: str,
 ):
+    # GroupBy once.
+    groups = (
+        selected
+        .groupby(fields, sort=False)
+        .indices
+        .values()
+    )
+
     # Arguments for creating mapper instances.
     kwargs = dict(
-        selected=selected,
+        groups=groups,
         units=units,
         activities=activities,
         capacities=capacities,
@@ -113,35 +119,38 @@ def map_variables(
 
     # Get mappers.
     from .database.variables.mappings.full_load_hours import (
-        FullLoadHoursMapper,
+        FullLoadHoursMapper
     )
     from .database.variables.mappings.fixed_opex_relative import (
-        FixedOPEXRelativeMapper,
+        FixedOPEXRelativeMapper
     )
     from .database.variables.mappings.fixed_opex_specific import (
-        FixedOPEXSpecificMapper,
+        FixedOPEXSpecificMapper
+    )
+    from posted.database.variables.mappings.capacities_to_activities import (
+        CapacitiesToActivities
     )
     from .database.variables.mappings.activities import ActivitiesMapper
 
-    mappers = [
-        FullLoadHoursMapper(**kwargs),
-        FixedOPEXRelativeMapper(**kwargs),
-        FixedOPEXSpecificMapper(**kwargs),
-        ActivitiesMapper(**kwargs),
+    mapper_classes = [
+        FullLoadHoursMapper,
+        FixedOPEXRelativeMapper,
+        FixedOPEXSpecificMapper,
+        CapacitiesToActivities,
+        ActivitiesMapper,
     ]
 
-    # Map variables.
-    mapped = (
-        selected.groupby(fields)[["variable", "reference_variable", "value"]]
-        .apply(
-            _apply_mappers,
-            mappers=mappers,
-        )
-        .reset_index(level=fields)
-    )
-
-    # Raise warnings.
-    for mapper in mappers:
+    # Loop over mappers.
+    orig_index = selected.index.copy()
+    df = selected[["variable", "reference_variable", "value"]]
+    for mapper_cls in mapper_classes:
+        mapper = mapper_cls(df=df, **kwargs)
+        df = mapper.map()
         mapper.raise_warnings()
+        if not df.index.equals(orig_index):
+            raise Exception("Index mismatch.")
 
-    return mapped, units
+    # Combine with fields.
+    df = selected[[c for c in selected if c not in df]].join(df)
+
+    return df, units
