@@ -4,7 +4,7 @@ import pandas as pd
 import yaml
 
 
-def read_csv_file(fpath: str):
+def read_tedf_from_csv(fpath: str):
     """
     Read CSV data file
 
@@ -15,17 +15,20 @@ def read_csv_file(fpath: str):
     Returns
     -------
         pd.DataFrame
-            DataFrame containg the data of the CSV
+            DataFrame containing the data of the CSV
     """
-    return pd.read_csv(
+    df = pd.read_csv(
         fpath,
         sep=",",
         quotechar='"',
         encoding="utf-8",
-    )
+        dtype=str,
+    ).fillna("")
+    df.index = df.index + 2
+    return df
 
 
-def read_yml_file(fpath: Path):
+def read_yaml(fpath: Path):
     """
     Read YAML config file
 
@@ -36,16 +39,10 @@ def read_yml_file(fpath: Path):
     Returns
     -------
         dict
-            Dictionary containing config info
+            Dictionary containing config
     """
-    fhandle = open(
-        fpath,
-        mode="r",
-        encoding="utf-8",
-    )
-    ret = yaml.load(
-        stream=fhandle,
-        Loader=yaml.FullLoader,
-    )
-    fhandle.close()
-    return ret
+    with open(fpath, mode="r", encoding="utf-8") as file_handle:
+        return yaml.load(
+            stream=file_handle,
+            Loader=yaml.FullLoader,
+        )

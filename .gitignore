@@ -6,6 +6,7 @@
 *.bib~*
 .jupyter/
 *.ipynb
+/.ipython/**/history.sqlite
 
 # Ignore automatically generated code documentation.
 /docs/code/**

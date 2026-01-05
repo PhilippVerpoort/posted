@@ -34,17 +34,24 @@ jobs:
         run: |
           uv sync --group docs
 
-      - name: Build documentation
+      - name: Register docs kernel
         run: |
-          uv run mkdocs build --strict
+          uv run scripts/register_docs_kernel.py
+
+      - name: Execute Jupyter notebooks
+        run: |
+          BUILD_POSTED_DOCS=1 uv run jupytext --to notebook --execute docs/data/*.py
 
       - name: Configure git
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Deploy versioned docs
+      - name: Run mike to deploy mkdocs as versioned release
         run: |
-          uv run mike deploy ${{ steps.version.outputs.version }} latest --update-aliases
+          uv run mike deploy ${{ steps.version.outputs.version }} stable --alias-type=symlink --update-aliases
           uv run mike set-default latest
+
+      - name: Push gh-pages branch
+        run: |
           git push origin gh-pages
