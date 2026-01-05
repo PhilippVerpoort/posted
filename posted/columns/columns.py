@@ -1,28 +1,13 @@
+from typing import Final
+
 import numpy as np
 import pandas as pd
 
-from units import ureg
+from cet_units import ureg
 
 
-def is_float(string: str) -> bool:
-    """Checks if a given string can be converted to a floating-point
-    number in Python.
+COL_TYPES: Final[list[str]] = ["field", "variable", "unit", "value", "comment"]
 
-    Parameters
-    ----------
-    string : str
-        String to check
-
-    Returns
-    -------
-        bool
-            True if conversion was successful, False if not
-    """
-    try:
-        float(string)
-        return True
-    except ValueError:
-        return False
 
 
 class AbstractColumnDefinition:
@@ -56,7 +41,7 @@ class AbstractColumnDefinition:
         dtype: str,
         required: bool,
     ):
-        if col_type not in ["field", "variable", "unit", "value", "comment"]:
+        if col_type not in COL_TYPES:
             raise Exception(
                 f"Columns must be of type field, variable, unit, "
                 f"value, or comment but found: {col_type}"
@@ -118,18 +103,25 @@ class AbstractColumnDefinition:
         """Get default value of the column"""
         return np.nan
 
-    def is_allowed(self, cell: str | float | int) -> bool:
-        """Check if Cell is allowed
+    def validate(self, s: pd.Series) -> pd.Series:
+        """Check if column entries are valid.
 
         Parameters
         ----------
-            cell: str | float | int
-                Cell to check
+            s: pd.Series
+                Column to check.
         Returns
         -------
-            bool
-                If the cell is allowed
+            pd.Series
+                Return a series of booleans that indicate for each row if the
+                specified cell is correct.
         """
+        if self._required:
+            return self._validate_values(s) & (s != "")
+        else:
+            return self._validate_values(s) | (s == "")
+
+    def _validate_values(self, s: pd.Series) -> pd.Series | bool:
         return True
 
 
@@ -163,10 +155,9 @@ class VariableDefinition(AbstractColumnDefinition):
             required=required,
         )
 
-    def is_allowed(self, cell: str | float | int) -> bool:
-        if pd.isnull(cell):
-            return not self._required
-        return isinstance(cell, str) and cell in variables
+    def _validate_values(self, s: pd.Series) -> pd.Series:
+        # TODO: Check that variable matches REGEX.
+        return s != ""
 
 
 class UnitDefinition(AbstractColumnDefinition):
@@ -199,12 +190,8 @@ class UnitDefinition(AbstractColumnDefinition):
             required=required,
         )
 
-    def is_allowed(self, cell: str | float | int) -> bool:
-        if pd.isnull(cell):
-            return not self._required
-        if not isinstance(cell, str):
-            return False
-        return cell in ureg
+    def _validate_values(self, s: pd.Series) -> pd.Series:
+        return s.apply(lambda cell: bool(cell) and cell in ureg)
 
 
 class ValueDefinition(AbstractColumnDefinition):
@@ -237,10 +224,8 @@ class ValueDefinition(AbstractColumnDefinition):
             required=required,
         )
 
-    def is_allowed(self, cell: str | float | int) -> bool:
-        if pd.isnull(cell):
-            return not self._required
-        return isinstance(cell, float | int)
+    def _validate_values(self, s: pd.Series) -> pd.Series:
+        return pd.to_numeric(s, errors='coerce').notna()
 
 
 class CommentDefinition(AbstractColumnDefinition):
@@ -272,6 +257,3 @@ class CommentDefinition(AbstractColumnDefinition):
             dtype="str",
             required=required,
         )
-
-    def is_allowed(self, cell: str | float | int) -> bool:
-        return True

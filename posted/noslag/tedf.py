@@ -1,4 +1,3 @@
-from pathlib import Path
 from re import escape
 from typing import Optional
 from warnings import warn
@@ -6,79 +5,28 @@ from warnings import warn
 import numpy as np
 import pandas as pd
 
-from units import ureg
+from cet_units import ureg
+from pandas import DataFrame
 
-from . import databases, defaults, POSTEDException, POSTEDWarning
-from .fields import (
-    AbstractFieldDefinition,
-    base_columns,
-    read_fields_comments,
-    base_comments,
-    base_fields,
+from posted import (
+    databases,
+    defaults,
+    POSTEDException,
+    POSTEDWarning,
 )
+from ..columns import (
+    AbstractFieldDefinition,
+    AbstractColumnDefinition,
+    CommentDefinition,
+    base_column_src,
+    base_columns_other,
+    base_columns_src_detail,
+    read_fields_comments,
+)
+from ..columns.fields import PeriodMode
+from .mapping import map_variables
 from .masking import Mask
-from .read import read_yml_file, read_csv_file
-from .columns import AbstractColumnDefinition, CommentDefinition
-from .map_variables import map_variables
-
-
-class TEDFInconsistencyException(Exception):
-    """
-    Exception raised for inconsistencies in TEDFs.
-
-    Attributes:
-        message -- message explaining the inconsistency
-        row_id -- row where the inconsistency occurs
-        col_id -- column where the inconsistency occurs
-        file_path -- path to the file where the inconsistency occurs
-    """
-
-    def __init__(
-        self,
-        message: str = "Inconsistency detected",
-        row_id: None | int = None,
-        col_id: None | str = None,
-        file_path: None | Path = None,
-    ):
-        self.message: str = message
-        self.row_id: None | int = row_id
-        self.col_id: None | str = col_id
-        self.file_path: None | Path = file_path
-
-        # Add tokens at the end of the error message.
-        message_tokens = []
-        if file_path is not None:
-            message_tokens.append(f"file '{file_path}'")
-        if row_id is not None:
-            message_tokens.append(f"line {row_id}")
-        if col_id is not None:
-            message_tokens.append(f"in column '{col_id}'")
-
-        # Compose error message from tokens.
-        exception_message: str = message
-        if message_tokens:
-            exception_message += (
-                f"\n    " + (", ".join(message_tokens)).capitalize()
-            )
-
-        super().__init__(exception_message)
-
-
-def new_inconsistency(
-    raise_exception: bool, **kwargs
-) -> TEDFInconsistencyException:
-    """
-    Create new inconsistency object based on kwargs
-
-    Parameters
-    ----------
-
-    """
-    exception = TEDFInconsistencyException(**kwargs)
-    if raise_exception:
-        raise exception
-    else:
-        return exception
+from ..read import read_yaml, read_tedf_from_csv
 
 
 def _var_pattern(var_name: str, keep_token_names: bool = True) -> str:
@@ -107,6 +55,8 @@ def _var_pattern(var_name: str, keep_token_names: bool = True) -> str:
 
 
 def _get_reference(ref_vars: pd.Series, vars: list):
+    if not vars:
+        return None
     entries = ref_vars.loc[sum(ref_vars.str.fullmatch(v) for v in vars) > 0]
     return entries.value_counts().idxmax()
 
@@ -141,49 +91,73 @@ class TEDF:
         inconsistencies found for row.
     """
 
-    # Typed declarations.
-    _df: pd.DataFrame | None
-    _columns: list[str]
-    _parent_variable: str | None
-    _variables: dict[str, dict]
-    _fields: dict[str, AbstractFieldDefinition]
-    _comments: dict[str, CommentDefinition]
-    _masks: list[Mask]
-
     def __init__(
         self,
         df: pd.DataFrame,
         parent_variable: str | None = None,
+        database_id: str | None = None,
         variables: dict | None = None,
-        fields: dict | None = None,
-        comments: dict | None = None,
+        custom_fields: dict | None = None,
+        custom_comments: dict | None = None,
         masks: list[Mask] | None = None,
+        mappings: list[str] | None = None,
     ):
         """Initialise parent class and object fields"""
-        self._parent_variable = parent_variable
-        self._variables = variables or {}
-        self._fields = fields or {}
-        self._comments = comments or {}
-        self._masks = masks or []
+        self._parent_variable: str | None = parent_variable
+        self._database_id: str | None = database_id
+        self._variables: dict[str, dict] = variables or {}
+        self._masks: list[Mask] = masks or []
+        self._validated: pd.DataFrame | None = None
+        self._mappings: list[str] | None = mappings or []
 
-        self._columns = (
-            list(self._fields)
-            + [c for c in base_columns if c not in self._fields]
-            + [c for c in self._comments if c not in base_columns]
+        # Combine all fields.
+        source_column = base_column_src()
+        self._fields: dict[str, AbstractFieldDefinition] = (
+            {"source": source_column}
+            | (custom_fields or {})
         )
 
-        unknown_cols = [c for c in df if c not in self._columns]
+        # Combine all comments.
+        self._comments: dict[str, CommentDefinition] = (
+            base_columns_src_detail
+            | {"comment": CommentDefinition}
+            | (custom_comments or {})
+        )
+
+        # Combine all columns.
+        self._columns: dict[str, AbstractColumnDefinition] = (
+            {"source": source_column}
+            | base_columns_src_detail
+            | (custom_fields or {})
+            | base_columns_other
+        )
+
+        # Deal with unknown columns.
+        unknown_cols = [c for c in df.columns if c not in self._columns]
         if unknown_cols:
             i = len(unknown_cols)
             warn(
-                f"Unknown column{'s'[: i ^ 1]} treated as comment{'s'[: i ^ 1]}: "
-                + ",".join(unknown_cols),
+                f"Unknown column{'s'[:i^1]} treated as comment{'s'[:i^1]}: "
+                + ", ".join(str(c) for c in unknown_cols),
                 POSTEDWarning,
             )
-            self._comments |= {c: CommentDefinition() for c in unknown_cols}
-            self._columns += unknown_cols
+            unknown_cols = {
+                c: CommentDefinition(
+                    name=str(c),
+                    description="",
+                    required=False,
+                )
+                for c in unknown_cols
+            }
+            self._comments |= unknown_cols
+            self._columns |= unknown_cols
+            
+        # Add missing columns.
+        missing_cols = [c for c in self._columns if c not in df.columns]
+        if missing_cols:
+            df[missing_cols] = ""
 
-        self._df = df[self._columns]
+        self._df: pd.DataFrame = df[list(self._columns)]
 
     @property
     def raw(self) -> pd.DataFrame:
@@ -203,45 +177,50 @@ class TEDF:
 
     @property
     def columns(self) -> dict[str, AbstractColumnDefinition]:
-        cols = base_columns | self._fields | self._comments
-        return {col: cols[col] for col in self._df.columns}
+        return self._columns
 
     @property
     def variables(self) -> dict[str, dict]:
         return self._variables
 
+    @property
+    def validated(self) -> pd.DataFrame:
+        return self._validated
+
     @classmethod
-    def load(cls, parent_variable: str):
+    def load(cls, parent_variable: str, database_id: str = "public"):
         if not isinstance(parent_variable, str):
             raise POSTEDException(
                 "Argument `variable` must be a valid string."
             )
+        if not (database_id in databases):
+            raise POSTEDException(
+                "Argument `database_id` must correspond to a valid ID in the "
+                "`databases` registered in the POSTED package."
+            )
 
+        database_path = databases[database_id]
         rel_path = "/".join(parent_variable.split("|"))
 
         # Load data.
-        df = pd.concat(
-            [
-                read_csv_file(database_path / "tedfs" / (rel_path + ".csv"))
-                for database_path in databases.values()
-            ]
+        df = read_tedf_from_csv(
+            database_path / "tedfs" / (rel_path + ".csv")
         )
 
-        # Load meta.
-        columns = {}
+        # Load config.
         variables = {}
+        custom_columns = {}
         masks = []
+        mappings: list[str] = []
 
         for database_path in databases.values():
             fpath = database_path / "tedfs" / (rel_path + ".yaml")
             if fpath.is_file():
-                fcontents = read_yml_file(fpath)
-                if "columns" in fcontents:
-                    columns |= fcontents["columns"]
+                fcontents = read_yaml(fpath)
                 if "variables" in fcontents:
                     if "predefined" in fcontents["variables"]:
                         for predefined in fcontents["variables"]["predefined"]:
-                            variables |= read_yml_file(
+                            variables |= read_yaml(
                                 database_path
                                 / "variables"
                                 / "definitions"
@@ -249,24 +228,53 @@ class TEDF:
                             )
                     if "custom" in fcontents["variables"]:
                         variables |= fcontents["variables"]["custom"]
+                if "columns" in fcontents:
+                    custom_columns |= fcontents["columns"]
+                if "mappings" in fcontents:
+                    mappings += fcontents["mappings"]
 
             fpath = database_path / "masks" / (rel_path + ".yaml")
             if fpath.is_file():
-                fcontents = read_yml_file(fpath)
+                fcontents = read_yaml(fpath)
                 masks += [Mask(**mask_specs) for mask_specs in fcontents]
 
-        custom_fields, custom_comments = read_fields_comments(columns)
-        fields = base_fields | custom_fields
-        comments = base_comments | custom_comments
+        custom_fields, custom_comments = read_fields_comments(custom_columns)
 
         return TEDF(
             df=df,
             parent_variable=parent_variable,
+            database_id=database_id,
             variables=variables,
-            fields=fields,
-            comments=comments,
+            custom_fields=custom_fields,
+            custom_comments=custom_comments,
             masks=masks,
+            mappings=mappings,
         )
+
+    def edit_data(self):
+        from ..widget import build_edit_grid
+        return build_edit_grid(self)
+
+    def validate(self):
+        # Load sources for validation.
+        from ..sources import load_sources
+        sources = list(load_sources(database_id=self._database_id).entries)
+        self._fields["source"].set_bibtex_codes(sources)
+
+        self._validated = pd.DataFrame()
+        for col_id, col_def in self._columns.items():
+            self._validated[col_id] = col_def.validate(self._df[col_id])
+
+    def _prepare(self) -> pd.DataFrame:
+        df = self._df.replace("", np.nan)
+
+        # Value, uncertainty, and reference value must be floats.
+        for col_id in ["value", "uncertainty", "reference_value"]:
+            df[col_id] = pd.to_numeric(df[col_id])
+
+        # TODO: Turn fields into categories.
+
+        return df
 
     def normalise(
         self, units: Optional[dict[str, str]] = None, with_parent: bool = False
@@ -316,9 +324,15 @@ class TEDF:
                 raise Exception(
                     "Can only prepend parent variable if not None."
                 )
-            normalised["variable"] = normalised["variable"].str.cat(
-                [self._parent_variable], sep="|"
+            normalised["variable"] = (
+                    self._parent_variable + "|" + normalised["variable"]
             )
+
+
+        # Order columns.
+        normalised = normalised[
+            [col for col in self._columns if col in normalised]
+        ]
 
         return normalised
 
@@ -326,12 +340,13 @@ class TEDF:
         self, units: dict[str, str] | None
     ) -> tuple[pd.DataFrame, dict[str, str]]:
         units = units or {}
+        df = self._prepare()
 
         # Get full list of variables and corresponding units.
         df_vars_units = pd.concat(
             [
-                self._df[["variable", "unit"]],
-                self._df[["reference_variable", "reference_unit"]]
+                df[["variable", "unit"]],
+                df[["reference_variable", "reference_unit"]]
                 .dropna(how="all")
                 .rename(
                     columns={
@@ -372,26 +387,37 @@ class TEDF:
 
         # For now, we simply assume that there is no column called `conv_factor`.
         assert (
-            s not in self._df
+            s not in df
             for s in ["factor", "conv_factor", "reference_conv_factor"]
         )
 
-        # Then we can just merge in the conversion factors and apply.
-        normalised = (
-            self._df.merge(
-                conv_factors,
-                on=["variable", "unit"],
-                how="left",
-            )
-            .merge(
+        # Merge conversion factors.
+        normalised = df.merge(
+            conv_factors,
+            on=["variable", "unit"],
+            how="left",
+        )
+
+        if normalised["reference_variable"].notnull().any():
+            normalised = normalised.merge(
                 conv_factors.rename(columns=lambda s: "reference_" + s),
                 on=["reference_variable", "reference_unit"],
                 how="left",
             )
+        else:
+            normalised = normalised.assign(reference_conv_factor=1.0)
+
+        # Assign updated values.
+        normalised = (
+            normalised
             .assign(
-                factor=lambda df: df["conv_factor"]
-                / (df["reference_value"] * df["reference_conv_factor"]).where(
-                    df["reference_variable"].notnull(), other=1.0
+                factor=lambda df: (
+                    df["conv_factor"]
+                    / (df["reference_value"] * df["reference_conv_factor"])
+                    .where(
+                        df["reference_variable"].notnull(),
+                        other=1.0,
+                    )
                 ),
                 value=lambda df: df["value"] * df["factor"],
                 uncertainty=lambda df: df["uncertainty"] * df["factor"],
@@ -418,9 +444,10 @@ class TEDF:
         reference_activity: Optional[str] = None,
         reference_capacity: Optional[str] = None,
         drop_singular_fields: bool = True,
-        extrapolate_period: bool = True,
-        with_parent: bool = False,
+        period_mode: str | PeriodMode = PeriodMode.INTER_AND_EXTRAPOLATION,
         expand_not_specified: bool | list[str] = True,
+        with_parent: bool = False,
+        append_references: bool = False,
         **field_vals_select,
     ) -> pd.DataFrame:
         """
@@ -436,14 +463,21 @@ class TEDF:
             Reference capacity.
         drop_singular_fields: bool, optional
             If True, drop custom fields with only one value
+        interpolate_period: bool, optional
+            If True, determine values by interpolation between known points,
+            if no value for a requested period is given. Default is True.
         extrapolate_period: bool, optional
-            If True, extrapolate values by extrapolation, if no value for this period is given
+            If True, determine values by extrapolation outside of range of
+            known data, if no value for a requested period is given. Default
+            is False.
+        expand_not_specified: bool | list[str], optional
+            Whether to expand fields with value `N/S` (not specified) to all
+            allowed values. If `True` is passed, then allow `N/S` is expanded
+            for all fields. If a list of strings is passed, then only the
+            contained fields are expanded. If False is passed, then no field
+            is expanded. Default is True.
         with_parent: bool, optional
             Whether to prepend the parent variable. Default is False.
-        expand_not_specified: bool | list[str], optional
-            Whether to expand fields with value `N/S` (not specified) to all allowed values. If `True` is passed, then
-            allow `N/S` is expanded for all fields. If a list of strings is passed, then only the contained fields are
-            expanded. If False is passed, then no field is expanded. Default is True.
         **field_vals_select
             IDs of values to select
 
@@ -457,30 +491,20 @@ class TEDF:
             reference_activity=reference_activity,
             reference_capacity=reference_capacity,
             drop_singular_fields=drop_singular_fields,
-            extrapolate_period=extrapolate_period,
+            period_mode=period_mode,
             expand_not_specified=expand_not_specified,
             **field_vals_select,
         )
 
-        # Insert reference variable, unit, and reference unit.
-        selected["reference_variable"] = selected["variable"].map(ref_vars)
-        selected["unit"] = selected["variable"].map(units)
-        selected["reference_unit"] = selected["reference_variable"].map(units)
-
-        # Prepend parent variable.
-        if with_parent:
-            if self._parent_variable is None:
-                raise Exception(
-                    "Can only prepend parent variable if not None."
-                )
-            selected["variable"] = selected["variable"].str.cat(
-                [self._parent_variable], sep="|"
-            )
-
-        # Order columns.
-        selected = selected[[col for col in self._columns if col in selected]]
-
-        return selected
+        # Finalise dataframe and return.
+        return self._finalise(
+            df=selected,
+            append_references=append_references,
+            group_cols=[c for c in self._fields if c in selected],
+            ref_vars=ref_vars,
+            units=units,
+            with_parent=with_parent,
+        )
 
     def _select(
         self,
@@ -488,7 +512,7 @@ class TEDF:
         reference_activity: str | None,
         reference_capacity: str | None,
         drop_singular_fields: bool,
-        extrapolate_period: bool,
+        period_mode: str | PeriodMode,
         expand_not_specified: bool | list[str],
         **field_vals_select,
     ) -> tuple[pd.DataFrame, dict[str, str], dict[str, str]]:
@@ -506,19 +530,15 @@ class TEDF:
         for field_id in field_vals_select:
             if not any(field_id == col_id for col_id in self._fields):
                 raise Exception(
-                    f"Field '{field_id}' does not exist and cannot be used for selection."
+                    f"Field '{field_id}' does not exist and cannot be used for "
+                    f"selection."
                 )
 
         # Order fields for selection: period must be selected last due to the interpolation.
-        fields_select_order = (
-            list(field_vals_select)
-            + [
-                col
-                for col in self._fields
-                if col not in field_vals_select and col != "period"
-            ]
-            + (["period"] if "period" in self._fields else [])
-        )
+        fields_select_order = list(set(field_vals_select) | set(self._fields))
+        if "period" in fields_select_order:
+            fields_select_order.remove("period")
+            fields_select_order.append("period")
 
         # Expand non-specified values in fields if requested.
         if expand_not_specified is True:
@@ -534,14 +554,18 @@ class TEDF:
         for field_id in expand_not_specified:
             selected[field_id].replace("N/S", "*")
 
+        # Convert str to PeriodMode if needed.
+        if isinstance(period_mode, str):
+            period_mode = PeriodMode.from_str(period_mode)
+
         # Select and expand fields.
         for field_id in fields_select_order:
             selected = self._fields[field_id].select_and_expand(
                 df=selected,
                 col_id=field_id,
                 field_vals=field_vals_select.get(field_id, None),
-                extrapolate_period=extrapolate_period,
                 expand_not_specified=expand_not_specified,
+                period_mode=period_mode,
             )
 
         # Check for duplicates.
@@ -594,6 +618,8 @@ class TEDF:
             capacities=capacities,
             reference_activity=reference_activity,
             reference_capacity=reference_capacity,
+            database_id=self._database_id,
+            mappings=self._mappings,
         )
 
         # Drop rows with failed mappings.
@@ -632,11 +658,13 @@ class TEDF:
         reference_activity: Optional[str] = None,
         reference_capacity: Optional[str] = None,
         drop_singular_fields: bool = True,
-        extrapolate_period: bool = True,
+        period_mode: PeriodMode | str = PeriodMode.INTER_AND_EXTRAPOLATION,
         agg: Optional[str | list[str] | tuple[str]] = None,
         masks: Optional[list[Mask]] = None,
         masks_database: bool = True,
         expand_not_specified: bool | list[str] = True,
+        with_parent: bool = False,
+        append_references: bool = False,
         **field_vals_select,
     ) -> pd.DataFrame:
         """
@@ -657,9 +685,11 @@ class TEDF:
             If True, extrapolate values by extrapolation, if no value
             for this period is given
         expand_not_specified: bool | list[str], optional
-            Whether to expand fields with value `N/S` (not specified) to all allowed values. If `True` is passed, then
-            allow `N/S` is expanded for all fields. If a list of strings is passed, then only the contained fields are
-            expanded. If False is passed, then no field is expanded. Default is True.
+            Whether to expand fields with value `N/S` (not specified) to all
+            allowed values. If `True` is passed, then allow `N/S` is expanded
+            for all fields. If a list of strings is passed, then only the
+            contained fields are expanded. If False is passed, then no field
+            is expanded. Default is True.
         agg : Optional[str | list[str] | tuple[str]]
             Specifies which fields to aggregate over.
         masks : Optional[list[Mask]]
@@ -692,7 +722,7 @@ class TEDF:
             units=units,
             reference_activity=reference_activity,
             reference_capacity=reference_capacity,
-            extrapolate_period=extrapolate_period,
+            period_mode=period_mode,
             drop_singular_fields=drop_singular_fields,
             expand_not_specified=expand_not_specified,
             **field_vals_select,
@@ -776,56 +806,99 @@ class TEDF:
 
                 # Add to return list.
                 ret.append(out)
+
+        # If nothing is found, return empty dataframe.
         if not ret:
+            add_cols = (
+                []
+                if append_references
+                else ["reference_variable", "reference_unit"]
+            )
             return pd.DataFrame(
-                columns=group_cols + ["variable", "value", "unit"]
+                columns=group_cols + ["variable", "value", "unit"] + add_cols
             )
         aggregated = pd.concat(ret).reset_index()
 
-        # Append reference variables.
-        var_ref_unique = {
-            ref_vars[var]
-            for var in aggregated["variable"].unique()
-            if not pd.isnull(ref_vars[var])
-        }
-        agg_append = []
-        for ref_var in var_ref_unique:
-            agg_append.append(
-                pd.DataFrame(
-                    {
-                        "variable": [ref_var],
-                        "value": [1.0],
-                    }
-                    | {
-                        col_id: ["*"]
-                        for col_id, field in self._fields.items()
-                        if col_id in aggregated
-                    }
-                )
-            )
-        if agg_append:
-            agg_append = pd.concat(agg_append).reset_index(drop=True)
-            for col_id, field in self._fields.items():
-                if col_id not in aggregated:
-                    continue
-                agg_append = field.select_and_expand(
-                    agg_append,
-                    col_id,
-                    aggregated[col_id].unique().tolist(),
-                )
-            aggregated = (
-                pd.concat([aggregated, agg_append], ignore_index=True)
-                .sort_values(by=group_cols + ["variable"])
-                .reset_index(drop=True)
-            )
+        # Finalise dataframe and return.
+        return self._finalise(
+            df=aggregated,
+            append_references=append_references,
+            group_cols=group_cols,
+            ref_vars=ref_vars,
+            units=units,
+            with_parent=with_parent,
+        )
 
-        # Insert unit.
-        aggregated["unit"] = aggregated["variable"].map(units)
+    def _finalise(
+        self,
+        df: pd.DataFrame,
+        append_references: bool,
+        group_cols: list[str],
+        ref_vars: dict[str, str],
+        units: dict[str, str],
+        with_parent: bool,
+    ) -> pd.DataFrame:
+        # Append reference variables.
+        if any(isinstance(v, str) and v for v in ref_vars.values()):
+            if append_references:
+                var_ref_unique = {
+                    ref_vars[var]
+                    for var in df["variable"].unique()
+                    if not pd.isnull(ref_vars[var])
+                }
+                to_append = []
+                for ref_var in var_ref_unique:
+                    to_append.append(
+                        pd.DataFrame(
+                            {
+                                "variable": [ref_var],
+                                "value": [1.0],
+                            }
+                            | {
+                                col_id: ["*"]
+                                for col_id, field in self._fields.items()
+                                if col_id in df
+                            }
+                        )
+                    )
+
+                if to_append:
+                    to_append = pd.concat(to_append, ignore_index=True)
+                    for col_id, field in self._fields.items():
+                        if col_id not in df.columns:
+                            continue
+                        to_append = field.select_and_expand(
+                            to_append,
+                            col_id,
+                            df[col_id].unique().tolist(),
+                        )
+                    df = (
+                        pd.concat([df, to_append], ignore_index=True)
+                        .sort_values(by=group_cols + ["variable"])
+                        .reset_index(drop=True)
+                    )
+            else:
+                df["reference_variable"] = (
+                    df["variable"].map(ref_vars)
+                )
+                df["reference_unit"] = (
+                    df["reference_variable"].map(units)
+                )
+
+        # Insert unit(s).
+        df["unit"] = df["variable"].map(units)
+
+        # Prepend parent variable.
+        if with_parent:
+            if self._parent_variable is None:
+                raise Exception(
+                    "Can only prepend parent variable if not None."
+                )
+            df["variable"] = self._parent_variable + "|" + df["variable"]
 
         # Order columns.
-        aggregated = aggregated[
-            [col for col in self._columns if col in aggregated]
+        df = df[
+            [col for col in self._columns if col in df]
         ]
 
-        # Return.
-        return aggregated
+        return df

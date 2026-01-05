@@ -5,14 +5,14 @@ hide:
 
 This page contains bibliographic information for the sources referenced in the `source` column of the techno-economic data files.
 
-```python exec="true" session="index" showcode="false"
+```python exec="true" showcode="false"
 import pandas as pd
-from posted import load_sources, format_sources
-
+from posted.sources import load_sources, format_sources
 
 sources = load_sources("public")
 sources_formatted = format_sources(sources, form='html')
 df_table = pd.DataFrame.from_dict(sources_formatted, orient="index").reset_index()
+
 
 def combine_urls(row: pd.Series) -> str:
     ret = []
@@ -23,6 +23,7 @@ def combine_urls(row: pd.Series) -> str:
     if row["pdf"]:
         ret.append(f"[ :fontawesome-solid-file-pdf: PDF ]({row['pdf']}){{ .sm-button }} ")
     return " ".join(ret)
+
 
 col1 = (
     df_table["index"]

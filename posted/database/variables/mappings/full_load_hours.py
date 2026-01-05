@@ -1,27 +1,23 @@
 import pandas as pd
 
-from units import Q
+from cet_units import Q
 
-from ....map_variables import AbstractVariableMapper
+from posted.noslag.mapping import AbstractVariableMapper
 
 
 class FullLoadHoursMapper(AbstractVariableMapper):
-    _conv_factor: float
+    def _condition(self) -> pd.Series:
+        return self._df["variable"] == "FLH"
 
     def _prepare_units(self) -> None:
-        if "FLH" not in self._units:
-            return
         if "OCF" not in self._units:
             self._units["OCF"] = "dimensionless"
-        self._conv_factor = (
+        self._conv_factor: float = (
             (Q(self._units["FLH"]) / Q("year")).to(self._units["OCF"]).m
         )
 
-    def _condition(self, selected: pd.DataFrame) -> pd.Series:
-        return selected["variable"] == "FLH"
+    def _map(self, df: pd.DataFrame, cond: pd.Series) -> pd.DataFrame:
+        df.loc[cond, "variable"] = "OCF"
+        df.loc[cond, "value"] *= self._conv_factor
 
-    def _map(self, group: pd.DataFrame, cond: pd.Series) -> pd.DataFrame:
-        group.loc[cond, "variable"] = "OCF"
-        group.loc[cond, "value"] *= self._conv_factor
-
-        return group
+        return df

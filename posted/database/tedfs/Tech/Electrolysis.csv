@@ -1,96 +1,99 @@
-subtech,size,variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-AEL,100 MW,CAPEX,Input Capacity|Electricity,2020,400,0,EUR_2020,1,kW,,Vartiainen-2022,"Page 4, Figure 4"
-AEL,100 MW,CAPEX,Input Capacity|Electricity,2030,240,50,EUR_2020,1,kW,,Vartiainen-2022,"Page 4, Figure 4"
-AEL,100 MW,CAPEX,Input Capacity|Electricity,2040,140,75,EUR_2020,1,kW,,Vartiainen-2022,"Page 4, Figure 4"
-AEL,100 MW,CAPEX,Input Capacity|Electricity,2050,80,75,EUR_2020,1,kW,,Vartiainen-2022,"Page 4, Figure 4"
-AEL,100 MW,CAPEX,Input Capacity|Electricity,2020,663,,EUR_2020,1,kW,,Holst-2021,Appendix A
-AEL,100 MW,CAPEX,Input Capacity|Electricity,2030,444,,EUR_2020,1,kW,,Holst-2021,Appendix A
-PEM,100 MW,CAPEX,Input Capacity|Electricity,2020,718,,EUR_2020,1,kW,,Holst-2021,Appendix A
-PEM,100 MW,CAPEX,Input Capacity|Electricity,2030,502,,EUR_2020,1,kW,,Holst-2021,Appendix A
-AEL,5 MW,CAPEX,Input Capacity|Electricity,2020,949,,EUR_2020,1,kW,,Holst-2021,Appendix A
-AEL,5 MW,CAPEX,Input Capacity|Electricity,2030,726,,EUR_2020,1,kW,,Holst-2021,Appendix A
-PEM,5 MW,CAPEX,Input Capacity|Electricity,2020,978,,EUR_2020,1,kW,,Holst-2021,Appendix A
-PEM,5 MW,CAPEX,Input Capacity|Electricity,2030,718,,EUR_2020,1,kW,,Holst-2021,Appendix A
-AEL,*,CAPEX,Input Capacity|Electricity,2030,536,152,USD_2021,1,kW,,IRENA-2022,Page 23
-AEL,*,CAPEX,Input Capacity|Electricity,2050,230,96,USD_2021,1,kW,,IRENA-2022,Page 23
-AEL,130000 Nm³/h,CAPEX,Input Capacity|Electricity,2020,1150,350,EUR_2019,1,kW,,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-PEM,130000 Nm³/h,CAPEX,Input Capacity|Electricity,2020,1750,350,EUR_2019,1,kW,,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-SOEC,130000 Nm³/h,CAPEX,Input Capacity|Electricity,2020,2000,,EUR_2019,1,kW,Provided as a lower threshold,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-AEL,130000 Nm³/h,CAPEX,Input Capacity|Electricity,2030,450,,EUR_2019,1,kW,,Tenhumberg-2020,"Supplement, Table S2, Page 3"
-PEM,130000 Nm³/h,CAPEX,Input Capacity|Electricity,2030,810,,EUR_2019,1,kW,,Tenhumberg-2020,"Supplement, Table S2, Page 3"
-SOEC,130000 Nm³/h,CAPEX,Input Capacity|Electricity,2030,800,,EUR_2019,1,kW,,Tenhumberg-2020,"Supplement, Table S2, Page 3"
-AEL,1 MW,CAPEX,Output Capacity|Hydrogen,2020,1566,918,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24"
-AEL,1 MW,CAPEX,Output Capacity|Hydrogen,2030,1164,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24"
-AEL,1 MW,CAPEX,Output Capacity|Hydrogen,2040,874,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24"
-AEL,1 MW,CAPEX,Output Capacity|Hydrogen,2050,648,438,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24"
-AEL,100 MW,CAPEX,Output Capacity|Hydrogen,2020,1358,374,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 24"
-AEL,100 MW,CAPEX,Output Capacity|Hydrogen,2030,919,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 24"
-AEL,100 MW,CAPEX,Output Capacity|Hydrogen,2040,583,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 24"
-AEL,100 MW,CAPEX,Output Capacity|Hydrogen,2050,463,201,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 24"
-PEM,1 MW,CAPEX,Output Capacity|Hydrogen,2020,2215,497,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 24"
-PEM,1 MW,CAPEX,Output Capacity|Hydrogen,2030,1378,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 24"
-PEM,1 MW,CAPEX,Output Capacity|Hydrogen,2040,919,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 24"
-PEM,1 MW,CAPEX,Output Capacity|Hydrogen,2050,788,190,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 24"
-PEM,100 MW,CAPEX,Output Capacity|Hydrogen,2020,2215,497,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 PEMEC 100MW, Row 24"
-PEM,100 MW,CAPEX,Output Capacity|Hydrogen,2030,1378,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 PEMEC 100MW, Row 24"
-PEM,100 MW,CAPEX,Output Capacity|Hydrogen,2040,919,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 PEMEC 100MW, Row 24"
-PEM,100 MW,CAPEX,Output Capacity|Hydrogen,2050,788,190,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 PEMEC 100MW, Row 24"
-SOEC,1 MW,CAPEX,Output Capacity|Hydrogen,2020,8047,2163,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 23"
-SOEC,1 MW,CAPEX,Output Capacity|Hydrogen,2030,3279,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 23"
-SOEC,1 MW,CAPEX,Output Capacity|Hydrogen,2040,2273,,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 23"
-SOEC,1 MW,CAPEX,Output Capacity|Hydrogen,2050,1303,368,EUR_2020,1,kg_H2/day,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 23"
-AEL,100 MW,OPEX Fixed,Input Capacity|Electricity,2020,6,,EUR_2020/year,1,kW,1.5% of CAPEX; reported in units of electric capacity,Vartiainen-2022,Page 4
-AEL,100 MW,OPEX Fixed,Input Capacity|Electricity,2030,2.1,,EUR_2020/year,1,kW,10% LR decrease,Vartiainen-2022,Page 4
-AEL,100 MW,OPEX Fixed,Input Capacity|Electricity,2040,0.73,,EUR_2020/year,1,kW,10% LR decrease,Vartiainen-2022,Page 4
-AEL,100 MW,OPEX Fixed,Input Capacity|Electricity,2050,0.25,,EUR_2020/year,1,kW,10% LR decrease,Vartiainen-2022,Page 4
-AEL,*,OPEX Fixed,Input Capacity|Electricity,2020,20,5,EUR_2020/year,1,kW,electrolyser annual maintenance costs,Holst-2021,"Section 3.4, Page 57"
-PEM,*,OPEX Fixed,Input Capacity|Electricity,2020,15,5,EUR_2020/year,1,kW,electrolyser annual maintenance costs,Holst-2021,"Section 3.4, Page 57"
-AEL,*,OPEX Fixed,Input Capacity|Electricity,2020,17,3.5,EUR_2020/year,1,kW,,Yates-2020,"Table 3, Page 10"
-AEL,1 MW,OPEX Fixed Relative,,*,5,,percent,,,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 27"
-AEL,100 MW,OPEX Fixed Relative,,*,2,,percent,,,,DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 27"
-PEM,1 MW,OPEX Fixed Relative,,*,7,,percent,,,,DEA-TDRF-2023,"Sheet 86 PEM 1MW, Row 27"
-PEM,100 MW,OPEX Fixed Relative,,*,4,,percent,,,,DEA-TDRF-2023,"Sheet 86 PEM 100MW, Row 27"
-SOEC,1 MW,OPEX Fixed Relative,,*,12,,percent,,,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 26"
-AEL,100 MW,Output|Hydrogen,Input|Electricity,2020,67,,pct kWh_H2_LHV,100,pct kWh,1.5% of CAPEX; reported in units of electric capacity; 67% assumes the LHV,Vartiainen-2022,Page 4
-AEL,100 MW,Output|Hydrogen,Input|Electricity,2030,70,,pct kWh_H2_LHV,100,pct kWh,10% LR decrease,Vartiainen-2022,Page 4
-AEL,100 MW,Output|Hydrogen,Input|Electricity,2040,73,,pct kWh_H2_LHV,100,pct kWh,10% LR decrease,Vartiainen-2022,Page 4
-AEL,100 MW,Output|Hydrogen,Input|Electricity,2050,76,,pct kWh_H2_LHV,100,pct kWh,10% LR decrease,Vartiainen-2022,Page 4
-AEL,*,Output|Hydrogen,Input|Electricity,2020,20,1,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 17"
-AEL,*,Output|Hydrogen,Input|Electricity,2030,20.4,,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 17"
-AEL,*,Output|Hydrogen,Input|Electricity,2040,21.5,,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 17"
-AEL,*,Output|Hydrogen,Input|Electricity,2050,22.5,1.5,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 17"
-PEM,*,Output|Hydrogen,Input|Electricity,2020,17.4,0.7,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 17"
-PEM,*,Output|Hydrogen,Input|Electricity,2030,19.7,,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 17"
-PEM,*,Output|Hydrogen,Input|Electricity,2040,20.4,,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 17"
-PEM,*,Output|Hydrogen,Input|Electricity,2050,21.2,0.4,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 17"
-SOEC,*,Output|Hydrogen,Input|Electricity,2020,23.3,1,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16"
-SOEC,*,Output|Hydrogen,Input|Electricity,2030,24.2,,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16"
-SOEC,*,Output|Hydrogen,Input|Electricity,2040,24.6,,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16"
-SOEC,*,Output|Hydrogen,Input|Electricity,2050,25.1,0.5,kg_H2,1,MWh,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16"
-SOEC,*,Input|Heat,Input|Electricity,2020,20.5,2,pct MWh,79.5,pct MWh,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Rows 9 and 10"
-SOEC,*,Input|Heat,Input|Electricity,2030,19.5,,pct MWh,80.5,pct MWh,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Rows 9 and 10"
-SOEC,*,Input|Heat,Input|Electricity,2040,18.6,,pct MWh,81.4,pct MWh,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Rows 9 and 10"
-SOEC,*,Input|Heat,Input|Electricity,2050,18.6,1,pct MWh,81.4,pct MWh,,DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Rows 9 and 10"
-AEL,*,Input|Electricity,Output|Hydrogen,2020,48.3,,kWh,1,kg_H2,,Holst-2021,"Table 3-2, Page 42"
-AEL,*,Input|Electricity,Output|Hydrogen,2030,45.6,,kWh,1,kg_H2,,Holst-2021,"Table 3-2, Page 42"
-PEM,*,Input|Electricity,Output|Hydrogen,2020,51,,kWh,1,kg_H2,,Holst-2021,"Table 3-7, Page 50"
-PEM,*,Input|Electricity,Output|Hydrogen,2030,45.7,,kWh,1,kg_H2,,Holst-2021,"Table 3-7, Page 50"
-AEL,*,Input|Electricity,Output|Hydrogen,2030,50.35,1.85,kWh,1,kg_H2,,IRENA-2022,"Footnote 12, Page 21"
-AEL,*,Input|Electricity,Output|Hydrogen,2050,46.5,1.5,kWh,1,kg_H2,,IRENA-2022,"Footnote 12, Page 21"
-PEM,*,Input|Electricity,Output|Hydrogen,2021,54.2,,kWh,1,kg_H2,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani-2021,"Table 2, Page 3"
-AEL,130000 Nm³/h,Input|Electricity,Output|Hydrogen,2020,5.45,0.45,kWh,1,cubic_meter_H2_norm,Total system demand,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-PEM,130000 Nm³/h,Input|Electricity,Output|Hydrogen,2020,5.75,0.75,kWh,1,cubic_meter_H2_norm,Total system demand,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-SOEC,130000 Nm³/h,Input|Electricity,Output|Hydrogen,2020,3.8,0.1,kWh,1,cubic_meter_H2_norm,Total system demand,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-SOEC,130000 Nm³/h,Input|Heat,Output|Hydrogen,2020,0.7,,kWh,1,cubic_meter_H2_norm,Total system demand,Tenhumberg-2020,"Table 3, Page 1590 (5/10)"
-AEL,130000 Nm³/h,Input|Electricity,Output|Hydrogen,2030,4.42,,kWh,1,cubic_meter_H2_norm,Total system demand,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-PEM,130000 Nm³/h,Input|Electricity,Output|Hydrogen,2030,4.81,,kWh,1,cubic_meter_H2_norm,Total system demand,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-SOEC,130000 Nm³/h,Input|Electricity,Output|Hydrogen,2030,3.55,,kWh,1,cubic_meter_H2_norm,Total system demand,Tenhumberg-2020,"Table 2, Page 1588 (3/10)"
-SOEC,130000 Nm³/h,Input|Heat,Output|Hydrogen,2030,0.7,,kWh,1,cubic_meter_H2_norm,Total system demand,Tenhumberg-2020,"Table 3, Page 1590 (5/10)"
-AEL,*,Input|Electricity,Output|Hydrogen,2020,54,4,kWh,1,kg_H2,,Yates-2020,"Table 3, Page 10"
-PEM,*,Input|Water,Output|Hydrogen,2020,10,,kg_H2O,1,kg_H2,"Based on life cycle inventory, from Ecoinvent v3.4",Al-Qahtani-2021,"Table 2, Page 3"
-*,*,Input|Water,Output|Hydrogen,2021,9,,kg_H2O,1,kg_H2,,IEA-GHR-2021,
-AEL,*,Input|Water,Output|Hydrogen,2020,10,1,liter_H2O_norm,1,kg_H2,,Yates-2020,"Table 3, Page 10"
-*,1 MW,Total Input Capacity|Electricity,,*,1,,MW,,,,*,
-*,5 MW,Total Input Capacity|Electricity,,*,5,,MW,,,,*,
-*,100 MW,Total Input Capacity|Electricity,,*,100,,MW,,,,*,
-*,130000 Nm³/h,Total Output Capacity|Hydrogen,,*,130000,,cubic_meter_H2_norm/h,,,,*,
+source,source_detail,subtech,size,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24",AEL,1 MW,2020,CAPEX,Output Capacity|Hydrogen,1566,918,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24",AEL,1 MW,2030,CAPEX,Output Capacity|Hydrogen,1164,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24",AEL,1 MW,2040,CAPEX,Output Capacity|Hydrogen,874,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24",AEL,1 MW,2050,CAPEX,Output Capacity|Hydrogen,648,438,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 24",AEL,100 MW,2020,CAPEX,Output Capacity|Hydrogen,1358,374,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 24",AEL,100 MW,2030,CAPEX,Output Capacity|Hydrogen,919,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 24",AEL,100 MW,2040,CAPEX,Output Capacity|Hydrogen,583,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 24",AEL,100 MW,2050,CAPEX,Output Capacity|Hydrogen,463,201,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 24",PEM,1 MW,2020,CAPEX,Output Capacity|Hydrogen,2215,497,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 24",PEM,1 MW,2030,CAPEX,Output Capacity|Hydrogen,1378,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 24",PEM,1 MW,2040,CAPEX,Output Capacity|Hydrogen,919,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 24",PEM,1 MW,2050,CAPEX,Output Capacity|Hydrogen,788,190,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 PEMEC 100MW, Row 24",PEM,100 MW,2020,CAPEX,Output Capacity|Hydrogen,2215,497,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 PEMEC 100MW, Row 24",PEM,100 MW,2030,CAPEX,Output Capacity|Hydrogen,1378,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 PEMEC 100MW, Row 24",PEM,100 MW,2040,CAPEX,Output Capacity|Hydrogen,919,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 PEMEC 100MW, Row 24",PEM,100 MW,2050,CAPEX,Output Capacity|Hydrogen,788,190,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 23",SOEC,1 MW,2020,CAPEX,Output Capacity|Hydrogen,8047,2163,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 23",SOEC,1 MW,2030,CAPEX,Output Capacity|Hydrogen,3279,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 23",SOEC,1 MW,2040,CAPEX,Output Capacity|Hydrogen,2273,,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 23",SOEC,1 MW,2050,CAPEX,Output Capacity|Hydrogen,1303,368,EUR_2020,1,kg_H2/day,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Rows 9 and 10",SOEC,1 MW,2020,Input|Heat,Input|Electricity,20.5,2,percent MWh,79.5,percent MWh,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Rows 9 and 10",SOEC,1 MW,2030,Input|Heat,Input|Electricity,19.5,,percent MWh,80.5,percent MWh,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Rows 9 and 10",SOEC,1 MW,2040,Input|Heat,Input|Electricity,18.6,,percent MWh,81.4,percent MWh,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Rows 9 and 10",SOEC,1 MW,2050,Input|Heat,Input|Electricity,18.6,1,percent MWh,81.4,percent MWh,
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 27",AEL,1 MW,*,OPEX Fixed Relative,,5,,percent,,,
+DEA-TDRF-2023,"Sheet 86 AEC 100MW, Row 27",AEL,100 MW,*,OPEX Fixed Relative,,2,,percent,,,
+DEA-TDRF-2023,"Sheet 86 PEM 1MW, Row 27",PEM,1 MW,*,OPEX Fixed Relative,,7,,percent,,,
+DEA-TDRF-2023,"Sheet 86 PEM 100MW, Row 27",PEM,100 MW,*,OPEX Fixed Relative,,4,,percent,,,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 26",SOEC,1 MW,*,OPEX Fixed Relative,,12,,percent,,,
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 17",AEL,"1 MW, 100 MW",2020,Output|Hydrogen,Input|Electricity,20,1,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 17",AEL,"1 MW, 100 MW",2030,Output|Hydrogen,Input|Electricity,20.4,,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 17",AEL,"1 MW, 100 MW",2040,Output|Hydrogen,Input|Electricity,21.5,,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 17",AEL,"1 MW, 100 MW",2050,Output|Hydrogen,Input|Electricity,22.5,1.5,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 17",PEM,"1 MW, 100 MW",2020,Output|Hydrogen,Input|Electricity,17.4,0.7,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 17",PEM,"1 MW, 100 MW",2030,Output|Hydrogen,Input|Electricity,19.7,,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 17",PEM,"1 MW, 100 MW",2040,Output|Hydrogen,Input|Electricity,20.4,,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 PEMEC 1MW, Row 17",PEM,"1 MW, 100 MW",2050,Output|Hydrogen,Input|Electricity,21.2,0.4,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16",SOEC,1 MW,2020,Output|Hydrogen,Input|Electricity,23.3,1,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16",SOEC,1 MW,2030,Output|Hydrogen,Input|Electricity,24.2,,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16",SOEC,1 MW,2040,Output|Hydrogen,Input|Electricity,24.6,,kg_H2,1,MWh,
+DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16",SOEC,1 MW,2050,Output|Hydrogen,Input|Electricity,25.1,0.5,kg_H2,1,MWh,
+DEA-TDRF-2023,,"AEL, PEM",1 MW,*,Total Input Capacity|Electricity,,1,,MW,,,
+DEA-TDRF-2023,,SOEC,1 MW,*,Total Input Capacity|Electricity,,1,,MW,,,
+DEA-TDRF-2023,,"AEL, PEM",5 MW,*,Total Input Capacity|Electricity,,5,,MW,,,
+Holst-2021,"Appendix A, Page 79",AEL,100 MW,2020,CAPEX,Input Capacity|Electricity,663,,EUR_2020,1,kW,
+Holst-2021,"Appendix A, Page 79",AEL,100 MW,2030,CAPEX,Input Capacity|Electricity,444,,EUR_2020,1,kW,
+Holst-2021,"Appendix A, Page 79",AEL,5 MW,2020,CAPEX,Input Capacity|Electricity,949,,EUR_2020,1,kW,
+Holst-2021,"Appendix A, Page 79",AEL,5 MW,2030,CAPEX,Input Capacity|Electricity,726,,EUR_2020,1,kW,
+Holst-2021,"Appendix A, Page 79",PEM,100 MW,2020,CAPEX,Input Capacity|Electricity,718,,EUR_2020,1,kW,
+Holst-2021,"Appendix A, Page 79",PEM,100 MW,2030,CAPEX,Input Capacity|Electricity,502,,EUR_2020,1,kW,
+Holst-2021,"Appendix A, Page 79",PEM,5 MW,2020,CAPEX,Input Capacity|Electricity,978,,EUR_2020,1,kW,
+Holst-2021,"Appendix A, Page 79",PEM,5 MW,2030,CAPEX,Input Capacity|Electricity,729,,EUR_2020,1,kW,
+Holst-2021,"Section 3.4, Page 57",AEL,"100 MW, 5 MW",2020,OPEX Fixed,Input Capacity|Electricity,20,5,EUR_2020/year,1,kW,Electrolyser annual maintenance costs.
+Holst-2021,"Section 3.4, Page 57",PEM,"100 MW, 5 MW",2020,OPEX Fixed,Input Capacity|Electricity,15,5,EUR_2020/year,1,kW,Electrolyser annual maintenance costs.
+Holst-2021,"Table 3-5, Page 47",AEL,5 MW,2020,Input|Electricity,Output|Hydrogen,52.8,,kWh,1,kg_H2,At system level (not stack level).
+Holst-2021,"Table 3-5, Page 47",AEL,5 MW,2030,Input|Electricity,Output|Hydrogen,48.9,,kWh,1,kg_H2,At system level (not stack level).
+Holst-2021,"Table 3-5, Page 47",AEL,100 MW,2020,Input|Electricity,Output|Hydrogen,53.4,,kWh,1,kg_H2,At system level (not stack level).
+Holst-2021,"Table 3-5, Page 47",AEL,100 MW,2030,Input|Electricity,Output|Hydrogen,49.4,,kWh,1,kg_H2,At system level (not stack level).
+Holst-2021,"Table 3-10, Page 55",PEM,5 MW,2020,Input|Electricity,Output|Hydrogen,54.5,,kWh,1,kg_H2,At system level (not stack level).
+Holst-2021,"Table 3-10, Page 55",PEM,5 MW,2030,Input|Electricity,Output|Hydrogen,47.6,,kWh,1,kg_H2,At system level (not stack level).
+Holst-2021,"Table 3-10, Page 55",PEM,100 MW,2020,Input|Electricity,Output|Hydrogen,55.1,,kWh,1,kg_H2,At system level (not stack level).
+Holst-2021,"Table 3-10, Page 55",PEM,100 MW,2030,Input|Electricity,Output|Hydrogen,48.1,,kWh,1,kg_H2,At system level (not stack level).
+Holst-2021,"Table 3-5, Page 47",AEL,5 MW,2020,Input Capacity|Water,Input Capacity|Electricity,958,,kg_H2O/h,5.5,MW,At system level (not stack level).
+Holst-2021,"Table 3-5, Page 47",AEL,5 MW,2030,Input Capacity|Water,Input Capacity|Electricity,1032,,kg_H2O/h,5.5,MW,At system level (not stack level).
+Holst-2021,"Table 3-5, Page 47",AEL,100 MW,2020,Input Capacity|Water,Input Capacity|Electricity,19152,,kg_H2O/h,110.4,MW,At system level (not stack level).
+Holst-2021,"Table 3-5, Page 47",AEL,100 MW,2030,Input Capacity|Water,Input Capacity|Electricity,20638,,kg_H2O/h,110.1,MW,At system level (not stack level).
+Holst-2021,"Table 3-10, Page 55",PEM,5 MW,2020,Input Capacity|Water,Input Capacity|Electricity,896,,kg_H2O/h,5.4,MW,At system level (not stack level).
+Holst-2021,"Table 3-10, Page 55",PEM,5 MW,2030,Input Capacity|Water,Input Capacity|Electricity,1005,,kg_H2O/h,5.3,MW,At system level (not stack level).
+Holst-2021,"Table 3-10, Page 55",PEM,100 MW,2020,Input Capacity|Water,Input Capacity|Electricity,17930,,kg_H2O/h,108.5,MW,At system level (not stack level).
+Holst-2021,"Table 3-10, Page 55",PEM,100 MW,2030,Input Capacity|Water,Input Capacity|Electricity,20095,,kg_H2O/h,106.1,MW,At system level (not stack level).
+Holst-2021,"Tables 3-5 and 3-10, Pages 47 and 55","AEL, PEM",5 MW,*,Total Input Capacity|Electricity,,5,,MW,,,
+Holst-2021,"Tables 3-5 and 3-10, Pages 47 and 55","AEL, PEM",100 MW,*,Total Input Capacity|Electricity,,100,,MW,,,
+IRENA-2022,Page 23,AEL,N/S,2030,CAPEX,Input Capacity|Electricity,536,152,USD_2021,1,kW,
+IRENA-2022,Page 23,AEL,N/S,2050,CAPEX,Input Capacity|Electricity,230,96,USD_2021,1,kW,
+IRENA-2022,"Footnote 12, Page 21",AEL,N/S,2030,Input|Electricity,Output|Hydrogen,50.35,1.85,kWh,1,kg_H2,
+IRENA-2022,"Footnote 12, Page 21",AEL,N/S,2050,Input|Electricity,Output|Hydrogen,46.5,1.5,kWh,1,kg_H2,
+Tenhumberg-2020,"Table 2, Page 1588 (3/10)",AEL,N/S,2020,CAPEX,Input Capacity|Electricity,1150,350,EUR_2019,1,kW,Reported as range with 800 as lower and 1500 as upper threshold.
+Tenhumberg-2020,"Supplement, Table S2, Page 3",AEL,N/S,2030,CAPEX,Input Capacity|Electricity,450,,EUR_2019,1,kW,
+Tenhumberg-2020,"Table 2, Page 1588 (3/10)",PEM,N/S,2020,CAPEX,Input Capacity|Electricity,1750,350,EUR_2019,1,kW,Reported as range with 1400 as lower and 2100 as upper threshold.
+Tenhumberg-2020,"Supplement, Table S2, Page 3",PEM,N/S,2030,CAPEX,Input Capacity|Electricity,810,,EUR_2019,1,kW,
+Tenhumberg-2020,"Table 2, Page 1588 (3/10)",SOEC,N/S,2020,CAPEX,Input Capacity|Electricity,2000,,EUR_2019,1,kW,Reported as range with 2000 as lower threshold.
+Tenhumberg-2020,"Supplement, Table S2, Page 3",SOEC,N/S,2030,CAPEX,Input Capacity|Electricity,800,,EUR_2019,1,kW,
+Tenhumberg-2020,"Table 2, Page 1588 (3/10)",AEL,N/S,2020,Input|Electricity,Output|Hydrogen,5.45,0.45,kWh,1,cubic_meter_H2_norm,At system level (not stack level). Reported as range with 5.0 as lower and 5.9 as upper threshold.
+Tenhumberg-2020,"Table 2, Page 1588 (3/10)",PEM,N/S,2020,Input|Electricity,Output|Hydrogen,5.75,0.75,kWh,1,cubic_meter_H2_norm,At system level (not stack level). Reported as range with 5.0 as lower and 6.5 as upper threshold.
+Tenhumberg-2020,"Table 2, Page 1588 (3/10)",SOEC,N/S,2020,Input|Electricity,Output|Hydrogen,3.8,0.1,kWh,1,cubic_meter_H2_norm,At system level (not stack level). Reported as range with 3.7 as lower and 3.9 as upper threshold.
+Tenhumberg-2020,"Table 3, Page 1590 (5/10)",SOEC,N/S,2020,Input|Heat,Output|Hydrogen,0.7,,kWh,1,cubic_meter_H2_norm,Assuming SOEC types II and III. At system level (not stack level).
+Vartiainen-2022,"Page 4, Figure 4",AEL,100 MW,2020,CAPEX,Input Capacity|Electricity,400,0,EUR_2020,1,kW,
+Vartiainen-2022,"Page 4, Figure 4",AEL,100 MW,2030,CAPEX,Input Capacity|Electricity,240,50,EUR_2020,1,kW,
+Vartiainen-2022,"Page 4, Figure 4",AEL,100 MW,2040,CAPEX,Input Capacity|Electricity,140,75,EUR_2020,1,kW,
+Vartiainen-2022,"Page 4, Figure 4",AEL,100 MW,2050,CAPEX,Input Capacity|Electricity,80,75,EUR_2020,1,kW,
+Vartiainen-2022,Page 4,AEL,100 MW,2020,OPEX Fixed,Input Capacity|Electricity,6,,EUR_2020/year,1,kW,1.5% of CAPEX; reported in units of electric capacity
+Vartiainen-2022,Page 4,AEL,100 MW,2030,OPEX Fixed,Input Capacity|Electricity,2.1,,EUR_2020/year,1,kW,10% LR decrease
+Vartiainen-2022,Page 4,AEL,100 MW,2040,OPEX Fixed,Input Capacity|Electricity,0.73,,EUR_2020/year,1,kW,10% LR decrease
+Vartiainen-2022,Page 4,AEL,100 MW,2050,OPEX Fixed,Input Capacity|Electricity,0.25,,EUR_2020/year,1,kW,10% LR decrease
+Vartiainen-2022,Page 4,AEL,100 MW,2020,Output|Hydrogen,Input|Electricity,67,,percent kWh_H2_LHV,100,percent kWh,1.5% of CAPEX; reported in units of electric capacity; 67% assumes the LHV
+Vartiainen-2022,Page 4,AEL,100 MW,2030,Output|Hydrogen,Input|Electricity,70,,percent kWh_H2_LHV,100,percent kWh,10% LR decrease
+Vartiainen-2022,Page 4,AEL,100 MW,2040,Output|Hydrogen,Input|Electricity,73,,percent kWh_H2_LHV,100,percent kWh,10% LR decrease
+Vartiainen-2022,Page 4,AEL,100 MW,2050,Output|Hydrogen,Input|Electricity,76,,percent kWh_H2_LHV,100,percent kWh,10% LR decrease
