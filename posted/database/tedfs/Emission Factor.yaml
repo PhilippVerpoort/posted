@@ -1,0 +1,10 @@
+variables:
+    custom:
+        "?flow_type|Direct|?emission_type":
+            description: Emission Factor for the direct emissions from a flow type (e.g. natural gas, electricity, hydrogen) for a given emission type (e.g. CO2, CH4, N2O).
+            dimension: "[{emission_type_dimension}] / [{flow_type_dimension}]"
+            default_unit: "{emission_type_default_unit} / {flow_type_default_unit}"
+        "?flow_type|Supply Chain|?emission_type":
+            description: Emission Factor for the supply-chain emissions from a flow type (e.g. natural gas, electricity, hydrogen) for a given emission type (e.g. CO2, CH4, N2O).
+            dimension: "[{emission_type_dimension}] / [{flow_type_dimension}]"
+            default_unit: "{emission_type_default_unit} / {flow_type_default_unit}"

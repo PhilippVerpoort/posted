@@ -36,9 +36,10 @@ pip install .
 
 ## Credits and Thanks
 
-* This package has been developed at the [Potsdam Institute for Climate Impact Research (PIK)](https://www.pik-potsdam.de/) by P.C. Verpoort with much appreciated support by L. Heidweiler and P. Effing.
-* The data has been curated by P.C. Verpoort with many valuable contributions by other colleagues from PIK (see [`CITATION.cff`](CITATION.cff) for a full list).
+* The software creation and data curation have been primarily conducted at the [Potsdam Institute for Climate Impact Research (PIK)](https://www.pik-potsdam.de/), a German research institute conducting integrated research for global sustainability.
 * This work has been completed as part of the Ariadne project with funding from the German Federal Ministry of Research, Technology and Space (grant nos. 03SFK5A, 03SFK5A0-2).
+* The software code has been written by P.C. Verpoort, with support by L. Heidweiler and P. Effing.
+* The data has been curated primarily by P.C. Verpoort, with many valuable contributions by other colleagues from PIK (see [`CITATION.cff`](CITATION.cff) for a full list).
 
 ## How to cite
 
@@ -48,6 +49,6 @@ pip install .
 
 ## Licenses
 
-The source code located in `posted/` in this repository is licensed under an [MIT Licence](LICENSE.md).
+The software code located in `posted/` in this repository is licensed under an [MIT Licence](LICENSE.md).
 
 The data located in `posted/database/` in this repository is licensed under a [CC-BY-4.0](./posted/database/LICENSE.md).

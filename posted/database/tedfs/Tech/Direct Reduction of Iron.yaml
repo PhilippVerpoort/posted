@@ -1,0 +1,25 @@
+columns:
+    mode:
+        name: Operation Mode
+        description: Which energy carrier to operate the shaft furnace with.
+        type: case
+        coded: True
+        codes:
+            H2: Operate fully with hydrogen.
+            NG: Operate fully with natural gas.
+    component:
+        name: component
+        description: Allows to subdivide variables into further sub-components, e.g. for hydrogen demand.
+        type: component
+        coded: False
+    period: period
+variables:
+    predefined:
+        - technology
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities
+

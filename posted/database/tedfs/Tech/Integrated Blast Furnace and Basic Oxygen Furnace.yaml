@@ -1,0 +1,25 @@
+columns:
+    carbon_capture:
+        name: Carbon Capture
+        description: Whether, how, and how much CO2 is captured from the process.
+        type: case
+        coded: True
+        codes:
+            No Capture: Conventional process without CO2 capture
+            Top-gas recycling: Post-combustion top-gas recycling CO2 capture (41% capture rate)
+            End-of-pipe: Post-combustion end-of-pipe CO2 capture (60% capture rate)
+    component:
+        name: component
+        description: Allows to subdivide variables into further sub-components, e.g. for hydrogen demand.
+        type: component
+        coded: False
+    period: period
+variables:
+    predefined:
+        - technology
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities
