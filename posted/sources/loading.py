@@ -1,7 +1,7 @@
 from pybtex.database.input import bibtex
 from pybtex.database import BibliographyData
 
-from . import databases
+from .. import databases
 
 
 def load_sources(database_id: str) -> BibliographyData:

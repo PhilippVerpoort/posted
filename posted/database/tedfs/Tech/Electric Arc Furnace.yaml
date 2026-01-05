@@ -1,0 +1,33 @@
+columns:
+    mode:
+        name: Operation Mode
+        description: Whether to operate the Electric Arc Furnace with direct reduced iron (primary route) or with scrap (secondary route).
+        type: case
+        coded: True
+        codes:
+            Primary: Operate with direct reduced iron (primary route).
+            Secondary: Operate with scrap (secondary route).
+    reheating:
+        name: Reheating
+        description: Whether to reheat direct reduced iron that was previously left to cool down or whether to hot-charge directly (e.g. from an EAF).
+        type: case
+        coded: True
+        codes:
+            w/ reheating: Working with cold direct reduced iron that needs reheating.
+            w/o reheating: Working with hot direct reduced iron that needs no reheating.
+    component:
+        name: component
+        description: Allows to subdivide variables into further sub-components, e.g. for hydrogen demand.
+        type: component
+        coded: False
+    period: period
+variables:
+    predefined:
+        - technology
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities
+

@@ -1,75 +1,55 @@
 import unittest
-import os
-from posted.noslag import DataSet
-from posted.path import databases
-
-database = databases["public"]
-tech_directory = f"{database}/tedfs/Tech"
-
-tech_files = os.listdir(tech_directory)
-tech_files = [filename.split('.')[0] for filename in tech_files]
+from re import match
 
 
-class TestDataSetMethods(unittest.TestCase):
-
-    def setUp(self):
-        # Setup any necessary resources or state before each test
-        self.directory = tech_directory
-        self.errors = {
-            'normalise': [],
-            'select': [],
-            'aggregate': []
-        }
-
+class TestNOSLAGMethods(unittest.TestCase):
     def test_normalise(self):
-        for tech in tech_files:
+        # Create a dictionary of erros. This will allow running the full test
+        # and asserting at the end.
+        errors = []
+
+        # Import public database path and TEDF class.
+        from posted import databases, TEDF
+
+        # Discover all TEDFs and loop over them.
+        for file_path in (databases["public"] / "tedf").rglob("**/*.csv"):
+            # Determine the parent variable for loading.
+            parent_variable = match(
+                r".*\|database\|tedfs\|(.*).csv",
+                str(file_path.resolve()).replace("/", "|").replace("\\", "|"),
+            ).group(1)
+
+            # Try loading.
             try:
-                DataSet(f'Tech|{tech}').normalise()
-            except Exception as e:
-                self.errors['normalise'].append(f"Normalization failed for file '{tech}': {str(e)}")
+                tedf = TEDF.load(parent_variable)
+            except Exception as ex:
+                errors += (parent_variable, "load", ex)
+                continue
 
-        # Assert at the end of the test
-        self.assertEqual(len(self.errors['normalise']), 0, "\n".join(self.errors['normalise']))
-
-    def test_select(self):
-        for tech in tech_files:
+            # Try normalising.
             try:
-                DataSet(f'Tech|{tech}').select()  # Replace with actual method call
-            except Exception as e:
-                self.errors['select'].append(f"Selection failed for file '{tech}': {str(e)}")
+                tedf.normalise()
+            except Exception as ex:
+                errors += (parent_variable, "normalise", ex)
+                continue
 
-        # Assert at the end of the test
-        self.assertEqual(len(self.errors['select']), 0, "\n".join(self.errors['select']))
-
-    def test_aggregate(self):
-        for tech in tech_files:
+            # Try selecting.
             try:
-                DataSet(f'Tech|{tech}').aggregate()  # Replace with actual method call
-            except Exception as e:
-                self.errors['aggregate'].append(f"Aggregation failed for file '{tech}': {str(e)}")
+                tedf.select()
+            except Exception as ex:
+                errors += (parent_variable, "select", ex)
+                continue
 
-        # Assert at the end of the test
-        self.assertEqual(len(self.errors['aggregate']), 0, "\n".join(self.errors['aggregate']))
+            # Try aggregating.
+            try:
+                tedf.aggregate()
+            except Exception as ex:
+                errors += (parent_variable, "aggregate", ex)
 
-    def tearDown(self):
-        # Clean up any resources after each test
-        self.errors = {
-            'normalise': [],
-            'select': [],
-            'aggregate': []
-        }
+        # Assert at the end of the test.
+        error_msg = "\n".join(
+            f"Error occurred while running {fn} on '{par_var}':\n{ex}"
+            for par_var, fn, ex in errors
+        )
 
-class TestCombineUnits(unittest.TestCase):
-    def test_combine_units(self):
-        from posted.noslag import combine_units
-        self.assertEqual(combine_units("m**3", "m**2" ), "m")
-        self.assertEqual(combine_units("m", "m"), "m/m")
-        self.assertEqual(combine_units("m/s", "km/h"),"m/s/(km/h)")
-
-if __name__ == '__main__':
-    unittest.main()
-
-
-
-if __name__ == '__main__':
-    unittest.main()
+        assert not error_msg, error_msg
