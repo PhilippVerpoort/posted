@@ -13,14 +13,14 @@ class FullLoadHoursMapper(AbstractVariableMapper):
             return
         if "OCF" not in self._units:
             self._units["OCF"] = "dimensionless"
-        self._conv_factor = (Q(self._units["FLH"]) / Q("year")).to(self._units["OCF"]).m
+        self._conv_factor = (
+            (Q(self._units["FLH"]) / Q("year")).to(self._units["OCF"]).m
+        )
 
     def _condition(self, selected: pd.DataFrame) -> pd.Series:
         return selected["variable"] == "FLH"
 
-    def _map(self,
-             group: pd.DataFrame,
-             cond: pd.Series) -> pd.DataFrame:
+    def _map(self, group: pd.DataFrame, cond: pd.Series) -> pd.DataFrame:
         group.loc[cond, "variable"] = "OCF"
         group.loc[cond, "value"] *= self._conv_factor
 

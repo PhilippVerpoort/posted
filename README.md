@@ -18,7 +18,7 @@ For more help, please consult the [documentation](https://philippverpoort.github
 
 ## Installation
 
-You can install CET Units via `pip` directly from GitHub:
+You can install POSTED via `pip` directly from GitHub:
 
 ```bash
 pip install git+https://github.com/PhilippVerpoort/posted.git

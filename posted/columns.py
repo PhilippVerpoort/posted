@@ -48,27 +48,39 @@ class AbstractColumnDefinition:
             Check if cell is allowed
     """
 
-    def __init__(self,
-                 col_type: str,
-                 name: str,
-                 description: str,
-                 dtype: str,
-                 required: bool):
-        if col_type not in ['field', 'variable', 'unit', 'value', 'comment']:
-            raise Exception(f"Columns must be of type field, variable, unit, "
-                            f"value, or comment but found: {col_type}")
+    def __init__(
+        self,
+        col_type: str,
+        name: str,
+        description: str,
+        dtype: str,
+        required: bool,
+    ):
+        if col_type not in ["field", "variable", "unit", "value", "comment"]:
+            raise Exception(
+                f"Columns must be of type field, variable, unit, "
+                f"value, or comment but found: {col_type}"
+            )
         if not isinstance(name, str):
-            raise Exception(f"The 'name' must be a string but found type "
-                            f"{type(name)}: {name}")
+            raise Exception(
+                f"The 'name' must be a string but found type {type(name)}: "
+                f"{name}"
+            )
         if not isinstance(description, str):
-            raise Exception(f"The 'name' must be a string but found type "
-                            f"{type(description)}: {description}")
-        if not (isinstance(dtype, str) and dtype in ['float', 'str', 'category']):
-            raise Exception(f"The 'dtype' must be a valid data type but "
-                            f"found: {dtype}")
+            raise Exception(
+                f"The 'name' must be a string but found type "
+                f"{type(description)}: {description}"
+            )
+        if not (
+            isinstance(dtype, str) and dtype in ["float", "str", "category"]
+        ):
+            raise Exception(
+                f"The 'dtype' must be a valid data type but found: {dtype}"
+            )
         if not isinstance(required, bool):
-            raise Exception(f"The 'required' argument must be a bool but "
-                            f"found: {required}")
+            raise Exception(
+                f"The 'required' argument must be a bool but found: {required}"
+            )
 
         self._col_type: str = col_type
         self._name: str = name
@@ -180,10 +192,10 @@ class UnitDefinition(AbstractColumnDefinition):
 
     def __init__(self, name: str, description: str, required: bool):
         super().__init__(
-            col_type='unit',
+            col_type="unit",
             name=name,
             description=description,
-            dtype='category',
+            dtype="category",
             required=required,
         )
 
@@ -218,10 +230,10 @@ class ValueDefinition(AbstractColumnDefinition):
 
     def __init__(self, name: str, description: str, required: bool):
         super().__init__(
-            col_type='value',
+            col_type="value",
             name=name,
             description=description,
-            dtype='float',
+            dtype="float",
             required=required,
         )
 
@@ -254,10 +266,10 @@ class CommentDefinition(AbstractColumnDefinition):
 
     def __init__(self, name: str, description: str, required: bool):
         super().__init__(
-            col_type='comment',
+            col_type="comment",
             name=name,
             description=description,
-            dtype='str',
+            dtype="str",
             required=required,
         )
 

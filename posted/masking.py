@@ -30,7 +30,7 @@ def apply_cond(df: pd.DataFrame, cond: MaskCondition):
     if isinstance(cond, str):
         return df.eval(cond)
     elif isinstance(cond, dict):
-        cond = ' & '.join([f"{key}=='{val}'" for key, val in cond.items()])
+        cond = " & ".join([f"{key}=='{val}'" for key, val in cond.items()])
         return df.eval(cond)
     elif isinstance(cond, Callable):
         return df.apply(cond)
@@ -54,34 +54,44 @@ class Mask:
     comment: str, optional
             Comment
     """
-    def __init__(self,
-                 where: MaskCondition | list[MaskCondition] = None,
-                 use: MaskCondition | list[MaskCondition] = None,
-                 weight: None | float | str | list[float | str] = None,
-                 other: float = np.nan,
-                 comment: str = ''):
+
+    def __init__(
+        self,
+        where: MaskCondition | list[MaskCondition] = None,
+        use: MaskCondition | list[MaskCondition] = None,
+        weight: None | float | str | list[float | str] = None,
+        other: float = np.nan,
+        comment: str = "",
+    ):
         """Set fields from constructor arguments, perform consistency
         checks on fields, set default weight to 1 if not set
         otherwise"""
         self._where: list[MaskCondition] = (
-            [] if where is None else where
-            if isinstance(where, list) else [where]
+            []
+            if where is None
+            else where
+            if isinstance(where, list)
+            else [where]
         )
         self._use: list[MaskCondition] = (
-            [] if use is None else use
-            if isinstance(use, list) else [use]
+            [] if use is None else use if isinstance(use, list) else [use]
         )
         self._weight: list[float] = (
-            None if weight is None else [float(w) for w in weight]
-            if isinstance(weight, list) else [float(weight)]
+            None
+            if weight is None
+            else [float(w) for w in weight]
+            if isinstance(weight, list)
+            else [float(weight)]
         )
         self._other: float = other
         self._comment: str = comment
 
         # perform consistency checks on fields
         if self._use and self._weight and len(self._use) != len(self._weight):
-            raise Exception(f"Must provide same length of 'use' conditions as "
-                            f"'weight' values.")
+            raise Exception(
+                f"Must provide same length of 'use' conditions as "
+                f"'weight' values."
+            )
 
         # set default weight to 1 if not set otherwise
         if not self._weight:
@@ -89,7 +99,8 @@ class Mask:
 
     def matches(self, df: pd.DataFrame):
         """
-        Check if a mask matches a dataframe (all 'where' conditions match across all rows)
+        Check if a mask matches a dataframe (all 'where' conditions match
+        across all rows)
 
         Parameters
         ----------

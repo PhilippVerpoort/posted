@@ -44,7 +44,7 @@ docs = [
 ]
 
 [tool.uv.sources]
-cet-units = { git = "ssh://git@github.com/PhilippVerpoort/cet-units.git", rev = "main" }
+cet-units = { git = "https://github.com/PhilippVerpoort/cet-units.git", rev = "main" }
 
 [build-system]
 requires = ["setuptools>=68"]
