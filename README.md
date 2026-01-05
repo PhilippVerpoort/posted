@@ -42,7 +42,7 @@ renv::restore()
 ## CITATION
 To cite POSTED, please use this:
 
-P.C. Verpoort, P. Effing, C. Bachorz, L. Gast, L. Heidweiler, A. Hofmann, J. Dürrwächter, F. Ueckerdt (2023). _POSTED: Potsdam open-source techno-economic database._ Version 0.3.0, <https://github.com/PhilippVerpoort/posted>.
+P.C. Verpoort, P. Effing, C. Bachorz, L. Gast, L. Heidweiler, A. Hofmann, J. Dürrwächter, F. Ueckerdt (2026). _POSTED: Potsdam open-source techno-economic database._ Version 0.4.0, <https://github.com/PhilippVerpoort/posted>.
 
 A BibTeX entry for LaTeX users is:
 
@@ -50,8 +50,8 @@ A BibTeX entry for LaTeX users is:
 @Manual{,
   title = {POSTED: Potsdam open-source techno-economic database},
   author = {Philipp C. Verpoort and Paul Effing and Clara Bachorz and Lukas Gast and Leo Heidweiler and Anke Hofmann and Jakob Dürrwächter and Falko Ueckerdt},
-  year = {2023},
-  note = {Version 0.3.0},
+  year = {2026},
+  note = {Version 0.4.0},
   url = {https://github.com/PhilippVerpoort/posted},
 }
 ```
