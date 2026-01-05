@@ -1,6 +1,6 @@
 subtech,variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-SC,CAPEX,Storage Capacity|Hydrogen,2017.0,280,,EUR,1.0,MWh,"Value reported as EUR/MWh in the paper, assumed to be an error.",Michalski17,"Page 13434, top of right-hand column"
-SC,OPEX Fixed Relative,,2017.0,4,,percent,,,,Michalski17,"Page 13434, top of right-hand column"
-AGCS,CAPEX,Storage Capacity|Hydrogen,2019.0,490,,EUR_2019,1.0,kg,"The number seems very large. Is there an error with units ? Cost basis is assumed from publication date. H2 is stored at 10-30 bar. Not specified which type of storage is considered here.",Gorre19,Table 4
-AGCS,OPEX Fixed Relative,,2019.0,1,,percent,,,"here, H2 is stored at 10-30 bar. Not specified which type of storage is considered here.",Gorre19,Table 4
-AGCS,Lifetime,,2019.0,20,,year,,,"here, H2 is stored at 10-30 bar. Not specified which type of storage is considered here.",Gorre19,Table 4
+SC,CAPEX,Storage Capacity|Hydrogen,2017.0,280,,EUR,1.0,MWh,"Value reported as EUR/MWh in the paper, assumed to be an error.",Michalski-2017,"Page 13434, top of right-hand column"
+SC,OPEX Fixed Relative,,2017.0,4,,percent,,,,Michalski-2017,"Page 13434, top of right-hand column"
+AGCS,CAPEX,Storage Capacity|Hydrogen,2019.0,490,,EUR_2019,1.0,kg,"The number seems very large. Is there an error with units ? Cost basis is assumed from publication date. H2 is stored at 10-30 bar. Not specified which type of storage is considered here.",Gorre-2019,Table 4
+AGCS,OPEX Fixed Relative,,2019.0,1,,percent,,,"here, H2 is stored at 10-30 bar. Not specified which type of storage is considered here.",Gorre-2019,Table 4
+AGCS,Lifetime,,2019.0,20,,year,,,"here, H2 is stored at 10-30 bar. Not specified which type of storage is considered here.",Gorre-2019,Table 4

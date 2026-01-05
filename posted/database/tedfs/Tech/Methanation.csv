@@ -1,37 +1,37 @@
 subtech,variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
 CAT,Total Production Expenditure,Output|Methane,,1.4,,USD,1.0,GJ;LHV,Fixed bed,Kiani21,
-CAT,CAPEX,Output Capacity|Methane,2014.0,2,,MEUR,5.0,MW,"Fall 4. For a 5MW plant, 20 bar operating pressure",Graf14,Tabelle 24
-CAT,CAPEX,Output Capacity|Methane,2014.0,13.8,,MEUR,110,MW,"Fall 4. For a 110MW plant, 20 bar operating pressure",Graf14,Tabelle 24
-CAT,CAPEX,Output Capacity|Methane,2020.0,800.0,,EUR_2017,1.0,kW;LHV,"Read directly from the figure",Milanzi18,Abbilding 4-10
-CAT,CAPEX,Output Capacity|Methane,2030.0,400.0,,EUR_2017,1.0,kW;LHV,"Read directly from the figure",Milanzi18,Abbilding 4-10
-CAT,CAPEX,Output Capacity|Methane,2050.0,300.0,,EUR_2017,1.0,kW;LHV,"Read directly from the figure",Milanzi18,Abbilding 4-10
-*,Output|Methane,Input|Electricity,2021,80.0,,pct MWh;LHV,100.0,pct MWh,,Ueckerdt21,Supplementary Table 4
-*,OCF,,2021,80.0,,percent,,,,Ueckerdt21,Supplementary Table 4
-*,Lifetime,,2021,20.0,,a,,,,Ueckerdt21,Supplementary Table 4
-CAT,CAPEX,Output Capacity|Methane,2017.0,800.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication. Text indicates these values are provided by Golling et al.",Thema19,"Page 777, right-hand column"
-CAT,CAPEX,Output Capacity|Methane,2030.0,500.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication. Text indicates these values are provided by Golling et al.",Thema19,"Page 777, right-hand column"
-CAT,CAPEX,Output Capacity|Methane,2050.0,130.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication. Text indicates these values are provided by Golling et al. Lower bound",Thema19,"Page 777, right-hand column"
-CAT,CAPEX,Output Capacity|Methane,2050.0,400.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication. Text indicates these values are provided by Golling et al. Higher bound",Thema19,"Page 777, right-hand column"
-BIO,CAPEX,Output Capacity|Methane,2017.0,1200.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication.",Thema19,"Page 777, right-hand column"
-BIO,CAPEX,Output Capacity|Methane,2030.0,700.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication.",Thema19,"Page 777, right-hand column"
-BIO,CAPEX,Output Capacity|Methane,2050.0,300.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication.",Thema19,"Page 777, right-hand column"
-*,CAPEX,Output Capacity|Methane,2020.0,845.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,CAPEX,Output Capacity|Methane,2030.0,735.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,CAPEX,Output Capacity|Methane,2050.0,565.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,Output|Methane,Input|Hydrogen,2020.0,77.0,,pct MWh;LHV,100.0,pct MWh,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,OPEX Fixed Relative,,2020.0,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,OPEX Fixed Relative,,2030.0,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,OPEX Fixed Relative,,2050.0,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,Lifetime,,2020.0,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,Lifetime,,2030.0,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,Lifetime,,2050.0,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH19,Methanation table Page 4
-*,Input|Electricity,Output|Methane,2020.0,0.013,,GJ,1.0,GJ;LHV,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA-FOH19,Methanation table Page 4
-*,CAPEX,Output Capacity|Methane,2030.0,234.0,,EUR_2016,1.0,kW;LHV,"Reported as EUR/kWh, unit error ? Replaced by EUR/kW. Cost basis not given, assumed to be year of publication.",Fasihi16,Table 2
-*,OPEX Fixed Relative,,2030.0,2.14,,percent,,,,Fasihi16,Table 2
-*,Lifetime,,2030.0,30.0,,year,,,,Fasihi16,Table 2
-*,Output|Methane,Input|Hydrogen,2030.0,77.9,,pct MWh;LHV,100.0,pct MWh;LHV,"H2 to SNG efficiency",Fasihi16,Table 2
-CAT,Input|Captured CO2,Output|Methane,,3,,kg,1.0,kg,,Soler22,Table 2
-CAT,Input|Hydrogen,Output|Methane,,0.5,,kg,1.0,kg,,Soler22,Table 2
-CAT,Input|Water,Output|Methane,,2.25,,kg,1.0,kg,,Soler22,Table 2
-CAT,Input|Electricity,Output|Methane,,1.15,,MJ,1.0,kg,,Soler22,Table 2
-CAT,Output|Heat,Output|Methane,,10.8,,MJ,1.0,kg,"Heat output at 250-300°C",Soler22,Table 2 and 78
+CAT,CAPEX,Output Capacity|Methane,2014.0,2,,MEUR,5.0,MW,"Fall 4. For a 5MW plant, 20 bar operating pressure",Graf-2014,Tabelle 24
+CAT,CAPEX,Output Capacity|Methane,2014.0,13.8,,MEUR,110,MW,"Fall 4. For a 110MW plant, 20 bar operating pressure",Graf-2014,Tabelle 24
+CAT,CAPEX,Output Capacity|Methane,2020.0,800.0,,EUR_2017,1.0,kW;LHV,"Read directly from the figure",Milanzi-2018,Abbilding 4-10
+CAT,CAPEX,Output Capacity|Methane,2030.0,400.0,,EUR_2017,1.0,kW;LHV,"Read directly from the figure",Milanzi-2018,Abbilding 4-10
+CAT,CAPEX,Output Capacity|Methane,2050.0,300.0,,EUR_2017,1.0,kW;LHV,"Read directly from the figure",Milanzi-2018,Abbilding 4-10
+*,Output|Methane,Input|Electricity,2021,80.0,,pct MWh;LHV,100.0,pct MWh,,Ueckerdt-2021,Supplementary Table 4
+*,OCF,,2021,80.0,,percent,,,,Ueckerdt-2021,Supplementary Table 4
+*,Lifetime,,2021,20.0,,a,,,,Ueckerdt-2021,Supplementary Table 4
+CAT,CAPEX,Output Capacity|Methane,2017.0,800.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication. Text indicates these values are provided by Golling et al.",Thema-2019,"Page 777, right-hand column"
+CAT,CAPEX,Output Capacity|Methane,2030.0,500.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication. Text indicates these values are provided by Golling et al.",Thema-2019,"Page 777, right-hand column"
+CAT,CAPEX,Output Capacity|Methane,2050.0,130.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication. Text indicates these values are provided by Golling et al. Lower bound",Thema-2019,"Page 777, right-hand column"
+CAT,CAPEX,Output Capacity|Methane,2050.0,400.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication. Text indicates these values are provided by Golling et al. Higher bound",Thema-2019,"Page 777, right-hand column"
+BIO,CAPEX,Output Capacity|Methane,2017.0,1200.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication.",Thema-2019,"Page 777, right-hand column"
+BIO,CAPEX,Output Capacity|Methane,2030.0,700.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication.",Thema-2019,"Page 777, right-hand column"
+BIO,CAPEX,Output Capacity|Methane,2050.0,300.0,,EUR_2019,1.0,kW;LHV,"Cost basis not given, assumed to be year of publication.",Thema-2019,"Page 777, right-hand column"
+*,CAPEX,Output Capacity|Methane,2020.0,845.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,CAPEX,Output Capacity|Methane,2030.0,735.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,CAPEX,Output Capacity|Methane,2050.0,565.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,Output|Methane,Input|Hydrogen,2020.0,77.0,,pct MWh;LHV,100.0,pct MWh,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,OPEX Fixed Relative,,2020.0,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,OPEX Fixed Relative,,2030.0,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,OPEX Fixed Relative,,2050.0,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,Lifetime,,2020.0,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,Lifetime,,2030.0,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,Lifetime,,2050.0,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,Methanation table Page 4
+*,Input|Electricity,Output|Methane,2020.0,0.013,,GJ,1.0,GJ;LHV,"See ""Assumptions"" of the report. Here, we have GJ(el)/GJ(prod)",IEA-FOH-2019,Methanation table Page 4
+*,CAPEX,Output Capacity|Methane,2030.0,234.0,,EUR_2016,1.0,kW;LHV,"Reported as EUR/kWh, unit error ? Replaced by EUR/kW. Cost basis not given, assumed to be year of publication.",Fasihi-2016,Table 2
+*,OPEX Fixed Relative,,2030.0,2.14,,percent,,,,Fasihi-2016,Table 2
+*,Lifetime,,2030.0,30.0,,year,,,,Fasihi-2016,Table 2
+*,Output|Methane,Input|Hydrogen,2030.0,77.9,,pct MWh;LHV,100.0,pct MWh;LHV,"H2 to SNG efficiency",Fasihi-2016,Table 2
+CAT,Input|Captured CO2,Output|Methane,,3,,kg,1.0,kg,,Soler-2022,Table 2
+CAT,Input|Hydrogen,Output|Methane,,0.5,,kg,1.0,kg,,Soler-2022,Table 2
+CAT,Input|Water,Output|Methane,,2.25,,kg,1.0,kg,,Soler-2022,Table 2
+CAT,Input|Electricity,Output|Methane,,1.15,,MJ,1.0,kg,,Soler-2022,Table 2
+CAT,Output|Heat,Output|Methane,,10.8,,MJ,1.0,kg,"Heat output at 250-300°C",Soler-2022,Table 2 and 78

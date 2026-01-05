@@ -1,39 +1,39 @@
 subtech,variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2018,#,1126.8,,MUSD_2016,0.98,Mt/a,"Early plant. Value reported for a capacity of 0.98 Mt-CO2/year. Corresponding to the Carbon Engineering pilot plant.",Keith18,Table 3
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2018,#,779.5,,MUSD_2016,0.98,Mt/a,"Nth plant. Value reported for a capacity of 0.98 Mt-CO2/year.",Keith18,Table 3
-HT-DAC,OPEX Variable,Output|Captured CO2,2018,#,26,,USD_2016,1,t,"Corresponding to the Carbon Engineering pilot plant (scenario C).",Keith18,Table 2
-HT-DAC,Input|Electricity,Output|Captured CO2,2018,#,366.0,,kWh,1.0,t,"Corresponding to the Carbon Engineering pilot plant (scenario C).",Keith18,Table 2
-HT-DAC,OCF,,2018,#,90,,percent,,,"Corresponding to the Carbon Engineering pilot plant (scenario C).",Keith18,Table 2
-HT-DAC,Input|Heat,Output|Captured CO2,2018,#,5.25,,GJ,1.0,t,"Is assumed to be NG consumption in the paper, as high temperatures are needed (900 °C). Corresponding to the Carbon Engineering pilot plant (scenario C).",Keith18,Table 2
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2020,#,815.0,,EUR_2020,1.0,t/a,"No explicit cost basis given, assumed to be EUR2020 as this is the time of cost. Author's own assumption.",Fasihi19,Table 4
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2020,#,730.0,,EUR_2020,1.0,t/a,"No explicit cost basis given, assumed to be EUR2020 as this is the time of cost. Author's own assumption.",Fasihi19,Table 4
-HT-DAC,OPEX Fixed Relative,,2020,#,3.7,,percent,,,"Author's own assumption.",Fasihi19,Table 4
-LT-DAC,OPEX Fixed Relative,,2020,#,4.0,,percent,,,"Author's own assumption.",Fasihi19,Table 4
-HT-DAC,Input|Electricity,Output|Captured CO2,2020,#,1535.0,,kWh,1.0,t,"Author's own assumption.",Fasihi19,Table 4
-HT-DAC,Input|Heat,Output|Captured CO2,2020,#,0.0,,kWh,1.0,t,"Author's own assumption.",Fasihi19,Table 4
-LT-DAC,Input|Electricity,Output|Captured CO2,2020,#,250.0,,kWh,1.0,t,"Author's own assumption.",Fasihi19,Table 4
-LT-DAC,Input|Heat,Output|Captured CO2,2020,#,1750.0,,kWh,1.0,t,"Assuming low temperature (80–100 °C). Author's own assumption.",Fasihi19,Table 4
-HT-DAC,Lifetime,,2020,#,25.0,,year,,,,Fasihi19,Table 4
-LT-DAC,Lifetime,,2020,#,20.0,,year,,,,Fasihi19,Table 4
-*,Input|Electricity,Output|Captured CO2,2021,CO2 injection,7.0,,kWh,1.0,t,,Madhu21,Table 1 and 2
-*,Input|Electricity,Output|Captured CO2,2021,CO2 compression,111.0,,kWh,1.0,t,,Madhu21,Table 1 and 2
-HT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,345.0,,kWh,1.0,t,"Reference case",Madhu21,Table 1
-HT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,337.0,,kWh,1.0,t,"Best case",Madhu21,Table 1
-HT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,449.0,,kWh,1.0,t,"Worst case",Madhu21,Table 1
-HT-DAC,Input|Heat,Output|Captured CO2,2021,#,4.47,,GJ,1.0,t,"Reference case. Assuming high temperature (850–900 °C).",Madhu21,Table 1
-HT-DAC,Input|Heat,Output|Captured CO2,2021,#,4.05,,GJ,1.0,t,"Best case. Assuming high temperature (850–900 °C).",Madhu21,Table 1
-HT-DAC,Input|Heat,Output|Captured CO2,2021,#,4.47,,GJ,1.0,t,"Worst case. Assuming high temperature (850–900 °C).",Madhu21,Table 1
-LT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,180.0,,kWh,1.0,t,"Reference case.",Madhu21,Table 2
-LT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,130.0,,kWh,1.0,t,"Best case.",Madhu21,Table 2
-LT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,350.0,,kWh,1.0,t,"Worst case.",Madhu21,Table 2
-LT-DAC,Input|Heat,Output|Captured CO2,2021,#,2.6,,GJ,1.0,t,"Reference case. Assuming low temperature (80–120 °C).",Madhu21,Table 2
-LT-DAC,Input|Heat,Output|Captured CO2,2021,#,2.3,,GJ,1.0,t,"Best case. Assuming low temperature (80–120 °C).",Madhu21,Table 2
-LT-DAC,Input|Heat,Output|Captured CO2,2021,#,6.2,,GJ,1.0,t,"Worst case. Assuming low temperature (80–120 °C).",Madhu21,Table 2
-*,Input|Electricity,Output|Captured CO2,2022,CO2 compression,0.5,,GJ,1.0,t,,IEA-DAC22,Interactive chart
-HT-DAC,Input|Electricity,Output|Captured CO2,2022,Non-compression,0.8,,GJ,1.0,t,,IEA-DAC22,Interactive chart
-HT-DAC,Input|Heat,Output|Captured CO2,2022,#,5.3,,GJ,1.0,t,Assuming a series of units operating at high temperature (between 300°C and 900°C).,IEA-DAC22,Interactive chart
-LT-DAC,Input|Electricity,Output|Captured CO2,2022,Non-compression,1.8,,GJ,1.0,t,,IEA-DAC22,Interactive chart
-LT-DAC,Input|Heat,Output|Captured CO2,2022,#,7.2,,GJ,1.0,t,Assuming medium temperature (80-120°C).,IEA-DAC22,Interactive chart
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2018,#,1126.8,,MUSD_2016,0.98,Mt/a,"Early plant. Value reported for a capacity of 0.98 Mt-CO2/year. Corresponding to the Carbon Engineering pilot plant.",Keith-2018,Table 3
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2018,#,779.5,,MUSD_2016,0.98,Mt/a,"Nth plant. Value reported for a capacity of 0.98 Mt-CO2/year.",Keith-2018,Table 3
+HT-DAC,OPEX Variable,Output|Captured CO2,2018,#,26,,USD_2016,1,t,"Corresponding to the Carbon Engineering pilot plant (scenario C).",Keith-2018,Table 2
+HT-DAC,Input|Electricity,Output|Captured CO2,2018,#,366.0,,kWh,1.0,t,"Corresponding to the Carbon Engineering pilot plant (scenario C).",Keith-2018,Table 2
+HT-DAC,OCF,,2018,#,90,,percent,,,"Corresponding to the Carbon Engineering pilot plant (scenario C).",Keith-2018,Table 2
+HT-DAC,Input|Heat,Output|Captured CO2,2018,#,5.25,,GJ,1.0,t,"Is assumed to be NG consumption in the paper, as high temperatures are needed (900 °C). Corresponding to the Carbon Engineering pilot plant (scenario C).",Keith-2018,Table 2
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2020,#,815.0,,EUR_2020,1.0,t/a,"No explicit cost basis given, assumed to be EUR2020 as this is the time of cost. Author's own assumption.",Fasihi-2019,Table 4
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2020,#,730.0,,EUR_2020,1.0,t/a,"No explicit cost basis given, assumed to be EUR2020 as this is the time of cost. Author's own assumption.",Fasihi-2019,Table 4
+HT-DAC,OPEX Fixed Relative,,2020,#,3.7,,percent,,,"Author's own assumption.",Fasihi-2019,Table 4
+LT-DAC,OPEX Fixed Relative,,2020,#,4.0,,percent,,,"Author's own assumption.",Fasihi-2019,Table 4
+HT-DAC,Input|Electricity,Output|Captured CO2,2020,#,1535.0,,kWh,1.0,t,"Author's own assumption.",Fasihi-2019,Table 4
+HT-DAC,Input|Heat,Output|Captured CO2,2020,#,0.0,,kWh,1.0,t,"Author's own assumption.",Fasihi-2019,Table 4
+LT-DAC,Input|Electricity,Output|Captured CO2,2020,#,250.0,,kWh,1.0,t,"Author's own assumption.",Fasihi-2019,Table 4
+LT-DAC,Input|Heat,Output|Captured CO2,2020,#,1750.0,,kWh,1.0,t,"Assuming low temperature (80–100 °C). Author's own assumption.",Fasihi-2019,Table 4
+HT-DAC,Lifetime,,2020,#,25.0,,year,,,,Fasihi-2019,Table 4
+LT-DAC,Lifetime,,2020,#,20.0,,year,,,,Fasihi-2019,Table 4
+*,Input|Electricity,Output|Captured CO2,2021,CO2 injection,7.0,,kWh,1.0,t,,Madhu-2021,Table 1 and 2
+*,Input|Electricity,Output|Captured CO2,2021,CO2 compression,111.0,,kWh,1.0,t,,Madhu-2021,Table 1 and 2
+HT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,345.0,,kWh,1.0,t,"Reference case",Madhu-2021,Table 1
+HT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,337.0,,kWh,1.0,t,"Best case",Madhu-2021,Table 1
+HT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,449.0,,kWh,1.0,t,"Worst case",Madhu-2021,Table 1
+HT-DAC,Input|Heat,Output|Captured CO2,2021,#,4.47,,GJ,1.0,t,"Reference case. Assuming high temperature (850–900 °C).",Madhu-2021,Table 1
+HT-DAC,Input|Heat,Output|Captured CO2,2021,#,4.05,,GJ,1.0,t,"Best case. Assuming high temperature (850–900 °C).",Madhu-2021,Table 1
+HT-DAC,Input|Heat,Output|Captured CO2,2021,#,4.47,,GJ,1.0,t,"Worst case. Assuming high temperature (850–900 °C).",Madhu-2021,Table 1
+LT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,180.0,,kWh,1.0,t,"Reference case.",Madhu-2021,Table 2
+LT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,130.0,,kWh,1.0,t,"Best case.",Madhu-2021,Table 2
+LT-DAC,Input|Electricity,Output|Captured CO2,2021,CO2 capture,350.0,,kWh,1.0,t,"Worst case.",Madhu-2021,Table 2
+LT-DAC,Input|Heat,Output|Captured CO2,2021,#,2.6,,GJ,1.0,t,"Reference case. Assuming low temperature (80–120 °C).",Madhu-2021,Table 2
+LT-DAC,Input|Heat,Output|Captured CO2,2021,#,2.3,,GJ,1.0,t,"Best case. Assuming low temperature (80–120 °C).",Madhu-2021,Table 2
+LT-DAC,Input|Heat,Output|Captured CO2,2021,#,6.2,,GJ,1.0,t,"Worst case. Assuming low temperature (80–120 °C).",Madhu-2021,Table 2
+*,Input|Electricity,Output|Captured CO2,2022,CO2 compression,0.5,,GJ,1.0,t,,IEA-DAC-2022,Interactive chart
+HT-DAC,Input|Electricity,Output|Captured CO2,2022,Non-compression,0.8,,GJ,1.0,t,,IEA-DAC-2022,Interactive chart
+HT-DAC,Input|Heat,Output|Captured CO2,2022,#,5.3,,GJ,1.0,t,Assuming a series of units operating at high temperature (between 300°C and 900°C).,IEA-DAC-2022,Interactive chart
+LT-DAC,Input|Electricity,Output|Captured CO2,2022,Non-compression,1.8,,GJ,1.0,t,,IEA-DAC-2022,Interactive chart
+LT-DAC,Input|Heat,Output|Captured CO2,2022,#,7.2,,GJ,1.0,t,Assuming medium temperature (80-120°C).,IEA-DAC-2022,Interactive chart
 HT-DAC,CAPEX,Output Capacity|Captured CO2,2022,#,80.0,,USD,1.0,t/a,"Literature review, no cost basis given. Optimistic assumption",Okzan22,"Page 11, section Capital costs"
 HT-DAC,CAPEX,Output Capacity|Captured CO2,2022,#,150.0,,USD,1.0,t/a,"Literature review, no cost basis given. Conservative assumption",Okzan22,"Page 11, section Capital costs"
 LT-DAC,CAPEX,Output Capacity|Captured CO2,2022,#,200.0,,USD,1.0,t/a,"Literature review, no cost basis given. Optimistic assumption",Okzan22,"Page 11, section Capital costs"
@@ -42,50 +42,50 @@ HT-DAC,OPEX Variable,Output|Captured CO2,2022,O&M,40.0,,USD,1.0,t,"Literature re
 HT-DAC,OPEX Variable,Output|Captured CO2,2022,O&M,80.0,,USD,1.0,t,"Literature review, no cost basis given. Conservative assumption",Okzan22,"Page 12, section Operating and maintenance cost"
 LT-DAC,OPEX Variable,Output|Captured CO2,2022,O&M,5.0,,USD,1.0,t,"Literature review, no cost basis given. Optimistic assumption",Okzan22,"Page 12, section Operating and maintenance cost"
 LT-DAC,OPEX Variable,Output|Captured CO2,2022,O&M,50.0,,USD,1.0,t,"Literature review, no cost basis given. Conservative assumption",Okzan22,"Page 12, section Operating and maintenance cost"
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2020,#,5840000.0,,EUR_2022,8000.0,t/a,,Lux23,"Table 2, Page 6"
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2050,#,1132000.0,460000.0,EUR_2022,8000.0,t/a,combination of base and conservative assumptions,Lux23,"Table 2, Page 6"
-LT-DAC,OPEX Fixed Relative,,2020,#,4.0,,percent,,,,Lux23,"Table 2, Page 6"
-LT-DAC,Lifetime,,2050,#,30.0,,year,,,,Lux23,"Table 2, Page 6"
-LT-DAC,Lifetime,,2050,#,25.0,,year,,,,Lux23,"Table 2, Page 6"
-LT-DAC,FLH,,*,#,8000.0,,hour,,,,Lux23,"Table 2, Page 6, Footnote a"
-LT-DAC,Input|Electricity,Output|Captured CO2,2050,#,1685.0,,kWh,1.0,t,,Lux23,"Table 2, Page 6"
-LT-DAC,Input|Electricity,Output|Captured CO2,2050,#,1339.0,,kWh,1.0,t,,Lux23,"Table 2, Page 6"
-HT-DAC,Input|Electricity,Output|Captured CO2,2011,#,0.49,,MWh,1.0,t,,Socolow11,"In the text, Page 36. Combines Tables 2.3 and 2.4"
-HT-DAC,Input|Heat,Output|Captured CO2,2011,#,8.1,,GJ,1.0,t,,Socolow11,"In the text, Page 36."
-HT-DAC,FLH,,2011,#,7884.0,,hour,,,,Socolow11,"In the text, Page 44"
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2011,#,2900.0,,USD_2009,1.0,t/a,"Used line ""Total Installed capital cost"" for the ""realistic"" column",Socolow11,Table 2.5
-HT-DAC,OPEX Variable,Output|Captured CO2,2011,#,120.0,,USD_2009,1.0,t,"Used line ""Maintenance labor and chemicals"" cost for the ""realistic"" column",Socolow11,Table 2.5
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2011,#,2200.0,,USD_2009,1.0,t/a,"Used line ""Total Installed capital cost"" for the ""optimistic"" column",Socolow11,Table 2.5
-HT-DAC,OPEX Variable,Output|Captured CO2,2011,#,120.0,,USD_2009,1.0,t,"Used line ""Maintenance labor and chemicals"" cost for the ""optimistic"" column",Socolow11,Table 2.5
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,430,,MUSD,1,Mt/a,"No cost basis given. See Supplementary information. Low assumption. Legend states that reference plant size is used here, which is 1Mt/a for both.",Realmonte19,Table S4
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,750,,MUSD,1,Mt/a,"No cost basis given. See Supplementary information. High assumption. Legend states that reference plant size is used here, which is 1Mt/a for both.",Realmonte19,Table S4
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,1146,,MUSD,1.0,Mt/a,"No cost basis given. See Supplementary information. Low assumption. Legend states that reference plant size is used here, which is 1Mt/a for both.",Realmonte19,Table S4
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,2060,,MUSD,1.0,Mt/a,"No cost basis given. See Supplementary information. High assumption. Legend states that reference plant size is used here, which is 1Mt/a for both.",Realmonte19,Table S4
-LT-DAC,Input|Electricity,Output|Captured CO2,2019,#,0.6,,GJ,1.0,t,"See Supplementary information. Low assumption.",Realmonte19,Table S4
-LT-DAC,Input|Electricity,Output|Captured CO2,2019,#,1.1,,GJ,1.0,t,"See Supplementary information. High assumption.",Realmonte19,Table S4
-LT-DAC,Input|Heat,Output|Captured CO2,2019,#,4.4,,GJ,1.0,t,"Low temperature (85°-120°C). See Supplementary information. Low assumption.",Realmonte19,Table S4
-LT-DAC,Input|Heat,Output|Captured CO2,2019,#,7.2,,GJ,1.0,t,"Low temperature (85°-120°C). See Supplementary information. High assumption.",Realmonte19,Table S4
-HT-DAC,Input|Electricity,Output|Captured CO2,2019,#,1.3,,GJ,1.0,t,"See Supplementary information. Low assumption.",Realmonte19,Table S4
-HT-DAC,Input|Electricity,Output|Captured CO2,2019,#,1.8,,GJ,1.0,t,"See Supplementary information. High assumption.",Realmonte19,Table S4
-HT-DAC,Input|Heat,Output|Captured CO2,2019,#,5.3,,GJ,1.0,t,"High temperature (T > 800°C). See Supplementary information. Low assumption.",Realmonte19,Table S4
-HT-DAC,Input|Heat,Output|Captured CO2,2019,#,8.1,,GJ,1.0,t,"High temperature (T > 800°C). See Supplementary information. High assumption.",Realmonte19,Table S4
-LT-DAC,Lifetime,,2019,#,15,,year,,,"See Supplementary information.",Realmonte19,Figure S8
-HT-DAC,Lifetime,,2019,#,20,,year,,,"See Supplementary information.",Realmonte19,Figure S8
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,1255.0,,MUSD_2016,1.0,Mt/a,"Upper bound. Second line, for slaker causticizer, and clarificator mentions that currencies are converted to USD 2016.",NASEM19,Table 5.3
-HT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,675.0,,MUSD_2016,1.0,Mt/a,Lower bound,NASEM19,Table 5.3
-HT-DAC,OPEX Variable,Output|Captured CO2,2019,Operation & Maintenance,18.0,,MUSD_2016,1.0,Mt,Lower bound,NASEM19,Table 5.3
-HT-DAC,OPEX Variable,Output|Captured CO2,2019,Operation & Maintenance,33.0,,MUSD_2016,1.0,Mt,Upper bound,NASEM19,Table 5.3
-HT-DAC,OPEX Variable,Output|Captured CO2,2019,Labour,6.0,,MUSD_2016,1.0,Mt,Lower bound,NASEM19,Table 5.3
-HT-DAC,OPEX Variable,Output|Captured CO2,2019,Labour,10.0,,MUSD_2016,1.0,Mt,Upper bound,NASEM19,Table 5.3
-HT-DAC,OPEX Variable,Output|Captured CO2,2019,Other,5.0,,MUSD_2016,1.0,Mt,Lower bound,NASEM19,Table 5.3
-HT-DAC,OPEX Variable,Output|Captured CO2,2019,Other,7.0,,MUSD_2016,1.0,Mt,Upper bound,NASEM19,Table 5.3
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Adsorbent,70,,MUSD_2016,1.0,Mt/a,"Case 2: low cost case.",NASEM19,Table 5.10
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Adsorbent,186,,MUSD_2016,1.0,Mt/a,"Case 4: high cost case. Costs assumed to be in USD2016, like the HT case",NASEM19,Table 5.10
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Blower,2.1,,MUSD_2016,1.0,Mt/a,"Case 2: low cost case.",NASEM19,Table 5.10
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Blower,6.7,,MUSD_2016,1.0,Mt/a,"Case 4: high cost case.",NASEM19,Table 5.10
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Vacuum pump,2.6,,MUSD_2016,1.0,Mt/a,"Case 2: low cost case.",NASEM19,Table 5.10
-LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Vacuum pump,8.5,,MUSD_2016,1.0,Mt/a,"Case 4: high cost case.",NASEM19,Table 5.10
-LT-DAC,OPEX Variable,Output|Captured CO2,2019,Adsorption,9,,MUSD_2016,1.0,Mt,"Case 2: low cost case.",NASEM19,Table 5.10
-LT-DAC,OPEX Variable,Output|Captured CO2,2019,Adsorption,19,,MUSD_2016,1.0,Mt,"Case 4: high cost case.",NASEM19,Table 5.10
-LT-DAC,OPEX Variable,Output|Captured CO2,2019,Steam,2.2,,MUSD_2016,1.0,Mt,"Case 2: low cost case.",NASEM19,Table 5.10
-LT-DAC,OPEX Variable,Output|Captured CO2,2019,Steam,3,,MUSD_2016,1.0,Mt,"Case 4: high cost case.",NASEM19,Table 5.10
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2020,#,5840000.0,,EUR_2022,8000.0,t/a,,Lux-2023,"Table 2, Page 6"
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2050,#,1132000.0,460000.0,EUR_2022,8000.0,t/a,combination of base and conservative assumptions,Lux-2023,"Table 2, Page 6"
+LT-DAC,OPEX Fixed Relative,,2020,#,4.0,,percent,,,,Lux-2023,"Table 2, Page 6"
+LT-DAC,Lifetime,,2050,#,30.0,,year,,,,Lux-2023,"Table 2, Page 6"
+LT-DAC,Lifetime,,2050,#,25.0,,year,,,,Lux-2023,"Table 2, Page 6"
+LT-DAC,FLH,,*,#,8000.0,,hour,,,,Lux-2023,"Table 2, Page 6, Footnote a"
+LT-DAC,Input|Electricity,Output|Captured CO2,2050,#,1685.0,,kWh,1.0,t,,Lux-2023,"Table 2, Page 6"
+LT-DAC,Input|Electricity,Output|Captured CO2,2050,#,1339.0,,kWh,1.0,t,,Lux-2023,"Table 2, Page 6"
+HT-DAC,Input|Electricity,Output|Captured CO2,2011,#,0.49,,MWh,1.0,t,,Socolow-2011,"In the text, Page 36. Combines Tables 2.3 and 2.4"
+HT-DAC,Input|Heat,Output|Captured CO2,2011,#,8.1,,GJ,1.0,t,,Socolow-2011,"In the text, Page 36."
+HT-DAC,FLH,,2011,#,7884.0,,hour,,,,Socolow-2011,"In the text, Page 44"
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2011,#,2900.0,,USD_2009,1.0,t/a,"Used line ""Total Installed capital cost"" for the ""realistic"" column",Socolow-2011,Table 2.5
+HT-DAC,OPEX Variable,Output|Captured CO2,2011,#,120.0,,USD_2009,1.0,t,"Used line ""Maintenance labor and chemicals"" cost for the ""realistic"" column",Socolow-2011,Table 2.5
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2011,#,2200.0,,USD_2009,1.0,t/a,"Used line ""Total Installed capital cost"" for the ""optimistic"" column",Socolow-2011,Table 2.5
+HT-DAC,OPEX Variable,Output|Captured CO2,2011,#,120.0,,USD_2009,1.0,t,"Used line ""Maintenance labor and chemicals"" cost for the ""optimistic"" column",Socolow-2011,Table 2.5
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,430,,MUSD,1,Mt/a,"No cost basis given. See Supplementary information. Low assumption. Legend states that reference plant size is used here, which is 1Mt/a for both.",Realmonte-2019,Table S4
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,750,,MUSD,1,Mt/a,"No cost basis given. See Supplementary information. High assumption. Legend states that reference plant size is used here, which is 1Mt/a for both.",Realmonte-2019,Table S4
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,1146,,MUSD,1.0,Mt/a,"No cost basis given. See Supplementary information. Low assumption. Legend states that reference plant size is used here, which is 1Mt/a for both.",Realmonte-2019,Table S4
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,2060,,MUSD,1.0,Mt/a,"No cost basis given. See Supplementary information. High assumption. Legend states that reference plant size is used here, which is 1Mt/a for both.",Realmonte-2019,Table S4
+LT-DAC,Input|Electricity,Output|Captured CO2,2019,#,0.6,,GJ,1.0,t,"See Supplementary information. Low assumption.",Realmonte-2019,Table S4
+LT-DAC,Input|Electricity,Output|Captured CO2,2019,#,1.1,,GJ,1.0,t,"See Supplementary information. High assumption.",Realmonte-2019,Table S4
+LT-DAC,Input|Heat,Output|Captured CO2,2019,#,4.4,,GJ,1.0,t,"Low temperature (85°-120°C). See Supplementary information. Low assumption.",Realmonte-2019,Table S4
+LT-DAC,Input|Heat,Output|Captured CO2,2019,#,7.2,,GJ,1.0,t,"Low temperature (85°-120°C). See Supplementary information. High assumption.",Realmonte-2019,Table S4
+HT-DAC,Input|Electricity,Output|Captured CO2,2019,#,1.3,,GJ,1.0,t,"See Supplementary information. Low assumption.",Realmonte-2019,Table S4
+HT-DAC,Input|Electricity,Output|Captured CO2,2019,#,1.8,,GJ,1.0,t,"See Supplementary information. High assumption.",Realmonte-2019,Table S4
+HT-DAC,Input|Heat,Output|Captured CO2,2019,#,5.3,,GJ,1.0,t,"High temperature (T > 800°C). See Supplementary information. Low assumption.",Realmonte-2019,Table S4
+HT-DAC,Input|Heat,Output|Captured CO2,2019,#,8.1,,GJ,1.0,t,"High temperature (T > 800°C). See Supplementary information. High assumption.",Realmonte-2019,Table S4
+LT-DAC,Lifetime,,2019,#,15,,year,,,"See Supplementary information.",Realmonte-2019,Figure S8
+HT-DAC,Lifetime,,2019,#,20,,year,,,"See Supplementary information.",Realmonte-2019,Figure S8
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,1255.0,,MUSD_2016,1.0,Mt/a,"Upper bound. Second line, for slaker causticizer, and clarificator mentions that currencies are converted to USD 2016.",NASEM-2019,Table 5.3
+HT-DAC,CAPEX,Output Capacity|Captured CO2,2019,#,675.0,,MUSD_2016,1.0,Mt/a,Lower bound,NASEM-2019,Table 5.3
+HT-DAC,OPEX Variable,Output|Captured CO2,2019,Operation & Maintenance,18.0,,MUSD_2016,1.0,Mt,Lower bound,NASEM-2019,Table 5.3
+HT-DAC,OPEX Variable,Output|Captured CO2,2019,Operation & Maintenance,33.0,,MUSD_2016,1.0,Mt,Upper bound,NASEM-2019,Table 5.3
+HT-DAC,OPEX Variable,Output|Captured CO2,2019,Labour,6.0,,MUSD_2016,1.0,Mt,Lower bound,NASEM-2019,Table 5.3
+HT-DAC,OPEX Variable,Output|Captured CO2,2019,Labour,10.0,,MUSD_2016,1.0,Mt,Upper bound,NASEM-2019,Table 5.3
+HT-DAC,OPEX Variable,Output|Captured CO2,2019,Other,5.0,,MUSD_2016,1.0,Mt,Lower bound,NASEM-2019,Table 5.3
+HT-DAC,OPEX Variable,Output|Captured CO2,2019,Other,7.0,,MUSD_2016,1.0,Mt,Upper bound,NASEM-2019,Table 5.3
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Adsorbent,70,,MUSD_2016,1.0,Mt/a,"Case 2: low cost case.",NASEM-2019,Table 5.10
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Adsorbent,186,,MUSD_2016,1.0,Mt/a,"Case 4: high cost case. Costs assumed to be in USD2016, like the HT case",NASEM-2019,Table 5.10
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Blower,2.1,,MUSD_2016,1.0,Mt/a,"Case 2: low cost case.",NASEM-2019,Table 5.10
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Blower,6.7,,MUSD_2016,1.0,Mt/a,"Case 4: high cost case.",NASEM-2019,Table 5.10
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Vacuum pump,2.6,,MUSD_2016,1.0,Mt/a,"Case 2: low cost case.",NASEM-2019,Table 5.10
+LT-DAC,CAPEX,Output Capacity|Captured CO2,2019,Vacuum pump,8.5,,MUSD_2016,1.0,Mt/a,"Case 4: high cost case.",NASEM-2019,Table 5.10
+LT-DAC,OPEX Variable,Output|Captured CO2,2019,Adsorption,9,,MUSD_2016,1.0,Mt,"Case 2: low cost case.",NASEM-2019,Table 5.10
+LT-DAC,OPEX Variable,Output|Captured CO2,2019,Adsorption,19,,MUSD_2016,1.0,Mt,"Case 4: high cost case.",NASEM-2019,Table 5.10
+LT-DAC,OPEX Variable,Output|Captured CO2,2019,Steam,2.2,,MUSD_2016,1.0,Mt,"Case 2: low cost case.",NASEM-2019,Table 5.10
+LT-DAC,OPEX Variable,Output|Captured CO2,2019,Steam,3,,MUSD_2016,1.0,Mt,"Case 4: high cost case.",NASEM-2019,Table 5.10

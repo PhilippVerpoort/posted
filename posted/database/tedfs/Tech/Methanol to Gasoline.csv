@@ -1,19 +1,19 @@
 variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Gasoline,2020,312.5,,EUR_2017,1.0,kW;LHV,"Cost basis was found in the Supplementary.",Schemme20,Table 3
-CAPEX,Output Capacity|Gasoline,2025,600.0,,EUR_2019,1.0,kW;LHV,,Grahn22,Table 3
-CAPEX,Output Capacity|Gasoline,2045,300.0,,EUR_2019,1.0,kW;LHV,,Grahn22,Table 3
-CAPEX,Output Capacity|Gasoline,2020.0,307.0,,EUR_2019,1.0,kW;LHV,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist. Cost basis mentionned on page 246.",Soler22,Table 94
-CAPEX,Output Capacity|Gasoline,2030.0,269.0,,EUR_2019,1.0,kW;LHV,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist. Cost basis mentionned on page 246.",Soler22,Table 94
-CAPEX,Output Capacity|Gasoline,2050.0,200.0,,EUR_2019,1.0,kW;LHV,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist. Cost basis mentionned on page 246.",Soler22,Table 94
-OPEX Fixed Relative,,2022,4.5,,percent,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94
-OPEX Fixed Relative,,2025,4.0,,percent,,,,Grahn22,Table 3
-OPEX Fixed Relative,,2040,4.0,,percent,,,,Grahn22,Table 3
-OPEX Variable,Output|Gasoline,2022,1350.0,,EUR_2019,1.0,GWh;LHV,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94
-Input|Electricity,Output|Gasoline,2022,0.2,,MWh,1.0,MWh;LHV,data given in the table as 0.71 MJ/kg. Converted manually by C.B to MWh/t. ,Soler22,Table 5
-Input|Electricity,Output|Gasoline,2020,0.229,,kWh,1.0,kg,"Date based on the article cited in the thesis for this data point, which was published in 2020.",Takunju21,Table 4.13
-Input|Methanol,Output|Gasoline,2022,2.29,,t,1.0,MWh;LHV,,Soler22,Table 5
-Input|Methanol,Output|Gasoline,2020,2.564,,kg,1.0,kg,"Date based on the article cited in the thesis for this data point, which was published in 2020.",Takunju21,Table 4.13
-Input|Hydrogen,Output|Gasoline,2022,0.001,,t,1.0,MWh;LHV,,Soler22,Table 5
-Output|Gasoline,Input|Methanol,2025,0.88,,MWh;LHV,1.0,MWh;LHV,,Grahn22,Table 3
-Output|Gasoline,Input|Methanol,2040,0.88,,MWh;LHV,1.0,MWh;LHV,,Grahn22,Table 3
-Lifetime,,2022,30.0,,year,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler22,Table 94
+CAPEX,Output Capacity|Gasoline,2020,312.5,,EUR_2017,1.0,kW;LHV,"Cost basis was found in the Supplementary.",Schemme-2020,Table 3
+CAPEX,Output Capacity|Gasoline,2025,600.0,,EUR_2019,1.0,kW;LHV,,Grahn-2022,Table 3
+CAPEX,Output Capacity|Gasoline,2045,300.0,,EUR_2019,1.0,kW;LHV,,Grahn-2022,Table 3
+CAPEX,Output Capacity|Gasoline,2020.0,307.0,,EUR_2019,1.0,kW;LHV,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist. Cost basis mentionned on page 246.",Soler-2022,Table 94
+CAPEX,Output Capacity|Gasoline,2030.0,269.0,,EUR_2019,1.0,kW;LHV,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist. Cost basis mentionned on page 246.",Soler-2022,Table 94
+CAPEX,Output Capacity|Gasoline,2050.0,200.0,,EUR_2019,1.0,kW;LHV,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist. Cost basis mentionned on page 246.",Soler-2022,Table 94
+OPEX Fixed Relative,,2022,4.5,,percent,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler-2022,Table 94
+OPEX Fixed Relative,,2025,4.0,,percent,,,,Grahn-2022,Table 3
+OPEX Fixed Relative,,2040,4.0,,percent,,,,Grahn-2022,Table 3
+OPEX Variable,Output|Gasoline,2022,1350.0,,EUR_2019,1.0,GWh;LHV,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler-2022,Table 94
+Input|Electricity,Output|Gasoline,2022,0.2,,MWh,1.0,MWh;LHV,data given in the table as 0.71 MJ/kg. Converted manually by C.B to MWh/t. ,Soler-2022,Table 5
+Input|Electricity,Output|Gasoline,2020,0.229,,kWh,1.0,kg,"Date based on the article cited in the thesis for this data point, which was published in 2020.",Takunju-2021,Table 4.13
+Input|Methanol,Output|Gasoline,2022,2.29,,t,1.0,MWh;LHV,,Soler-2022,Table 5
+Input|Methanol,Output|Gasoline,2020,2.564,,kg,1.0,kg,"Date based on the article cited in the thesis for this data point, which was published in 2020.",Takunju-2021,Table 4.13
+Input|Hydrogen,Output|Gasoline,2022,0.001,,t,1.0,MWh;LHV,,Soler-2022,Table 5
+Output|Gasoline,Input|Methanol,2025,0.88,,MWh;LHV,1.0,MWh;LHV,,Grahn-2022,Table 3
+Output|Gasoline,Input|Methanol,2040,0.88,,MWh;LHV,1.0,MWh;LHV,,Grahn-2022,Table 3
+Lifetime,,2022,30.0,,year,,,"This source should be double-checked. It claims these numbers are taken from an IEA report, but no such numbers exist.",Soler-2022,Table 94

@@ -1,41 +1,41 @@
 variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Methanol,2014,#,496.5,,EUR_2014,1,metric_ton/a,,Perez-Fortes16,Table 3
-CAPEX,Output Capacity|Methanol,2018,#,209.5,,EUR_2018,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant.",Nyari20,Table A4
-CAPEX,Output Capacity|Methanol,2020,#,169,,EUR_2020,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant. No cost basis cited, assumed to be year of publication.",Bos20,Table S8
-CAPEX,Output Capacity|Methanol,2025,#,700,,EUR_2019,1,kW,,Grahn22,Table 3
-CAPEX,Output Capacity|Methanol,2040,#,300,,EUR_2019,1,kW,,Grahn22,Table 3
-OPEX Fixed,Output Capacity|Methanol,2014,#,11,,MEUR_2014/a,440,kilometric_ton/a,,Perez-Fortes16,Table 3
-OPEX Fixed,Output Capacity|Methanol,2018,Admin,0.94,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (0.45%), manually converted to OPEX FIxed. Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * om = 0.45% of TPC .",Nyari20,Table 5
-OPEX Fixed,Output Capacity|Methanol,2018,Operation & Maintenance,3.14,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (1.5%), manually converted to OPEX Fixed. Operation and maintenance. Percentage of the total plant cost (TPC)",Nyari20,Table 5
-OPEX Fixed,Output Capacity|Methanol,2018,Tax,2.10,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (1%), manually converted to OPEX Fixed. In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)",Nyari20,Table 5
-OPEX Fixed Relative,,2025,#,4,,percent,,,,Grahn22,Table 7
-OPEX Fixed Relative,,2040,#,4,,percent,,,,Grahn22,Table 7
-OPEX Variable,Output|Methanol,2014,#,11.6,,MEUR_2014,402,kilometric_ton,Utilities and consumables ammount to 4.1% of variable operating costs (Fig. 6). 4.1% of 283 MEUR is 11.6 MEUR (see Table 3). A plant of capacity 440 kt/a produces 402 kt in 8000 full-load hours.,Perez-Fortes16,"Table 3, Figure 6"
-OPEX Variable,Output|Methanol,2018,Labour,2.01,,EUR_2018,1,metric_ton,"Nyari misquotes the result from Collodi (2017). There are in fact 61 workers * 60 000 mean salary =3.66MEUR/a. Production of 5000 MTPD => 1.825e6 t/a.Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t ",Nyari20,Table 5
-OPEX Variable,Output|Methanol,2018,Admin,0.6,,EUR_2018,1,metric_ton,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * direct labour.Production of 5000 MTPD => 1.825e6 t/a. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t",Nyari20,Table 5
-Input|Electricity,Output|Methanol,2017,#,1.5,,MWh,1,metric_ton,,Bazzanella17,Section 4.4.3
-Input|Electricity,Output|Methanol,2020,#,1.07,,MJ,1,kg,"Value based on JEC 2020",Soler22,Table 3
-Input|Electricity,Output|Methanol,2019,#,25.4,,GJ,1,metric_ton,"Source includes electrolyser consumption. This line is masked.",IEA-FOH19,Assumptions annex
-Input|Electricity,Output|Methanol,2030,#,23.7,,GJ,1,metric_ton,"Source includes electrolyser consumption. This line is masked.",IEA-FOH19,Assumptions annex
-Input|Electricity,Output|Methanol,2018,#,0.175,,kWh,1,kg,,Nyari20,Table 6
-Input|Electricity,Output|Methanol,2018,#,0.067,,kWh,1,kWh,Found in supplementary information,Stolz22,Table 5
-Input|Electricity,Output|Methanol,2014,#,0.169,,MWh,1,metric_ton,,Perez-Fortes16,Table 1
-Input|Captured CO2,Output|Methanol,2014,#,1.46,,metric_ton,1,metric_ton,,Perez-Fortes16,Table 1
-Input|Captured CO2,Output|Methanol,2017,#,1.373,,metric_ton,1,metric_ton,,Bazzanella17,Section 4.4.3
-Input|Captured CO2,Output|Methanol,2015,#,1.4,,metric_ton,1,metric_ton,"Values based on Stefansson 2020",Soler22,Table 3
-Input|Captured CO2,Output|Methanol,2018,#,1.397,,metric_ton,1,metric_ton,,Nyari20,Table 6
-Input|Captured CO2,Output|Methanol,2018,#,0.27,,kg,1,kWh,Found in supplementary information,Stolz22,Table 5
-Input|Hydrogen,Output|Methanol,2014,#,0.199,,metric_ton,1,metric_ton,,Perez-Fortes16,Table 1
-Input|Hydrogen,Output|Methanol,2020,#,0.193,,metric_ton,1,metric_ton,"Values based on Stefansson 2020",Soler22,Table 3
-Input|Hydrogen,Output|Methanol,2017,#,189,,kg,1,metric_ton,,Bazzanella17,Section 4.4.3
-Input|Hydrogen,Output|Methanol,2018,#,0.192,,metric_ton,1,metric_ton,,Nyari20,Table 6
-Input|Hydrogen,Output|Methanol,2018,#,1.23,,kWh,1,kWh,Found in supplementary information,Stolz22,Table 5
-Output|Methanol,Input|Hydrogen,2025,#,0.84,,MWh,1,MWh,"84% process efficiency",Grahn22,Table 7
-Output|Methanol,Input|Hydrogen,2040,#,0.84,,MWh,1,MWh,"84% process efficiency",Grahn22,Table 7
-Output|Heat,Output|Methanol,2014,#,0.68,,MWh,1,metric_ton,,Perez-Fortes16,"Section 5, Page 727"
-Output|Heat,Output|Methanol,2018,#,0.086,,kWh,1,kWh,Found in supplementary information,Stolz22,Table 5
-Emissions|CO2,Output|Methanol,2018,#,0.023,,kg,1,kg,,Nyari20,Table 6
-Emissions|CO2,Output|Methanol,2014,#,0.09,,kg,1,kg,"Only direct emissions, no upstream emissions.",Perez-Fortes16,Table 4
-FLH,,2014,#,8000,,hour,,,,Perez-Fortes16,Section 3.1
-Lifetime,,,#,25,,year,1,metric_ton,,IEA-FOH19,Assumptions annex
-Lifetime,,2014,#,20,,year,1,metric_ton,,Perez-Fortes16,"Section 3.3, Page 723"
+CAPEX,Output Capacity|Methanol,2014,#,496.5,,EUR_2014,1,metric_ton/a,,Perez-Fortes-2016,Table 3
+CAPEX,Output Capacity|Methanol,2018,#,209.5,,EUR_2018,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant.",Nyari-2020,Table A4
+CAPEX,Output Capacity|Methanol,2020,#,169,,EUR_2020,1,metric_ton/a,"Calculated manually from: CAPEX = PEC * 6.32, (as stated in the paper) and 5kt/d plant. No cost basis cited, assumed to be year of publication.",Bos-2020,Table S8
+CAPEX,Output Capacity|Methanol,2025,#,700,,EUR_2019,1,kW,,Grahn-2022,Table 3
+CAPEX,Output Capacity|Methanol,2040,#,300,,EUR_2019,1,kW,,Grahn-2022,Table 3
+OPEX Fixed,Output Capacity|Methanol,2014,#,11,,MEUR_2014/a,440,kilometric_ton/a,,Perez-Fortes-2016,Table 3
+OPEX Fixed,Output Capacity|Methanol,2018,Admin,0.94,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (0.45%), manually converted to OPEX FIxed. Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * om = 0.45% of TPC .",Nyari-2020,Table 5
+OPEX Fixed,Output Capacity|Methanol,2018,Operation & Maintenance,3.14,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (1.5%), manually converted to OPEX Fixed. Operation and maintenance. Percentage of the total plant cost (TPC)",Nyari-2020,Table 5
+OPEX Fixed,Output Capacity|Methanol,2018,Tax,2.10,,EUR_2018/a,1,metric_ton/a,"Reported as OPEX Fixed relative (1%), manually converted to OPEX Fixed. In fact, this comprises insurance + taxes. Percentage of the total plant cost (TPC)",Nyari-2020,Table 5
+OPEX Fixed Relative,,2025,#,4,,percent,,,,Grahn-2022,Table 7
+OPEX Fixed Relative,,2040,#,4,,percent,,,,Grahn-2022,Table 7
+OPEX Variable,Output|Methanol,2014,#,11.6,,MEUR_2014,402,kilometric_ton,Utilities and consumables ammount to 4.1% of variable operating costs (Fig. 6). 4.1% of 283 MEUR is 11.6 MEUR (see Table 3). A plant of capacity 440 kt/a produces 402 kt in 8000 full-load hours.,Perez-Fortes-2016,"Table 3, Figure 6"
+OPEX Variable,Output|Methanol,2018,Labour,2.01,,EUR_2018,1,metric_ton,"Nyari misquotes the result from Collodi (2017). There are in fact 61 workers * 60 000 mean salary =3.66MEUR/a. Production of 5000 MTPD => 1.825e6 t/a.Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t ",Nyari-2020,Table 5
+OPEX Variable,Output|Methanol,2018,Admin,0.6,,EUR_2018,1,metric_ton,"Nyari misquotes the result from Collodi (2017). admin + overhead component = 30% * (direct_labour + om). Here we have only the 30% * direct labour.Production of 5000 MTPD => 1.825e6 t/a. Although it is quoted as a fixed OPEX cost, we give this as a vopex cost, since it is in EUR/t",Nyari-2020,Table 5
+Input|Electricity,Output|Methanol,2017,#,1.5,,MWh,1,metric_ton,,Bazzanella-2017,Section 4.4.3
+Input|Electricity,Output|Methanol,2020,#,1.07,,MJ,1,kg,"Value based on JEC 2020",Soler-2022,Table 3
+Input|Electricity,Output|Methanol,2019,#,25.4,,GJ,1,metric_ton,"Source includes electrolyser consumption. This line is masked.",IEA-FOH-2019,Assumptions annex
+Input|Electricity,Output|Methanol,2030,#,23.7,,GJ,1,metric_ton,"Source includes electrolyser consumption. This line is masked.",IEA-FOH-2019,Assumptions annex
+Input|Electricity,Output|Methanol,2018,#,0.175,,kWh,1,kg,,Nyari-2020,Table 6
+Input|Electricity,Output|Methanol,2018,#,0.067,,kWh,1,kWh,Found in supplementary information,Stolz-2022,Table 5
+Input|Electricity,Output|Methanol,2014,#,0.169,,MWh,1,metric_ton,,Perez-Fortes-2016,Table 1
+Input|Captured CO2,Output|Methanol,2014,#,1.46,,metric_ton,1,metric_ton,,Perez-Fortes-2016,Table 1
+Input|Captured CO2,Output|Methanol,2017,#,1.373,,metric_ton,1,metric_ton,,Bazzanella-2017,Section 4.4.3
+Input|Captured CO2,Output|Methanol,2015,#,1.4,,metric_ton,1,metric_ton,"Values based on Stefansson 2020",Soler-2022,Table 3
+Input|Captured CO2,Output|Methanol,2018,#,1.397,,metric_ton,1,metric_ton,,Nyari-2020,Table 6
+Input|Captured CO2,Output|Methanol,2018,#,0.27,,kg,1,kWh,Found in supplementary information,Stolz-2022,Table 5
+Input|Hydrogen,Output|Methanol,2014,#,0.199,,metric_ton,1,metric_ton,,Perez-Fortes-2016,Table 1
+Input|Hydrogen,Output|Methanol,2020,#,0.193,,metric_ton,1,metric_ton,"Values based on Stefansson 2020",Soler-2022,Table 3
+Input|Hydrogen,Output|Methanol,2017,#,189,,kg,1,metric_ton,,Bazzanella-2017,Section 4.4.3
+Input|Hydrogen,Output|Methanol,2018,#,0.192,,metric_ton,1,metric_ton,,Nyari-2020,Table 6
+Input|Hydrogen,Output|Methanol,2018,#,1.23,,kWh,1,kWh,Found in supplementary information,Stolz-2022,Table 5
+Output|Methanol,Input|Hydrogen,2025,#,0.84,,MWh,1,MWh,"84% process efficiency",Grahn-2022,Table 7
+Output|Methanol,Input|Hydrogen,2040,#,0.84,,MWh,1,MWh,"84% process efficiency",Grahn-2022,Table 7
+Output|Heat,Output|Methanol,2014,#,0.68,,MWh,1,metric_ton,,Perez-Fortes-2016,"Section 5, Page 727"
+Output|Heat,Output|Methanol,2018,#,0.086,,kWh,1,kWh,Found in supplementary information,Stolz-2022,Table 5
+Emissions|CO2,Output|Methanol,2018,#,0.023,,kg,1,kg,,Nyari-2020,Table 6
+Emissions|CO2,Output|Methanol,2014,#,0.09,,kg,1,kg,"Only direct emissions, no upstream emissions.",Perez-Fortes-2016,Table 4
+FLH,,2014,#,8000,,hour,,,,Perez-Fortes-2016,Section 3.1
+Lifetime,,,#,25,,year,1,metric_ton,,IEA-FOH-2019,Assumptions annex
+Lifetime,,2014,#,20,,year,1,metric_ton,,Perez-Fortes-2016,"Section 3.3, Page 723"

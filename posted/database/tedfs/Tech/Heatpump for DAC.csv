@@ -1,14 +1,14 @@
 variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Heat,2020,660.0,,EUR_2016,1.0,kW,,Fasihi19,Table 8
-CAPEX,Output Capacity|Heat,2030,590.0,,EUR_2016,1.0,kW,,Fasihi19,Table 8
-CAPEX,Output Capacity|Heat,2040,554.0,,EUR_2016,1.0,kW,,Fasihi19,Table 8
-CAPEX,Output Capacity|Heat,2050,530.0,,EUR_2016,1.0,kW,,Fasihi19,Table 8
-OPEX Fixed Relative,,*,2.0,,percent,,,,Fasihi19,Table 8
-OPEX Variable,Output|Heat,2020,0.0018,,EUR_2016,1.0,kWh,,Fasihi19,Table 8
-OPEX Variable,Output|Heat,2030,0.0017,,EUR_2016,1.0,kWh,,Fasihi19,Table 8
-OPEX Variable,Output|Heat,2040,0.00163,,EUR_2016,1.0,kWh,,Fasihi19,Table 8
-OPEX Variable,Output|Heat,2050,0.0016,,EUR_2016,1.0,kWh,,Fasihi19,Table 8
-Output|Heat,Input|Electricity,2020,3.0,,kWh,1.0,kWh,,Fasihi19,Table 8
-Output|Heat,Input|Electricity,2030,3.26,,MWh,1.0,kWh,,Fasihi19,Table 8
-Output|Heat,Input|Electricity,2040,3.41,,MWh,1.0,kWh,,Fasihi19,Table 8
-Output|Heat,Input|Electricity,2050,3.51,,MWh,1.0,kWh,,Fasihi19,Table 8
+CAPEX,Output Capacity|Heat,2020,660.0,,EUR_2016,1.0,kW,,Fasihi-2019,Table 8
+CAPEX,Output Capacity|Heat,2030,590.0,,EUR_2016,1.0,kW,,Fasihi-2019,Table 8
+CAPEX,Output Capacity|Heat,2040,554.0,,EUR_2016,1.0,kW,,Fasihi-2019,Table 8
+CAPEX,Output Capacity|Heat,2050,530.0,,EUR_2016,1.0,kW,,Fasihi-2019,Table 8
+OPEX Fixed Relative,,*,2.0,,percent,,,,Fasihi-2019,Table 8
+OPEX Variable,Output|Heat,2020,0.0018,,EUR_2016,1.0,kWh,,Fasihi-2019,Table 8
+OPEX Variable,Output|Heat,2030,0.0017,,EUR_2016,1.0,kWh,,Fasihi-2019,Table 8
+OPEX Variable,Output|Heat,2040,0.00163,,EUR_2016,1.0,kWh,,Fasihi-2019,Table 8
+OPEX Variable,Output|Heat,2050,0.0016,,EUR_2016,1.0,kWh,,Fasihi-2019,Table 8
+Output|Heat,Input|Electricity,2020,3.0,,kWh,1.0,kWh,,Fasihi-2019,Table 8
+Output|Heat,Input|Electricity,2030,3.26,,MWh,1.0,kWh,,Fasihi-2019,Table 8
+Output|Heat,Input|Electricity,2040,3.41,,MWh,1.0,kWh,,Fasihi-2019,Table 8
+Output|Heat,Input|Electricity,2050,3.51,,MWh,1.0,kWh,,Fasihi-2019,Table 8

@@ -1,7 +1,7 @@
 variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Ethylene,2017,#,967.24,,MEUR_2017,1,Mt/a,"Plant capacity is 1Mt/a as stated in abstract",Spallina17,"Table 6"
-Input|Naphtha,Output|Ethylene,2017,#,97.22,,kg/s,31.86,kg/s,,Spallina17,"Table 5"
-Input|Naphtha,Output|Propylene,2017,#,97.22,,kg/s,13.01,kg/s,,Spallina17,"Table 5"
-Input|Naphtha,Output|BTX,2017,#,97.22,,kg/s,17.48,kg/s,,Spallina17,"Table 5"
-Input|Electricity,Input|Naphtha,2017,#,62.17,,MW,97.22,kg/s,,Spallina17,"Table 5"
-Lifetime,,2017,#,25,,year,,,,Spallina17,"Table 8"
+CAPEX,Output Capacity|Ethylene,2017,#,967.24,,MEUR_2017,1,Mt/a,"Plant capacity is 1Mt/a as stated in abstract",Spallina-2017,"Table 6"
+Input|Naphtha,Output|Ethylene,2017,#,97.22,,kg/s,31.86,kg/s,,Spallina-2017,"Table 5"
+Input|Naphtha,Output|Propylene,2017,#,97.22,,kg/s,13.01,kg/s,,Spallina-2017,"Table 5"
+Input|Naphtha,Output|BTX,2017,#,97.22,,kg/s,17.48,kg/s,,Spallina-2017,"Table 5"
+Input|Electricity,Input|Naphtha,2017,#,62.17,,MW,97.22,kg/s,,Spallina-2017,"Table 5"
+Lifetime,,2017,#,25,,year,,,,Spallina-2017,"Table 8"
