@@ -2,21 +2,7 @@ from pathlib import Path
 from typing import Final
 from warnings import warn
 
-from units import ureg
-
-
-# Define path to public database.
-DATA_PATH: Final[Path] = (Path(__file__).parent / "database").resolve()
-
-# Define dictionary of databases. This can be extended by the user.
-databases = {
-    "public": DATA_PATH,
-}
-
-# Check that the public database exists.
-if not (DATA_PATH / ".anchor").exists():
-    del databases["public"]
-    warn("Could not find anchor of public database.", UserWarning)
+from cet_units import ureg
 
 
 # Define own warning and exceptions types.
@@ -28,6 +14,19 @@ class POSTEDWarning(UserWarning):
     pass
 
 
+# Define path to public database.
+DATA_PATH: Final[Path] = (Path(__file__).parent / "database").resolve()
+
+# Define dictionary of databases. This can be extended by the user.
+databases = {
+    "public": DATA_PATH,
+}
+
+# Check that the public database exists.
+if not DATA_PATH.is_dir():
+    del databases["public"]
+    warn("Could not find anchor of public database.", POSTEDWarning)
+
 # Define default settings.
 defaults = {
     "period": [2025],
@@ -35,19 +34,24 @@ defaults = {
 }
 
 # Define flow units.
-ureg.define_flows(["H2", "NG", "NH3", "MeOH", "H2O"])
+ureg.define_flows([
+    "crude_oil",
+    "coal",
+    "H2",
+    "H2O",
+    "MeOH",
+    "NG",
+    "NH3",
+    "O2",
+])
 
 # Expose module members.
-from .tedf import TEDF
-from .sources import load_sources
-from .formatting import format_sources
+from posted.noslag.tedf import TEDF
 
 __all__ = [
-    "TEDF",
-    "load_sources",
-    "format_sources",
     "databases",
     "defaults",
     "POSTEDException",
     "POSTEDWarning",
+    "TEDF",
 ]

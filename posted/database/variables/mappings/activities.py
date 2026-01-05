@@ -4,21 +4,53 @@ import numpy as np
 import pandas as pd
 from numpy.linalg import solve
 
-from units import Q, U
+from cet_units import Q
 
-from ....map_variables import AbstractVariableMapper
+from posted.noslag.mapping import AbstractVariableGroupMapper
 
 
-class ActivitiesMapper(AbstractVariableMapper):
-    def _prepare_warnings(self) -> dict[str, str]:
-        return {
-            "activities": "Cannot align activities on reference: "
-            + self._reference_activity,
-            "capacities": "Cannot align capacities on reference: "
-            + self._reference_capacity,
-            "tot_cap": "Cannot align total capacities on reference: "
-            + self._reference_capacity,
-        }
+class ActivitiesMapper(AbstractVariableGroupMapper):
+    _warning_types = {
+        "activities": "Cannot align activities on reference.",
+        "capacities": "Cannot align capacities on reference.",
+        "tot_cap": "Cannot align total capacities on reference.",
+    }
+
+    def _condition(self) -> pd.Series:
+        self._cond_activity = pd.concat(
+            [
+                self._df["variable"].str.match(pattern)
+                for pattern in self._activities
+            ],
+            axis=1,
+        ).any(axis=1)
+        self._cond_activity_change = self._cond_activity & (
+            self._df["reference_variable"] != self._reference_activity
+        )
+
+        self._cond_capacity = pd.concat(
+            [
+                self._df["variable"].str.match(pattern)
+                for pattern in self._capacities
+            ],
+            axis=1,
+        ).any(axis=1)
+        self._cond_capacity_change = self._cond_capacity & (
+            self._df["reference_variable"] != self._reference_capacity
+        )
+
+        self._cond_tot_capacity = self._df["variable"].str.match(
+            r"Total (Input|Output) Capacity\|"
+        )
+        self._cond_tot_capacity_change = self._cond_tot_capacity & (
+            self._df["variable"] != ("Total " + self._reference_capacity)
+        )
+
+        return (
+            self._cond_activity_change
+            | self._cond_capacity_change
+            | self._cond_tot_capacity_change
+        )
 
     def _prepare_units(self) -> None:
         if not (
@@ -26,7 +58,9 @@ class ActivitiesMapper(AbstractVariableMapper):
         ).any():
             return
         self._ref_cap_activity = sub(
-            r"(Input|Output) Capacity", r"\1", self._reference_capacity
+            r"(Input|Output) Capacity",
+            r"\1",
+            self._reference_capacity,
         )
         if self._ref_cap_activity not in self._units:
             return
@@ -41,43 +75,7 @@ class ActivitiesMapper(AbstractVariableMapper):
             .m
         )
 
-    def _condition(self, selected: pd.DataFrame) -> pd.Series:
-        self._cond_activity = pd.concat(
-            [
-                selected["variable"].str.match(pattern)
-                for pattern in self._activities
-            ],
-            axis=1,
-        ).any(axis=1)
-        self._cond_activity_change = self._cond_activity & (
-            selected["reference_variable"] != self._reference_activity
-        )
-
-        self._cond_capacity = pd.concat(
-            [
-                selected["variable"].str.match(pattern)
-                for pattern in self._capacities
-            ],
-            axis=1,
-        ).any(axis=1)
-        self._cond_capacity_change = self._cond_capacity & (
-            selected["reference_variable"] != self._reference_capacity
-        )
-
-        self._cond_tot_capacity = selected["variable"].str.match(
-            r"Total (Input|Output) Capacity\|"
-        )
-        self._cond_tot_capacity_change = self._cond_tot_capacity & (
-            selected["variable"] != ("Total " + self._reference_capacity)
-        )
-
-        return (
-            self._cond_activity_change
-            | self._cond_capacity_change
-            | self._cond_tot_capacity_change
-        )
-
-    def _map(self, group: pd.DataFrame, cond: pd.Series) -> pd.DataFrame:
+    def _map(self, group: pd.DataFrame, cond_group: pd.Series) -> pd.DataFrame:
         cond_activity = self._cond_activity.loc[group.index]
         cond_capacity_change = self._cond_capacity_change.loc[group.index]
         cond_tot_capacity_change = self._cond_tot_capacity_change.loc[
@@ -87,7 +85,7 @@ class ActivitiesMapper(AbstractVariableMapper):
         if not cond_activity.any():
             if cond_capacity_change.any():
                 self._add_warning("capacities", cond_capacity_change)
-            group.loc[cond, "value"] = np.nan
+            group.loc[cond_group, "value"] = np.nan
             return group
 
         df = group.loc[cond_activity]
@@ -116,10 +114,13 @@ class ActivitiesMapper(AbstractVariableMapper):
 
         try:
             # Try to solve the linear system to give harmonised activities.
-            harmonised_activities = solve(np.vstack([matrix, last_row]), inh)
+            harmonised_activities = solve(
+                np.vstack([matrix, last_row]),
+                inh,
+            )
         except Exception:
             harmonised_activities = None
-            self._add_warning("activities", cond)
+            self._add_warning("activities", cond_group)
             group.loc[cond_activity, "value"] = np.nan
         else:
             group.loc[cond_activity, "variable"] = df["variable"].where(
@@ -145,7 +146,8 @@ class ActivitiesMapper(AbstractVariableMapper):
 
                 try:
                     harmonised_activities = solve(
-                        np.vstack([matrix, last_row]), inh
+                        np.vstack([matrix, last_row]),
+                        inh,
                     )
                 except:
                     cond_cap = cond_capacity_change | cond_tot_capacity_change
@@ -168,7 +170,7 @@ class ActivitiesMapper(AbstractVariableMapper):
                     axis=1,
                 )
                 c = self._conv_factor_cap
-                group.loc[cond_capacity_change, "value"] /= a * b / c
+                group.loc[cond_capacity_change, "value"] *= a * b / c
                 group.loc[cond_capacity_change, "reference_variable"] = (
                     self._reference_capacity
                 )
@@ -181,14 +183,14 @@ class ActivitiesMapper(AbstractVariableMapper):
                     r"Total (Input|Output) Capacity", r"\1", regex=True
                 ).rename("from")
                 a = harmonised_activities[matrix.columns.get_indexer(act_vars)]
-                b = pd.concat([act_vars, cap_vars], axis=1).apply(
+                b = self._conv_factor_cap
+                c = pd.concat([act_vars, cap_vars], axis=1).apply(
                     lambda row: Q(self._units[row["from"]] + "/year")
                     .to(self._units[row["to"]])
                     .m,
                     axis=1,
                 )
-                c = self._conv_factor_cap
-                group.loc[cond_tot_capacity_change, "value"] *= a * b / c
+                group.loc[cond_tot_capacity_change, "value"] /= a * b / c
                 group.loc[cond_tot_capacity_change, "variable"] = (
                     "Total " + self._ref_cap_activity
                 )

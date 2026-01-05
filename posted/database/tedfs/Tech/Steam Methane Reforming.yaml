@@ -1,0 +1,24 @@
+columns:
+    subtech:
+        name: Subtechnology
+        description: Subtechnology
+        type: case
+        coded: True
+        codes:
+            SMR: Steam Methane Reforming
+            ATR: Autothermal Reforming
+    capture_rate:
+        name: Capture Rate
+        description: Share of produced CO2 that is captured and purified in the process
+        type: case
+        coded: False
+    period: period
+variables:
+    predefined:
+        - technology
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities

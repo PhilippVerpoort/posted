@@ -1,0 +1,19 @@
+source,source_detail,subtech,mode_h2,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+DEA-ELDH-2024,"Page 87 of 398, Document Page 87 of 398, Second Table, Column NGCC-CCS",CCGT CC,NG,2009,CAPEX,Output Capacity|Electricity,1.3,,MEUR_2008,1,MW,
+DEA-ELDH-2024,"Page 87 of 398, Document Page 87 of 398, Second Table, Column NGCC-CCS",CCGT CC,NG,2009,OPEX Fixed,Output Capacity|Electricity,38000,,EUR_2008/year,1,MW,
+DEA-ELDH-2024,"Page 87 of 398, Document Page 87 of 398, Second Table, Column NGCC-CCS",CCGT CC,NG,2009,OPEX Variable,Output|Electricity,0.9,,EUR_2008,1,MWh,
+DEA-ELDH-2024,"Page 88 of 398, Document Page 88 of 398, First Table",CCGT CC,NG,2030,Capture Rate,,90,,percent,,,Assuming same capture rate as for pulverized coal power plant.
+DEA-ELDH-2024,"Page 87 of 398, Document Page 87 of 398, First Table, Column NGCC-CCS",CCGT CC,NG,2030,Input|Natural Gas,Output|Electricity,1,,kWh_NG_LHV,0.46,kWh,
+Oberg-2022,"Page 18 of 21, Document Page 641, Appendix A, Table A.1, Natural Gas CCGT",CCGT conventional,NG,"2030, 2040, 2050",CAPEX,Output Capacity|Electricity,932,,EUR_2018,1,kW,
+Oberg-2022,"Page 18 of 21, Document Page 641, Appendix A, Table A.1, Natural Gas CCGT",CCGT conventional,NG,"2030, 2040, 2050",OPEX Fixed,Output Capacity|Electricity,17.3,,EUR_2018/a,1,kW,
+Oberg-2022,"Page 6 of 21, Document Page 629, Main Text",CCGT conventional,NG,"2030, 2040, 2050",Input|Natural Gas,Output|Electricity,1,,kWh_NG_LHV,0.6,kWh,Assuming efficiency of 60% according to source.
+Oberg-2022,"Page 18 of 21, Document Page 641, Appendix A, Table A.1, Natural Gas CCS",CCGT CC,NG,2030,CAPEX,Output Capacity|Electricity,2097,,EUR_2018,1,kW,
+Oberg-2022,"Page 18 of 21, Document Page 641, Appendix A, Table A.1, Natural Gas CCS",CCGT CC,NG,2040,CAPEX,Output Capacity|Electricity,1780,,EUR_2018,1,kW,
+Oberg-2022,"Page 18 of 21, Document Page 641, Appendix A, Table A.1, Natural Gas CCS",CCGT CC,NG,2050,CAPEX,Output Capacity|Electricity,1626,,EUR_2018,1,kW,
+Oberg-2022,"Page 18 of 21, Document Page 641, Appendix A, Table A.1, Natural Gas CCS",CCGT CC,NG,"2030, 2040, 2050",OPEX Fixed,Output Capacity|Electricity,40.3,,EUR_2018/a,1,kW,
+Oberg-2022,"Page 7 of 21, Document Page 630, Table 3, Hydrogen Mix 100%",CCGT H2-ready,"NG, H2","2030, 2040, 2050",CAPEX,Output Capacity|Electricity,1071.8,,EUR_2018,1,kW,115% of base CAPEX for new 100% H2-ready plant.
+Oberg-2022,"Page 18 of 21, Document Page 641, Appendix A, Table A.1, Natural Gas CCGT",CCGT H2-ready,"NG, H2","2030, 2040, 2050",OPEX Fixed,Output Capacity|Electricity,17.3,,EUR_2018/a,1,kW,Assuming the same Fixed OPEX since not otherwise stated by source.
+Oberg-2022,"Page 6 of 21, Document Page 629, Main Text",CCGT H2-ready,NG,"2030, 2040, 2050",Input|Natural Gas,Output|Electricity,1,,kWh_NG_LHV,0.6,kWh,Assuming same efficiency across hydrogen and natural gas on a lower heating value basis.
+Oberg-2022,"Page 6 of 21, Document Page 629, Main Text",CCGT H2-ready,NG,"2030, 2040, 2050",Input|Hydrogen,Output|Electricity,0,,kWh_H2_LHV,1,kWh,Assuming same efficiency across hydrogen and natural gas on a lower heating value basis.
+Oberg-2022,"Page 6 of 21, Document Page 629, Main Text",CCGT H2-ready,H2,"2030, 2040, 2050",Input|Natural Gas,Output|Electricity,0,,kWh_NG_LHV,1,kWh,Assuming same efficiency across hydrogen and natural gas on a lower heating value basis.
+Oberg-2022,"Page 6 of 21, Document Page 629, Main Text",CCGT H2-ready,H2,"2030, 2040, 2050",Input|Hydrogen,Output|Electricity,1,,kWh_H2_LHV,0.6,kWh,Assuming same efficiency across hydrogen and natural gas on a lower heating value basis.

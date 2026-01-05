@@ -1,0 +1,5 @@
+source,source_detail,variable,value,uncertainty,unit
+IPCC-EFDB-NY,"EF ID 117642. 2006 IPCC default.
+",Natural Gas|Direct|CO2,56100,,kg CO2 / TJ_NG_LHV
+IPCC-EFDB-NY,EF ID 117604. 2006 IPCC default.,Crude Oil|Direct|CO2,73300,,kg CO2 / TJ_crude_oil_LHV
+IPCC-EFDB-NY,EF ID 117630 (Sub-Bituminous Coal). 2006 IPCC default.,Coal|Direct|CO2,94600,,kg CO2 / TJ_coal_LHV

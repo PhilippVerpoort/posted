@@ -23,7 +23,7 @@ theme:
   icon:
     repo: fontawesome/brands/github
   name: material
-  # custom_dir: docs/overrides
+  custom_dir: docs/overrides
   palette:
   - scheme: default
     toggle:
@@ -36,14 +36,16 @@ theme:
 
 extra:
   version:
+    default: latest
     provider: mike
+    alias: true
 
 extra_css:
   - assets/css/extra.css
   - assets/css/theme-toggle.css
 
 extra_javascript:
-- javascripts/mathjax.js
+- assets/js/plotly-theme.js
 - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
 markdown_extensions:
@@ -66,10 +68,10 @@ plugins:
     filename: docs/nav.yaml
 - mkdocs-jupyter:
     execute: false
-    allow_errors: false
-    include_requirejs: true
-    show_input: False
-    no_input: True
+    show_input: false
+    no_input: true
+    include: ["*.ipynb"]
+    include_source: true
 - markdown-exec
 - search
 - mkdocstrings:

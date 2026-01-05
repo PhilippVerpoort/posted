@@ -1,8 +1,7 @@
-variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Ammonia,2015,#,670.0,,EUR,1,t/a,,Bazzanella-2017,Table 35
-OPEX Variable,Output|Ammonia,2015,#,100.0,,EUR,1,t,,Bazzanella-2017,Table 35
-Input|Electricity,Output|Ammonia,2021,#,0.3,,GJ,1,t,,IEA-Ammonia-2021,Table 1.2
-Input|Fossil Gas,Output|Ammonia,2021,Feedstock,21.0,,GJ;LHV,1,t,,IEA-Ammonia-2021,Table 1.2
-Input|Fossil Gas,Output|Ammonia,2021,Fuel,11.1,,GJ;LHV,1,t,,IEA-Ammonia-2021,Table 1.2
-Input|Fossil Gas,Output|Ammonia,2007,#,27.6,2.1,GJ;LHV,1,t,"Lower bound",EUComm-2007,Table 2.14
-Input|Fossil Gas,Output|Ammonia,2007,#,31.8,2.1,GJ;LHV,1,t,"Higher bound",EUComm-2007,Table 2.14
+source,source_detail,component,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+Bazzanella-2017,Table 35,#,2015,CAPEX,Output Capacity|Ammonia,670.0,,EUR_2017,1,t_NH3/year,
+Bazzanella-2017,Table 35,#,2015,OPEX Variable,Output|Ammonia,100.0,,EUR_2017,1,t_NH3,
+IEA-Ammonia-2021,Table 1.2,#,2021,Input|Electricity,Output|Ammonia,0.3,,GJ,1,t_NH3,
+IEA-Ammonia-2021,Table 1.2,Feedstock,2021,Input|Natural Gas,Output|Ammonia,21.0,,GJ_NG_LHV,1,t_NH3,
+IEA-Ammonia-2021,Table 1.2,Fuel,2021,Input|Natural Gas,Output|Ammonia,11.1,,GJ_NG_LHV,1,t_NH3,
+EUComm-2007,Table 2.14,#,2007,Input|Natural Gas,Output|Ammonia,29.7,2.1,GJ_NG_LHV,1,t_NH3,Lower bound

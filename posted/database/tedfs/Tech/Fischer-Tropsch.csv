@@ -1,25 +1,25 @@
-variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Fischer-Tropsch Fuel,2019.0,890.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report. Given in kW_liquid",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-CAPEX,Output Capacity|Fischer-Tropsch Fuel,2030.0,760.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report. Given in kW_liquid",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-CAPEX,Output Capacity|Fischer-Tropsch Fuel,2050.0,565.0,,USD_2017,1.0,kW;LHV,"See ""Assumptions"" of the report. Given in kW_liquid. Stated to be long-term assumption, interpreted to be for 2050.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-CAPEX,Output Capacity|Fischer-Tropsch Fuel,2020.0,1011.0,,EUR_2017,1.0,kW;LHV,"Numbers taken from the IEA-FOH-2019 assumptions file",Buchenberg-2023, Table 1
-CAPEX,Output Capacity|Fischer-Tropsch Fuel,2030.0,864.0,,EUR_2017,1.0,kW;LHV,"Numbers taken from the IEA-FOH-2019 assumptions file",Buchenberg-2023, Table 1
-CAPEX,Output Capacity|Fischer-Tropsch Fuel,2050.0,642.0,,EUR_2017,1.0,kW;LHV,"Numbers taken from the IEA-FOH-2019 assumptions file",Buchenberg-2023, Table 1
-CAPEX,Output Capacity|Fischer-Tropsch Fuel,2030.0,0.73,,MEUR_2021,1.0,MW;LHV,,Korberg-2021, Table 1
-OPEX Fixed Relative,,2023,4.0,,percent,,,"Numbers taken from the IEA-FOH-2019 assumptions file",Buchenberg-2023, Table 1
-OPEX Fixed Relative,Output Capacity|Fischer-Tropsch Fuel,2030.0,4.0,,percent,,,,Korberg-2021, Table 1
-OPEX Fixed Relative,,2019,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-OPEX Fixed Relative,,2030,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-OPEX Fixed Relative,,2050,4.0,,percent,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Lifetime,,2019,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Lifetime,,2030,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Lifetime,,2050,30.0,,year,,,"See ""Assumptions"" of the report.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Lifetime,,2023,25.0,,year,,,"Numbers taken from the IEA-FOH-2019 assumptions file, but incorrectly reported",Buchenberg-2023, Table 1
-Lifetime,,2030,25.0,,year,,,,Korberg-2021, Table 1
-Output|Fischer-Tropsch Fuel,Input|Hydrogen,2030.0,0.73,,MJ,1.0,MJ;LHV,"Given as a percentage in the source (73%)",Korberg-2021, Table 1
-Input|Electricity,Output|Fischer-Tropsch Fuel,2019.0,0.018,,GJ,1.0,GJ;LHV,"See ""Assumptions"" of the report.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Input|Electricity,Output|Fischer-Tropsch Fuel,2030.0,0.018,,GJ,1.0,GJ;LHV,"See ""Assumptions"" of the report.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Input|Electricity,Output|Fischer-Tropsch Fuel,2050.0,0.018,,GJ,1.0,GJ;LHV,"See ""Assumptions"" of the report. Table states this is the long-term assumption, which we assume to be 2050.",IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Output|Fischer-Tropsch Fuel,Input|Hydrogen,2019,73.0,,pct MWh;LHV,100.0,pct MWh;LHV,H2 to liquid efficiency,IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Output|Fischer-Tropsch Fuel,Input|Hydrogen,2030,73.0,,pct MWh;LHV,100.0,pct MWh;LHV,H2 to liquid efficiency,IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
-Output|Fischer-Tropsch Fuel,Input|Hydrogen,2050,73.0,,pct MWh;LHV,100.0,pct MWh;LHV,H2 to liquid efficiency,IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table"
+source,source_detail,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2019,CAPEX,Output Capacity|Fischer-Tropsch Fuel,890.0,,USD_2017,1.0,kW,"See ""Assumptions"" of the report. Given in kW_liquid"
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2030,CAPEX,Output Capacity|Fischer-Tropsch Fuel,760.0,,USD_2017,1.0,kW,"See ""Assumptions"" of the report. Given in kW_liquid"
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2050,CAPEX,Output Capacity|Fischer-Tropsch Fuel,565.0,,USD_2017,1.0,kW,"See ""Assumptions"" of the report. Given in kW_liquid. Stated to be long-term assumption, interpreted to be for 2050."
+Buchenberg-2023, Table 1,2020,CAPEX,Output Capacity|Fischer-Tropsch Fuel,1011.0,,EUR_2017,1.0,kW,Numbers taken from the IEA-FOH-2019 assumptions file
+Buchenberg-2023, Table 1,2030,CAPEX,Output Capacity|Fischer-Tropsch Fuel,864.0,,EUR_2017,1.0,kW,Numbers taken from the IEA-FOH-2019 assumptions file
+Buchenberg-2023, Table 1,2050,CAPEX,Output Capacity|Fischer-Tropsch Fuel,642.0,,EUR_2017,1.0,kW,Numbers taken from the IEA-FOH-2019 assumptions file
+Korberg-2021, Table 1,2030,CAPEX,Output Capacity|Fischer-Tropsch Fuel,0.73,,MEUR_2021,1.0,MW,
+Buchenberg-2023, Table 1,2023,OPEX Fixed Relative,,4.0,,percent,,,Numbers taken from the IEA-FOH-2019 assumptions file
+Korberg-2021, Table 1,2030,OPEX Fixed Relative,,4.0,,percent,,,
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2019,OPEX Fixed Relative,,4.0,,percent,,,"See ""Assumptions"" of the report."
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2030,OPEX Fixed Relative,,4.0,,percent,,,"See ""Assumptions"" of the report."
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2050,OPEX Fixed Relative,,4.0,,percent,,,"See ""Assumptions"" of the report."
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2019,Lifetime,,30.0,,year,,,"See ""Assumptions"" of the report."
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2030,Lifetime,,30.0,,year,,,"See ""Assumptions"" of the report."
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2050,Lifetime,,30.0,,year,,,"See ""Assumptions"" of the report."
+Buchenberg-2023, Table 1,2023,Lifetime,,25.0,,year,,,"Numbers taken from the IEA-FOH-2019 assumptions file, but incorrectly reported"
+Korberg-2021, Table 1,2030,Lifetime,,25.0,,year,,,
+Korberg-2021, Table 1,2030,Output|Fischer-Tropsch Fuel,Input|Hydrogen,0.73,,MJ,1.0,MJ_H2_LHV,Given as a percentage in the source (73%)
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2019,Input|Electricity,Output|Fischer-Tropsch Fuel,0.018,,GJ,1.0,GJ,"See ""Assumptions"" of the report."
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2030,Input|Electricity,Output|Fischer-Tropsch Fuel,0.018,,GJ,1.0,GJ,"See ""Assumptions"" of the report."
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2050,Input|Electricity,Output|Fischer-Tropsch Fuel,0.018,,GJ,1.0,GJ,"See ""Assumptions"" of the report. Table states this is the long-term assumption, which we assume to be 2050."
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2019,Output|Fischer-Tropsch Fuel,Input|Hydrogen,73.0,,percent MWh,100.0,percent MWh_H2_LHV,H2 to liquid efficiency
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2030,Output|Fischer-Tropsch Fuel,Input|Hydrogen,73.0,,percent MWh,100.0,percent MWh_H2_LHV,H2 to liquid efficiency
+IEA-FOH-2019,"Assumptions file, Fischer-Tropsch table",2050,Output|Fischer-Tropsch Fuel,Input|Hydrogen,73.0,,percent MWh,100.0,percent MWh_H2_LHV,H2 to liquid efficiency

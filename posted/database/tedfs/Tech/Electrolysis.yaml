@@ -17,3 +17,9 @@ columns:
 variables:
     predefined:
         - technology
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities

@@ -1,0 +1,24 @@
+source,source_detail,component,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+ArnaizDelPozo-2022,"Supplementary Information, Table 2",#,2022,CAPEX,Output Capacity|Ammonia,643.0,,EUR_2020,1.0,kW_NH3_LHV,"As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value."
+Ikaheimo-2018,"Page 7, Table 3",#,2018,CAPEX,Output Capacity|Ammonia,870.0,,EUR_2018,1.0,kW_NH3_LHV,"Cost basis not given in the paper, assumed to be 2018."
+Grahn-2022,Table 7,#,2025,CAPEX,Output Capacity|Ammonia,1400,,EUR_2019,1.0,kW_NH3_LHV,"Error in Table 7, units are given in EUR/MW. Table 3 contradicts this"
+Grahn-2022,Table 7,#,2040,CAPEX,Output Capacity|Ammonia,850,,EUR_2019,1.0,kW_NH3_LHV,"Error in Table 7, units are given in EUR/MW. Table 3 contradicts this"
+ArnaizDelPozo-2022,"Supplementary Information, Table 2",#,2022,OPEX Fixed Relative,,3.0,,percent,,,
+Grahn-2022,Table7,#,2025,OPEX Fixed Relative,,4.0,,percent,,,
+Grahn-2022,Table7,#,2040,OPEX Fixed Relative,,4.0,,percent,,,
+Ikaheimo-2018,"Page 7, Table 3",#,2018,OPEX Fixed,Output Capacity|Ammonia,17.0,,EUR_2018/year,1.0,kW_NH3_LHV,"Cost basis not given in the paper, assumed to be 2018."
+ArnaizDelPozo-2022,"Supplementary Information, Table 2",#,2022,OPEX Variable,Output|Ammonia,0.6,,EUR_2020,1.0,MWh_NH3_LHV,"Includes Ammonia catalyst and make up water. Wrongly reported as EUR/kWh, is EUR/MWh according to the Authors' excel worksheets. As stated in Section 2.4.1, the ammonia output of the plant is measured in units of its lower heating value."
+Matzen-2015,Page 9 / Table 13,#,2015,Input|Hydrogen,Output|Ammonia,0.178,,t_H2,1.0,t_NH3,
+Stolz-2022,Table 5,#,2018,Input|Hydrogen,Output|Ammonia,1.148,,kWh_H2_LHV,1,kWh_NH3_LHV,Found in supplementary information
+Matzen-2015,Page 8 / Table 9,Air-separation unit,2015,Input|Electricity,Output|Ammonia,3.1,,MJ,1.19,kg_NH3,"This source claims 3.1 MJ/kg electricity denand for the ASU. Assuming a nitrogen demand of 0.84 tonnes per tonne of ammonia, this amounts of an electricity demand of 3.1×0.85 GJ per tonne of ammonia."
+GrinbergDana-2016,Supplementary Table 4,Air-separation unit,2016,Input|Electricity,Output|Ammonia,0.18,,GJ,1.0,t_NH3,
+GrinbergDana-2016,Supplementary Table 4,Synthesis process,2016,Input|Electricity,Output|Ammonia,1.6,,GJ,1.0,t_NH3,
+Morgan-2014,,Air-separation unit,2014,Input|Electricity,Output|Ammonia,108.0,,kWh,1.19,t_NH3,"This line is masked later down the line, as not found in the original source (input error?)"
+Morgan-2014,,Synthesis process,2014,Input|Electricity,Output|Ammonia,0.4,,MWh,1.0,t_NH3,"his line is masked later down the line, as not found in the original source (input error?)"
+Ikaheimo-2018,Page 4,#,2018,Input|Electricity,Output|Ammonia,0.64,,MWh,1.0,t_NH3,
+Bazzanella-2017,"Page 56, Section 4.2.2",Compressors,2017,Input|Electricity,Output|Ammonia,5.2,1.3,GJ,1.0,t_NH3,
+Bazzanella-2017,"Page 57, Section 4.2.3",Air-separation unit,2017,Input|Electricity,Output|Ammonia,0.33,,MWh,1.0,t_NH3,
+Stolz-2022,Table 5,H2 compression and others,2018,Input|Electricity,Output|Ammonia,0.063,,kWh,1,kWh_NH3_LHV,Found in supplementary information
+Stolz-2022,Table 5,Air-separation unit,2018,Input|Electricity,Output|Ammonia,0.0258,0.00005,kWh,1,kWh_NH3_LHV,Data found in supplementary information. Manually calculated from 0.162 kWh/kg Nitrogen and 0.159kg nitrogen/kWh ammonia.
+Grahn-2022,Table 7,#,2025,Output|Ammonia,Input|Hydrogen,0.79,,kWh_NH3_LHV,1.0,kWh_H2_LHV,
+Grahn-2022,Table 7,#,2040,Output|Ammonia,Input|Hydrogen,0.79,,kWh_NH3_LHV,1.0,kWh_H2_LHV,

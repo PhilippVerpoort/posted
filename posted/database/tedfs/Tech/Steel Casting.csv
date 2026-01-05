@@ -1,7 +1,7 @@
-variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
-CAPEX,Output Capacity|Steel Slab,2013,195.0,,MUSD_2010,4.3,Mt/a,,IEA-GHG-2013,Tables 1 and 5
-Input|Electricity,Output|Steel Slab,2013,10.3,,kWh,1.0,t,,IEA-GHG-2013,Table D-13
-Input|Heat,Output|Steel Slab,2013,22.0,,MJ,1.0,t,Assuming 20MJ/Nm³ for caloric heating value of COG.,IEA-GHG-2013,Table D-13
-Input|Electricity,Output|Steel Slab,2013,0.03,,GJ,1.0,t,,Worrell-2007,Table 2.1.5
-Input|Heat,Output|Steel Slab,2013,0.03,,GJ,1.0,t,,Worrell-2007,Table 2.1.5
-Input|Steel Liquid,Output|Steel Slab,2013,1032.0,,kg,1.0,t,,IEA-GHG-2013,Table D-13
+source,source_detail,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+IEA-GHG-2013,Tables 1 and 5,2013,CAPEX,Output Capacity|Steel Slab,195,,MUSD_2010,4.3,Mt/a,
+IEA-GHG-2013,Table D-13,2013,Input|Electricity,Output|Steel Slab,10.3,,kWh,1,t,
+IEA-GHG-2013,Table D-13,2013,Input|Heat,Output|Steel Slab,22,,MJ,1,t,Assuming 20MJ/Nm³ for caloric heating value of COG.
+Worrell-2007,Table 2.1.5,2013,Input|Electricity,Output|Steel Slab,0.03,,GJ,1,t,
+Worrell-2007,Table 2.1.5,2013,Input|Heat,Output|Steel Slab,0.03,,GJ,1,t,
+IEA-GHG-2013,Table D-13,2013,Input|Steel Liquid,Output|Steel Slab,1032,,kg,1,t,

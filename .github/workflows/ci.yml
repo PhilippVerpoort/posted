@@ -29,7 +29,15 @@ jobs:
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Sync dependencies
+      - name: Sync dependencies for unit tests
+        run: |
+          uv sync
+
+      - name: Run unit tests
+        run: |
+          uv run python -m unittest discover -v
+
+      - name: Sync dependencies for ruff
         run: |
           uv sync --group dev
 
@@ -43,15 +51,15 @@ jobs:
 
       - name: Sync dependencies
         run: |
-          uv sync --group generate
-
-      - name: Run unit tests
-        run: |
-          uv run python -m unittest discover -v
-
-      - name: Sync dependencies
-        run: |
           uv sync --group docs
+
+      - name: Register docs kernel
+        run: |
+          uv run scripts/register_docs_kernel.py
+
+      - name: Execute Jupyter notebooks
+        run: |
+          BUILD_POSTED_DOCS=1 uv run jupytext --to notebook --execute docs/data/*.py
 
       - name: Build documentation
         run: |
