@@ -1,0 +1,10 @@
+append_unmatched: false
+use_index_title: true
+
+nav:
+- Home: index.md
+- Installation: installation.md
+- Methodology: methodology.md
+- Data:
+    - "Data/*.ipynb"
+- Sources: sources.md

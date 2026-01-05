@@ -1,0 +1,943 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://philippverpoort.github.io/posted/latest/sources/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/logos/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Sources - POSTED Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_markdown_exec_pyodide.css">
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../assets/css/extra.css">
+    
+      <link rel="stylesheet" href="../assets/css/theme-toggle.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="POSTED Documentation" class="md-header__button md-logo" aria-label="POSTED Documentation" data-md-component="logo">
+      
+  <img src="../assets/logos/logo-header.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            POSTED Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sources
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/PhilippVerpoort/posted/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    POSTED
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sources
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="POSTED Documentation" class="md-nav__button md-logo" aria-label="POSTED Documentation" data-md-component="logo">
+      
+  <img src="../assets/logos/logo-header.svg" alt="logo">
+
+    </a>
+    POSTED Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/PhilippVerpoort/posted/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    POSTED
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+  
+
+
+
+  
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+  
+  
+
+
+  <h1>Sources</h1>
+
+<p>This page contains bibliographic information for the sources referenced in the <code>source</code> column of the techno-economic data files.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Identifier</th>
+<th style="text-align: left;">Bibliographic information</th>
+<th style="text-align: left;">Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><p id="Abdin-2022"><a href="../sources/#Abdin-2022">Abdin-2022</a></p></td>
+<td style="text-align: left;">Zainul Abdin, Kaveh Khalilpour, and Kylie Catchpole. <span class="bibtex-protected">Projecting the levelized cost of large scale hydrogen storage for stationary applications</span>. <em>Energy Conversion and Management</em>, 270:116241, 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.enconman.2022.116241"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Agora-Energiewende-2022"><a href="../sources/#Agora-Energiewende-2022">Agora-Energiewende-2022</a></p></td>
+<td style="text-align: left;"><span class="bibtex-protected">Agora Energiewende</span>, <span class="bibtex-protected">FutureCamp</span>, and <span class="bibtex-protected">Wuppertal Institut</span>. <span class="bibtex-protected">Klimaschutzvertr<span class="bibtex-protected">ä</span>ge f<span class="bibtex-protected">ü</span>r die Industrietransformation: Rechner f<span class="bibtex-protected">ü</span>r die Absch<span class="bibtex-protected">ä</span>tzung der Transformationskosten einer klimafreundlichen Prim<span class="bibtex-protected">ä</span>rstahlproduktion</span>. 2022. Version 1.1.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.agora-industrie.de/publikationen/klimaschutzvertraege-fuer-die-industrietransformation-stahl"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Al-Qahtani-2021"><a href="../sources/#Al-Qahtani-2021">Al-Qahtani-2021</a></p></td>
+<td style="text-align: left;">Amjad Al-Qahtani, Brett Parkinson, Klaus Hellgardt, Nilay Shah, and Gonzalo Guillen-Gosalbez. <span class="bibtex-protected">Uncovering the true cost of hydrogen production routes using life cycle monetisation</span>. <em>Applied Energy</em>, 281:115958, Jan 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.apenergy.2020.115958"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="ArnaizDelPozo-2022"><a href="../sources/#ArnaizDelPozo-2022">ArnaizDelPozo-2022</a></p></td>
+<td style="text-align: left;">Carlos <span class="bibtex-protected">Arnaiz del Pozo</span> and Schalk Cloete. <span class="bibtex-protected">Techno-economic assessment of blue and green ammonia as energy carriers in a low-carbon future</span>. <em>Energy Conversion and Management</em>, 255:115312, Mar 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.enconman.2022.115312"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Bazzanella-2017"><a href="../sources/#Bazzanella-2017">Bazzanella-2017</a></p></td>
+<td style="text-align: left;">Alexis&nbsp;Michael Bazzanella and Florian Ausfelder. <span class="bibtex-protected">Low carbon energy and feedstock for the European chemical industry</span>. Technical Report, German Society for Chemical Engineering and Biotechnology (DECHEMA) and released by the European Chemical Industry Council (Cefic), 2017.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://dechema.de/en/Low_carbon_chemical_industry-path-123212,124930.html"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Bos-2020"><a href="../sources/#Bos-2020">Bos-2020</a></p></td>
+<td style="text-align: left;">M.J. Bos, S.R.A. Kersten, and D.W.F. Brilman. <span class="bibtex-protected">Wind power to methanol: Renewable methanol production using electricity, electrolysis of water and CO2 air capture</span>. <em>Applied Energy</em>, 264:114672, 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.apenergy.2020.114672"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Boundy-2011"><a href="../sources/#Boundy-2011">Boundy-2011</a></p></td>
+<td style="text-align: left;">Robert&nbsp;Gary Boundy, Susan&nbsp;W Diegel, Lynn&nbsp;L Wright, and Stacy&nbsp;Cagle Davis. <em><span class="bibtex-protected">Biomass Energy Data Book: Edition 4</span></em>. Oak Ridge National Laboratory, 2011.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.2172/1050890"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Brandle-2021"><a href="../sources/#Brandle-2021">Brandle-2021</a></p></td>
+<td style="text-align: left;">Gregor Br<span class="bibtex-protected">ä</span>ndle, Max Sch<span class="bibtex-protected">ö</span>nfisch, and Simon Schulte. <span class="bibtex-protected">Estimating long-term global supply costs for low-carbon hydrogen</span>. <em>Applied Energy</em>, 302:117481, Nov 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.apenergy.2021.117481"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Buchenberg-2023"><a href="../sources/#Buchenberg-2023">Buchenberg-2023</a></p></td>
+<td style="text-align: left;">Patrick Buchenberg, Thushara Addanki, David Franzmann, Christoph Winkler, Felix Lippkau, Thomas Hamacher, Philipp Kuhn, Heidi Heinrichs, and Markus Blesl. <span class="bibtex-protected">Global Potentials and Costs of Synfuels via Fischer&amp;ndash;Tropsch Process</span>. <em>Energies</em>, 2023.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.mdpi.com/1996-1073/16/4/1976"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Connelly-2019"><a href="../sources/#Connelly-2019">Connelly-2019</a></p></td>
+<td style="text-align: left;">Elizabeth Connelly, Michael Penev, Amgad Elgowainy, and Chad Hunter. <span class="bibtex-protected">Current <span class="bibtex-protected">Status</span> of <span class="bibtex-protected">Hydrogen</span> <span class="bibtex-protected">Liquefaction</span> <span class="bibtex-protected">Costs</span></span>. Technical Report, DOE, 2019.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="DEA-TDRF-2023"><a href="../sources/#DEA-TDRF-2023">DEA-TDRF-2023</a></p></td>
+<td style="text-align: left;"><span class="bibtex-protected">Danish Energy Agency</span>. <span class="bibtex-protected">Technology Data for Renewable Fuels</span>. Aug 2023.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://ens.dk/en/our-services/projections-and-models/technology-data/technology-data-renewable-fuels"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="DeLena-2019"><a href="../sources/#DeLena-2019">DeLena-2019</a></p></td>
+<td style="text-align: left;">Edoardo <span class="bibtex-protected">De Lena</span>, Maurizio Spinelli, Manuele Gatti, Roberto Scaccabarozzi, Stefano Campanari, Stefano Consonni, Giovanni Cinti, and Matteo&nbsp;C. Romano. <span class="bibtex-protected">Techno-economic analysis of calcium looping processes for low <span class="bibtex-protected">CO2</span> emission cement plants</span>. <em>International Journal of Greenhouse Gas Control</em>, 82:244–260, March 2019.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.ijggc.2019.01.005"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Devlin-2022"><a href="../sources/#Devlin-2022">Devlin-2022</a></p></td>
+<td style="text-align: left;">Alexandra Devlin and Aidong Yang. <span class="bibtex-protected">Regional supply chains for decarbonising steel: Energy efficiency and green premium mitigation</span>. <em>Energy Conversion and Management</em>, 254:115268, Feb 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.enconman.2022.115268"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Dutta-2019"><a href="../sources/#Dutta-2019">Dutta-2019</a></p></td>
+<td style="text-align: left;">Arnab Dutta, Iftekhar&nbsp;A. Karimi, and Shamsuzzaman Farooq. <span class="bibtex-protected">Technoeconomic <span class="bibtex-protected">Perspective</span> on <span class="bibtex-protected">Natural</span> <span class="bibtex-protected">Gas</span> <span class="bibtex-protected">Liquids</span> and <span class="bibtex-protected">Methanol</span> as <span class="bibtex-protected">Potential</span> <span class="bibtex-protected">Feedstocks</span> for <span class="bibtex-protected">Producing</span> <span class="bibtex-protected">Olefins</span></span>. <em>Industrial &amp; Engineering Chemistry Research</em>, 58(2):963–972, January 2019. Publisher: American Chemical Society.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1021/acs.iecr.8b05277"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="ECORYS-2008"><a href="../sources/#ECORYS-2008">ECORYS-2008</a></p></td>
+<td style="text-align: left;">ECORYS. <span class="bibtex-protected">Study on the Competitiveness of the European Steel Sector</span>. Technical Report, ECORYS, Danish Technological Institute, Cambridge Econometrics, CES IFO, and IDEA Consult, 2008.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://op.europa.eu/en/publication-detail/-/publication/7b6df831-0266-40a1-9ca2-13992d526bf7"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="ETB-ND"><a href="../sources/#ETB-ND">ETB-ND</a></p></td>
+<td style="text-align: left;">ETB-ND. <span class="bibtex-protected">Fuels. Higher and Lower Calorific Values</span>.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.engineeringtoolbox.com/fuels-higher-calorific-values-d_169.html"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="EUComm-2007"><a href="../sources/#EUComm-2007">EUComm-2007</a></p></td>
+<td style="text-align: left;">European Commission. <span class="bibtex-protected">Reference Document on Best Available Techniques for the Manufacture of Large Volume Inorganic Chemicals — Ammonia, Acids and Fertilisers</span>. Technical Report, European Commission, 2007.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://eippcb.jrc.ec.europa.eu/reference/large-volume-inorganic-chemicals-ammonia-acids-and-fertilisers"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Fasihi-2015"><a href="../sources/#Fasihi-2015">Fasihi-2015</a></p></td>
+<td style="text-align: left;">M.&nbsp;Fasihi, D.&nbsp;Bogdanov, and C.&nbsp;Breyer. <span class="bibtex-protected">Economics of Global LNG Trading Based on Hybrid PV-Wind Power Plants</span>. <em>31st European Photovoltaic Solar Energy Conference and Exhibition; 3051-3067</em>, 2015.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.4229/EUPVSEC20152015-7DO.15.6"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Fasihi-2016"><a href="../sources/#Fasihi-2016">Fasihi-2016</a></p></td>
+<td style="text-align: left;">Mahdi Fasihi, Dmitrii Bogdanov, and Christian Breyer. <span class="bibtex-protected">Techno-<span class="bibtex-protected">Economic</span> <span class="bibtex-protected">Assessment</span> of <span class="bibtex-protected">Power</span>-to-<span class="bibtex-protected">Liquids</span> (<span class="bibtex-protected">PtL</span>) <span class="bibtex-protected">Fuels</span> <span class="bibtex-protected">Production</span> and <span class="bibtex-protected">Global</span> <span class="bibtex-protected">Trading</span> <span class="bibtex-protected">Based</span> on <span class="bibtex-protected">Hybrid</span> <span class="bibtex-protected">PV</span>-<span class="bibtex-protected">Wind</span> <span class="bibtex-protected">Power</span> <span class="bibtex-protected">Plants</span></span>. <em>Energy Procedia</em>, 99:243–268, 2016.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.egypro.2016.10.115"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Fasihi-2019"><a href="../sources/#Fasihi-2019">Fasihi-2019</a></p></td>
+<td style="text-align: left;">Mahdi Fasihi, Olga Efimova, and Christian Breyer. <span class="bibtex-protected">Techno-economic assessment of CO2 direct air capture plants</span>. <em>Journal of Cleaner Production</em>, 224:957–980, Jul 2019.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.jclepro.2019.03.086"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Fiamelda-2020"><a href="../sources/#Fiamelda-2020">Fiamelda-2020</a></p></td>
+<td style="text-align: left;">L&nbsp;Fiamelda, Suprihatin, and Purwoko. <span class="bibtex-protected">Analysis of water and electricity consumption of urea fertilizer industry: case study PT. X</span>. <em>IOP Conference Series: Earth and Environmental Science</em>, 472(1):012034, Apr 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1088/1755-1315/472/1/012034"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Franz-2009"><a href="../sources/#Franz-2009">Franz-2009</a></p></td>
+<td style="text-align: left;">Berit Franz and Stefan Franz. <span class="bibtex-protected">1 x 1 der Gase</span>. <em>Physikalische Daten f<span class="bibtex-protected">ü</span>r Wissenschaft und Praxis</em>, 2009.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Ghafri-2022"><a href="../sources/#Ghafri-2022">Ghafri-2022</a></p></td>
+<td style="text-align: left;">Saif ZS&nbsp;Al Ghafri, Stephanie Munro, Umberto Cardella, Thomas Funke, William Notardonato, J.&nbsp;P. <span class="bibtex-protected">Martin Trusler</span>, Jacob Leachman, Roland Span, Shoji Kamiya, Garth Pearce, Adam Swanger, Elma <span class="bibtex-protected">Dorador Rodriguez</span>, Paul Bajada, Fuyu Jiao, Kun Peng, Arman Siahvashi, Michael <span class="bibtex-protected">L. Johns</span>, and Eric <span class="bibtex-protected">F. May</span>. <span class="bibtex-protected">Hydrogen liquefaction: a review of the fundamental physics, engineering practice and future opportunities</span>. <em>Energy &amp; Environmental Science</em>, 15(7):2690–2731, 2022. Publisher: Royal Society of Chemistry.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1039/D2EE00099G"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Gorre-2019"><a href="../sources/#Gorre-2019">Gorre-2019</a></p></td>
+<td style="text-align: left;">Jachin Gorre, Fabian Ruoss, Hannu Karjunen, Tero Tynj<span class="bibtex-protected">ä</span>l<span class="bibtex-protected">ä</span>, and Johannes Schaffert. <span class="bibtex-protected">Cost benefits of optimizing hydrogen storage and methanation capacities for Power-to-Gas plants in dynamic operation</span>. <em>Applied Energy</em>, 257:, 10 2019.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.apenergy.2019.113967"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Graf-2014"><a href="../sources/#Graf-2014">Graf-2014</a></p></td>
+<td style="text-align: left;">Frank Graf, Manuel G<span class="bibtex-protected">ö</span>tz, Marco Henel, Tanja Schaaf, and Robert Tichler. <span class="bibtex-protected">Techno<span class="bibtex-protected">ö</span>konomische Studie von Power-to-Gas-Konzepten</span>. <em>DVGW: Bonn, Germany</em>, 2014.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Graham-2020"><a href="../sources/#Graham-2020">Graham-2020</a></p></td>
+<td style="text-align: left;">Paul Graham, Jenny Hayward, James Foster, and Lisa Havas. <span class="bibtex-protected">GenCost 2019-20</span>. <em>CSIRO publications repository</em>, 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.25919/5EB5AC371D372"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Grahn-2022"><a href="../sources/#Grahn-2022">Grahn-2022</a></p></td>
+<td style="text-align: left;">Maria Grahn, Elin Malmgren, Andrei&nbsp;D Korberg, Maria Taljegard, James&nbsp;E Anderson, Selma Brynolf, Julia Hansson, Iva&nbsp;Ridjan Skov, and Timothy&nbsp;J Wallington. <span class="bibtex-protected">Review of electrofuel feasibility—cost and environmental impact</span>. <em>Progress in Energy</em>, 4(3):032010, jun 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1088/2516-1083/ac7937"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="GrinbergDana-2016"><a href="../sources/#GrinbergDana-2016">GrinbergDana-2016</a></p></td>
+<td style="text-align: left;">Alon <span class="bibtex-protected">Grinberg Dana</span>, Oren Elishav, Andr<span class="bibtex-protected">é</span> Bardow, Gennady&nbsp;E. Shter, and Gideon&nbsp;S. Grader. <span class="bibtex-protected">Nitrogen-Based Fuels: A Power-to-Fuel-to-Power Analysis</span>. <em>Angewandte Chemie International Edition</em>, 55(31):8798–8805, 2016. <a href="https://arxiv.org/abs/https://onlinelibrary.wiley.com/doi/pdf/10.1002/anie.201510618">arXiv:https://onlinelibrary.wiley.com/doi/pdf/10.1002/anie.201510618</a>.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1002/anie.201510618"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="PNNL-H2tools-ND"><a href="../sources/#PNNL-H2tools-ND">PNNL-H2tools-ND</a></p></td>
+<td style="text-align: left;">PNNL. <span class="bibtex-protected">Hydrogen Tools</span>. 2023.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://h2tools.org/hyarc/calculator-tools/lower-and-higher-heating-values-fuels"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Hauser-2021"><a href="../sources/#Hauser-2021">Hauser-2021</a></p></td>
+<td style="text-align: left;">Philipp&nbsp;D. Hauser, Helen Burmeister, Paul&nbsp;J. M<span class="bibtex-protected">ü</span>nnich, Wido&nbsp;K. Witecka, and Thomas M<span class="bibtex-protected">ü</span>hlpointner. <span class="bibtex-protected">Klimaschutzvertr<span class="bibtex-protected">ä</span>ge f<span class="bibtex-protected">ü</span>r die Industrietransformation. Analyse zur Stahlbranche.</span> Technical Report, Agora Energiewende, 2021.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Haynes-2014"><a href="../sources/#Haynes-2014">Haynes-2014</a></p></td>
+<td style="text-align: left;">W.M.&nbsp;(Ed.) Haynes. <em><span class="bibtex-protected">CRC Handbook of Chemistry and Physics (95th ed.).</span></em> CRC Press, 2014.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1201/b17118"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Hegemann-2020"><a href="../sources/#Hegemann-2020">Hegemann-2020</a></p></td>
+<td style="text-align: left;">Karl-Rudolf Hegemann and Ralf Guder. <em><span class="bibtex-protected">Stahlerzeugung</span></em>. Springer Fachmedien Wiesbaden, 2020. ISBN 9783658290917.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1007/978-3-658-29091-7"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Holling-2017"><a href="../sources/#Holling-2017">Holling-2017</a></p></td>
+<td style="text-align: left;">Marc H<span class="bibtex-protected">ö</span>lling, Matthias Weng, and Sebastian Gellert. <span class="bibtex-protected">Bewertung der Herstellung von Eisenschwamm unter Verwendung von Wasserstoff</span>. <em>Stahl und Eisen</em>, 137(6):47–53, 2017.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Holst-2021"><a href="../sources/#Holst-2021">Holst-2021</a></p></td>
+<td style="text-align: left;">Marius Holst, Stefan Aschbrenner, Tom Smolinka, Christopher Voglst<span class="bibtex-protected">ä</span>tter, and Gunter Grimm. <span class="bibtex-protected">Cost forecast for low temperature electrolysis – technology driven bottom-up prognosis for PEM and Alkaline water electrolysis systems</span>. Technical Report, Fraunhofer Institute for Solar Energy Systems ISE, 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.ise.fraunhofer.de/content/dam/ise/de/documents/publications/studies/cost-forecast-for-low-temperature-electrolysis.pdf"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="ICAO-2017"><a href="../sources/#ICAO-2017">ICAO-2017</a></p></td>
+<td style="text-align: left;">ICAO. <span class="bibtex-protected">Sustainable Aviation Fuels Guide</span>. Technical Report, <span class="bibtex-protected">International Civil Aviation Organization (ICAO)</span>, 2017.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www2023.icao.int/environmental-protection/knowledge-sharing/Docs/Sustainable%20Aviation%20Fuels%20Guide_vf.pdf"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="IEA-Ammonia-2021"><a href="../sources/#IEA-Ammonia-2021">IEA-Ammonia-2021</a></p></td>
+<td style="text-align: left;">IEA. <span class="bibtex-protected">Ammonia Technology Roadmap – Towards more sustainable nitrogen fertiliser production</span>. Technical Report, International Energy Agency, 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.iea.org/reports/ammonia-technology-roadmap"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="IEA-DAC-2022"><a href="../sources/#IEA-DAC-2022">IEA-DAC-2022</a></p></td>
+<td style="text-align: left;">IEA. <span class="bibtex-protected">Energy needs of L-DAC and S-DAC</span>. Technical Report, International Energy Agency, 2023.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.iea.org/data-and-statistics/charts/energy-needs-of-l-dac-and-s-dac-2023"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="IEA-FOH-2019"><a href="../sources/#IEA-FOH-2019">IEA-FOH-2019</a></p></td>
+<td style="text-align: left;">IEA. <span class="bibtex-protected">The Future of Hydrogen</span>. Technical Report, International Energy Agency, 2019.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.iea.org/reports/the-future-of-hydrogen"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="IEA-GHG-2013"><a href="../sources/#IEA-GHG-2013">IEA-GHG-2013</a></p></td>
+<td style="text-align: left;">IEA. <span class="bibtex-protected">Iron and Steel CCS Study (Techno-Economics Integrated Steel Mill)</span>. Technical Report, International Energy Agency, 2013.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://ieaghg.org/publications/technical-reports/reports-list/9-technical-reports/1001-2013-04-iron-and-steel-ccs-study-techno-economics-integrated-steel-mill"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="IEA-GHR-2021"><a href="../sources/#IEA-GHR-2021">IEA-GHR-2021</a></p></td>
+<td style="text-align: left;">IEA. <span class="bibtex-protected">Global Hydrogen Review</span>. Technical Report, International Energy Agency, 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.iea.org/reports/global-hydrogen-review-2021"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="IEA-GHG-2017"><a href="../sources/#IEA-GHG-2017">IEA-GHG-2017</a></p></td>
+<td style="text-align: left;"><span class="bibtex-protected">IEA Greenhouse Gas R&amp;D Programme</span>. <span class="bibtex-protected">Techno - Economic Evaluation of SMR Based Standalone (Merchant) Hydrogen Plant with CCS</span>. feb 2017.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://ieaghg.org/publications/technical-reports/reports-list/9-technical-reports/784-2017-02-smr-based-h2-plant-with-ccs"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Ikaheimo-2018"><a href="../sources/#Ikaheimo-2018">Ikaheimo-2018</a></p></td>
+<td style="text-align: left;">Jussi Ik<span class="bibtex-protected">ä</span>heimo, Juha Kiviluoma, Robert Weiss, and Hannele Holttinen. <span class="bibtex-protected">Power-to-ammonia in future North European 100 % renewable power and heat system</span>. <em>International Journal of Hydrogen Energy</em>, 43(36):17295–17308, Sep 2018.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.ijhydene.2018.06.121"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="IRENA-2022"><a href="../sources/#IRENA-2022">IRENA-2022</a></p></td>
+<td style="text-align: left;">IRENA. <span class="bibtex-protected">Global hydrogen trade to meet the 1.5<span class="bibtex-protected">°</span>C climate goal: Part III – Green hydrogen cost and potential</span>. Technical Report, International Renewable Energy Agency, 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.irena.org/publications/2022/May/Global-hydrogen-trade-Cost"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Jacobasch-2021"><a href="../sources/#Jacobasch-2021">Jacobasch-2021</a></p></td>
+<td style="text-align: left;">Eric Jacobasch, Gregor Herz, Christopher Rix, Nils M<span class="bibtex-protected">ü</span>ller, Erik Reichelt, Matthias Jahn, and Alexander Michaelis. <span class="bibtex-protected">Economic evaluation of low-carbon steelmaking via coupling of electrolysis and direct reduction</span>. <em>Journal of Cleaner Production</em>, 328:129502, Dec 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.jclepro.2021.129502"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Jarvis-2018"><a href="../sources/#Jarvis-2018">Jarvis-2018</a></p></td>
+<td style="text-align: left;">Sean&nbsp;M. Jarvis and Sheila Samsatli. <span class="bibtex-protected">Technologies and infrastructures underpinning future CO 2 value chains: A comprehensive review and comparative analysis</span>. <em>Renewable and Sustainable Energy Reviews</em>, 85:46–68, Apr 2018.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.rser.2018.01.007"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Jasper-2015"><a href="../sources/#Jasper-2015">Jasper-2015</a></p></td>
+<td style="text-align: left;">Sarah Jasper and Mahmoud El-Halwagi. <span class="bibtex-protected">A Techno-Economic Comparison between Two Methanol-to-Propylene Processes</span>. <em>Processes</em>, 3(3):684–698, Sep 2015.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.3390/pr3030684"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Keith-2018"><a href="../sources/#Keith-2018">Keith-2018</a></p></td>
+<td style="text-align: left;">David&nbsp;W. Keith, Geoffrey Holmes, David <span class="bibtex-protected">St. Angelo</span>, and Kenton Heidel. <span class="bibtex-protected">A Process for Capturing CO2 from the Atmosphere</span>. <em>Joule</em>, 2(8):1573–1594, Aug 2018.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.joule.2018.05.006"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Kent-1974"><a href="../sources/#Kent-1974">Kent-1974</a></p></td>
+<td style="text-align: left;">James&nbsp;A Kent. <em><span class="bibtex-protected">Riegel's handbook of industrial chemistry</span></em>. Springer, 1974.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Kiani-2019"><a href="../sources/#Kiani-2019">Kiani-2019</a></p></td>
+<td style="text-align: left;">Ali Kiani, Michael Lejeune, Chaoen Li, Jim Patel, and Paul Feron. <span class="bibtex-protected">Liquefied synthetic methane from ambient CO2 and renewable H2 - A technoeconomic study</span>. <em>Journal of Natural Gas Science and Engineering</em>, 94:104079, 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.jngse.2021.104079"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Korberg-2021"><a href="../sources/#Korberg-2021">Korberg-2021</a></p></td>
+<td style="text-align: left;">A.&nbsp;D. Korberg, S.&nbsp;Brynolf, M.&nbsp;Grahn, and I.&nbsp;R. Skov. <span class="bibtex-protected">Techno-economic assessment of advanced fuels and propulsion systems in future fossil-free ships</span>. <em>Renewable and Sustainable Energy Reviews</em>, 142:110861, 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.rser.2021.110861"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Lemmon-1997"><a href="../sources/#Lemmon-1997">Lemmon-1997</a></p></td>
+<td style="text-align: left;">Eric&nbsp;W. Lemmon, Ian&nbsp;H. Bell, Marcia&nbsp;L. Huber, and Mark&nbsp;O. McLinden. <span class="bibtex-protected">Thermophysical Properties of Fluid System</span>. In Eds.&nbsp;P.J. Linstrom and W.G. Mallard, editors, <em><span class="bibtex-protected">NIST Chemistry WebBook, NIST Standard Reference Database Number 69</span></em>. National Institute of Standards and Technology, 1997.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.18434/T4D303"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Lewis-2022"><a href="../sources/#Lewis-2022">Lewis-2022</a></p></td>
+<td style="text-align: left;">Eric Lewis, Shannon McNaul, Matthew Jamieson, Megan Henriksen, H.&nbsp;Matthews, Liam Walsh, Jadon Grove, Travis Shultz, Timothy Skone, and Robert Stevens. <em><span class="bibtex-protected">Comparison of Commercial, State-of-the-Art, Fossil-Based Hydrogen Production Technologies</span></em>. National Energy Technology Laboratory, April 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.2172/1862910"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Lux-2021"><a href="../sources/#Lux-2021">Lux-2021</a></p></td>
+<td style="text-align: left;">Benjamin Lux, Johanna Gegenheimer, Katja Franke, Frank Sensfu<span class="bibtex-protected">ß</span>, and Benjamin Pfluger. <span class="bibtex-protected">Supply curves of electricity-based gaseous fuels in the MENA region</span>. <em>Computers &amp; Industrial Engineering</em>, 162:107647, 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.cie.2021.107647"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Lux-2023"><a href="../sources/#Lux-2023">Lux-2023</a></p></td>
+<td style="text-align: left;">Benjamin Lux, Niklas Schneck, Benjamin Pfluger, Wolfgang M<span class="bibtex-protected">ä</span>nner, and Frank Sensfu<span class="bibtex-protected">ß</span>. <span class="bibtex-protected">Potentials of direct air capture and storage in a greenhouse gas-neutral European energy system</span>. <em>Energy Strategy Reviews</em>, 45:101012, 2023.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.esr.2022.101012"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Madhu-2021"><a href="../sources/#Madhu-2021">Madhu-2021</a></p></td>
+<td style="text-align: left;">Kavya Madhu, Stefan Pauliuk, Sumukha Dhathri, and Felix Creutzig. <span class="bibtex-protected">Understanding environmental trade-offs and resource demand of direct air capture technologies through comparative life-cycle assessment</span>. <em>Nature Energy</em>, 6(11):1035–1044, Oct 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1038/s41560-021-00922-6"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Matzen-2015"><a href="../sources/#Matzen-2015">Matzen-2015</a></p></td>
+<td style="text-align: left;">Michael&nbsp;J. Matzen, Mahdi&nbsp;H. Alhajji, and Yasar Demirel. <span class="bibtex-protected">Technoeconomics and Sustainability of Renewable Methanol and Ammonia Productions Using Wind Power-based Hydrogen</span>. <em>Journal of Advanced Chemical Engineering</em>, 2015.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.4172/2090-4568.1000128"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Michalski-2017"><a href="../sources/#Michalski-2017">Michalski-2017</a></p></td>
+<td style="text-align: left;">Jan Michalski, Ulrich B<span class="bibtex-protected">ü</span>nger, Fritz Crotogino, Sabine Donadei, Gregor-S<span class="bibtex-protected">ö</span>nke Schneider, Thomas Pregger, Karl-Ki<span class="bibtex-protected">ê</span>n Cao, and Dominik Heide. <span class="bibtex-protected">Hydrogen generation by electrolysis and storage in salt caverns: Potentials, economics and systems aspects with regard to the German energy transition</span>. <em>International Journal of Hydrogen Energy</em>, 42(19):13427–13443, 2017. Special Issue on The 21st World Hydrogen Energy Conference (WHEC 2016), 13-16 June 2016, Zaragoza, Spain.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.ijhydene.2017.02.102"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Milanzi-2018"><a href="../sources/#Milanzi-2018">Milanzi-2018</a></p></td>
+<td style="text-align: left;">Sarah Milanzi, Carla Spiller, Benjamin Grosse, Lisa Hermann, and Joachim M<span class="bibtex-protected">ü</span>ller-Kirchenbauer. <span class="bibtex-protected">Technischer Stand und Flexibilit<span class="bibtex-protected">ä</span>t des Power-to-Gas-Verfahrens</span>. 2018.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.5281/ZENODO.2620254"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Molarne-1991"><a href="../sources/#Molarne-1991">Molarne-1991</a></p></td>
+<td style="text-align: left;">M.&nbsp;Molnarne. <span class="bibtex-protected">CHEMSAFE — A Database for Safety Characteristic Data</span>. In J<span class="bibtex-protected">ü</span>rgen Gmehling, editor, <em><span class="bibtex-protected">Software Development in Chemistry 5</span></em>, 45–48. Berlin, Heidelberg, 1991. Springer Berlin Heidelberg.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Morgan-2014"><a href="../sources/#Morgan-2014">Morgan-2014</a></p></td>
+<td style="text-align: left;">Eric Morgan, James Manwell, and Jon McGowan. <span class="bibtex-protected">Wind-powered ammonia fuel production for remote islands: A case study</span>. <em>Renewable Energy</em>, 72:51–61, 2014.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.renene.2014.06.034"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="NASEM-2019"><a href="../sources/#NASEM-2019">NASEM-2019</a></p></td>
+<td style="text-align: left;"><span class="bibtex-protected">National Academies of Sciences, Engineering and Medicine (NASEM)</span>. <em><span class="bibtex-protected">Negative Emissions Technologies and Reliable Sequestration: A Research Agenda</span></em>. The National Academies Press, Washington, DC, 2019. ISBN 978-0-309-48452-7.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.17226/25259"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Nyari-2020"><a href="../sources/#Nyari-2020">Nyari-2020</a></p></td>
+<td style="text-align: left;">Judit Ny<span class="bibtex-protected">á</span>ri, Mohamed Magdeldin, Martti Larmi, Mika J<span class="bibtex-protected">ä</span>rvinen, and Annukka Santasalo-Aarnio. <span class="bibtex-protected">Techno-economic barriers of an industrial-scale methanol CCU-plant</span>. <em>Journal of CO2 Utilization</em>, 39:101166, 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.jcou.2020.101166"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Oliveira-2021"><a href="../sources/#Oliveira-2021">Oliveira-2021</a></p></td>
+<td style="text-align: left;">Carina Oliveira. <span class="bibtex-protected">TNO's Technology Factsheet: Advanced Methanol to olefines process</span>. Technical Report, TNO EnergieTransitie, 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://energy.nl/media/data/Technology-Factsheet-Advanced-methanol-to-olefins.pdf"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Otto-2017"><a href="../sources/#Otto-2017">Otto-2017</a></p></td>
+<td style="text-align: left;">Alexander Otto, Martin Robinius, Thomas Grube, Sebastian Schiebahn, Aaron Praktiknjo, and Detlef Stolten. <span class="bibtex-protected">Power-to-Steel: Reducing CO2 through the Integration of Renewable Energy and Hydrogen into the German Steel Industry</span>. <em>Energies</em>, 10(4):451, Apr 2017.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.3390/en10040451"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Ozkan-2022"><a href="../sources/#Ozkan-2022">Ozkan-2022</a></p></td>
+<td style="text-align: left;">Mihrimah Ozkan, Saswat&nbsp;Priyadarshi Nayak, Anthony&nbsp;D. Ruiz, and Wenmei Jiang. <span class="bibtex-protected">Current status and pillars of direct air capture technologies</span>. <em>iScience</em>, 25(4):103990, 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.isci.2022.103990"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Palys-2023"><a href="../sources/#Palys-2023">Palys-2023</a></p></td>
+<td style="text-align: left;">Matthew&nbsp;J Palys and Prodromos Daoutidis. <span class="bibtex-protected">Techno-economic optimization of renewable urea production for sustainable agriculture and CO2 utilization</span>. <em>Journal of Physics: Energy</em>, 6(1):015013, dec 2023.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1088/2515-7655/ad0ee6"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Perez-Fortes-2016"><a href="../sources/#Perez-Fortes-2016">Perez-Fortes-2016</a></p></td>
+<td style="text-align: left;">Mar P<span class="bibtex-protected">é</span>rez-Fortes, Jan&nbsp;C. Sch<span class="bibtex-protected">ö</span>neberger, Aikaterini Boulamanti, and Evangelos Tzimas. <span class="bibtex-protected">Methanol synthesis using captured CO2 as raw material: Techno-economic and environmental assessment</span>. <em>Applied Energy</em>, 161:718–732, Jan 2016.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.apenergy.2015.07.067"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Ram-2018"><a href="../sources/#Ram-2018">Ram-2018</a></p></td>
+<td style="text-align: left;">Manish Ram, Michael Child, Arman Aghahosseini, Dmitrii Bogdanov, Alena Lohrmann, and Christian Breyer. <span class="bibtex-protected">A comparative analysis of electricity generation costs from renewable, fossil fuel and nuclear sources in G20 countries for the period 2015-2030</span>. <em>Journal of Cleaner Production</em>, 199:687–704, Oct 2018.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.jclepro.2018.07.159"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Realmonte-2019"><a href="../sources/#Realmonte-2019">Realmonte-2019</a></p></td>
+<td style="text-align: left;">Giulia Realmonte, Laurent Drouet, Ajay Gambhir, James Glynn, Adam Hawkes, Alexandre&nbsp;C K<span class="bibtex-protected">ö</span>berle, and Massimo Tavoni. <span class="bibtex-protected">An inter-model assessment of the role of direct air capture in deep mitigation pathways</span>. <em>Nature communications</em>, 10(1):3277, 2019.</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Rechberger-2020"><a href="../sources/#Rechberger-2020">Rechberger-2020</a></p></td>
+<td style="text-align: left;">Katharina Rechberger, Andreas Spanlang, Amaia <span class="bibtex-protected">Sasiain Conde</span>, Hermann Wolfmeir, and Christopher Harris. <span class="bibtex-protected">Green Hydrogen?Based Direct Reduction for Low?Carbon Steelmaking</span>. <em>steel research international</em>, 91(11):2000110, Jun 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1002/srin.202000110"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Sasiain-2020"><a href="../sources/#Sasiain-2020">Sasiain-2020</a></p></td>
+<td style="text-align: left;">A.&nbsp;Sasiain, K.&nbsp;Rechberger, A.&nbsp;Spanlang, I.&nbsp;Kofler, H.&nbsp;Wolfmeir, C.&nbsp;Harris, and T.&nbsp;B<span class="bibtex-protected">ü</span>rgler. <span class="bibtex-protected">Green Hydrogen as Decarbonization Element for the Steel Industry</span>. <em>BHM Berg- und H<span class="bibtex-protected">ü</span>ttenm<span class="bibtex-protected">ä</span>nnische Monatshefte</em>, 165(5):232–236, Mar 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1007/s00501-020-00968-1"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Schemme-2020"><a href="../sources/#Schemme-2020">Schemme-2020</a></p></td>
+<td style="text-align: left;">Steffen Schemme, Janos&nbsp;Lucian Breuer, Maximilian K<span class="bibtex-protected">ö</span>ller, Sven Meschede, Fiona Walman, Remzi&nbsp;Can Samsun, Ralf Peters, and Detlef Stolten. <span class="bibtex-protected">H2-based synthetic fuels: A techno-economic comparison of alcohol, ether and hydrocarbon production</span>. <em>International Journal of Hydrogen Energy</em>, 45(8):5395–5414, 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.ijhydene.2019.05.028"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Sens-2022"><a href="../sources/#Sens-2022">Sens-2022</a></p></td>
+<td style="text-align: left;">Lucas Sens, Ulf Neuling, and Martin Kaltschmitt. <span class="bibtex-protected">Capital expenditure and levelized cost of electricity of photovoltaic plants and wind turbines – Development by 2050</span>. <em>Renewable Energy</em>, 185:525–537, Feb 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.renene.2021.12.042"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Shen-2020"><a href="../sources/#Shen-2020">Shen-2020</a></p></td>
+<td style="text-align: left;">Wei Shen, Xi&nbsp;Chen, Jing Qiu, Jennifier&nbsp;A Hayward, Saad Sayeef, Peter Osman, Ke&nbsp;Meng, and Zhao&nbsp;Yang Dong. <span class="bibtex-protected">A comprehensive review of variable renewable energy levelized cost of electricity</span>. <em>Renewable and Sustainable Energy Reviews</em>, 133:110301, Nov 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.rser.2020.110301"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Socolow-2011"><a href="../sources/#Socolow-2011">Socolow-2011</a></p></td>
+<td style="text-align: left;">Robert Socolow, Michael Desmond, Roger Aines, Jason Blackstock, Olav Bolland, Tina Kaarsberg, Nathan Lewis, Marco Mazzotti, Allen Pfeffer, Karma Sawyer, Jeffrey Siirola, Berend Smit, and Jennifer Wilcox. <span class="bibtex-protected">Direct Air Capture of CO2 with Chemicals: A Technology Assessment for the APS Panel on Public Affairs</span>. Technical Report, American Physical Society, 06 2011.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.aps.org/publications/reports/direct-air-capture-co2"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a>  <a class="sm-button" href="https://res.cloudinary.com/apsphysics/image/upload/v1698255780/Direct-Air-Capture-of-CO2-with-Chemicals_snams5.pdf"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M96 0C60.7 0 32 28.7 32 64v384c0 35.3 28.7 64 64 64h80V400c0-35.3 28.7-64 64-64h176V170.5c0-17-6.7-33.3-18.7-45.3L290.7 18.7C278.7 6.7 262.5 0 245.5 0zm261.5 176H264c-13.3 0-24-10.7-24-24V58.5zM240 380c-11 0-20 9-20 20v128c0 11 9 20 20 20s20-9 20-20v-28h12c33.1 0 60-26.9 60-60s-26.9-60-60-60zm32 80h-12v-40h12c11 0 20 9 20 20s-9 20-20 20m96-80c-11 0-20 9-20 20v128c0 11 9 20 20 20h32c28.7 0 52-23.3 52-52v-64c0-28.7-23.3-52-52-52zm20 128v-88h12c6.6 0 12 5.4 12 12v64c0 6.6-5.4 12-12 12zm88-108v128c0 11 9 20 20 20s20-9 20-20v-44h28c11 0 20-9 20-20s-9-20-20-20h-28v-24h28c11 0 20-9 20-20s-9-20-20-20h-48c-11 0-20 9-20 20"/></svg></span> PDF </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Soler-2022"><a href="../sources/#Soler-2022">Soler-2022</a></p></td>
+<td style="text-align: left;">Alba Soler, Victor Gordillo, William Liley, Patrick Schmidt, Werner Weindorf, Tom Houghton, and Stefano Dell'Orco. <span class="bibtex-protected">E-Fuels: A techno-economic assessment of European domestic production and imports towards 2050</span>. Nov 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.concawe.eu/publication/e-fuels-a-techno-economic-assessment-of-european-domestic-production-and-imports-towards-2050/"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Spallina-2017"><a href="../sources/#Spallina-2017">Spallina-2017</a></p></td>
+<td style="text-align: left;">Vincenzo Spallina, Ildefonso&nbsp;Campos Velarde, Jos<span class="bibtex-protected">é</span> Antonio&nbsp;Medrano Jimenez, Hamid&nbsp;Reza Godini, Fausto Gallucci, and Martin <span class="bibtex-protected">Van Sint Annaland</span>. <span class="bibtex-protected">Techno-economic assessment of different routes for olefins production through the oxidative coupling of methane (<span class="bibtex-protected">OCM</span>): <span class="bibtex-protected">Advances</span> in benchmark technologies</span>. <em>Energy Conversion and Management</em>, 154:244–261, 2017.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.enconman.2017.10.061"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Stolz-2022"><a href="../sources/#Stolz-2022">Stolz-2022</a></p></td>
+<td style="text-align: left;">Boris Stolz, Maximilian Held, Gil Georges, and Konstantinos Boulouchos. <span class="bibtex-protected">Techno-economic analysis of renewable fuels for ships carrying bulk cargo in <span class="bibtex-protected">Europe</span></span>. <em>Nature Energy</em>, 7(2):203–212, 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1038/s41560-021-00957-9"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Takunju-2021"><a href="../sources/#Takunju-2021">Takunju-2021</a></p></td>
+<td style="text-align: left;">Roy&nbsp;Tarh Takunju. <span class="bibtex-protected">Life cycle assessment of the production of a solar MTG fuel based on electrochemical hydrogen production with energy supply by a PV/CSP hybrid solar power plant</span>. Master's thesis, Ruhr-Universit<span class="bibtex-protected">ä</span>t Bochum, Dezember 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://elib.dlr.de/146704/"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Tenhumberg-2020"><a href="../sources/#Tenhumberg-2020">Tenhumberg-2020</a></p></td>
+<td style="text-align: left;">Nils Tenhumberg and Karsten B<span class="bibtex-protected">ü</span>ker. <span class="bibtex-protected">Ecological and Economic Evaluation of Hydrogen Production by Different Water Electrolysis Technologies</span>. <em>Chemie Ingenieur Technik</em>, 92(10):1586–1595, Aug 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1002/cite.202000090"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Thema-2019"><a href="../sources/#Thema-2019">Thema-2019</a></p></td>
+<td style="text-align: left;">M.&nbsp;Thema, F.&nbsp;Bauer, and M.&nbsp;Sterner. <span class="bibtex-protected">Power-to-Gas: Electrolysis and methanation status review</span>. <em>Renewable and Sustainable Energy Reviews</em>, 112:775–787, 2019.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.rser.2019.06.030"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Ueckerdt-2021"><a href="../sources/#Ueckerdt-2021">Ueckerdt-2021</a></p></td>
+<td style="text-align: left;">Falko Ueckerdt, Christian Bauer, Alois Dirnaichner, Jordan Everall, Romain Sacchi, and Gunnar Luderer. <span class="bibtex-protected">Potential and risks of hydrogen-based e-fuels in climate change mitigation</span>. <em>Nature Climate Change</em>, 11:1–10, 05 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1038/s41558-021-01032-7"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Vartiainen-2022"><a href="../sources/#Vartiainen-2022">Vartiainen-2022</a></p></td>
+<td style="text-align: left;">Eero Vartiainen, Christian Breyer, David Moser, Eduardo <span class="bibtex-protected">Rom<span class="bibtex-protected">á</span>n Medina</span>, Chiara Busto, Ga<span class="bibtex-protected">ë</span>tan Masson, Elina Bosch, and Arnulf J<span class="bibtex-protected">ä</span>ger-Waldau. <span class="bibtex-protected">True Cost of Solar Hydrogen</span>. <em>Solar RRL</em>, 6(5):2100487, Sep 2022.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1002/solr.202100487"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Vogl-2018"><a href="../sources/#Vogl-2018">Vogl-2018</a></p></td>
+<td style="text-align: left;">Valentin Vogl, Max <span class="bibtex-protected">Å</span>hman, and Lars&nbsp;J. Nilsson. <span class="bibtex-protected">Assessment of hydrogen direct reduction for fossil-free steelmaking</span>. <em>Journal of Cleaner Production</em>, 203:736–745, Dec 2018.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.jclepro.2018.08.279"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Wang-2023"><a href="../sources/#Wang-2023">Wang-2023</a></p></td>
+<td style="text-align: left;">Michael Wang, Amgad Elgowainy, Uisung Lee, Kwang&nbsp;H. Baek, Sweta Balchandani, Pahola&nbsp;T. Benavides, Andrew Burnham, Hao Cai, Peter Chen, Yu&nbsp;Gan, Ulises&nbsp;R. Gracida-Alvarez, Troy&nbsp;R. Hawkins, Tai-Yuan Huang, Rakesh&nbsp;K. Iyer, Saurajyoti Kar, Jarod&nbsp;C. Kelly, Taemin Kim, Christopher Kolodziej, Kyuha Lee, Xinyu Liu, Zifeng Lu, Farhad Masum, Michele Morales, Clarence Ng, Longwen Ou, Tuhin Poddar, Krishna Reddi, Siddharth Shukla, Udayan Singh, Lili Sun, Pingping Sun, Tom Sykora, Pradeep Vyawahare, and Jingyi Zhang. <span class="bibtex-protected">Greenhouse gases, Regulated Emissions, and Energy use in Technologies Model <span class="bibtex-protected">®</span> (2023 Excel)</span>. [Computer Software] \url <span class="bibtex-protected">https://doi.org/10.11578/GREET-Excel-2023/dc.20230907.1</span>, oct 2023.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.11578/GREET-Excel-2023/dc.20230907.1"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Worrell-2007"><a href="../sources/#Worrell-2007">Worrell-2007</a></p></td>
+<td style="text-align: left;">Ernst Worrell, Lynn Price, Maarten Neelis, Christina Galitsky, and Nan Zhou. <span class="bibtex-protected">World Best Practice Energy Intensity Values for Selected Industrial Sectors</span>. Technical Report, Lawrence Berkeley National Laboratory, 2007.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://escholarship.org/uc/item/77n9d4sp"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Wortler-2013"><a href="../sources/#Wortler-2013">Wortler-2013</a></p></td>
+<td style="text-align: left;">Martin W<span class="bibtex-protected">ö</span>rtler, Felix Schuler, Nicole Voigt, Torben Schmidt, Peter Dahlmann, Hans&nbsp;Bodo L<span class="bibtex-protected">ü</span>ngen, and Jean-Theo Ghenda. <span class="bibtex-protected">Steel's Contribution to a Low-Carbon Europe 2050</span>. Technical Report, The Boston Consulting Group, 2013.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://www.bcg.com/publications/2013/metals-mining-environment-steels-contribution-low-carbon-europe-2050"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-8 13h-1c-1.61 0-4-1.06-4-4 0-2.93 2.39-4 4-4h1v2h-1c-.46 0-2 .17-2 2 0 1.9 1.67 2 2 2h1zm4-5v2H9v-2zm-1 5h-1v-2h1c.46 0 2-.17 2-2 0-1.9-1.67-2-2-2h-1V8h1c1.61 0 4 1.07 4 4 0 2.94-2.39 4-4 4"/></svg></span> Link </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Yates-2020"><a href="../sources/#Yates-2020">Yates-2020</a></p></td>
+<td style="text-align: left;">Jonathon Yates, Rahman Daiyan, Robert Patterson, Renate Egan, Rose Amal, Anita Ho-Baille, and Nathan&nbsp;L. Chang. <span class="bibtex-protected">Techno-economic Analysis of Hydrogen Electrolysis from Off-Grid Stand-Alone Photovoltaics Incorporating Uncertainty Analysis</span>. <em>Cell Reports Physical Science</em>, 1(10):100209, Oct 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.xcrp.2020.100209"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Zhang-2020"><a href="../sources/#Zhang-2020">Zhang-2020</a></p></td>
+<td style="text-align: left;">Jinrui Zhang, Hans Meerman, Ren<span class="bibtex-protected">é</span> Benders, and Andr<span class="bibtex-protected">é</span> Faaij. <span class="bibtex-protected">Comprehensive review of current natural gas liquefaction processes on technical and economic performance</span>. <em>Applied Thermal Engineering</em>, 166:114736, 2020.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.applthermaleng.2019.114736"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><p id="Zhao-2021"><a href="../sources/#Zhao-2021">Zhao-2021</a></p></td>
+<td style="text-align: left;">Zhitong Zhao, Jingyang Jiang, and Feng Wang. <span class="bibtex-protected">An economic analysis of twenty light olefin production pathways</span>. <em>Journal of Energy Chemistry</em>, 56:193–202, 2021.</td>
+<td style="text-align: left;"><a class="sm-button" href="https://doi.org/10.1016/j.jechem.2020.04.021"> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M24 12c0 6.633-5.367 12-12 12S0 18.633 0 12 5.367 0 12 0s12 5.367 12 12M7.588 6.097v4.471c-.663-.925-1.403-1.373-2.406-1.373-2.046 0-3.244 1.441-3.244 3.847 0 2.357 1.325 3.848 3.166 3.848 1.12 0 1.88-.4 2.445-1.325l-.039 1.042h2.045V6.097Zm-1.763 8.942c-1.12 0-1.802-.76-1.802-2.045 0-1.325.682-2.085 1.802-2.085 1.081 0 1.802.76 1.802 2.085 0 1.285-.672 2.045-1.802 2.045m12.253-1.948c0-2.172-1.578-3.789-3.906-3.789s-3.945 1.695-3.945 3.789c0 2.133 1.578 3.789 3.945 3.789 2.289 0 3.906-1.656 3.906-3.789m-2.094-.01c0 1.14-.711 1.89-1.851 1.89-1.139 0-1.851-.75-1.851-1.89s.712-1.89 1.851-1.89c1.149 0 1.861.751 1.851 1.89m2.6-5.795c0 .633.517 1.227 1.189 1.227.633 0 1.188-.555 1.188-1.227a1.17 1.17 0 0 0-1.188-1.189c-.672 0-1.179.556-1.189 1.189m.166 9.341h2.055V9.604H18.75Z"/></svg></span> DOI </a></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © POSTED Contributors 2023 | <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.indexes", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../assets/_markdown_exec_pyodide.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
