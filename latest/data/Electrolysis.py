@@ -31,6 +31,19 @@ from itables import show
 pd.options.plotting.backend = "plotly"
 pio.renderers.default = "notebook_connected"
 
+# Set plotting template.
+pio.templates["docs_template"] = (
+    pio.templates["simple_white"]
+    .update(layout=dict(
+        dragmode=False,
+        xaxis_fixedrange=True,
+        yaxis_fixedrange=True,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+    ))
+)
+pio.templates.default = "docs_template"
+
 # Loading the TEDF.
 tedf = TEDF.load("Tech|Electrolysis")
 
@@ -117,6 +130,9 @@ display(
         xref="paper",
         yref="paper",
     )
+    .update_layout(
+        legend_title=None,
+    )
 )
 
 # %% [markdown]
@@ -155,6 +171,9 @@ display(
     )
     .update_layout(
         yaxis_title="{variable} per {reference_variable}  [ {unit} / {reference_unit} ]".format(**df_plot.iloc[0]),
+    )
+    .update_layout(
+        legend_title=None,
     )
 )
 
