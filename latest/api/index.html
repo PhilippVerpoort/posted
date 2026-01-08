@@ -828,6 +828,9 @@
               
               <article class="md-content__inner md-typeset">
                 
+
+
+
                   
 
 
@@ -1020,8 +1023,7 @@ inconsistencies found for row.</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>posted/tedf.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
-<span class="normal">115</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
 <span class="normal">118</span>
@@ -1737,7 +1739,62 @@ inconsistencies found for row.</p>
 <span class="normal">828</span>
 <span class="normal">829</span>
 <span class="normal">830</span>
-<span class="normal">831</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
+<span class="normal">831</span>
+<span class="normal">832</span>
+<span class="normal">833</span>
+<span class="normal">834</span>
+<span class="normal">835</span>
+<span class="normal">836</span>
+<span class="normal">837</span>
+<span class="normal">838</span>
+<span class="normal">839</span>
+<span class="normal">840</span>
+<span class="normal">841</span>
+<span class="normal">842</span>
+<span class="normal">843</span>
+<span class="normal">844</span>
+<span class="normal">845</span>
+<span class="normal">846</span>
+<span class="normal">847</span>
+<span class="normal">848</span>
+<span class="normal">849</span>
+<span class="normal">850</span>
+<span class="normal">851</span>
+<span class="normal">852</span>
+<span class="normal">853</span>
+<span class="normal">854</span>
+<span class="normal">855</span>
+<span class="normal">856</span>
+<span class="normal">857</span>
+<span class="normal">858</span>
+<span class="normal">859</span>
+<span class="normal">860</span>
+<span class="normal">861</span>
+<span class="normal">862</span>
+<span class="normal">863</span>
+<span class="normal">864</span>
+<span class="normal">865</span>
+<span class="normal">866</span>
+<span class="normal">867</span>
+<span class="normal">868</span>
+<span class="normal">869</span>
+<span class="normal">870</span>
+<span class="normal">871</span>
+<span class="normal">872</span>
+<span class="normal">873</span>
+<span class="normal">874</span>
+<span class="normal">875</span>
+<span class="normal">876</span>
+<span class="normal">877</span>
+<span class="normal">878</span>
+<span class="normal">879</span>
+<span class="normal">880</span>
+<span class="normal">881</span>
+<span class="normal">882</span>
+<span class="normal">883</span>
+<span class="normal">884</span>
+<span class="normal">885</span>
+<span class="normal">886</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to handle Techno-Economic Data Files (TEDFs).</span>
 
@@ -1810,6 +1867,12 @@ inconsistencies found for row.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">+=</span> <span class="n">unknown_cols</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">]</span>
+
+        <span class="c1"># Value, uncertainty, and reference value must be floats.</span>
+        <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertainty&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_value&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">[</span><span class="n">col_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col_id</span><span class="p">])</span>
+
+        <span class="c1"># TODO: Turn fields into categories.</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">raw</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -2044,9 +2107,11 @@ inconsistencies found for row.</p>
         <span class="n">reference_activity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">reference_capacity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">drop_singular_fields</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">interpolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">expand_not_specified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2062,14 +2127,21 @@ inconsistencies found for row.</p>
 <span class="sd">            Reference capacity.</span>
 <span class="sd">        drop_singular_fields: bool, optional</span>
 <span class="sd">            If True, drop custom fields with only one value</span>
+<span class="sd">        interpolate_period: bool, optional</span>
+<span class="sd">            If True, determine values by interpolation between known points,</span>
+<span class="sd">            if no value for a requested period is given. Default is True.</span>
 <span class="sd">        extrapolate_period: bool, optional</span>
-<span class="sd">            If True, extrapolate values by extrapolation, if no value for this period is given</span>
+<span class="sd">            If True, determine values by extrapolation outside of range of</span>
+<span class="sd">            known data, if no value for a requested period is given. Default</span>
+<span class="sd">            is False.</span>
+<span class="sd">        expand_not_specified: bool | list[str], optional</span>
+<span class="sd">            Whether to expand fields with value `N/S` (not specified) to all</span>
+<span class="sd">            allowed values. If `True` is passed, then allow `N/S` is expanded</span>
+<span class="sd">            for all fields. If a list of strings is passed, then only the</span>
+<span class="sd">            contained fields are expanded. If False is passed, then no field</span>
+<span class="sd">            is expanded. Default is True.</span>
 <span class="sd">        with_parent: bool, optional</span>
 <span class="sd">            Whether to prepend the parent variable. Default is False.</span>
-<span class="sd">        expand_not_specified: bool | list[str], optional</span>
-<span class="sd">            Whether to expand fields with value `N/S` (not specified) to all allowed values. If `True` is passed, then</span>
-<span class="sd">            allow `N/S` is expanded for all fields. If a list of strings is passed, then only the contained fields are</span>
-<span class="sd">            expanded. If False is passed, then no field is expanded. Default is True.</span>
 <span class="sd">        **field_vals_select</span>
 <span class="sd">            IDs of values to select</span>
 
@@ -2083,30 +2155,21 @@ inconsistencies found for row.</p>
             <span class="n">reference_activity</span><span class="o">=</span><span class="n">reference_activity</span><span class="p">,</span>
             <span class="n">reference_capacity</span><span class="o">=</span><span class="n">reference_capacity</span><span class="p">,</span>
             <span class="n">drop_singular_fields</span><span class="o">=</span><span class="n">drop_singular_fields</span><span class="p">,</span>
+            <span class="n">interpolate_period</span><span class="o">=</span><span class="n">interpolate_period</span><span class="p">,</span>
             <span class="n">extrapolate_period</span><span class="o">=</span><span class="n">extrapolate_period</span><span class="p">,</span>
             <span class="n">expand_not_specified</span><span class="o">=</span><span class="n">expand_not_specified</span><span class="p">,</span>
             <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Insert reference variable, unit, and reference unit.</span>
-        <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">)</span>
-        <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-        <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-
-        <span class="c1"># Prepend parent variable.</span>
-        <span class="k">if</span> <span class="n">with_parent</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
-                <span class="p">)</span>
-            <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
-                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span>
-            <span class="p">)</span>
-
-        <span class="c1"># Order columns.</span>
-        <span class="n">selected</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">]]</span>
-
-        <span class="k">return</span> <span class="n">selected</span>
+        <span class="c1"># Finalise dataframe and return.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finalise</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">selected</span><span class="p">,</span>
+            <span class="n">append_references</span><span class="o">=</span><span class="n">append_references</span><span class="p">,</span>
+            <span class="n">group_cols</span><span class="o">=</span><span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">],</span>
+            <span class="n">ref_vars</span><span class="o">=</span><span class="n">ref_vars</span><span class="p">,</span>
+            <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+            <span class="n">with_parent</span><span class="o">=</span><span class="n">with_parent</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_select</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2114,6 +2177,7 @@ inconsistencies found for row.</p>
         <span class="n">reference_activity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">reference_capacity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">drop_singular_fields</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">interpolate_period</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">expand_not_specified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
@@ -2132,19 +2196,15 @@ inconsistencies found for row.</p>
         <span class="k">for</span> <span class="n">field_id</span> <span class="ow">in</span> <span class="n">field_vals_select</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field_id</span> <span class="o">==</span> <span class="n">col_id</span> <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{</span><span class="n">field_id</span><span class="si">}</span><span class="s2">&#39; does not exist and cannot be used for selection.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{</span><span class="n">field_id</span><span class="si">}</span><span class="s2">&#39; does not exist and cannot be used for &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;selection.&quot;</span>
                 <span class="p">)</span>
 
         <span class="c1"># Order fields for selection: period must be selected last due to the interpolation.</span>
-        <span class="n">fields_select_order</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="nb">list</span><span class="p">(</span><span class="n">field_vals_select</span><span class="p">)</span>
-            <span class="o">+</span> <span class="p">[</span>
-                <span class="n">col</span>
-                <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span>
-                <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">field_vals_select</span> <span class="ow">and</span> <span class="n">col</span> <span class="o">!=</span> <span class="s2">&quot;period&quot;</span>
-            <span class="p">]</span>
-            <span class="o">+</span> <span class="p">([</span><span class="s2">&quot;period&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;period&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="k">else</span> <span class="p">[])</span>
-        <span class="p">)</span>
+        <span class="n">fields_select_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">field_vals_select</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s2">&quot;period&quot;</span> <span class="ow">in</span> <span class="n">fields_select_order</span><span class="p">:</span>
+            <span class="n">fields_select_order</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;period&quot;</span><span class="p">)</span>
+            <span class="n">fields_select_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;period&quot;</span><span class="p">)</span>
 
         <span class="c1"># Expand non-specified values in fields if requested.</span>
         <span class="k">if</span> <span class="n">expand_not_specified</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -2166,6 +2226,7 @@ inconsistencies found for row.</p>
                 <span class="n">df</span><span class="o">=</span><span class="n">selected</span><span class="p">,</span>
                 <span class="n">col_id</span><span class="o">=</span><span class="n">field_id</span><span class="p">,</span>
                 <span class="n">field_vals</span><span class="o">=</span><span class="n">field_vals_select</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">interpolate_period</span><span class="o">=</span><span class="n">interpolate_period</span><span class="p">,</span>
                 <span class="n">extrapolate_period</span><span class="o">=</span><span class="n">extrapolate_period</span><span class="p">,</span>
                 <span class="n">expand_not_specified</span><span class="o">=</span><span class="n">expand_not_specified</span><span class="p">,</span>
             <span class="p">)</span>
@@ -2258,11 +2319,14 @@ inconsistencies found for row.</p>
         <span class="n">reference_activity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">reference_capacity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">drop_singular_fields</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">interpolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">agg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">masks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Mask</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">masks_database</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">expand_not_specified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -2283,9 +2347,11 @@ inconsistencies found for row.</p>
 <span class="sd">            If True, extrapolate values by extrapolation, if no value</span>
 <span class="sd">            for this period is given</span>
 <span class="sd">        expand_not_specified: bool | list[str], optional</span>
-<span class="sd">            Whether to expand fields with value `N/S` (not specified) to all allowed values. If `True` is passed, then</span>
-<span class="sd">            allow `N/S` is expanded for all fields. If a list of strings is passed, then only the contained fields are</span>
-<span class="sd">            expanded. If False is passed, then no field is expanded. Default is True.</span>
+<span class="sd">            Whether to expand fields with value `N/S` (not specified) to all</span>
+<span class="sd">            allowed values. If `True` is passed, then allow `N/S` is expanded</span>
+<span class="sd">            for all fields. If a list of strings is passed, then only the</span>
+<span class="sd">            contained fields are expanded. If False is passed, then no field</span>
+<span class="sd">            is expanded. Default is True.</span>
 <span class="sd">        agg : Optional[str | list[str] | tuple[str]]</span>
 <span class="sd">            Specifies which fields to aggregate over.</span>
 <span class="sd">        masks : Optional[list[Mask]]</span>
@@ -2318,6 +2384,7 @@ inconsistencies found for row.</p>
             <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
             <span class="n">reference_activity</span><span class="o">=</span><span class="n">reference_activity</span><span class="p">,</span>
             <span class="n">reference_capacity</span><span class="o">=</span><span class="n">reference_capacity</span><span class="p">,</span>
+            <span class="n">interpolate_period</span><span class="o">=</span><span class="n">interpolate_period</span><span class="p">,</span>
             <span class="n">extrapolate_period</span><span class="o">=</span><span class="n">extrapolate_period</span><span class="p">,</span>
             <span class="n">drop_singular_fields</span><span class="o">=</span><span class="n">drop_singular_fields</span><span class="p">,</span>
             <span class="n">expand_not_specified</span><span class="o">=</span><span class="n">expand_not_specified</span><span class="p">,</span>
@@ -2402,59 +2469,103 @@ inconsistencies found for row.</p>
 
                 <span class="c1"># Add to return list.</span>
                 <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+        <span class="c1"># If nothing is found, return empty dataframe.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+            <span class="n">add_cols</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">[]</span>
+                <span class="k">if</span> <span class="n">append_references</span>
+                <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="n">columns</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+                <span class="n">columns</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_cols</span>
             <span class="p">)</span>
         <span class="n">aggregated</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
+        <span class="c1"># Finalise dataframe and return.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finalise</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">aggregated</span><span class="p">,</span>
+            <span class="n">append_references</span><span class="o">=</span><span class="n">append_references</span><span class="p">,</span>
+            <span class="n">group_cols</span><span class="o">=</span><span class="n">group_cols</span><span class="p">,</span>
+            <span class="n">ref_vars</span><span class="o">=</span><span class="n">ref_vars</span><span class="p">,</span>
+            <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+            <span class="n">with_parent</span><span class="o">=</span><span class="n">with_parent</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_finalise</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">group_cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">ref_vars</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">units</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
         <span class="c1"># Append reference variables.</span>
-        <span class="n">var_ref_unique</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">ref_vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
-        <span class="p">}</span>
-        <span class="n">agg_append</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">ref_var</span> <span class="ow">in</span> <span class="n">var_ref_unique</span><span class="p">:</span>
-            <span class="n">agg_append</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ref_var</span><span class="p">],</span>
-                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
-                    <span class="p">}</span>
-                    <span class="o">|</span> <span class="p">{</span>
-                        <span class="n">col_id</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span>
-                        <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-                        <span class="k">if</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="n">aggregated</span>
-                    <span class="p">}</span>
+        <span class="k">if</span> <span class="n">append_references</span><span class="p">:</span>
+            <span class="n">var_ref_unique</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">ref_vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+            <span class="p">}</span>
+            <span class="n">to_append</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ref_var</span> <span class="ow">in</span> <span class="n">var_ref_unique</span><span class="p">:</span>
+                <span class="n">to_append</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                        <span class="p">{</span>
+                            <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ref_var</span><span class="p">],</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+                        <span class="p">}</span>
+                        <span class="o">|</span> <span class="p">{</span>
+                            <span class="n">col_id</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span>
+                            <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                            <span class="k">if</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="n">df</span>
+                        <span class="p">}</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">to_append</span><span class="p">:</span>
+                <span class="n">to_append</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">to_append</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">col_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">to_append</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">select_and_expand</span><span class="p">(</span>
+                        <span class="n">to_append</span><span class="p">,</span>
+                        <span class="n">col_id</span><span class="p">,</span>
+                        <span class="n">df</span><span class="p">[</span><span class="n">col_id</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                    <span class="p">)</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">to_append</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">])</span>
+                    <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">)</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="n">agg_append</span><span class="p">:</span>
-            <span class="n">agg_append</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">agg_append</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">col_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">agg_append</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">select_and_expand</span><span class="p">(</span>
-                    <span class="n">agg_append</span><span class="p">,</span>
-                    <span class="n">col_id</span><span class="p">,</span>
-                    <span class="n">aggregated</span><span class="p">[</span><span class="n">col_id</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="p">)</span>
-            <span class="n">aggregated</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">aggregated</span><span class="p">,</span> <span class="n">agg_append</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">])</span>
-                <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="c1"># Insert unit.</span>
-        <span class="n">aggregated</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aggregated</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="c1"># Insert unit(s).</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+
+        <span class="c1"># Prepend parent variable.</span>
+        <span class="k">if</span> <span class="n">with_parent</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                    <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
+                <span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># Order columns.</span>
-        <span class="n">aggregated</span> <span class="o">=</span> <span class="n">aggregated</span><span class="p">[</span>
-            <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span>
+            <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="p">]</span>
         <span class="p">]</span>
 
-        <span class="c1"># Return.</span>
-        <span class="k">return</span> <span class="n">aggregated</span>
+        <span class="k">return</span> <span class="n">df</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2487,8 +2598,7 @@ inconsistencies found for row.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>posted/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">153</span>
-<span class="normal">154</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
@@ -2520,7 +2630,12 @@ inconsistencies found for row.</p>
 <span class="normal">183</span>
 <span class="normal">184</span>
 <span class="normal">185</span>
-<span class="normal">186</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">parent_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2554,6 +2669,10 @@ inconsistencies found for row.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">+=</span> <span class="n">unknown_cols</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">]</span>
+
+    <span class="c1"># Value, uncertainty, and reference value must be floats.</span>
+    <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertainty&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_value&quot;</span><span class="p">]:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">[</span><span class="n">col_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col_id</span><span class="p">])</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2564,7 +2683,7 @@ inconsistencies found for row.</p>
 
 
 <h3 id="posted.TEDF.aggregate" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">aggregate</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_activity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_capacity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_singular_fields</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extrapolate_period</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">agg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">masks_database</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expand_not_specified</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">field_vals_select</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">aggregate</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_activity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_capacity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_singular_fields</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interpolate_period</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extrapolate_period</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">agg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">masks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">masks_database</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">expand_not_specified</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_parent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">append_references</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">field_vals_select</span><span class="p">)</span></code>
 
 </h3>
 
@@ -2664,7 +2783,7 @@ for this period is given</p>
               </div>
             </td>
             <td>
-                  <code>True</code>
+                  <code>False</code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -2676,9 +2795,11 @@ for this period is given</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to expand fields with value <code>N/S</code> (not specified) to all allowed values. If <code>True</code> is passed, then
-allow <code>N/S</code> is expanded for all fields. If a list of strings is passed, then only the contained fields are
-expanded. If False is passed, then no field is expanded. Default is True.</p>
+                <p>Whether to expand fields with value <code>N/S</code> (not specified) to all
+allowed values. If <code>True</code> is passed, then allow <code>N/S</code> is expanded
+for all fields. If a list of strings is passed, then only the
+contained fields are expanded. If False is passed, then no field
+is expanded. Default is True.</p>
               </div>
             </td>
             <td>
@@ -2776,12 +2897,7 @@ final cleaned and aggregated DataFrame.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>posted/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">629</span>
-<span class="normal">630</span>
-<span class="normal">631</span>
-<span class="normal">632</span>
-<span class="normal">633</span>
-<span class="normal">634</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">634</span>
 <span class="normal">635</span>
 <span class="normal">636</span>
 <span class="normal">637</span>
@@ -2958,37 +3074,20 @@ final cleaned and aggregated DataFrame.</p>
 <span class="normal">808</span>
 <span class="normal">809</span>
 <span class="normal">810</span>
-<span class="normal">811</span>
-<span class="normal">812</span>
-<span class="normal">813</span>
-<span class="normal">814</span>
-<span class="normal">815</span>
-<span class="normal">816</span>
-<span class="normal">817</span>
-<span class="normal">818</span>
-<span class="normal">819</span>
-<span class="normal">820</span>
-<span class="normal">821</span>
-<span class="normal">822</span>
-<span class="normal">823</span>
-<span class="normal">824</span>
-<span class="normal">825</span>
-<span class="normal">826</span>
-<span class="normal">827</span>
-<span class="normal">828</span>
-<span class="normal">829</span>
-<span class="normal">830</span>
-<span class="normal">831</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span>
+<span class="normal">811</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reference_activity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reference_capacity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">drop_singular_fields</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">interpolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">agg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">masks</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Mask</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">masks_database</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">expand_not_specified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3009,9 +3108,11 @@ final cleaned and aggregated DataFrame.</p>
 <span class="sd">        If True, extrapolate values by extrapolation, if no value</span>
 <span class="sd">        for this period is given</span>
 <span class="sd">    expand_not_specified: bool | list[str], optional</span>
-<span class="sd">        Whether to expand fields with value `N/S` (not specified) to all allowed values. If `True` is passed, then</span>
-<span class="sd">        allow `N/S` is expanded for all fields. If a list of strings is passed, then only the contained fields are</span>
-<span class="sd">        expanded. If False is passed, then no field is expanded. Default is True.</span>
+<span class="sd">        Whether to expand fields with value `N/S` (not specified) to all</span>
+<span class="sd">        allowed values. If `True` is passed, then allow `N/S` is expanded</span>
+<span class="sd">        for all fields. If a list of strings is passed, then only the</span>
+<span class="sd">        contained fields are expanded. If False is passed, then no field</span>
+<span class="sd">        is expanded. Default is True.</span>
 <span class="sd">    agg : Optional[str | list[str] | tuple[str]]</span>
 <span class="sd">        Specifies which fields to aggregate over.</span>
 <span class="sd">    masks : Optional[list[Mask]]</span>
@@ -3044,6 +3145,7 @@ final cleaned and aggregated DataFrame.</p>
         <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
         <span class="n">reference_activity</span><span class="o">=</span><span class="n">reference_activity</span><span class="p">,</span>
         <span class="n">reference_capacity</span><span class="o">=</span><span class="n">reference_capacity</span><span class="p">,</span>
+        <span class="n">interpolate_period</span><span class="o">=</span><span class="n">interpolate_period</span><span class="p">,</span>
         <span class="n">extrapolate_period</span><span class="o">=</span><span class="n">extrapolate_period</span><span class="p">,</span>
         <span class="n">drop_singular_fields</span><span class="o">=</span><span class="n">drop_singular_fields</span><span class="p">,</span>
         <span class="n">expand_not_specified</span><span class="o">=</span><span class="n">expand_not_specified</span><span class="p">,</span>
@@ -3128,59 +3230,28 @@ final cleaned and aggregated DataFrame.</p>
 
             <span class="c1"># Add to return list.</span>
             <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+    <span class="c1"># If nothing is found, return empty dataframe.</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="n">add_cols</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">append_references</span>
+            <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_cols</span>
         <span class="p">)</span>
     <span class="n">aggregated</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
-    <span class="c1"># Append reference variables.</span>
-    <span class="n">var_ref_unique</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">ref_vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
-    <span class="p">}</span>
-    <span class="n">agg_append</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">ref_var</span> <span class="ow">in</span> <span class="n">var_ref_unique</span><span class="p">:</span>
-        <span class="n">agg_append</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="p">{</span>
-                    <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ref_var</span><span class="p">],</span>
-                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
-                <span class="p">}</span>
-                <span class="o">|</span> <span class="p">{</span>
-                    <span class="n">col_id</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="n">aggregated</span>
-                <span class="p">}</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">agg_append</span><span class="p">:</span>
-        <span class="n">agg_append</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">agg_append</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">col_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">agg_append</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">select_and_expand</span><span class="p">(</span>
-                <span class="n">agg_append</span><span class="p">,</span>
-                <span class="n">col_id</span><span class="p">,</span>
-                <span class="n">aggregated</span><span class="p">[</span><span class="n">col_id</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-            <span class="p">)</span>
-        <span class="n">aggregated</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">aggregated</span><span class="p">,</span> <span class="n">agg_append</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">])</span>
-            <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="p">)</span>
-
-    <span class="c1"># Insert unit.</span>
-    <span class="n">aggregated</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aggregated</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-
-    <span class="c1"># Order columns.</span>
-    <span class="n">aggregated</span> <span class="o">=</span> <span class="n">aggregated</span><span class="p">[</span>
-        <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="p">]</span>
-    <span class="p">]</span>
-
-    <span class="c1"># Return.</span>
-    <span class="k">return</span> <span class="n">aggregated</span>
+    <span class="c1"># Finalise dataframe and return.</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finalise</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">aggregated</span><span class="p">,</span>
+        <span class="n">append_references</span><span class="o">=</span><span class="n">append_references</span><span class="p">,</span>
+        <span class="n">group_cols</span><span class="o">=</span><span class="n">group_cols</span><span class="p">,</span>
+        <span class="n">ref_vars</span><span class="o">=</span><span class="n">ref_vars</span><span class="p">,</span>
+        <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+        <span class="n">with_parent</span><span class="o">=</span><span class="n">with_parent</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3274,14 +3345,7 @@ default unit for each variable.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>posted/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">278</span>
 <span class="normal">279</span>
 <span class="normal">280</span>
 <span class="normal">281</span>
@@ -3326,7 +3390,14 @@ default unit for each variable.</p>
 <span class="normal">320</span>
 <span class="normal">321</span>
 <span class="normal">322</span>
-<span class="normal">323</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3389,7 +3460,7 @@ default unit for each variable.</p>
 
 
 <h3 id="posted.TEDF.select" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">select</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_activity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_capacity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_singular_fields</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extrapolate_period</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_parent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">expand_not_specified</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">field_vals_select</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">select</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_activity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_capacity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_singular_fields</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interpolate_period</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">extrapolate_period</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">expand_not_specified</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_parent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">append_references</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">field_vals_select</span><span class="p">)</span></code>
 
 </h3>
 
@@ -3476,6 +3547,23 @@ default unit for each variable.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
+                <code>interpolate_period</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If True, determine values by interpolation between known points,
+if no value for a requested period is given. Default is True.</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
                 <code>extrapolate_period</code>
             </td>
             <td>
@@ -3483,7 +3571,29 @@ default unit for each variable.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If True, extrapolate values by extrapolation, if no value for this period is given</p>
+                <p>If True, determine values by extrapolation outside of range of
+known data, if no value for a requested period is given. Default
+is False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>expand_not_specified</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span> | <span title="list">list</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to expand fields with value <code>N/S</code> (not specified) to all
+allowed values. If <code>True</code> is passed, then allow <code>N/S</code> is expanded
+for all fields. If a list of strings is passed, then only the
+contained fields are expanded. If False is passed, then no field
+is expanded. Default is True.</p>
               </div>
             </td>
             <td>
@@ -3504,24 +3614,6 @@ default unit for each variable.</p>
             </td>
             <td>
                   <code>False</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>expand_not_specified</code>
-            </td>
-            <td>
-                  <code><span title="bool">bool</span> | <span title="list">list</span>[<span title="str">str</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Whether to expand fields with value <code>N/S</code> (not specified) to all allowed values. If <code>True</code> is passed, then
-allow <code>N/S</code> is expanded for all fields. If a list of strings is passed, then only the contained fields are
-expanded. If False is passed, then no field is expanded. Default is True.</p>
-              </div>
-            </td>
-            <td>
-                  <code>True</code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -3568,14 +3660,7 @@ expanded. If False is passed, then no field is expanded. Default is True.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>posted/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span>
-<span class="normal">422</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">422</span>
 <span class="normal">423</span>
 <span class="normal">424</span>
 <span class="normal">425</span>
@@ -3636,15 +3721,24 @@ expanded. If False is passed, then no field is expanded. Default is True.</p>
 <span class="normal">480</span>
 <span class="normal">481</span>
 <span class="normal">482</span>
-<span class="normal">483</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reference_activity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reference_capacity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">drop_singular_fields</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">interpolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">extrapolate_period</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">expand_not_specified</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -3660,14 +3754,21 @@ expanded. If False is passed, then no field is expanded. Default is True.</p>
 <span class="sd">        Reference capacity.</span>
 <span class="sd">    drop_singular_fields: bool, optional</span>
 <span class="sd">        If True, drop custom fields with only one value</span>
+<span class="sd">    interpolate_period: bool, optional</span>
+<span class="sd">        If True, determine values by interpolation between known points,</span>
+<span class="sd">        if no value for a requested period is given. Default is True.</span>
 <span class="sd">    extrapolate_period: bool, optional</span>
-<span class="sd">        If True, extrapolate values by extrapolation, if no value for this period is given</span>
+<span class="sd">        If True, determine values by extrapolation outside of range of</span>
+<span class="sd">        known data, if no value for a requested period is given. Default</span>
+<span class="sd">        is False.</span>
+<span class="sd">    expand_not_specified: bool | list[str], optional</span>
+<span class="sd">        Whether to expand fields with value `N/S` (not specified) to all</span>
+<span class="sd">        allowed values. If `True` is passed, then allow `N/S` is expanded</span>
+<span class="sd">        for all fields. If a list of strings is passed, then only the</span>
+<span class="sd">        contained fields are expanded. If False is passed, then no field</span>
+<span class="sd">        is expanded. Default is True.</span>
 <span class="sd">    with_parent: bool, optional</span>
 <span class="sd">        Whether to prepend the parent variable. Default is False.</span>
-<span class="sd">    expand_not_specified: bool | list[str], optional</span>
-<span class="sd">        Whether to expand fields with value `N/S` (not specified) to all allowed values. If `True` is passed, then</span>
-<span class="sd">        allow `N/S` is expanded for all fields. If a list of strings is passed, then only the contained fields are</span>
-<span class="sd">        expanded. If False is passed, then no field is expanded. Default is True.</span>
 <span class="sd">    **field_vals_select</span>
 <span class="sd">        IDs of values to select</span>
 
@@ -3681,30 +3782,21 @@ expanded. If False is passed, then no field is expanded. Default is True.</p>
         <span class="n">reference_activity</span><span class="o">=</span><span class="n">reference_activity</span><span class="p">,</span>
         <span class="n">reference_capacity</span><span class="o">=</span><span class="n">reference_capacity</span><span class="p">,</span>
         <span class="n">drop_singular_fields</span><span class="o">=</span><span class="n">drop_singular_fields</span><span class="p">,</span>
+        <span class="n">interpolate_period</span><span class="o">=</span><span class="n">interpolate_period</span><span class="p">,</span>
         <span class="n">extrapolate_period</span><span class="o">=</span><span class="n">extrapolate_period</span><span class="p">,</span>
         <span class="n">expand_not_specified</span><span class="o">=</span><span class="n">expand_not_specified</span><span class="p">,</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># Insert reference variable, unit, and reference unit.</span>
-    <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">)</span>
-    <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-    <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
-
-    <span class="c1"># Prepend parent variable.</span>
-    <span class="k">if</span> <span class="n">with_parent</span><span class="p">:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
-            <span class="p">)</span>
-        <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
-            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span>
-        <span class="p">)</span>
-
-    <span class="c1"># Order columns.</span>
-    <span class="n">selected</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">]]</span>
-
-    <span class="k">return</span> <span class="n">selected</span>
+    <span class="c1"># Finalise dataframe and return.</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finalise</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">selected</span><span class="p">,</span>
+        <span class="n">append_references</span><span class="o">=</span><span class="n">append_references</span><span class="p">,</span>
+        <span class="n">group_cols</span><span class="o">=</span><span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">],</span>
+        <span class="n">ref_vars</span><span class="o">=</span><span class="n">ref_vars</span><span class="p">,</span>
+        <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+        <span class="n">with_parent</span><span class="o">=</span><span class="n">with_parent</span><span class="p">,</span>
+    <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -4151,6 +4243,7 @@ with any excluded fields removed.</p>
 
 
                 
+
               </article>
             </div>
           
@@ -4193,7 +4286,7 @@ with any excluded fields removed.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.indexes", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.indexes", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

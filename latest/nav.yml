@@ -10,6 +10,6 @@ nav:
 - Methodology: methodology.md
 - Data:
     - data/index.md
-    - "data/*.py"
+    - "data/*.ipynb"
 - API Reference: api/index.md
 - Sources: sources.md
