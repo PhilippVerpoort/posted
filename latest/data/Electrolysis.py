@@ -61,7 +61,7 @@ aggregated = tedf.aggregate(
     period=periods,
     reference_capacity="Input Capacity|Electricity",
     reference_activity="Output|Hydrogen",
-    interpolate_period=False,
+    extrapolate_period=True,
     expand_not_specified=False,
     append_references=True,
     agg=["source", "size"],
@@ -95,8 +95,20 @@ selected = tedf.select(
     expand_not_specified=False,
 )
 
+aggregated = tedf.aggregate(
+    period=periods,
+    reference_capacity="Input Capacity|Electricity",
+    reference_activity="Output|Hydrogen",
+    expand_not_specified=False,
+    agg=["source", "size"],
+    units={"Input|Heat": "kWh"},
+)
+
 df_plot = (
-    selected
+    pd.concat([
+        selected,
+        aggregated.assign(source="POSTED-default", size="N/S"),
+    ])
     .query("variable=='CAPEX'")
     .sort_values(by="size", key=lambda col: col.str.extract(r"([0-9]+) .*")[0].astype(float))
     .sort_values(by="period")
