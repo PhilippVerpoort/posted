@@ -133,17 +133,9 @@ display(
     .for_each_annotation(
         lambda a: a.update(text=": ".join(a.text.split("=")))
     )
-    .add_annotation(
-        text="{variable} per {reference_variable}  [ {unit} / {reference_unit} ]".format(**df_plot.iloc[0]),
-        x=-0.05,
-        y=+0.5,
-        textangle=-90,
-        showarrow=False,
-        xref="paper",
-        yref="paper",
-    )
     .update_layout(
         legend_title=None,
+        yaxis5_title="{variable} per {reference_variable}  [ {unit} / {reference_unit} ]".format(**df_plot.iloc[0]),
     )
 )
 
