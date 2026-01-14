@@ -8,47 +8,52 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.18.1
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: Python (docs)
 #     language: python
-#     name: python3
+#     name: docs
 # ---
 
 # %% [markdown]
 # # Electrolysis
 
-# %% editable=true slideshow={"slide_type": ""} hide_input=true
-# Preparing notebook.
+# %% editable=true slideshow={"slide_type": ""}
+# Dependencies.
+from IPython.display import HTML, Markdown
 
-# Importing dependencies.
-import numpy as np
 import pandas as pd
-import plotly.express as px
-import plotly.io as pio
-from posted import TEDF
-from itables import show
-
-# Setting up plotly for plotting.
 pd.options.plotting.backend = "plotly"
-pio.renderers.default = "notebook_connected"
 
-# Set plotting template.
-pio.templates["docs_template"] = (
-    pio.templates["simple_white"]
-    .update(layout=dict(
-        dragmode=False,
-        xaxis_fixedrange=True,
-        yaxis_fixedrange=True,
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-    ))
-)
-pio.templates.default = "docs_template"
+from posted import TEDF
+
+
+# Set variable of TEDF.
+var = "Tech|Electrolysis"
 
 # Loading the TEDF.
-tedf = TEDF.load("Tech|Electrolysis")
+tedf = TEDF.load(var)
 
 # Determine periods to show.
 periods = [int(p) for p in tedf.raw.period.str.split(",").explode().unique() if p != "*"]
+
+# %% [markdown]
+# ## Fields
+
+# %% [markdown]
+# The techno-economic data on electrolysis is distinguished across the following additional fields.
+
+# %% [markdown]
+# ### Subtechnologies
+
+# %%
+Markdown(
+    "\n".join(f"* **{code}**: {desc}" for code, desc in tedf.fields["subtech"].codes.items())
+)
+
+# %% [markdown]
+# ### Size
+
+# %% [markdown]
+# Mainly CAPEX but also other parameters crucially depend on the size of an electrolysis plant. The size can be added as a non-coded field. For some sources, this may not be reported and hence set to `N/S` (not specified).
 
 # %% [markdown]
 # ## Aggregated parameters
@@ -59,16 +64,16 @@ periods = [int(p) for p in tedf.raw.period.str.split(",").explode().unique() if 
 # %%
 aggregated = tedf.aggregate(
     period=periods,
+    period_mode="none",
     reference_capacity="Input Capacity|Electricity",
     reference_activity="Output|Hydrogen",
-    extrapolate_period=True,
     expand_not_specified=False,
     append_references=True,
     agg=["source", "size"],
     units={"Input|Heat": "kWh"},
 )
 
-show(
+display(
     aggregated
     .query("~variable.str.startswith('Total')")
     .pivot(
@@ -76,7 +81,7 @@ show(
         columns=["variable", "unit"],
         values="value",
     )
-    .map(lambda x: float(f"{x:.3g}") if not np.isnan(x) else x)
+    .map(lambda x: float(f"{x:.3g}") if not pd.isnull(x) else x)
     .fillna("")
 )
 
@@ -89,14 +94,15 @@ show(
 # %%
 selected = tedf.select(
     period=periods,
+    period_mode="none",
     reference_capacity="Input Capacity|Electricity",
     reference_activity="Output|Hydrogen",
-    interpolate_period=False,
     expand_not_specified=False,
 )
 
 aggregated = tedf.aggregate(
     period=periods,
+    period_mode="none",
     reference_capacity="Input Capacity|Electricity",
     reference_activity="Output|Hydrogen",
     expand_not_specified=False,
@@ -145,9 +151,9 @@ display(
 # %%
 aggregated = tedf.aggregate(
     period=periods,
+    period_mode="none",
     reference_capacity="Input Capacity|Electricity",
     reference_activity="Output|Hydrogen",
-    interpolate_period=False,
     expand_not_specified=False,
     agg="size",
 )
@@ -184,9 +190,11 @@ display(
 # %% [markdown]
 # ## Raw data
 
-# %% [markdown]
-# The table below contains the raw data contained in the public POSTED database. This data has not be automatically normalised or harmonised in any way. You can also find this data in the GitHub repo in this file:
-# [posted/database/tedfs/Tech/Electrolysis.csv](https://github.com/PhilippVerpoort/posted/blob/main/posted/database/tedfs/Tech/Electrolysis.csv)
+# %%
+Markdown(f"""
+The table below contains the raw data contained in the public POSTED database. This data has not be automatically normalised or harmonised in any way. You can also find this data in the GitHub repo in this file:
+{link_public_github(var)}
+""")
 
 # %%
-show(tedf.raw.fillna(""))
+edit(tedf)
