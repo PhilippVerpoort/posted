@@ -14,7 +14,7 @@
 # ---
 
 # %% [markdown]
-# # Direct Reduction of Iron
+# # Electric Arc Furnace
 
 # %%
 # Dependencies.
@@ -28,7 +28,7 @@ from posted import TEDF
 
 
 # Set variable of TEDF.
-var = "Tech|Direct Reduction of Iron"
+var = "Tech|Electric Arc Furnace"
 
 # Loading the TEDF.
 tedf = TEDF.load(var)
@@ -38,7 +38,7 @@ units={
     "Electricity": "MWh",
     "Heat": "MWh",
     "Natural Gas": "MWh_NG_LHV",
-    "Hydrogen": "MWh_H2_LHV",
+    "Coal": "MWh_coal_LHV",
 }
 
 # %% [markdown]
@@ -48,11 +48,19 @@ units={
 # The techno-economic data is distinguished across the following additional fields.
 
 # %% [markdown]
-# ### Operation mode (`mode`)
+# ### Operation Mode (`mode`)
 
 # %%
 Markdown(
     "\n".join(f"* **{code}**: {desc}" for code, desc in tedf.fields["mode"].codes.items())
+)
+
+# %% [markdown]
+# ### Reheating (`reheating`)
+
+# %%
+Markdown(
+    "\n".join(f"* **{code}**: {desc}" for code, desc in tedf.fields["reheating"].codes.items())
 )
 
 # %% [markdown]
@@ -82,17 +90,16 @@ display(
 # The figure below gives an overview of the energy demand reported by different sources across different energy carriers.
 
 # %%
-selected = tedf.select(units=units)
-aggregated = tedf.aggregate(units=units)
+data_all_sources = tedf.aggregate(units=units, reheating="w/o reheating", agg="component")
+data_agg_posted = tedf.aggregate(units=units, reheating="w/o reheating")
 
 df_plot = (
     pd.concat([
-        selected,
-        aggregated.assign(source="POSTED-default"),
+        data_all_sources,
+        data_agg_posted.assign(source="POSTED-default"),
     ])
     .assign(variable=lambda df: df["variable"].str.extract(r"^Input\|(.*)", expand=False))
     .query(f"variable.isin({list(units)})")
-    .assign(variable=lambda df: df.agg(lambda r: f"{r['variable']}{(' (' + r['component'] + ')') if r['component'] not in ['#', np.nan] else ''}", axis=1))
 )
 
 display(
