@@ -16,7 +16,7 @@
 # %% [markdown]
 # # Direct Reduction of Iron
 
-# %% editable=true slideshow={"slide_type": ""} hide_input=true
+# %%
 # Dependencies.
 from IPython.display import HTML, Markdown
 
@@ -33,9 +33,6 @@ var = "Tech|Direct Reduction of Iron"
 # Loading the TEDF.
 tedf = TEDF.load(var)
 
-# Determine periods to show.
-periods = [int(p) for p in tedf.raw.period.str.split(",").explode().unique() if p != "*"]
-
 # Define units to use for energy carriers.
 units={
     "Electricity": "MWh",
@@ -48,7 +45,7 @@ units={
 # ## Fields
 
 # %% [markdown]
-# The techno-economic data on direct reduction is distinguished across the following additional field.
+# The techno-economic data is distinguished across the following additional fields.
 
 # %% [markdown]
 # ### Operation mode (`mode`)

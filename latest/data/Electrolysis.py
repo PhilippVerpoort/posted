@@ -16,7 +16,7 @@
 # %% [markdown]
 # # Electrolysis
 
-# %% editable=true slideshow={"slide_type": ""}
+# %%
 # Dependencies.
 from IPython.display import HTML, Markdown
 
@@ -39,7 +39,7 @@ periods = [int(p) for p in tedf.raw.period.str.split(",").explode().unique() if 
 # ## Fields
 
 # %% [markdown]
-# The techno-economic data on electrolysis is distinguished across the following additional fields.
+# The techno-economic data is distinguished across the following additional fields.
 
 # %% [markdown]
 # ### Subtechnologies
