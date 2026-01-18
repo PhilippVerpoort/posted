@@ -1900,9 +1900,7 @@ inconsistencies found for row.</p>
 <span class="normal">875</span>
 <span class="normal">876</span>
 <span class="normal">877</span>
-<span class="normal">878</span>
-<span class="normal">879</span>
-<span class="normal">880</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
+<span class="normal">878</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class to handle Techno-Economic Data Files (TEDFs).</span>
 
@@ -2154,8 +2152,8 @@ inconsistencies found for row.</p>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                     <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
                 <span class="p">)</span>
-            <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
-                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span>
+            <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
             <span class="p">)</span>
 
 
@@ -2655,7 +2653,7 @@ inconsistencies found for row.</p>
         <span class="n">ref_vars</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
         <span class="n">units</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
         <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="c1"># Append reference variables.</span>
         <span class="k">if</span> <span class="n">append_references</span><span class="p">:</span>
             <span class="n">var_ref_unique</span> <span class="o">=</span> <span class="p">{</span>
@@ -2711,9 +2709,7 @@ inconsistencies found for row.</p>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                     <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
                 <span class="p">)</span>
-            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
-                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span>
-            <span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
 
         <span class="c1"># Order columns.</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span>
@@ -3645,8 +3641,8 @@ default unit for each variable.</p>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                 <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
             <span class="p">)</span>
-        <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
-            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span>
+        <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
 
