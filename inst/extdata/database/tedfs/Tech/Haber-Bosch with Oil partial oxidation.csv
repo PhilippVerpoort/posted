@@ -1,0 +1,12 @@
+variable,reference_variable,period,component,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|Ammonia,2020,#,1203,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+CAPEX,Output Capacity|Ammonia,2030,#,1203,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+CAPEX,Output Capacity|Ammonia,2050,#,1203,,USD_2016,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,,2020,#,2.5,,percent,,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,,2030,#,2.5,,percent,,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+OPEX Fixed Relative,,2040,#,2.5,,percent,,,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A3
+Input|Oil,Output|Ammonia,2020,,20.5,High: 32.4; Average:27.9; Low: 20.6,GJ;LHV,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A4
+Input|Electricity,Output|Ammonia,2020,,2,,GJ,1,t,,"IEA, The Future of Petrochemicals: Towards more sustainable plastics and fertilisers, Paris, 2018.",Table A4
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,

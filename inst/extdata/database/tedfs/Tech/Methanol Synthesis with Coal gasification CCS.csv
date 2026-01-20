@@ -1,0 +1,16 @@
+variable,reference_variable,period,value,uncertainty,unit,reference_value,reference_unit,comment,source,source_detail
+CAPEX,Output Capacity|Methanol,2020,1505,,USD_2017,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+CAPEX,Output Capacity|Methanol,2030,1450,,USD_2017,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+CAPEX,Output Capacity|Methanol,2050,1350,,USD_2017,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Specific,Output Capacity|Methanol,2020,5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Specific,Output Capacity|Methanol,2030,5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Specific,Output Capacity|Methanol,2040,5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+OPEX Fixed Specific,Output Capacity|Methanol,2050,5,,percent,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Electricity,Output|Methanol,2020,3.9,,GJ,,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Coal,Output|Methanol,2020,55.3,,GJ,,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Coal,Output|Methanol,2030,52.5,,GJ,,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Input|Coal,Output|Methanol,2050,47.8,,GJ,,t,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5
+Emission factor ,Output|Methanol,2020,0.17,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Emission factor ,Output|Methanol,2030,0.15,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Emission factor ,Output|Methanol,2050,0.14,,kgCO2,1,kg,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
+Lifetime,Output|Methanol,2020,25,,year,,,,"IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019.",PAGE | 5 
