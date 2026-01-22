@@ -34,11 +34,11 @@ var = "Tech|Direct Reduction of Iron"
 tedf = TEDF.load(var)
 
 # Define units to use for energy carriers.
-units={
-    "Electricity": "MWh",
-    "Heat": "MWh",
-    "Natural Gas": "MWh_NG_LHV",
-    "Hydrogen": "MWh_H2_LHV",
+units = {
+    "Input|Electricity": "MWh",
+    "Input|Heat": "MWh",
+    "Input|Natural Gas": "MWh_NG_LHV",
+    "Input|Hydrogen": "MWh_H2_LHV",
 }
 
 # %% [markdown]
@@ -90,9 +90,9 @@ df_plot = (
         selected,
         aggregated.assign(source="POSTED-default"),
     ])
-    .assign(variable=lambda df: df["variable"].str.extract(r"^Input\|(.*)", expand=False))
     .query(f"variable.isin({list(units)})")
-    .assign(variable=lambda df: df.agg(lambda r: f"{r['variable']}{(' (' + r['component'] + ')') if r['component'] not in ['#', np.nan] else ''}", axis=1))
+    .assign(variable=lambda df: df["variable"].str.extract(r"^Input\|(.*)", expand=False))
+    # .assign(variable=lambda df: df.agg(lambda r: f"{r['variable']}{(' (' + r['component'] + ')') if r['component'] not in ['#', np.nan] else ''}", axis=1))
 )
 
 display(

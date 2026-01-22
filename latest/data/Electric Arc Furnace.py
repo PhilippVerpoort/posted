@@ -34,11 +34,11 @@ var = "Tech|Electric Arc Furnace"
 tedf = TEDF.load(var)
 
 # Define units to use for energy carriers.
-units={
-    "Electricity": "MWh",
-    "Heat": "MWh",
-    "Natural Gas": "MWh_NG_LHV",
-    "Coal": "MWh_coal_LHV",
+units = {
+    "Input|Electricity": "MWh",
+    "Input|Heat": "MWh",
+    "Input|Natural Gas": "MWh_NG_LHV",
+    "Input|Hydrogen": "MWh_H2_LHV",
 }
 
 # %% [markdown]
@@ -98,8 +98,8 @@ df_plot = (
         data_all_sources,
         data_agg_posted.assign(source="POSTED-default"),
     ])
-    .assign(variable=lambda df: df["variable"].str.extract(r"^Input\|(.*)", expand=False))
     .query(f"variable.isin({list(units)})")
+    .assign(variable=lambda df: df["variable"].str.extract(r"^Input\|(.*)", expand=False))
 )
 
 display(
