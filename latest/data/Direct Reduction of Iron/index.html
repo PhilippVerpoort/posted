@@ -1268,7 +1268,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.0/mermaid.esm.min.mjs")).default;
+    const elkUrl = "https://cdnjs.cloudflare.com/ajax/libs/mermaid-layout-elk/0.1.9/mermaid-layout-elk.esm.min.mjs";
+    if(elkUrl) {
+      const elkLayouts = (await import(elkUrl)).default;
+      mermaid.registerLayoutLoaders(elkLayouts);
+    }
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -1365,7 +1370,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
      * Post-process to ensure mermaid diagrams contain only valid SVG and XHTML.
      */
     function cleanMermaidSvg(svg) {
-      return svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      svg = svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      return `${SVG_XML_HEADER}${svg}`;
     }
 
 
@@ -1391,6 +1397,285 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
       }
       return `<${tag} ${rest}>`;
     }
+
+
+  /**
+   * Named HTML entities with their decimal equivalent codes.
+   *
+   * @see https://www.w3.org/TR/WD-html40-970708/sgml/entities.html
+   * */
+  const HTML_ENTITIES = `<!ENTITY Aacute "&#193;">
+<!ENTITY aacute "&#225;">
+<!ENTITY Acirc "&#194;">
+<!ENTITY acirc "&#226;">
+<!ENTITY acute "&#180;">
+<!ENTITY AElig "&#198;">
+<!ENTITY aelig "&#230;">
+<!ENTITY Agrave "&#192;">
+<!ENTITY agrave "&#224;">
+<!ENTITY alefsym "&#8501;">
+<!ENTITY Alpha "&#913;">
+<!ENTITY alpha "&#945;">
+<!ENTITY amp "&#38;">
+<!ENTITY and "&#8869;">
+<!ENTITY ang "&#8736;">
+<!ENTITY Aring "&#197;">
+<!ENTITY aring "&#229;">
+<!ENTITY asymp "&#8776;">
+<!ENTITY Atilde "&#195;">
+<!ENTITY atilde "&#227;">
+<!ENTITY Auml "&#196;">
+<!ENTITY auml "&#228;">
+<!ENTITY bdquo "&#8222;">
+<!ENTITY Beta "&#914;">
+<!ENTITY beta "&#946;">
+<!ENTITY brvbar "&#166;">
+<!ENTITY bull "&#8226;">
+<!ENTITY cap "&#8745;">
+<!ENTITY Ccedil "&#199;">
+<!ENTITY ccedil "&#231;">
+<!ENTITY cedil "&#184;">
+<!ENTITY cent "&#162;">
+<!ENTITY Chi "&#935;">
+<!ENTITY chi "&#967;">
+<!ENTITY circ "&#710;">
+<!ENTITY clubs "&#9827;">
+<!ENTITY cong "&#8773;">
+<!ENTITY copy "&#169;">
+<!ENTITY crarr "&#8629;">
+<!ENTITY cup "&#8746;">
+<!ENTITY curren "&#164;">
+<!ENTITY dagger "&#8224;">
+<!ENTITY Dagger "&#8225;">
+<!ENTITY darr "&#8595;">
+<!ENTITY dArr "&#8659;">
+<!ENTITY deg "&#176;">
+<!ENTITY Delta "&#916;">
+<!ENTITY delta "&#948;">
+<!ENTITY diams "&#9830;">
+<!ENTITY divide "&#247;">
+<!ENTITY Eacute "&#201;">
+<!ENTITY eacute "&#233;">
+<!ENTITY Ecirc "&#202;">
+<!ENTITY ecirc "&#234;">
+<!ENTITY Egrave "&#200;">
+<!ENTITY egrave "&#232;">
+<!ENTITY empty "&#8709;">
+<!ENTITY emsp "&#8195;">
+<!ENTITY ensp "&#8194;">
+<!ENTITY epsilon "&#949;">
+<!ENTITY Epsilon "&#917;">
+<!ENTITY equiv "&#8801;">
+<!ENTITY Eta "&#919;">
+<!ENTITY eta "&#951;">
+<!ENTITY ETH "&#208;">
+<!ENTITY eth "&#240;">
+<!ENTITY Euml "&#203;">
+<!ENTITY euml "&#235;">
+<!ENTITY exist "&#8707;">
+<!ENTITY fnof "&#402;">
+<!ENTITY forall "&#8704;">
+<!ENTITY frac12 "&#189;">
+<!ENTITY frac14 "&#188;">
+<!ENTITY frac34 "&#190;">
+<!ENTITY frasl "&#8260;">
+<!ENTITY Gamma "&#915;">
+<!ENTITY gamma "&#947;">
+<!ENTITY ge "&#8805;">
+<!ENTITY gt "&#62;">
+<!ENTITY harr "&#8596;">
+<!ENTITY hArr "&#8660;">
+<!ENTITY hearts "&#9829;">
+<!ENTITY hellip "&#8230;">
+<!ENTITY Iacute "&#205;">
+<!ENTITY iacute "&#237;">
+<!ENTITY Icirc "&#206;">
+<!ENTITY icirc "&#238;">
+<!ENTITY iexcl "&#161;">
+<!ENTITY Igrave "&#204;">
+<!ENTITY igrave "&#236;">
+<!ENTITY image "&#8465;">
+<!ENTITY infin "&#8734;">
+<!ENTITY int "&#8747;">
+<!ENTITY Iota "&#921;">
+<!ENTITY iota "&#953;">
+<!ENTITY iquest "&#191;">
+<!ENTITY isin "&#8712;">
+<!ENTITY Iuml "&#207;">
+<!ENTITY iuml "&#239;">
+<!ENTITY Kappa "&#922;">
+<!ENTITY kappa "&#954;">
+<!ENTITY Lambda "&#923;">
+<!ENTITY lambda "&#955;">
+<!ENTITY lang "&#9001;">
+<!ENTITY laquo "&#171;">
+<!ENTITY larr "&#8592;">
+<!ENTITY lArr "&#8656;">
+<!ENTITY lceil "&#8968;">
+<!ENTITY ldquo "&#8220;">
+<!ENTITY le "&#8804;">
+<!ENTITY lfloor "&#8970;">
+<!ENTITY lowast "&#8727;">
+<!ENTITY loz "&#9674;">
+<!ENTITY lrm "&#8206;">
+<!ENTITY lsaquo "&#8249;">
+<!ENTITY lsquo "&#8216;">
+<!ENTITY lt "&#60;">
+<!ENTITY macr "&#175;">
+<!ENTITY mdash "&#8212;">
+<!ENTITY micro "&#181;">
+<!ENTITY middot "&#183;">
+<!ENTITY minus "&#8722;">
+<!ENTITY Mu "&#924;">
+<!ENTITY mu "&#956;">
+<!ENTITY nabla "&#8711;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY ndash "&#8211;">
+<!ENTITY ne "&#8800;">
+<!ENTITY ni "&#8715;">
+<!ENTITY not "&#172;">
+<!ENTITY notin "&#8713;">
+<!ENTITY nsub "&#8836;">
+<!ENTITY Ntilde "&#209;">
+<!ENTITY ntilde "&#241;">
+<!ENTITY Nu "&#925;">
+<!ENTITY nu "&#957;">
+<!ENTITY Oacute "&#211;">
+<!ENTITY oacute "&#243;">
+<!ENTITY Ocirc "&#212;">
+<!ENTITY ocirc "&#244;">
+<!ENTITY OElig "&#338;">
+<!ENTITY oelig "&#339;">
+<!ENTITY Ograve "&#210;">
+<!ENTITY ograve "&#242;">
+<!ENTITY oline "&#8254;">
+<!ENTITY Omega "&#937;">
+<!ENTITY omega "&#969;">
+<!ENTITY Omicron "&#927;">
+<!ENTITY omicron "&#959;">
+<!ENTITY oplus "&#8853;">
+<!ENTITY or "&#8870;">
+<!ENTITY ordf "&#170;">
+<!ENTITY ordm "&#186;">
+<!ENTITY Oslash "&#216;">
+<!ENTITY oslash "&#248;">
+<!ENTITY Otilde "&#213;">
+<!ENTITY otilde "&#245;">
+<!ENTITY otimes "&#8855;">
+<!ENTITY Ouml "&#214;">
+<!ENTITY ouml "&#246;">
+<!ENTITY para "&#182;">
+<!ENTITY part "&#8706;">
+<!ENTITY permil "&#8240;">
+<!ENTITY perp "&#8869;">
+<!ENTITY Phi "&#934;">
+<!ENTITY phi "&#966;">
+<!ENTITY Pi "&#928;">
+<!ENTITY pi "&#960;">
+<!ENTITY piv "&#982;">
+<!ENTITY plusmn "&#177;">
+<!ENTITY pound "&#163;">
+<!ENTITY prime "&#8242;">
+<!ENTITY Prime "&#8243;">
+<!ENTITY prod "&#8719;">
+<!ENTITY prop "&#8733;">
+<!ENTITY Psi "&#936;">
+<!ENTITY psi "&#968;">
+<!ENTITY quot "&#34;">
+<!ENTITY radic "&#8730;">
+<!ENTITY rang "&#9002;">
+<!ENTITY raquo "&#187;">
+<!ENTITY rarr "&#8594;">
+<!ENTITY rArr "&#8658;">
+<!ENTITY rceil "&#8969;">
+<!ENTITY rdquo "&#8221;">
+<!ENTITY real "&#8476;">
+<!ENTITY reg "&#174;">
+<!ENTITY rfloor "&#8971;">
+<!ENTITY Rho "&#929;">
+<!ENTITY rho "&#961;">
+<!ENTITY rlm "&#8207;">
+<!ENTITY rsaquo "&#8250;">
+<!ENTITY rsquo "&#8217;">
+<!ENTITY sbquo "&#8218;">
+<!ENTITY Scaron "&#352;">
+<!ENTITY scaron "&#353;">
+<!ENTITY sdot "&#8901;">
+<!ENTITY sect "&#167;">
+<!ENTITY shy "&#173;">
+<!ENTITY Sigma "&#931;">
+<!ENTITY sigma "&#963;">
+<!ENTITY sigmaf "&#962;">
+<!ENTITY sim "&#8764;">
+<!ENTITY spades "&#9824;">
+<!ENTITY sub "&#8834;">
+<!ENTITY sube "&#8838;">
+<!ENTITY sum "&#8721;">
+<!ENTITY sup "&#8835;">
+<!ENTITY sup1 "&#185;">
+<!ENTITY sup2 "&#178;">
+<!ENTITY sup3 "&#179;">
+<!ENTITY supe "&#8839;">
+<!ENTITY szlig "&#223;">
+<!ENTITY Tau "&#932;">
+<!ENTITY tau "&#964;">
+<!ENTITY there4 "&#8756;">
+<!ENTITY Theta "&#920;">
+<!ENTITY theta "&#952;">
+<!ENTITY thetasym "&#977;">
+<!ENTITY thinsp "&#8201;">
+<!ENTITY THORN "&#222;">
+<!ENTITY thorn "&#254;">
+<!ENTITY tilde "&#732;">
+<!ENTITY times "&#215;">
+<!ENTITY trade "&#8482;">
+<!ENTITY Uacute "&#218;">
+<!ENTITY uacute "&#250;">
+<!ENTITY uarr "&#8593;">
+<!ENTITY uArr "&#8657;">
+<!ENTITY Ucirc "&#219;">
+<!ENTITY ucirc "&#251;">
+<!ENTITY Ugrave "&#217;">
+<!ENTITY ugrave "&#249;">
+<!ENTITY uml "&#168;">
+<!ENTITY upsih "&#978;">
+<!ENTITY Upsilon "&#933;">
+<!ENTITY upsilon "&#965;">
+<!ENTITY Uuml "&#220;">
+<!ENTITY uuml "&#252;">
+<!ENTITY weierp "&#8472;">
+<!ENTITY Xi "&#926;">
+<!ENTITY xi "&#958;">
+<!ENTITY Yacute "&#221;">
+<!ENTITY yacute "&#253;">
+<!ENTITY yen "&#165;">
+<!ENTITY Yuml "&#376;">
+<!ENTITY yuml "&#255;">
+<!ENTITY Zeta "&#918;">
+<!ENTITY zeta "&#950;">
+<!ENTITY zwj "&#8205;">
+<!ENTITY zwnj "&#8204;">`.replace(/\n/g, ' ');
+
+  /**
+   * A reasonably strict xml declaration.
+   */
+  const XML_DECL = '<?xml version="1.0" standalone="no"?>';
+
+  /**
+   * The beginning of the XML doctype declaration.
+   */
+  const DOCTYPE_START = `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [`;
+
+  /**
+   * The end of the XML docype declaration.
+   */
+  const DOCTYPE_END = ']>';
+
+  /**
+   * A full header for an SVG XML document.
+   */
+  const SVG_XML_HEADER = `${XML_DECL}
+    ${DOCTYPE_START}${HTML_ENTITIES}${DOCTYPE_END}`;
 
     void Promise.all([...diagrams].map(renderOneMarmaid));
   });
@@ -1446,7 +1731,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=30231a86">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4ea2a9fa">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1456,10 +1741,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs jp-mod-noInput" id="cell-id=101cc88d">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs jp-mod-noInput" id="cell-id=1f8c34e6">
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=955d4f45">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7de4e27f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1469,7 +1754,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=896974c8">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1847d22f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1479,7 +1764,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a5e68950">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c36bc9a1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1489,7 +1774,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=4b5d9ecd">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=d3cc661c">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1506,7 +1791,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c69b68b8">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b28e9c7d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1516,7 +1801,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=39ac6185">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c827e845">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1526,7 +1811,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=356de667">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=04959bf4">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1534,7 +1819,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <!--| quarto-html-table-processing: none -->
-<table id="itables_de5c288a_8610_4cfa_a914_e197572cf51d"><tbody><tr>
+<table id="itables_22172812_5baf_43bd_9b2f_c63d4f9ab4fb"><tbody><tr>
 <td style="vertical-align:middle; text-align:left">
 <a href="https://mwouts.github.io/itables/"><svg class="main-svg" style="font-family: 'Droid Sans', sans-serif;" viewbox="0 0 500 400" width="64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g style="fill:#d9d7fc">
@@ -1589,18 +1874,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </g>
 </svg>
 </a>
-    Loading ITables v2.6.2 from the internet...
+    Loading ITables v2.7.0 from the internet...
     (need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)</td>
 </tr></tbody></table>
-<link href="https://www.unpkg.com/dt_for_itables@2.4.0/dt_bundle.css" rel="stylesheet"/>
+<link href="https://www.unpkg.com/dt_for_itables@2.5.0/dt_bundle.css" rel="stylesheet"/>
 <script type="module">
-    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.4.0/dt_bundle.js';
+    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.5.0/dt_bundle.js';
 
-    document.querySelectorAll("#itables_de5c288a_8610_4cfa_a914_e197572cf51d:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_22172812_5baf_43bd_9b2f_c63d4f9ab4fb:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
-        let dt_args = {"layout": {"topStart": null, "topEnd": null, "bottomStart": null, "bottomEnd": null}, "style": {"table-layout": "auto", "width": "auto", "margin": "auto", "caption-side": "bottom"}, "text_in_header_can_be_selected": true, "order": [], "classes": ["display", "nowrap"], "table_html": "<table><thead>\n    <tr>\n      <th>variable</th>\n      <th>CAPEX</th>\n      <th>Input|Electricity</th>\n      <th>Input|Heat</th>\n      <th>Input|Hydrogen</th>\n      <th>Input|Iron Ore</th>\n      <th>Input|Natural Gas</th>\n      <th>OPEX Fixed</th>\n      <th>Output Capacity|Directly Reduced Iron</th>\n      <th>Output|Directly Reduced Iron</th>\n      <th>Input|Oxygen</th>\n    </tr>\n    <tr>\n      <th>unit</th>\n      <th>EUR_2024</th>\n      <th>MWh</th>\n      <th>MWh</th>\n      <th>MWh_H2_LHV</th>\n      <th>t</th>\n      <th>MWh_NG_LHV</th>\n      <th>EUR_2024/year</th>\n      <th>t/a</th>\n      <th>t</th>\n      <th>t</th>\n    </tr>\n    <tr>\n      <th>mode</th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead></table>", "data_json": "[[\"H2\", 418.0, 0.0905, \" 0.484\", \" 1.82\", 1.44, 0.48, 16.8, 1.0, 1.0, \"\"], [\"NG\", 418.0, 0.0791, \"\", \"\", 1.4, 2.69, 16.8, 1.0, 1.0, \" 0.0855\"]]"};
+        let dt_args = {"layout": {"topStart": null, "topEnd": null, "bottomStart": null, "bottomEnd": null}, "style": {"table-layout": "auto", "width": "auto", "margin": "auto", "caption-side": "bottom"}, "text_in_header_can_be_selected": true, "order": [], "classes": ["display", "nowrap", "compact"], "table_html": "<table><thead>\n    <tr>\n      <th>variable</th>\n      <th>CAPEX</th>\n      <th>Input|Electricity</th>\n      <th>Input|Heat</th>\n      <th>Input|Hydrogen</th>\n      <th>Input|Iron Ore</th>\n      <th>Input|Natural Gas</th>\n      <th>OPEX Fixed</th>\n      <th>Output Capacity|Directly Reduced Iron</th>\n      <th>Output|Directly Reduced Iron</th>\n      <th>Input|Oxygen</th>\n    </tr>\n    <tr>\n      <th>unit</th>\n      <th>EUR_2024</th>\n      <th>MWh</th>\n      <th>MWh</th>\n      <th>MWh_H2_LHV</th>\n      <th>t</th>\n      <th>MWh_NG_LHV</th>\n      <th>EUR_2024/year</th>\n      <th>t/a</th>\n      <th>t</th>\n      <th>t</th>\n    </tr>\n    <tr>\n      <th>mode</th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead></table>", "data_json": "[[\"H2\", [\"418.0\", 1], [\"0.0905\", 2], \" 0.484\", \" 1.82\", [\"1.44\", 2], [\"0.48\", 1], [\"16.8\", 1], [\"1.0\", 1], [\"1.0\", 1], \"\"], [\"NG\", [\"418.0\", 1], [\"0.0791\", 1], \"\", \"\", [\"1.40\", 1], [\"2.69\", 2], [\"16.8\", 1], [\"1.0\", 1], [\"1.0\", 1], \" 0.0855\"]]", "columnDefs": [{"targets": [1, 2, 5, 6, 7, 8, 9], "render": "\n                        function (data, type, row, meta) {\n                            return type === 'sort' ? data[1] : data[0];\n                        }\n                    "}], "keys_to_be_evaluated": [["columnDefs", 0, "render"]]};
         new ITable(table, dt_args);
     });
 </script>
@@ -1610,7 +1895,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=81f06ae0">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=813b4299">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1620,7 +1905,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b1871e1f">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0fe3966e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1630,7 +1915,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=9944823a">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=3018bd76">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1647,9 +1932,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <div> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script> <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-<script charset="utf-8" crossorigin="anonymous" integrity="sha256-4rD3fugVb/nVJYUv5Ky3v+fYXoouHaBSP20WIJuEiWg=" src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script> <div class="plotly-graph-div" id="ab530906-bb83-4757-9553-09143bcb9bb8" style="height:525px; width:100%;"></div> <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("ab530906-bb83-4757-9553-09143bcb9bb8")) {                    Plotly.newPlot(                        "ab530906-bb83-4757-9553-09143bcb9bb8",                        [{"hovertemplate":"variable=Heat\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Heat","marker":{"color":"#1F77B4","pattern":{"shape":""}},"name":"Heat","orientation":"v","showlegend":true,"textposition":"auto","x":["Agora-Energiewende-2022","Devlin-2022","Holling-2017","Otto-2017","Vogl-2018","POSTED-default"],"xaxis":"x","y":{"dtype":"f8","bdata":"AAAAAAAAAAAuuuiiiy7aP3E9CtejcM0\u002fdouZrBFA+D8rD0jWufLQPy7ROJ5f+N4\u002f"},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Hydrogen\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Hydrogen","marker":{"color":"#FF7F0E","pattern":{"shape":""}},"name":"Hydrogen","orientation":"v","showlegend":true,"textposition":"auto","x":["Agora-Energiewende-2022","Devlin-2022","Holling-2017","Jacobasch-2021","Otto-2017","Rechenberger20","Rechenberger20","Sasiain-2020","Sasiain-2020","Vogl-2018","POSTED-default"],"xaxis":"x","y":{"dtype":"f8","bdata":"a0U3ayL79T832WSTTTb5P54XAShZYfw\u002fR0M9XMiwAUAH\u002fFfF0R7+Pz+xO8quoeU\u002fp4Q6vzuM9j8\u002fsTvKrqHlP5aAhbnKgPY\u002f+BLaS2gv+T9JsGgmKR79Pw=="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Natural Gas\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Natural Gas","marker":{"color":"#2CA02C","pattern":{"shape":""}},"name":"Natural Gas","orientation":"v","showlegend":true,"textposition":"auto","x":["Agora-Energiewende-2022","Rechenberger20","Sasiain-2020","POSTED-default"],"xaxis":"x","y":{"dtype":"f8","bdata":"BCFNS\u002f6V3T9guAcQIz7fP2C4BxAjPt8\u002fQdseecGw3j8="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Natural Gas\u003cbr\u003emode=NG\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Natural Gas","marker":{"color":"#2CA02C","pattern":{"shape":""}},"name":"Natural Gas","orientation":"v","showlegend":false,"textposition":"auto","x":["Holling-2017","Jacobasch-2021","POSTED-default"],"xaxis":"x2","y":{"dtype":"f8","bdata":"d4ycqHGIBUA9vYXZe3gFQNokEcF2gAVA"},"yaxis":"y2","type":"bar"},{"hovertemplate":"variable=Electricity\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Electricity","marker":{"color":"#D62728","pattern":{"shape":""}},"name":"Electricity","orientation":"v","showlegend":true,"textposition":"auto","x":["Devlin-2022","Holling-2017","Jacobasch-2021","Otto-2017","Rechenberger20","POSTED-default"],"xaxis":"x","y":{"dtype":"f8","bdata":"QZ4S5ClBrj97FK5H4Xq0PxI8oZy4OLY\u002fSOOX5iPCvz8+CtejcD26P3JPjkZaKrc\u002f"},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Electricity\u003cbr\u003emode=NG\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Electricity","marker":{"color":"#D62728","pattern":{"shape":""}},"name":"Electricity","orientation":"v","showlegend":false,"textposition":"auto","x":["Holling-2017","Jacobasch-2021","POSTED-default"],"xaxis":"x2","y":{"dtype":"f8","bdata":"exSuR+F6tD9FjCrSygW0P2BQ7AxWQLQ\u002f"},"yaxis":"y2","type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"rgb(36,36,36)"},"error_y":{"color":"rgb(36,36,36)"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"baxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2d"}],"histogram":[{"marker":{"line":{"color":"white","width":0.6}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"rgb(237,237,237)"},"line":{"color":"white"}},"header":{"fill":{"color":"rgb(217,217,217)"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"colorscale":{"diverging":[[0.0,"rgb(103,0,31)"],[0.1,"rgb(178,24,43)"],[0.2,"rgb(214,96,77)"],[0.3,"rgb(244,165,130)"],[0.4,"rgb(253,219,199)"],[0.5,"rgb(247,247,247)"],[0.6,"rgb(209,229,240)"],[0.7,"rgb(146,197,222)"],[0.8,"rgb(67,147,195)"],[0.9,"rgb(33,102,172)"],[1.0,"rgb(5,48,97)"]],"sequential":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"sequentialminus":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]]},"colorway":["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","#8C564B","#E377C2","#7F7F7F","#BCBD22","#17BECF"],"dragmode":false,"font":{"color":"rgb(36,36,36)"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","polar":{"angularaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","radialaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"zaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"}},"shapedefaults":{"fillcolor":"black","line":{"width":0},"opacity":0.3},"ternary":{"aaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"baxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","caxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"title":{"x":0.05},"xaxis":{"automargin":true,"fixedrange":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"automargin":true,"fixedrange":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"}}},"xaxis":{"anchor":"y","domain":[0.0,0.49],"title":{}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Energy demand per Output|Directly Reduced Iron  [ MWh \u002f t ]"}},"xaxis2":{"anchor":"y2","domain":[0.51,1.0],"matches":"x","title":{}},"yaxis2":{"anchor":"x2","domain":[0.0,1.0],"matches":"y","showticklabels":false},"annotations":[{"font":{},"showarrow":false,"text":"mode: H2","x":0.245,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"mode: NG","x":0.755,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"}],"legend":{"title":{},"tracegroupgap":0},"margin":{"t":60},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+<script charset="utf-8" crossorigin="anonymous" integrity="sha256-4rD3fugVb/nVJYUv5Ky3v+fYXoouHaBSP20WIJuEiWg=" src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script> <div class="plotly-graph-div" id="51ac8d5a-6354-41ff-828c-de933c2fec4a" style="height:525px; width:100%;"></div> <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("51ac8d5a-6354-41ff-828c-de933c2fec4a")) {                    Plotly.newPlot(                        "51ac8d5a-6354-41ff-828c-de933c2fec4a",                        [{"hovertemplate":"variable=Electricity\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Electricity","marker":{"color":"#2CA02C","pattern":{"shape":""}},"name":"Electricity","orientation":"v","showlegend":true,"textposition":"auto","x":["POSTED-default","Devlin-2022","Rechenberger20","Holling-2017","Otto-2017","Jacobasch-2021"],"xaxis":"x","y":{"dtype":"f8","bdata":"ck+ORloqtz9BnhLkKUGuPz4K16NwPbo\u002fexSuR+F6tD9I45fmI8K\u002fPxI8oZy4OLY\u002f"},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Electricity\u003cbr\u003emode=NG\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Electricity","marker":{"color":"#2CA02C","pattern":{"shape":""}},"name":"Electricity","orientation":"v","showlegend":false,"textposition":"auto","x":["POSTED-default","Holling-2017","Jacobasch-2021"],"xaxis":"x2","y":{"dtype":"f8","bdata":"YFDsDFZAtD97FK5H4Xq0P0WMKtLKBbQ\u002f"},"yaxis":"y2","type":"bar"},{"hovertemplate":"variable=Heat\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Heat","marker":{"color":"#D62728","pattern":{"shape":""}},"name":"Heat","orientation":"v","showlegend":true,"textposition":"auto","x":["Agora-Energiewende-2022","POSTED-default","Vogl-2018","Otto-2017","Holling-2017","Devlin-2022"],"xaxis":"x","y":{"dtype":"f8","bdata":"AAAAAAAAAAAu0TieX\u002fjePysPSNa58tA\u002fdouZrBFA+D9xPQrXo3DNPy666KKLLto\u002f"},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Hydrogen\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Hydrogen","marker":{"color":"#1F77B4","pattern":{"shape":""}},"name":"Hydrogen","orientation":"v","showlegend":true,"textposition":"auto","x":["Holling-2017","Otto-2017","Devlin-2022","POSTED-default","Jacobasch-2021","Vogl-2018","Agora-Energiewende-2022"],"xaxis":"x","y":{"dtype":"f8","bdata":"nhcBKFlh\u002fD8H\u002fFfF0R7+PzfZZJNNNvk\u002fSbBoJike\u002fT9HQz1cyLABQPgS2ktoL\u002fk\u002fa0U3ayL79T8="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Hydrogen (Heat)\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Hydrogen (Heat)","marker":{"color":"#3F94CF","pattern":{"shape":""}},"name":"Hydrogen (Heat)","orientation":"v","showlegend":true,"textposition":"auto","x":["Rechenberger20","Sasiain-2020"],"xaxis":"x","y":{"dtype":"f8","bdata":"P7E7yq6h5T8\u002fsTvKrqHlPw=="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Hydrogen (Reduction agent)\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Hydrogen (Reduction agent)","marker":{"color":"#0D619C","pattern":{"shape":""}},"name":"Hydrogen (Reduction agent)","orientation":"v","showlegend":true,"textposition":"auto","x":["Rechenberger20","Sasiain-2020"],"xaxis":"x","y":{"dtype":"f8","bdata":"p4Q6vzuM9j+WgIW5yoD2Pw=="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Natural Gas\u003cbr\u003emode=H2\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Natural Gas","marker":{"color":"#FF7F0E","pattern":{"shape":""}},"name":"Natural Gas","orientation":"v","showlegend":true,"textposition":"auto","x":["POSTED-default","Sasiain-2020","Rechenberger20","Agora-Energiewende-2022"],"xaxis":"x","y":{"dtype":"f8","bdata":"QdseecGw3j9guAcQIz7fP2C4BxAjPt8\u002fBCFNS\u002f6V3T8="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Natural Gas\u003cbr\u003emode=NG\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Natural Gas","marker":{"color":"#FF7F0E","pattern":{"shape":""}},"name":"Natural Gas","orientation":"v","showlegend":false,"textposition":"auto","x":["Holling-2017","Jacobasch-2021","POSTED-default"],"xaxis":"x2","y":{"dtype":"f8","bdata":"d4ycqHGIBUA9vYXZe3gFQNokEcF2gAVA"},"yaxis":"y2","type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"rgb(36,36,36)"},"error_y":{"color":"rgb(36,36,36)"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"baxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2d"}],"histogram":[{"marker":{"line":{"color":"white","width":0.6}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"rgb(237,237,237)"},"line":{"color":"white"}},"header":{"fill":{"color":"rgb(217,217,217)"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"colorscale":{"diverging":[[0.0,"rgb(103,0,31)"],[0.1,"rgb(178,24,43)"],[0.2,"rgb(214,96,77)"],[0.3,"rgb(244,165,130)"],[0.4,"rgb(253,219,199)"],[0.5,"rgb(247,247,247)"],[0.6,"rgb(209,229,240)"],[0.7,"rgb(146,197,222)"],[0.8,"rgb(67,147,195)"],[0.9,"rgb(33,102,172)"],[1.0,"rgb(5,48,97)"]],"sequential":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"sequentialminus":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]]},"colorway":["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","#8C564B","#E377C2","#7F7F7F","#BCBD22","#17BECF"],"dragmode":false,"font":{"color":"rgb(36,36,36)"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","polar":{"angularaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","radialaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"zaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"}},"shapedefaults":{"fillcolor":"black","line":{"width":0},"opacity":0.3},"ternary":{"aaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"baxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","caxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"title":{"x":0.05},"xaxis":{"automargin":true,"fixedrange":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"automargin":true,"fixedrange":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"}}},"xaxis":{"anchor":"y","domain":[0.0,0.49],"title":{}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Energy demand per Output|Directly Reduced Iron  ( MWh \u002f t )"}},"xaxis2":{"anchor":"y2","domain":[0.51,1.0],"matches":"x","title":{}},"yaxis2":{"anchor":"x2","domain":[0.0,1.0],"matches":"y","showticklabels":false},"annotations":[{"font":{},"showarrow":false,"text":"mode: H2","x":0.245,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"mode: NG","x":0.755,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"}],"legend":{"title":{},"tracegroupgap":0},"margin":{"t":60},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('ab530906-bb83-4757-9553-09143bcb9bb8');
+var gd = document.getElementById('51ac8d5a-6354-41ff-828c-de933c2fec4a');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -1678,7 +1963,7 @@ if (outputEl) {{
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bbbae9ab">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=673c8692">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1688,7 +1973,7 @@ if (outputEl) {{
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=95c73f88">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=e3c4040d">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1703,7 +1988,7 @@ if (outputEl) {{
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=e3a3355b">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=df35ff31">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1711,7 +1996,7 @@ if (outputEl) {{
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <!--| quarto-html-table-processing: none -->
-<table id="itables_9da5be4f_7e41_4b17_b00a_e87905f94e46"><tbody><tr>
+<table id="itables_0d3580e6_7d54_4c42_9679_a1f0e8ff3353"><tbody><tr>
 <td style="vertical-align:middle; text-align:left">
 <a href="https://mwouts.github.io/itables/"><svg class="main-svg" style="font-family: 'Droid Sans', sans-serif;" viewbox="0 0 500 400" width="64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g style="fill:#d9d7fc">
@@ -1766,18 +2051,18 @@ if (outputEl) {{
 </g>
 </svg>
 </a>
-    Loading ITables v2.6.2 from the internet...
+    Loading ITables v2.7.0 from the internet...
     (need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)</td>
 </tr></tbody></table>
-<link href="https://www.unpkg.com/dt_for_itables@2.4.0/dt_bundle.css" rel="stylesheet"/>
+<link href="https://www.unpkg.com/dt_for_itables@2.5.0/dt_bundle.css" rel="stylesheet"/>
 <script type="module">
-    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.4.0/dt_bundle.js';
+    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.5.0/dt_bundle.js';
 
-    document.querySelectorAll("#itables_9da5be4f_7e41_4b17_b00a_e87905f94e46:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_0d3580e6_7d54_4c42_9679_a1f0e8ff3353:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
-        let dt_args = {"layout": {"topStart": "pageLength", "topEnd": "search", "bottomStart": "info", "bottomEnd": "paging"}, "style": {"table-layout": "auto", "width": "auto", "margin": "auto", "caption-side": "bottom"}, "text_in_header_can_be_selected": true, "order": [], "classes": ["display", "nowrap"], "table_html": "<table><thead>\n    <tr style=\"text-align: right;\">\n      \n      <th>source</th>\n      <th>source_detail</th>\n      <th>mode</th>\n      <th>component</th>\n      <th>period</th>\n      <th>variable</th>\n      <th>reference_variable</th>\n      <th>value</th>\n      <th>uncertainty</th>\n      <th>unit</th>\n      <th>reference_value</th>\n      <th>reference_unit</th>\n      <th>comment</th>\n    </tr>\n  </thead></table>", "data_json": "[[\"Agora-Energiewende-2022\", \"Abbildung 24 and 25\", \"*\", \"#\", \"2022\", \"CAPEX\", \"Output Capacity|Directly Reduced Iron\", \"414\", \"\", \"EUR_2013\", \"1\", \"t/a\", \"This reference assumes the value provided by W\\u00f6rtler et al., 2013 but with an additional integration factor of 1.8.\"], [\"Agora-Energiewende-2022\", \"\", \"H2\", \"#\", \"2022\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"0\", \"\", \"MWh\", \"1\", \"t\", \"This source does not assume any additional heat demand for the direct reduction other than the hydrogen and natural gas used in the process.\"], [\"Agora-Energiewende-2022\", \"Tabelle 12\", \"H2\", \"#\", \"2022\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"541\", \"\", \"cubic_meter_H2_norm\", \"1.1\", \"t\", \"This source states 541 Nm\\u00b3 of hydrogen per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used.\"], [\"Agora-Energiewende-2022\", \"Tabelle 12\", \"H2\", \"#\", \"2022\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"50\", \"\", \"cubic_meter_NG_norm\", \"1.1\", \"t\", \"This source states 50 Nm\\u00b3 of natural gas per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used.\"], [\"Agora-Energiewende-2022\", \"\", \"*\", \"#\", \"2022\", \"OPEX Fixed Relative\", \"\", \"3\", \"\", \"percent\", \"\", \"\", \"\"], [\"Devlin-2022\", \"Section 2.2.2\", \"H2\", \"#\", \"2022\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"0.065\", \"\", \"MWh\", \"1.1\", \"t\", \"This source states 0.065 MWh of electricity for H2 compression per tonne of liquid steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 0.065\\u00d70.909 MWh of electricity per tonne of HBI.\"], [\"Devlin-2022\", \"Chapter 2.2.2\", \"H2\", \"#\", \"2022\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"0.45\", \"\", \"MWh\", \"1.1\", \"t\", \"This source states 0.45 MWh of electricity for H2 heating per tonne of liquid steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 0.45\\u00d70.909 MWh of electricity per tonne of HBI.\"], [\"Devlin-2022\", \"Section 2.2.2\", \"H2\", \"#\", \"2022\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"52\", \"\", \"kg_H2\", \"1.1\", \"t\", \"This source states 52 kg of hydrogen per tonne of semi-finished steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 52\\u00d70.909 kg of hydrogen per tonne of HBI.\"], [\"Devlin-2022\", \"Chapter 2.2.2\", \"*\", \"#\", \"2022\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"1.5\", \"\", \"t\", \"1.1\", \"t\", \"This source states 1.5 tonnes of iron ore per tonne of semi-finished steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 1.5\\u00d70.909 tonnes of iron ore per tonne of HBI.\"], [\"Holling-2017\", \"Just before Table 1\", \"H2\", \"#\", \"2017\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"0.08\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Holling-2017\", \"Page 7\", \"NG\", \"#\", \"2017\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"0.08\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Holling-2017\", \"Just before Table 1\", \"H2\", \"#\", \"2017\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"0.23\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Holling-2017\", \"Just before Table 1\", \"H2\", \"#\", \"2017\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"635\", \"\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"\"], [\"Holling-2017\", \"Page 7\", \"NG\", \"#\", \"2017\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"9.7\", \"\", \"GJ_NG_LHV\", \"1\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 9, Table 6\", \"*\", \"#\", \"2021\", \"CAPEX\", \"Output Capacity|Directly Reduced Iron\", \"605.9\", \"\", \"MEUR_2020\", \"1905400\", \"t/a\", \"Note that the reference value is not 2 Mt but ~1.9 Mt as per flow data presented in Table 2.\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"H2\", \"#\", \"2021\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"151444.7\", \"\", \"MWh\", \"1744694.39\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"NG\", \"#\", \"2021\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"149027.78\", \"\", \"MWh\", \"1905400\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"H2\", \"#\", \"2021\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"115742.31\", \"\", \"t_H2\", \"1744694.39\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"H2\", \"#\", \"2021\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"2590520\", \"\", \"t\", \"1744694.39\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"NG\", \"#\", \"2021\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"2434400\", \"\", \"t\", \"1905400\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"NG\", \"#\", \"2021\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"390692\", \"\", \"t_NG\", \"1905400\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"NG\", \"#\", \"2021\", \"Input|Oxygen\", \"Output|Directly Reduced Iron\", \"163000\", \"\", \"t\", \"1905400\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"H2\", \"#\", \"2017\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"0.46\", \"\", \"GJ\", \"1.03\", \"t\", \"This source states 0.46 GJ of electric power per 1.03 tonnes of iron sponge.\"], [\"Otto-2017\", \"Figure 6\", \"H2\", \"#\", \"2017\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"5.62\", \"\", \"GJ\", \"1.03\", \"t\", \"This source states 5.62 GJ of NG demand for heat provision per 1.03 tonnes of iron sponge.\"], [\"Otto-2017\", \"Figure 6\", \"H2\", \"#\", \"2017\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"58.17\", \"\", \"kg_H2\", \"1.03\", \"t\", \"This source states 58.17 kg of hydrogen per 1.03 tonnes of iron sponge.\"], [\"Otto-2017\", \"Chapter 5.4, Figure 6\", \"*\", \"#\", \"2017\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"1.66\", \"\", \"t\", \"1.03\", \"t\", \"This source states 1.66 t of iron ore per 1.03 tonnes of iron sponge.\"], [\"Rechenberger20\", \"Section 4.2.1\", \"H2\", \"#\", \"2020\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"102.5\", \"22.5\", \"kWh\", \"1\", \"t\", \"\"], [\"Rechenberger20\", \"Section 4.2\", \"H2\", \"Reduction agent\", \"2020\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"504.5\", \"20.5\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"Only the value reported for the hydrogen needed as a reduction agent is mentioned. The remaining hydrogen is instead reported here as heat.\"], [\"Rechenberger20\", \"Section 4.2\", \"H2\", \"Heat\", \"2020\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"242\", \"\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"This is the hydrogen not used as a reduction agent but instead as a heat source.\"], [\"Rechenberger20\", \"Section 3, Table 1\", \"*\", \"#\", \"2020\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"1.391\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Rechenberger20\", \"Section 4.2\", \"H2\", \"#\", \"2020\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"48\", \"\", \"cubic_meter_NG_norm\", \"1\", \"t\", \"This source assumes a natural-gas demand to provide not only heat but also the carbon content of the DRI.\"], [\"Sasiain-2020\", \"Results and Discussion, 8th paragraph\", \"H2\", \"Reduction agent\", \"2020\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"503.5\", \"21.5\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"Only the value reported for the hydrogen needed as a reduction agent is mentioned. The remaining hydrogen is instead reported here as heat.\"], [\"Sasiain-2020\", \"Results and Discussion, 8th paragraph\", \"H2\", \"Heat\", \"2020\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"242\", \"\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"This is the hydrogen not used as a reduction agent but instead as a heat source.\"], [\"Sasiain-2020\", \"Results and Discussion, 8th paragraph\", \"H2\", \"#\", \"2020\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"48\", \"\", \"cubic_meter_NG_norm\", \"1\", \"t\", \"This source assumes a natural-gas demand to provide not only heat but also the carbon content of the DRI.\"], [\"Vogl-2018\", \"Figure 2\", \"H2\", \"#\", \"2018\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"0.286\", \"\", \"MWh\", \"1.08\", \"t\", \"The value 0.286 was read off from the graph and corresponds to the ore heating for 100% HBI. This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.\"], [\"Vogl-2018\", \"Section 3\", \"H2\", \"#\", \"2018\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"51\", \"\", \"kg_H2\", \"1.08\", \"t\", \"This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.\"], [\"Vogl-2018\", \"Section 3\", \"*\", \"#\", \"2018\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"1.504\", \"\", \"t\", \"1.1\", \"t\", \"This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.\"], [\"Wortler-2013\", \"\", \"*\", \"#\", \"2013\", \"CAPEX\", \"Output Capacity|Directly Reduced Iron\", \"230\", \"\", \"EUR_2013\", \"1\", \"t/a\", \"\"]]"};
+        let dt_args = {"layout": {"topStart": "pageLength", "topEnd": "search", "bottomStart": "info", "bottomEnd": "paging"}, "style": {"table-layout": "auto", "width": "auto", "margin": "auto", "caption-side": "bottom"}, "text_in_header_can_be_selected": true, "order": [], "classes": ["display", "nowrap", "compact"], "table_html": "<table><thead>\n    <tr style=\"text-align: right;\">\n      \n      <th>source</th>\n      <th>source_detail</th>\n      <th>mode</th>\n      <th>component</th>\n      <th>period</th>\n      <th>variable</th>\n      <th>reference_variable</th>\n      <th>value</th>\n      <th>uncertainty</th>\n      <th>unit</th>\n      <th>reference_value</th>\n      <th>reference_unit</th>\n      <th>comment</th>\n    </tr>\n  </thead></table>", "data_json": "[[\"Agora-Energiewende-2022\", \"Abbildung 24 and 25\", \"*\", \"#\", \"2022\", \"CAPEX\", \"Output Capacity|Directly Reduced Iron\", \"414\", \"\", \"EUR_2013\", \"1\", \"t/a\", \"This reference assumes the value provided by W\\u00f6rtler et al., 2013 but with an additional integration factor of 1.8.\"], [\"Agora-Energiewende-2022\", \"\", \"H2\", \"#\", \"2022\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"0\", \"\", \"MWh\", \"1\", \"t\", \"This source does not assume any additional heat demand for the direct reduction other than the hydrogen and natural gas used in the process.\"], [\"Agora-Energiewende-2022\", \"Tabelle 12\", \"H2\", \"#\", \"2022\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"541\", \"\", \"cubic_meter_H2_norm\", \"1.1\", \"t\", \"This source states 541 Nm\\u00b3 of hydrogen per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used.\"], [\"Agora-Energiewende-2022\", \"Tabelle 12\", \"H2\", \"#\", \"2022\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"50\", \"\", \"cubic_meter_NG_norm\", \"1.1\", \"t\", \"This source states 50 Nm\\u00b3 of natural gas per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used.\"], [\"Agora-Energiewende-2022\", \"\", \"*\", \"#\", \"2022\", \"OPEX Fixed Relative\", \"\", \"3\", \"\", \"percent\", \"\", \"\", \"\"], [\"Devlin-2022\", \"Section 2.2.2\", \"H2\", \"#\", \"2022\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"0.065\", \"\", \"MWh\", \"1.1\", \"t\", \"This source states 0.065 MWh of electricity for H2 compression per tonne of liquid steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 0.065\\u00d70.909 MWh of electricity per tonne of HBI.\"], [\"Devlin-2022\", \"Chapter 2.2.2\", \"H2\", \"#\", \"2022\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"0.45\", \"\", \"MWh\", \"1.1\", \"t\", \"This source states 0.45 MWh of electricity for H2 heating per tonne of liquid steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 0.45\\u00d70.909 MWh of electricity per tonne of HBI.\"], [\"Devlin-2022\", \"Section 2.2.2\", \"H2\", \"#\", \"2022\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"52\", \"\", \"kg_H2\", \"1.1\", \"t\", \"This source states 52 kg of hydrogen per tonne of semi-finished steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 52\\u00d70.909 kg of hydrogen per tonne of HBI.\"], [\"Devlin-2022\", \"Chapter 2.2.2\", \"*\", \"#\", \"2022\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"1.5\", \"\", \"t\", \"1.1\", \"t\", \"This source states 1.5 tonnes of iron ore per tonne of semi-finished steel, and 1.1 tonnes of HBI per tonne of semi-finished steel, hence resulting in 1.5\\u00d70.909 tonnes of iron ore per tonne of HBI.\"], [\"Holling-2017\", \"Just before Table 1\", \"H2\", \"#\", \"2017\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"0.08\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Holling-2017\", \"Page 7\", \"NG\", \"#\", \"2017\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"0.08\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Holling-2017\", \"Just before Table 1\", \"H2\", \"#\", \"2017\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"0.23\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Holling-2017\", \"Just before Table 1\", \"H2\", \"#\", \"2017\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"635\", \"\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"\"], [\"Holling-2017\", \"Page 7\", \"NG\", \"#\", \"2017\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"9.7\", \"\", \"GJ_NG_LHV\", \"1\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 9, Table 6\", \"*\", \"#\", \"2021\", \"CAPEX\", \"Output Capacity|Directly Reduced Iron\", \"605.9\", \"\", \"MEUR_2020\", \"1905400\", \"t/a\", \"Note that the reference value is not 2 Mt but ~1.9 Mt as per flow data presented in Table 2.\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"H2\", \"#\", \"2021\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"151444.7\", \"\", \"MWh\", \"1744694.39\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"NG\", \"#\", \"2021\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"149027.78\", \"\", \"MWh\", \"1905400\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"H2\", \"#\", \"2021\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"115742.31\", \"\", \"t_H2\", \"1744694.39\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"H2\", \"#\", \"2021\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"2590520\", \"\", \"t\", \"1744694.39\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"NG\", \"#\", \"2021\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"2434400\", \"\", \"t\", \"1905400\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"NG\", \"#\", \"2021\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"390692\", \"\", \"t_NG\", \"1905400\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"NG\", \"#\", \"2021\", \"Input|Oxygen\", \"Output|Directly Reduced Iron\", \"163000\", \"\", \"t\", \"1905400\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"H2\", \"#\", \"2017\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"0.46\", \"\", \"GJ\", \"1.03\", \"t\", \"This source states 0.46 GJ of electric power per 1.03 tonnes of iron sponge.\"], [\"Otto-2017\", \"Figure 6\", \"H2\", \"#\", \"2017\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"5.62\", \"\", \"GJ\", \"1.03\", \"t\", \"This source states 5.62 GJ of NG demand for heat provision per 1.03 tonnes of iron sponge.\"], [\"Otto-2017\", \"Figure 6\", \"H2\", \"#\", \"2017\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"58.17\", \"\", \"kg_H2\", \"1.03\", \"t\", \"This source states 58.17 kg of hydrogen per 1.03 tonnes of iron sponge.\"], [\"Otto-2017\", \"Chapter 5.4, Figure 6\", \"*\", \"#\", \"2017\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"1.66\", \"\", \"t\", \"1.03\", \"t\", \"This source states 1.66 t of iron ore per 1.03 tonnes of iron sponge.\"], [\"Rechenberger20\", \"Section 4.2.1\", \"H2\", \"#\", \"2020\", \"Input|Electricity\", \"Output|Directly Reduced Iron\", \"102.5\", \"22.5\", \"kWh\", \"1\", \"t\", \"\"], [\"Rechenberger20\", \"Section 4.2\", \"H2\", \"Reduction agent\", \"2020\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"504.5\", \"20.5\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"Only the value reported for the hydrogen needed as a reduction agent is mentioned. The remaining hydrogen is instead reported here as heat.\"], [\"Rechenberger20\", \"Section 4.2\", \"H2\", \"Heat\", \"2020\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"242\", \"\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"This is the hydrogen not used as a reduction agent but instead as a heat source.\"], [\"Rechenberger20\", \"Section 3, Table 1\", \"*\", \"#\", \"2020\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"1.391\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Rechenberger20\", \"Section 4.2\", \"H2\", \"#\", \"2020\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"48\", \"\", \"cubic_meter_NG_norm\", \"1\", \"t\", \"This source assumes a natural-gas demand to provide not only heat but also the carbon content of the DRI.\"], [\"Sasiain-2020\", \"Results and Discussion, 8th paragraph\", \"H2\", \"Reduction agent\", \"2020\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"503.5\", \"21.5\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"Only the value reported for the hydrogen needed as a reduction agent is mentioned. The remaining hydrogen is instead reported here as heat.\"], [\"Sasiain-2020\", \"Results and Discussion, 8th paragraph\", \"H2\", \"Heat\", \"2020\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"242\", \"\", \"cubic_meter_H2_norm\", \"1\", \"t\", \"This is the hydrogen not used as a reduction agent but instead as a heat source.\"], [\"Sasiain-2020\", \"Results and Discussion, 8th paragraph\", \"H2\", \"#\", \"2020\", \"Input|Natural Gas\", \"Output|Directly Reduced Iron\", \"48\", \"\", \"cubic_meter_NG_norm\", \"1\", \"t\", \"This source assumes a natural-gas demand to provide not only heat but also the carbon content of the DRI.\"], [\"Vogl-2018\", \"Figure 2\", \"H2\", \"#\", \"2018\", \"Input|Heat\", \"Output|Directly Reduced Iron\", \"0.286\", \"\", \"MWh\", \"1.08\", \"t\", \"The value 0.286 was read off from the graph and corresponds to the ore heating for 100% HBI. This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.\"], [\"Vogl-2018\", \"Section 3\", \"H2\", \"#\", \"2018\", \"Input|Hydrogen\", \"Output|Directly Reduced Iron\", \"51\", \"\", \"kg_H2\", \"1.08\", \"t\", \"This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.\"], [\"Vogl-2018\", \"Section 3\", \"*\", \"#\", \"2018\", \"Input|Iron Ore\", \"Output|Directly Reduced Iron\", \"1.504\", \"\", \"t\", \"1.1\", \"t\", \"This source reports its values per tonne of steel. We assume 1.08 tonnes of HBI used per tonne of steel (calculated from 95% Fe2O3 in 1.504 tonnes of iron ore) and divide by that factor.\"], [\"Wortler-2013\", \"\", \"*\", \"#\", \"2013\", \"CAPEX\", \"Output Capacity|Directly Reduced Iron\", \"230\", \"\", \"EUR_2013\", \"1\", \"t/a\", \"\"]]"};
         new ITable(table, dt_args);
     });
 </script>

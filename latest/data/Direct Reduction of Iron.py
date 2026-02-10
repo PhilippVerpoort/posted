@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.18.1
+#       jupytext_version: 1.19.0
 #   kernelspec:
 #     display_name: Python (docs)
 #     language: python
@@ -23,6 +23,7 @@ from IPython.display import HTML, Markdown
 import numpy as np
 import pandas as pd
 pd.options.plotting.backend = "plotly"
+import plotly.express as px
 
 from posted import TEDF
 
@@ -92,8 +93,19 @@ df_plot = (
     ])
     .query(f"variable.isin({list(units)})")
     .assign(variable=lambda df: df["variable"].str.extract(r"^Input\|(.*)", expand=False))
-    # .assign(variable=lambda df: df.agg(lambda r: f"{r['variable']}{(' (' + r['component'] + ')') if r['component'] not in ['#', np.nan] else ''}", axis=1))
+    .assign(variable=lambda df: df.agg(lambda r: f"{r['variable']}{(' (' + r['component'] + ')') if r['component'] not in ['#', np.nan] else ''}", axis=1))
+    .sort_values(by="variable")
 )
+
+colorway = px.colors.qualitative.D3
+colours = {
+    "Electricity": colorway[2],
+    "Heat": colorway[3],
+    "Hydrogen": colorway[0],
+    "Hydrogen (Heat)": "#3F94CF",
+    "Hydrogen (Reduction agent)": "#0D619C",
+    "Natural Gas": colorway[1],
+}
 
 display(
     df_plot
@@ -102,6 +114,7 @@ display(
         y="value",
         color="variable",
         facet_col="mode",
+        color_discrete_map=colours,
     )
     .update_xaxes(
         title=None,
@@ -112,7 +125,7 @@ display(
     .update_layout(
         legend_title=None,
         xaxis_title=None,
-        yaxis_title="Energy demand per {reference_variable}  [ MWh / {reference_unit} ]".format(**df_plot.iloc[0]),
+        yaxis_title="Energy demand per {reference_variable}  ( MWh / {reference_unit} )".format(**df_plot.iloc[0]),
     )
 )
 

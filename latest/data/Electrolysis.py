@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.18.1
+#       jupytext_version: 1.19.0
 #   kernelspec:
 #     display_name: Python (docs)
 #     language: python
@@ -141,7 +141,7 @@ display(
     )
     .update_layout(
         legend_title=None,
-        yaxis5_title="{variable} per {reference_variable}  [ {unit} / {reference_unit} ]".format(**df_plot.iloc[0]),
+        yaxis5_title="{variable} per {reference_variable}  ( {unit} / {reference_unit} )".format(**df_plot.iloc[0]),
     )
 )
 

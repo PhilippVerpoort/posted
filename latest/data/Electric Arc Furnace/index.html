@@ -1279,7 +1279,12 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.0/mermaid.esm.min.mjs")).default;
+    const elkUrl = "https://cdnjs.cloudflare.com/ajax/libs/mermaid-layout-elk/0.1.9/mermaid-layout-elk.esm.min.mjs";
+    if(elkUrl) {
+      const elkLayouts = (await import(elkUrl)).default;
+      mermaid.registerLayoutLoaders(elkLayouts);
+    }
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -1376,7 +1381,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
      * Post-process to ensure mermaid diagrams contain only valid SVG and XHTML.
      */
     function cleanMermaidSvg(svg) {
-      return svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      svg = svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      return `${SVG_XML_HEADER}${svg}`;
     }
 
 
@@ -1402,6 +1408,285 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
       }
       return `<${tag} ${rest}>`;
     }
+
+
+  /**
+   * Named HTML entities with their decimal equivalent codes.
+   *
+   * @see https://www.w3.org/TR/WD-html40-970708/sgml/entities.html
+   * */
+  const HTML_ENTITIES = `<!ENTITY Aacute "&#193;">
+<!ENTITY aacute "&#225;">
+<!ENTITY Acirc "&#194;">
+<!ENTITY acirc "&#226;">
+<!ENTITY acute "&#180;">
+<!ENTITY AElig "&#198;">
+<!ENTITY aelig "&#230;">
+<!ENTITY Agrave "&#192;">
+<!ENTITY agrave "&#224;">
+<!ENTITY alefsym "&#8501;">
+<!ENTITY Alpha "&#913;">
+<!ENTITY alpha "&#945;">
+<!ENTITY amp "&#38;">
+<!ENTITY and "&#8869;">
+<!ENTITY ang "&#8736;">
+<!ENTITY Aring "&#197;">
+<!ENTITY aring "&#229;">
+<!ENTITY asymp "&#8776;">
+<!ENTITY Atilde "&#195;">
+<!ENTITY atilde "&#227;">
+<!ENTITY Auml "&#196;">
+<!ENTITY auml "&#228;">
+<!ENTITY bdquo "&#8222;">
+<!ENTITY Beta "&#914;">
+<!ENTITY beta "&#946;">
+<!ENTITY brvbar "&#166;">
+<!ENTITY bull "&#8226;">
+<!ENTITY cap "&#8745;">
+<!ENTITY Ccedil "&#199;">
+<!ENTITY ccedil "&#231;">
+<!ENTITY cedil "&#184;">
+<!ENTITY cent "&#162;">
+<!ENTITY Chi "&#935;">
+<!ENTITY chi "&#967;">
+<!ENTITY circ "&#710;">
+<!ENTITY clubs "&#9827;">
+<!ENTITY cong "&#8773;">
+<!ENTITY copy "&#169;">
+<!ENTITY crarr "&#8629;">
+<!ENTITY cup "&#8746;">
+<!ENTITY curren "&#164;">
+<!ENTITY dagger "&#8224;">
+<!ENTITY Dagger "&#8225;">
+<!ENTITY darr "&#8595;">
+<!ENTITY dArr "&#8659;">
+<!ENTITY deg "&#176;">
+<!ENTITY Delta "&#916;">
+<!ENTITY delta "&#948;">
+<!ENTITY diams "&#9830;">
+<!ENTITY divide "&#247;">
+<!ENTITY Eacute "&#201;">
+<!ENTITY eacute "&#233;">
+<!ENTITY Ecirc "&#202;">
+<!ENTITY ecirc "&#234;">
+<!ENTITY Egrave "&#200;">
+<!ENTITY egrave "&#232;">
+<!ENTITY empty "&#8709;">
+<!ENTITY emsp "&#8195;">
+<!ENTITY ensp "&#8194;">
+<!ENTITY epsilon "&#949;">
+<!ENTITY Epsilon "&#917;">
+<!ENTITY equiv "&#8801;">
+<!ENTITY Eta "&#919;">
+<!ENTITY eta "&#951;">
+<!ENTITY ETH "&#208;">
+<!ENTITY eth "&#240;">
+<!ENTITY Euml "&#203;">
+<!ENTITY euml "&#235;">
+<!ENTITY exist "&#8707;">
+<!ENTITY fnof "&#402;">
+<!ENTITY forall "&#8704;">
+<!ENTITY frac12 "&#189;">
+<!ENTITY frac14 "&#188;">
+<!ENTITY frac34 "&#190;">
+<!ENTITY frasl "&#8260;">
+<!ENTITY Gamma "&#915;">
+<!ENTITY gamma "&#947;">
+<!ENTITY ge "&#8805;">
+<!ENTITY gt "&#62;">
+<!ENTITY harr "&#8596;">
+<!ENTITY hArr "&#8660;">
+<!ENTITY hearts "&#9829;">
+<!ENTITY hellip "&#8230;">
+<!ENTITY Iacute "&#205;">
+<!ENTITY iacute "&#237;">
+<!ENTITY Icirc "&#206;">
+<!ENTITY icirc "&#238;">
+<!ENTITY iexcl "&#161;">
+<!ENTITY Igrave "&#204;">
+<!ENTITY igrave "&#236;">
+<!ENTITY image "&#8465;">
+<!ENTITY infin "&#8734;">
+<!ENTITY int "&#8747;">
+<!ENTITY Iota "&#921;">
+<!ENTITY iota "&#953;">
+<!ENTITY iquest "&#191;">
+<!ENTITY isin "&#8712;">
+<!ENTITY Iuml "&#207;">
+<!ENTITY iuml "&#239;">
+<!ENTITY Kappa "&#922;">
+<!ENTITY kappa "&#954;">
+<!ENTITY Lambda "&#923;">
+<!ENTITY lambda "&#955;">
+<!ENTITY lang "&#9001;">
+<!ENTITY laquo "&#171;">
+<!ENTITY larr "&#8592;">
+<!ENTITY lArr "&#8656;">
+<!ENTITY lceil "&#8968;">
+<!ENTITY ldquo "&#8220;">
+<!ENTITY le "&#8804;">
+<!ENTITY lfloor "&#8970;">
+<!ENTITY lowast "&#8727;">
+<!ENTITY loz "&#9674;">
+<!ENTITY lrm "&#8206;">
+<!ENTITY lsaquo "&#8249;">
+<!ENTITY lsquo "&#8216;">
+<!ENTITY lt "&#60;">
+<!ENTITY macr "&#175;">
+<!ENTITY mdash "&#8212;">
+<!ENTITY micro "&#181;">
+<!ENTITY middot "&#183;">
+<!ENTITY minus "&#8722;">
+<!ENTITY Mu "&#924;">
+<!ENTITY mu "&#956;">
+<!ENTITY nabla "&#8711;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY ndash "&#8211;">
+<!ENTITY ne "&#8800;">
+<!ENTITY ni "&#8715;">
+<!ENTITY not "&#172;">
+<!ENTITY notin "&#8713;">
+<!ENTITY nsub "&#8836;">
+<!ENTITY Ntilde "&#209;">
+<!ENTITY ntilde "&#241;">
+<!ENTITY Nu "&#925;">
+<!ENTITY nu "&#957;">
+<!ENTITY Oacute "&#211;">
+<!ENTITY oacute "&#243;">
+<!ENTITY Ocirc "&#212;">
+<!ENTITY ocirc "&#244;">
+<!ENTITY OElig "&#338;">
+<!ENTITY oelig "&#339;">
+<!ENTITY Ograve "&#210;">
+<!ENTITY ograve "&#242;">
+<!ENTITY oline "&#8254;">
+<!ENTITY Omega "&#937;">
+<!ENTITY omega "&#969;">
+<!ENTITY Omicron "&#927;">
+<!ENTITY omicron "&#959;">
+<!ENTITY oplus "&#8853;">
+<!ENTITY or "&#8870;">
+<!ENTITY ordf "&#170;">
+<!ENTITY ordm "&#186;">
+<!ENTITY Oslash "&#216;">
+<!ENTITY oslash "&#248;">
+<!ENTITY Otilde "&#213;">
+<!ENTITY otilde "&#245;">
+<!ENTITY otimes "&#8855;">
+<!ENTITY Ouml "&#214;">
+<!ENTITY ouml "&#246;">
+<!ENTITY para "&#182;">
+<!ENTITY part "&#8706;">
+<!ENTITY permil "&#8240;">
+<!ENTITY perp "&#8869;">
+<!ENTITY Phi "&#934;">
+<!ENTITY phi "&#966;">
+<!ENTITY Pi "&#928;">
+<!ENTITY pi "&#960;">
+<!ENTITY piv "&#982;">
+<!ENTITY plusmn "&#177;">
+<!ENTITY pound "&#163;">
+<!ENTITY prime "&#8242;">
+<!ENTITY Prime "&#8243;">
+<!ENTITY prod "&#8719;">
+<!ENTITY prop "&#8733;">
+<!ENTITY Psi "&#936;">
+<!ENTITY psi "&#968;">
+<!ENTITY quot "&#34;">
+<!ENTITY radic "&#8730;">
+<!ENTITY rang "&#9002;">
+<!ENTITY raquo "&#187;">
+<!ENTITY rarr "&#8594;">
+<!ENTITY rArr "&#8658;">
+<!ENTITY rceil "&#8969;">
+<!ENTITY rdquo "&#8221;">
+<!ENTITY real "&#8476;">
+<!ENTITY reg "&#174;">
+<!ENTITY rfloor "&#8971;">
+<!ENTITY Rho "&#929;">
+<!ENTITY rho "&#961;">
+<!ENTITY rlm "&#8207;">
+<!ENTITY rsaquo "&#8250;">
+<!ENTITY rsquo "&#8217;">
+<!ENTITY sbquo "&#8218;">
+<!ENTITY Scaron "&#352;">
+<!ENTITY scaron "&#353;">
+<!ENTITY sdot "&#8901;">
+<!ENTITY sect "&#167;">
+<!ENTITY shy "&#173;">
+<!ENTITY Sigma "&#931;">
+<!ENTITY sigma "&#963;">
+<!ENTITY sigmaf "&#962;">
+<!ENTITY sim "&#8764;">
+<!ENTITY spades "&#9824;">
+<!ENTITY sub "&#8834;">
+<!ENTITY sube "&#8838;">
+<!ENTITY sum "&#8721;">
+<!ENTITY sup "&#8835;">
+<!ENTITY sup1 "&#185;">
+<!ENTITY sup2 "&#178;">
+<!ENTITY sup3 "&#179;">
+<!ENTITY supe "&#8839;">
+<!ENTITY szlig "&#223;">
+<!ENTITY Tau "&#932;">
+<!ENTITY tau "&#964;">
+<!ENTITY there4 "&#8756;">
+<!ENTITY Theta "&#920;">
+<!ENTITY theta "&#952;">
+<!ENTITY thetasym "&#977;">
+<!ENTITY thinsp "&#8201;">
+<!ENTITY THORN "&#222;">
+<!ENTITY thorn "&#254;">
+<!ENTITY tilde "&#732;">
+<!ENTITY times "&#215;">
+<!ENTITY trade "&#8482;">
+<!ENTITY Uacute "&#218;">
+<!ENTITY uacute "&#250;">
+<!ENTITY uarr "&#8593;">
+<!ENTITY uArr "&#8657;">
+<!ENTITY Ucirc "&#219;">
+<!ENTITY ucirc "&#251;">
+<!ENTITY Ugrave "&#217;">
+<!ENTITY ugrave "&#249;">
+<!ENTITY uml "&#168;">
+<!ENTITY upsih "&#978;">
+<!ENTITY Upsilon "&#933;">
+<!ENTITY upsilon "&#965;">
+<!ENTITY Uuml "&#220;">
+<!ENTITY uuml "&#252;">
+<!ENTITY weierp "&#8472;">
+<!ENTITY Xi "&#926;">
+<!ENTITY xi "&#958;">
+<!ENTITY Yacute "&#221;">
+<!ENTITY yacute "&#253;">
+<!ENTITY yen "&#165;">
+<!ENTITY Yuml "&#376;">
+<!ENTITY yuml "&#255;">
+<!ENTITY Zeta "&#918;">
+<!ENTITY zeta "&#950;">
+<!ENTITY zwj "&#8205;">
+<!ENTITY zwnj "&#8204;">`.replace(/\n/g, ' ');
+
+  /**
+   * A reasonably strict xml declaration.
+   */
+  const XML_DECL = '<?xml version="1.0" standalone="no"?>';
+
+  /**
+   * The beginning of the XML doctype declaration.
+   */
+  const DOCTYPE_START = `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [`;
+
+  /**
+   * The end of the XML docype declaration.
+   */
+  const DOCTYPE_END = ']>';
+
+  /**
+   * A full header for an SVG XML document.
+   */
+  const SVG_XML_HEADER = `${XML_DECL}
+    ${DOCTYPE_START}${HTML_ENTITIES}${DOCTYPE_END}`;
 
     void Promise.all([...diagrams].map(renderOneMarmaid));
   });
@@ -1457,7 +1742,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=08ee44f9">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c59e3315">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1467,10 +1752,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs jp-mod-noInput" id="cell-id=58888d25">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs jp-mod-noInput" id="cell-id=394a108e">
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e6aad38d">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3534bf64">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1480,7 +1765,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2ce58042">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=12e3457d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1490,7 +1775,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3322d5dd">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7f983020">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1500,7 +1785,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=50cfc75f">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=6f03abe4">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1517,7 +1802,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d9dfcc0d">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a3cc708b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1527,7 +1812,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=4257d7bd">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=4658f80c">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1544,7 +1829,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d12c72a2">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=674b16ed">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1554,7 +1839,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1742e348">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e1f41c08">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1564,7 +1849,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=cef9a32c">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=d521ec41">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1572,7 +1857,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <!--| quarto-html-table-processing: none -->
-<table id="itables_ca3b049c_077c_49ab_92c7_190777d300b2"><tbody><tr>
+<table id="itables_5d15896a_16a3_44e1_be5e_5974880c3386"><tbody><tr>
 <td style="vertical-align:middle; text-align:left">
 <a href="https://mwouts.github.io/itables/"><svg class="main-svg" style="font-family: 'Droid Sans', sans-serif;" viewbox="0 0 500 400" width="64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g style="fill:#d9d7fc">
@@ -1627,18 +1912,18 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </g>
 </svg>
 </a>
-    Loading ITables v2.6.2 from the internet...
+    Loading ITables v2.7.0 from the internet...
     (need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)</td>
 </tr></tbody></table>
-<link href="https://www.unpkg.com/dt_for_itables@2.4.0/dt_bundle.css" rel="stylesheet"/>
+<link href="https://www.unpkg.com/dt_for_itables@2.5.0/dt_bundle.css" rel="stylesheet"/>
 <script type="module">
-    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.4.0/dt_bundle.js';
+    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.5.0/dt_bundle.js';
 
-    document.querySelectorAll("#itables_ca3b049c_077c_49ab_92c7_190777d300b2:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_5d15896a_16a3_44e1_be5e_5974880c3386:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
-        let dt_args = {"layout": {"topStart": null, "topEnd": null, "bottomStart": null, "bottomEnd": null}, "style": {"table-layout": "auto", "width": "auto", "margin": "auto", "caption-side": "bottom"}, "classes": ["display", "nowrap"], "text_in_header_can_be_selected": true, "order": [], "table_html": "<table><thead>\n    <tr>\n      <th></th>\n      <th>variable</th>\n      <th>CAPEX</th>\n      <th>Input|Alloys</th>\n      <th>Input|Coal</th>\n      <th>Input|Directly Reduced Iron</th>\n      <th>Input|Electricity</th>\n      <th>Input|Fossil Gas</th>\n      <th>Input|Graphite Electrode</th>\n      <th>Input|Heat</th>\n      <th>Input|Lime</th>\n      <th>Input|Nitrogen</th>\n      <th>Input|Oxygen</th>\n      <th>Input|Steel Scrap</th>\n      <th>OPEX Fixed</th>\n      <th>OPEX Variable</th>\n      <th>Output Capacity|Steel Liquid</th>\n      <th>Output|Steel Liquid</th>\n    </tr>\n    <tr>\n      <th></th>\n      <th>unit</th>\n      <th>EUR_2024</th>\n      <th>t</th>\n      <th>MWh_coal_LHV</th>\n      <th>t</th>\n      <th>MWh</th>\n      <th>GJ_NG_LHV</th>\n      <th>t</th>\n      <th>MWh</th>\n      <th>t</th>\n      <th>t</th>\n      <th>t_O2</th>\n      <th>t</th>\n      <th>EUR_2024/a</th>\n      <th>EUR_2024</th>\n      <th>t/a</th>\n      <th>t</th>\n    </tr>\n    <tr>\n      <th>mode</th>\n      <th>reheating</th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead></table>", "data_json": "[[\"Primary\", \"w/ reheating\", 320.0, 0.011, \" 0.175\", \" 1.0\", 0.605, 0.78, 0.00213, 0.167, 0.05, 0.5, 0.268, 0.185, 43.6, 13.1, 1.0, 1.0], [\"Primary\", \"w/o reheating\", 320.0, 0.011, \" 0.175\", \" 1.0\", 0.56, 0.78, 0.00213, 0.167, 0.05, 0.5, 0.268, 0.185, 43.6, 13.1, 1.0, 1.0], [\"Secondary\", \"w/ reheating\", 320.0, 0.011, \"\", \"\", 0.514, 0.15, 0.00213, 0.119, 0.05, 0.5, 0.268, 1.09, 43.6, 13.1, 1.0, 1.0], [\"Secondary\", \"w/o reheating\", 320.0, 0.011, \"\", \"\", 0.514, 0.15, 0.00213, 0.119, 0.05, 0.5, 0.268, 1.09, 43.6, 13.1, 1.0, 1.0]]"};
+        let dt_args = {"layout": {"topStart": null, "topEnd": null, "bottomStart": null, "bottomEnd": null}, "style": {"table-layout": "auto", "width": "auto", "margin": "auto", "caption-side": "bottom"}, "order": [], "classes": ["display", "nowrap", "compact"], "text_in_header_can_be_selected": true, "table_html": "<table><thead>\n    <tr>\n      <th></th>\n      <th>variable</th>\n      <th>CAPEX</th>\n      <th>Input|Alloys</th>\n      <th>Input|Coal</th>\n      <th>Input|Directly Reduced Iron</th>\n      <th>Input|Electricity</th>\n      <th>Input|Fossil Gas</th>\n      <th>Input|Graphite Electrode</th>\n      <th>Input|Heat</th>\n      <th>Input|Lime</th>\n      <th>Input|Nitrogen</th>\n      <th>Input|Oxygen</th>\n      <th>Input|Steel Scrap</th>\n      <th>OPEX Fixed</th>\n      <th>OPEX Variable</th>\n      <th>Output Capacity|Steel Liquid</th>\n      <th>Output|Steel Liquid</th>\n    </tr>\n    <tr>\n      <th></th>\n      <th>unit</th>\n      <th>EUR_2024</th>\n      <th>t</th>\n      <th>MWh_coal_LHV</th>\n      <th>t</th>\n      <th>MWh</th>\n      <th>GJ_NG_LHV</th>\n      <th>t</th>\n      <th>MWh</th>\n      <th>t</th>\n      <th>t</th>\n      <th>t_O2</th>\n      <th>t</th>\n      <th>EUR_2024/a</th>\n      <th>EUR_2024</th>\n      <th>t/a</th>\n      <th>t</th>\n    </tr>\n    <tr>\n      <th>mode</th>\n      <th>reheating</th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead></table>", "data_json": "[[\"Primary\", \"w/ reheating\", [\"320.0\", 1], [\"0.011\", 1], \" 0.175\", \" 1.0\", [\"0.605\", 3], [\"0.78\", 2], [\"0.00213\", 1], [\"0.167\", 2], [\"0.05\", 1], [\"0.5\", 1], [\"0.268\", 1], [\"0.185\", 1], [\"43.6\", 1], [\"13.1\", 1], [\"1.0\", 1], [\"1.0\", 1]], [\"Primary\", \"w/o reheating\", [\"320.0\", 1], [\"0.011\", 1], \" 0.175\", \" 1.0\", [\"0.560\", 2], [\"0.78\", 2], [\"0.00213\", 1], [\"0.167\", 2], [\"0.05\", 1], [\"0.5\", 1], [\"0.268\", 1], [\"0.185\", 1], [\"43.6\", 1], [\"13.1\", 1], [\"1.0\", 1], [\"1.0\", 1]], [\"Secondary\", \"w/ reheating\", [\"320.0\", 1], [\"0.011\", 1], \"\", \"\", [\"0.514\", 1], [\"0.15\", 1], [\"0.00213\", 1], [\"0.119\", 1], [\"0.05\", 1], [\"0.5\", 1], [\"0.268\", 1], [\"1.090\", 2], [\"43.6\", 1], [\"13.1\", 1], [\"1.0\", 1], [\"1.0\", 1]], [\"Secondary\", \"w/o reheating\", [\"320.0\", 1], [\"0.011\", 1], \"\", \"\", [\"0.514\", 1], [\"0.15\", 1], [\"0.00213\", 1], [\"0.119\", 1], [\"0.05\", 1], [\"0.5\", 1], [\"0.268\", 1], [\"1.090\", 2], [\"43.6\", 1], [\"13.1\", 1], [\"1.0\", 1], [\"1.0\", 1]]]", "columnDefs": [{"targets": [2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], "render": "\n                        function (data, type, row, meta) {\n                            return type === 'sort' ? data[1] : data[0];\n                        }\n                    "}], "keys_to_be_evaluated": [["columnDefs", 0, "render"]]};
         new ITable(table, dt_args);
     });
 </script>
@@ -1648,7 +1933,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=13bc334c">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=09b6d660">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1658,7 +1943,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cb6fe942">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=995730ae">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1668,7 +1953,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=32e7c211">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=e66d6c00">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1685,9 +1970,9 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <div> <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script> <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
-<script charset="utf-8" crossorigin="anonymous" integrity="sha256-4rD3fugVb/nVJYUv5Ky3v+fYXoouHaBSP20WIJuEiWg=" src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script> <div class="plotly-graph-div" id="c4c96a69-6511-4388-b8f6-67efa53fe76a" style="height:525px; width:100%;"></div> <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("c4c96a69-6511-4388-b8f6-67efa53fe76a")) {                    Plotly.newPlot(                        "c4c96a69-6511-4388-b8f6-67efa53fe76a",                        [{"hovertemplate":"variable=Electricity\u003cbr\u003emode=Primary\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Electricity","marker":{"color":"#1F77B4","pattern":{"shape":""}},"name":"Electricity","orientation":"v","showlegend":true,"textposition":"auto","x":["Agora-Energiewende-2022","Hegemann-2020","Jacobasch-2021","Otto-2017","Rechenberger20","Vogl-2018","Worrell-2007","POSTED-default"],"xaxis":"x","y":{"dtype":"f8","bdata":"NV66SQwC4z\u002fNzMzMzMzgP1C29ZFjxOA\u002fZmZmZmZm4j9nZmZmZmbeP39qvHSTGOg\u002fjuM4juM43j8serR\u002faOnhPw=="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Electricity\u003cbr\u003emode=Secondary\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Electricity","marker":{"color":"#1F77B4","pattern":{"shape":""}},"name":"Electricity","orientation":"v","showlegend":false,"textposition":"auto","x":["ECORYS-2008","Vogl-2018","Worrell-2007","POSTED-default"],"xaxis":"x2","y":{"dtype":"f8","bdata":"mpmZmZmZ2T\u002fy0k1iEFjlP710kxgEVt4\u002fCh7ME\u002fVv4D8="},"yaxis":"y2","type":"bar"},{"hovertemplate":"variable=Heat\u003cbr\u003emode=Primary\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Heat","marker":{"color":"#FF7F0E","pattern":{"shape":""}},"name":"Heat","orientation":"v","showlegend":true,"textposition":"auto","x":["Worrell-2007","POSTED-default"],"xaxis":"x","y":{"dtype":"f8","bdata":"VVVVVVVVxT9VVVVVVVXFPw=="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Heat\u003cbr\u003emode=Secondary\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Heat","marker":{"color":"#FF7F0E","pattern":{"shape":""}},"name":"Heat","orientation":"v","showlegend":false,"textposition":"auto","x":["ECORYS-2008","POSTED-default"],"xaxis":"x2","y":{"dtype":"f8","bdata":"P+mTPumTvj8\u002f6ZM+6ZO+Pw=="},"yaxis":"y2","type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"rgb(36,36,36)"},"error_y":{"color":"rgb(36,36,36)"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"baxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2d"}],"histogram":[{"marker":{"line":{"color":"white","width":0.6}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"rgb(237,237,237)"},"line":{"color":"white"}},"header":{"fill":{"color":"rgb(217,217,217)"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"colorscale":{"diverging":[[0.0,"rgb(103,0,31)"],[0.1,"rgb(178,24,43)"],[0.2,"rgb(214,96,77)"],[0.3,"rgb(244,165,130)"],[0.4,"rgb(253,219,199)"],[0.5,"rgb(247,247,247)"],[0.6,"rgb(209,229,240)"],[0.7,"rgb(146,197,222)"],[0.8,"rgb(67,147,195)"],[0.9,"rgb(33,102,172)"],[1.0,"rgb(5,48,97)"]],"sequential":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"sequentialminus":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]]},"colorway":["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","#8C564B","#E377C2","#7F7F7F","#BCBD22","#17BECF"],"dragmode":false,"font":{"color":"rgb(36,36,36)"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","polar":{"angularaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","radialaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"zaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"}},"shapedefaults":{"fillcolor":"black","line":{"width":0},"opacity":0.3},"ternary":{"aaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"baxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","caxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"title":{"x":0.05},"xaxis":{"automargin":true,"fixedrange":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"automargin":true,"fixedrange":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"}}},"xaxis":{"anchor":"y","domain":[0.0,0.49],"title":{}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Energy demand per Output|Steel Liquid  [ MWh \u002f t ]"}},"xaxis2":{"anchor":"y2","domain":[0.51,1.0],"matches":"x","title":{}},"yaxis2":{"anchor":"x2","domain":[0.0,1.0],"matches":"y","showticklabels":false},"annotations":[{"font":{},"showarrow":false,"text":"mode: Primary","x":0.245,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"mode: Secondary","x":0.755,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"}],"legend":{"title":{},"tracegroupgap":0},"margin":{"t":60},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
+<script charset="utf-8" crossorigin="anonymous" integrity="sha256-4rD3fugVb/nVJYUv5Ky3v+fYXoouHaBSP20WIJuEiWg=" src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script> <div class="plotly-graph-div" id="4ece886a-c39f-4470-8699-c8f1b55d3f3f" style="height:525px; width:100%;"></div> <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("4ece886a-c39f-4470-8699-c8f1b55d3f3f")) {                    Plotly.newPlot(                        "4ece886a-c39f-4470-8699-c8f1b55d3f3f",                        [{"hovertemplate":"variable=Electricity\u003cbr\u003emode=Primary\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Electricity","marker":{"color":"#2CA02C","pattern":{"shape":""}},"name":"Electricity","orientation":"v","showlegend":true,"textposition":"auto","x":["Agora-Energiewende-2022","Hegemann-2020","Jacobasch-2021","Otto-2017","Rechenberger20","Vogl-2018","Worrell-2007","POSTED-default"],"xaxis":"x","y":{"dtype":"f8","bdata":"NV66SQwC4z\u002fNzMzMzMzgP1C29ZFjxOA\u002fZmZmZmZm4j9nZmZmZmbeP39qvHSTGOg\u002fjuM4juM43j8serR\u002faOnhPw=="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Electricity\u003cbr\u003emode=Secondary\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Electricity","marker":{"color":"#2CA02C","pattern":{"shape":""}},"name":"Electricity","orientation":"v","showlegend":false,"textposition":"auto","x":["ECORYS-2008","Vogl-2018","Worrell-2007","POSTED-default"],"xaxis":"x2","y":{"dtype":"f8","bdata":"mpmZmZmZ2T\u002fy0k1iEFjlP710kxgEVt4\u002fCh7ME\u002fVv4D8="},"yaxis":"y2","type":"bar"},{"hovertemplate":"variable=Heat\u003cbr\u003emode=Primary\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Heat","marker":{"color":"#D62728","pattern":{"shape":""}},"name":"Heat","orientation":"v","showlegend":true,"textposition":"auto","x":["Worrell-2007","POSTED-default"],"xaxis":"x","y":{"dtype":"f8","bdata":"VVVVVVVVxT9VVVVVVVXFPw=="},"yaxis":"y","type":"bar"},{"hovertemplate":"variable=Heat\u003cbr\u003emode=Secondary\u003cbr\u003esource=%{x}\u003cbr\u003evalue=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"Heat","marker":{"color":"#D62728","pattern":{"shape":""}},"name":"Heat","orientation":"v","showlegend":false,"textposition":"auto","x":["ECORYS-2008","POSTED-default"],"xaxis":"x2","y":{"dtype":"f8","bdata":"P+mTPumTvj8\u002f6ZM+6ZO+Pw=="},"yaxis":"y2","type":"bar"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"rgb(36,36,36)"},"error_y":{"color":"rgb(36,36,36)"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"baxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2d"}],"histogram":[{"marker":{"line":{"color":"white","width":0.6}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"rgb(237,237,237)"},"line":{"color":"white"}},"header":{"fill":{"color":"rgb(217,217,217)"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"colorscale":{"diverging":[[0.0,"rgb(103,0,31)"],[0.1,"rgb(178,24,43)"],[0.2,"rgb(214,96,77)"],[0.3,"rgb(244,165,130)"],[0.4,"rgb(253,219,199)"],[0.5,"rgb(247,247,247)"],[0.6,"rgb(209,229,240)"],[0.7,"rgb(146,197,222)"],[0.8,"rgb(67,147,195)"],[0.9,"rgb(33,102,172)"],[1.0,"rgb(5,48,97)"]],"sequential":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"sequentialminus":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]]},"colorway":["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","#8C564B","#E377C2","#7F7F7F","#BCBD22","#17BECF"],"dragmode":false,"font":{"color":"rgb(36,36,36)"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","polar":{"angularaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","radialaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"zaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"}},"shapedefaults":{"fillcolor":"black","line":{"width":0},"opacity":0.3},"ternary":{"aaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"baxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","caxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"title":{"x":0.05},"xaxis":{"automargin":true,"fixedrange":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"automargin":true,"fixedrange":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"}}},"xaxis":{"anchor":"y","domain":[0.0,0.49],"title":{}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Energy demand per Output|Steel Liquid  ( MWh \u002f t )"}},"xaxis2":{"anchor":"y2","domain":[0.51,1.0],"matches":"x","title":{}},"yaxis2":{"anchor":"x2","domain":[0.0,1.0],"matches":"y","showticklabels":false},"annotations":[{"font":{},"showarrow":false,"text":"mode: Primary","x":0.245,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"},{"font":{},"showarrow":false,"text":"mode: Secondary","x":0.755,"xanchor":"center","xref":"paper","y":1.0,"yanchor":"bottom","yref":"paper"}],"legend":{"title":{},"tracegroupgap":0},"margin":{"t":60},"barmode":"relative"},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('c4c96a69-6511-4388-b8f6-67efa53fe76a');
+var gd = document.getElementById('4ece886a-c39f-4470-8699-c8f1b55d3f3f');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -1716,7 +2001,7 @@ if (outputEl) {{
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5ddd5648">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=21c94941">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -1726,7 +2011,7 @@ if (outputEl) {{
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=38304ea4">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=30d19b7e">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1741,7 +2026,7 @@ if (outputEl) {{
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=b6dadd63">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noInput" id="cell-id=7eeb3368">
 <div class="jp-Cell-outputWrapper">
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
@@ -1749,7 +2034,7 @@ if (outputEl) {{
 <div class="jp-OutputArea-child">
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <!--| quarto-html-table-processing: none -->
-<table id="itables_4a2ab8f2_ae7b_43b7_962d_4159edc37b99"><tbody><tr>
+<table id="itables_a90bcc98_ebb9_442e_bff2_a0c821d5b507"><tbody><tr>
 <td style="vertical-align:middle; text-align:left">
 <a href="https://mwouts.github.io/itables/"><svg class="main-svg" style="font-family: 'Droid Sans', sans-serif;" viewbox="0 0 500 400" width="64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g style="fill:#d9d7fc">
@@ -1804,18 +2089,18 @@ if (outputEl) {{
 </g>
 </svg>
 </a>
-    Loading ITables v2.6.2 from the internet...
+    Loading ITables v2.7.0 from the internet...
     (need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)</td>
 </tr></tbody></table>
-<link href="https://www.unpkg.com/dt_for_itables@2.4.0/dt_bundle.css" rel="stylesheet"/>
+<link href="https://www.unpkg.com/dt_for_itables@2.5.0/dt_bundle.css" rel="stylesheet"/>
 <script type="module">
-    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.4.0/dt_bundle.js';
+    import { ITable, jQuery as $ } from 'https://www.unpkg.com/dt_for_itables@2.5.0/dt_bundle.js';
 
-    document.querySelectorAll("#itables_4a2ab8f2_ae7b_43b7_962d_4159edc37b99:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_a90bcc98_ebb9_442e_bff2_a0c821d5b507:not(.dataTable)").forEach(table => {
         if (!(table instanceof HTMLTableElement))
             return;
 
-        let dt_args = {"layout": {"topStart": "pageLength", "topEnd": "search", "bottomStart": "info", "bottomEnd": "paging"}, "style": {"table-layout": "auto", "width": "auto", "margin": "auto", "caption-side": "bottom"}, "classes": ["display", "nowrap"], "text_in_header_can_be_selected": true, "order": [], "table_html": "<table><thead>\n    <tr style=\"text-align: right;\">\n      \n      <th>source</th>\n      <th>source_detail</th>\n      <th>mode</th>\n      <th>reheating</th>\n      <th>component</th>\n      <th>period</th>\n      <th>variable</th>\n      <th>reference_variable</th>\n      <th>value</th>\n      <th>uncertainty</th>\n      <th>unit</th>\n      <th>reference_value</th>\n      <th>reference_unit</th>\n      <th>comment</th>\n    </tr>\n  </thead></table>", "data_json": "[[\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"CAPEX\", \"Output Capacity|Steel Liquid\", \"331.2\", \"\", \"EUR_2010\", \"1\", \"t/a\", \"This reference assumes the value provided by W\\u00f6rtler et al., 2013 (184 EUR/tLS) but with an additional integration factor of 1.8.\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"Input|Alloys\", \"Output|Steel Liquid\", \"0.011\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Agora-Energiewende-2022\", \"Found in the excel tool associated with the report, in Input_Anlage.\", \"Primary\", \"w/ reheating\", \"#\", \"2022\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.753\", \"\", \"MWh\", \"1\", \"t\", \"Reheating of cold DRI. Values based on Vogl et al (2018) but is misquoted- See note on Vogl-2018 electricity demand row.\"], [\"Agora-Energiewende-2022\", \"Found in the excel tool associated with the report, in Input_Anlage.\", \"Primary\", \"w/o reheating\", \"#\", \"2022\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.594\", \"\", \"MWh\", \"1\", \"t\", \"Without reheating of DRI. Values based on Vogl et al (2018) but is misquoted- See note on Vogl-2018 electricity demand row.\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"Input|Graphite Electrode\", \"Output|Steel Liquid\", \"0.002\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"Input|Lime\", \"Output|Steel Liquid\", \"0.05\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"Input|Oxygen\", \"Output|Steel Liquid\", \"0.5\", \"\", \"t_O2\", \"1\", \"t\", \"\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"Primary\", \"*\", \"#\", \"2022\", \"Input|Steel Scrap\", \"Output|Steel Liquid\", \"0.17\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Devlin-2022\", \"Section 2.2.2\", \"Primary\", \"*\", \"#\", \"2022\", \"Input|Directly Reduced Iron\", \"Output|Steel Liquid\", \"1.1\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Devlin-2022\", \"Section 2.2.2\", \"Primary\", \"*\", \"#\", \"2022\", \"Input|Electricity\", \"Output|Steel Liquid\", \"2.4\", \"\", \"MJ\", \"\", \"kg\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"#\", \"2008\", \"Input|Alloys\", \"Output|Steel Liquid\", \"0.011\", \"\", \"t\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"Secondary\", \"*\", \"#\", \"2008\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.4\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"#\", \"2008\", \"Input|Graphite Electrode\", \"Output|Steel Liquid\", \"0.003\", \"\", \"t\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"Secondary\", \"*\", \"#\", \"2008\", \"Input|Heat\", \"Output|Steel Liquid\", \"0.43\", \"\", \"GJ\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"#\", \"2008\", \"Input|Oxygen\", \"Output|Steel Liquid\", \"50\", \"\", \"cubic_meter_O2_norm\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"Secondary\", \"*\", \"#\", \"2008\", \"Input|Steel Scrap\", \"Output|Steel Liquid\", \"1.09\", \"\", \"t\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"Labour\", \"2008\", \"OPEX Fixed\", \"Output Capacity|Steel Liquid\", \"2.7\", \"\", \"EUR_2008/a\", \"1\", \"t/a\", \"Labour cost. This line should be an OPEX Fixed Specific but throws an error, as no OCF was found in the source. Assumed to be 0.9 (original value is 3 EUR/t). Results from this table were obtained from steelonthenet.\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"#\", \"2008\", \"OPEX Variable\", \"Output|Steel Liquid\", \"9\", \"\", \"EUR_2008\", \"1\", \"t\", \"Labour cost\"], [\"Hegemann-2020\", \"\", \"Primary\", \"*\", \"#\", \"2020\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.525\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 9, Table 6\", \"*\", \"*\", \"#\", \"2021\", \"CAPEX\", \"Output Capacity|Steel Liquid\", \"479.89\", \"\", \"MEUR_2020\", \"2\", \"Mt/a\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"Primary\", \"*\", \"#\", \"2021\", \"Input|Coal\", \"Output|Steel Liquid\", \"20814.54\", \"\", \"t_coal\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"Primary\", \"*\", \"#\", \"2021\", \"Input|Directly Reduced Iron\", \"Output|Steel Liquid\", \"1744694.39\", \"\", \"t\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"Primary\", \"*\", \"#\", \"2021\", \"Input|Electricity\", \"Output|Steel Liquid\", \"1047946.52\", \"\", \"MWh\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"*\", \"*\", \"#\", \"2021\", \"Input|Graphite Electrode\", \"Output|Steel Liquid\", \"3000\", \"\", \"t\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"*\", \"*\", \"#\", \"2021\", \"Input|Oxygen\", \"Output|Steel Liquid\", \"8349.01\", \"\", \"t_O2\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"Primary\", \"*\", \"#\", \"2021\", \"Input|Steel Scrap\", \"Output|Steel Liquid\", \"400220.06\", \"\", \"t\", \"2000000\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"Primary\", \"*\", \"#\", \"2017\", \"Input|Coal\", \"Output|Steel Liquid\", \"0.284\", \"\", \"MWh_coal_LHV\", \"1\", \"t\", \"According to the source, additional coal is needed to achieve 2% carbon content in steel and 100% charge of sponge iron in the EAF.\"], [\"Otto-2017\", \"Figure 6\", \"Primary\", \"*\", \"#\", \"2017\", \"Input|Directly Reduced Iron\", \"Output|Steel Liquid\", \"1.03\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"Primary\", \"*\", \"#\", \"2017\", \"Input|Electricity\", \"Output|Steel Liquid\", \"2.07\", \"\", \"GJ\", \"1\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"Primary\", \"*\", \"#\", \"2017\", \"Input|Fossil Gas\", \"Output|Steel Liquid\", \"0.78\", \"\", \"GJ_NG_LHV\", \"1\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"*\", \"*\", \"#\", \"2017\", \"Input|Nitrogen\", \"Output|Steel Liquid\", \"0.5\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"*\", \"*\", \"#\", \"2017\", \"Input|Oxygen\", \"Output|Steel Liquid\", \"0.5\", \"\", \"t_O2\", \"1\", \"t\", \"\"], [\"Rechenberger20\", \"Section 4.2.1\", \"Primary\", \"*\", \"#\", \"2020\", \"Input|Electricity\", \"Output|Steel Liquid\", \"475\", \"165\", \"kWh\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"\", \"*\", \"*\", \"#\", \"2018\", \"CAPEX\", \"Output Capacity|Steel Liquid\", \"184\", \"\", \"EUR_2010\", \"1\", \"t/a\", \"This reference assumes the value provided by W\\u00f6rtler et al., 2013.\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"#\", \"2018\", \"Input|Alloys\", \"Output|Steel Liquid\", \"0.011\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"Section 3.1\", \"Primary\", \"w/ reheating\", \"#\", \"2018\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.912\", \"\", \"MWh\", \"1\", \"t\", \"Cold DRI case: An additional 159kWh/t LS is needed. This is not explicit in the paper, but was clarified by an exchange with the author.\"], [\"Vogl-2018\", \"Section 3.1\", \"Primary\", \"w/o reheating\", \"#\", \"2018\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.753\", \"\", \"MWh\", \"1\", \"t\", \"Hot DRI case. This is not explicit in the paper, but was clarified by an exchange with the author.\"], [\"Vogl-2018\", \"Section 3.1\", \"Secondary\", \"*\", \"#\", \"2018\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.667\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"#\", \"2018\", \"Input|Graphite Electrode\", \"Output|Steel Liquid\", \"0.002\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"#\", \"2018\", \"Input|Lime\", \"Output|Steel Liquid\", \"0.05\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"Operation and maintenance incl. refractory lining w/o labour\", \"2018\", \"OPEX Fixed\", \"Output Capacity|Steel Liquid\", \"5.52\", \"\", \"EUR_2010/a\", \"1\", \"t/a\", \"Manually calculated, is originally defined as 3% of CAPEX.\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"Labour\", \"2018\", \"OPEX Fixed Specific\", \"Output|Steel Liquid\", \"53.2\", \"\", \"EUR_2010\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Table 2.1.5\", \"Primary\", \"*\", \"#\", \"2007\", \"Input|Electricity\", \"Output|Steel Liquid\", \"1.7\", \"\", \"GJ\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Section 2.1.4\", \"Secondary\", \"*\", \"Electric arc\", \"2007\", \"Input|Electricity\", \"Output|Steel Liquid\", \"409\", \"\", \"kWh\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Section 2.1.4\", \"Secondary\", \"*\", \"Gas cleaning and ladle refining\", \"2007\", \"Input|Electricity\", \"Output|Steel Liquid\", \"65\", \"\", \"kWh\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Section 2.1.4\", \"Secondary\", \"*\", \"#\", \"2007\", \"Input|Fossil Gas\", \"Output|Steel Liquid\", \"0.15\", \"\", \"GJ_NG_LHV\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Table 2.1.5\", \"Primary\", \"*\", \"#\", \"2007\", \"Input|Heat\", \"Output|Steel Liquid\", \"0.6\", \"\", \"GJ\", \"1\", \"t\", \"\"], [\"Wortler-2013\", \"Exhibit 8\", \"*\", \"*\", \"#\", \"2013\", \"CAPEX\", \"Output Capacity|Steel Liquid\", \"184\", \"\", \"EUR_2010\", \"1\", \"t/a\", \"\"]]"};
+        let dt_args = {"layout": {"topStart": "pageLength", "topEnd": "search", "bottomStart": "info", "bottomEnd": "paging"}, "style": {"table-layout": "auto", "width": "auto", "margin": "auto", "caption-side": "bottom"}, "order": [], "classes": ["display", "nowrap", "compact"], "text_in_header_can_be_selected": true, "table_html": "<table><thead>\n    <tr style=\"text-align: right;\">\n      \n      <th>source</th>\n      <th>source_detail</th>\n      <th>mode</th>\n      <th>reheating</th>\n      <th>component</th>\n      <th>period</th>\n      <th>variable</th>\n      <th>reference_variable</th>\n      <th>value</th>\n      <th>uncertainty</th>\n      <th>unit</th>\n      <th>reference_value</th>\n      <th>reference_unit</th>\n      <th>comment</th>\n    </tr>\n  </thead></table>", "data_json": "[[\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"CAPEX\", \"Output Capacity|Steel Liquid\", \"331.2\", \"\", \"EUR_2010\", \"1\", \"t/a\", \"This reference assumes the value provided by W\\u00f6rtler et al., 2013 (184 EUR/tLS) but with an additional integration factor of 1.8.\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"Input|Alloys\", \"Output|Steel Liquid\", \"0.011\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Agora-Energiewende-2022\", \"Found in the excel tool associated with the report, in Input_Anlage.\", \"Primary\", \"w/ reheating\", \"#\", \"2022\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.753\", \"\", \"MWh\", \"1\", \"t\", \"Reheating of cold DRI. Values based on Vogl et al (2018) but is misquoted- See note on Vogl-2018 electricity demand row.\"], [\"Agora-Energiewende-2022\", \"Found in the excel tool associated with the report, in Input_Anlage.\", \"Primary\", \"w/o reheating\", \"#\", \"2022\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.594\", \"\", \"MWh\", \"1\", \"t\", \"Without reheating of DRI. Values based on Vogl et al (2018) but is misquoted- See note on Vogl-2018 electricity demand row.\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"Input|Graphite Electrode\", \"Output|Steel Liquid\", \"0.002\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"Input|Lime\", \"Output|Steel Liquid\", \"0.05\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"*\", \"*\", \"#\", \"2022\", \"Input|Oxygen\", \"Output|Steel Liquid\", \"0.5\", \"\", \"t_O2\", \"1\", \"t\", \"\"], [\"Agora-Energiewende-2022\", \"Abbildung 27 (Figure 27)\", \"Primary\", \"*\", \"#\", \"2022\", \"Input|Steel Scrap\", \"Output|Steel Liquid\", \"0.17\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Devlin-2022\", \"Section 2.2.2\", \"Primary\", \"*\", \"#\", \"2022\", \"Input|Directly Reduced Iron\", \"Output|Steel Liquid\", \"1.1\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Devlin-2022\", \"Section 2.2.2\", \"Primary\", \"*\", \"#\", \"2022\", \"Input|Electricity\", \"Output|Steel Liquid\", \"2.4\", \"\", \"MJ\", \"\", \"kg\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"#\", \"2008\", \"Input|Alloys\", \"Output|Steel Liquid\", \"0.011\", \"\", \"t\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"Secondary\", \"*\", \"#\", \"2008\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.4\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"#\", \"2008\", \"Input|Graphite Electrode\", \"Output|Steel Liquid\", \"0.003\", \"\", \"t\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"Secondary\", \"*\", \"#\", \"2008\", \"Input|Heat\", \"Output|Steel Liquid\", \"0.43\", \"\", \"GJ\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"#\", \"2008\", \"Input|Oxygen\", \"Output|Steel Liquid\", \"50\", \"\", \"cubic_meter_O2_norm\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"Secondary\", \"*\", \"#\", \"2008\", \"Input|Steel Scrap\", \"Output|Steel Liquid\", \"1.09\", \"\", \"t\", \"1\", \"t\", \"\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"Labour\", \"2008\", \"OPEX Fixed\", \"Output Capacity|Steel Liquid\", \"2.7\", \"\", \"EUR_2008/a\", \"1\", \"t/a\", \"Labour cost. This line should be an OPEX Fixed Specific but throws an error, as no OCF was found in the source. Assumed to be 0.9 (original value is 3 EUR/t). Results from this table were obtained from steelonthenet.\"], [\"ECORYS-2008\", \"Table 3.1\", \"*\", \"*\", \"#\", \"2008\", \"OPEX Variable\", \"Output|Steel Liquid\", \"9\", \"\", \"EUR_2008\", \"1\", \"t\", \"Labour cost\"], [\"Hegemann-2020\", \"\", \"Primary\", \"*\", \"#\", \"2020\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.525\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 9, Table 6\", \"*\", \"*\", \"#\", \"2021\", \"CAPEX\", \"Output Capacity|Steel Liquid\", \"479.89\", \"\", \"MEUR_2020\", \"2\", \"Mt/a\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"Primary\", \"*\", \"#\", \"2021\", \"Input|Coal\", \"Output|Steel Liquid\", \"20814.54\", \"\", \"t_coal\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"Primary\", \"*\", \"#\", \"2021\", \"Input|Directly Reduced Iron\", \"Output|Steel Liquid\", \"1744694.39\", \"\", \"t\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"Primary\", \"*\", \"#\", \"2021\", \"Input|Electricity\", \"Output|Steel Liquid\", \"1047946.52\", \"\", \"MWh\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"*\", \"*\", \"#\", \"2021\", \"Input|Graphite Electrode\", \"Output|Steel Liquid\", \"3000\", \"\", \"t\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"*\", \"*\", \"#\", \"2021\", \"Input|Oxygen\", \"Output|Steel Liquid\", \"8349.01\", \"\", \"t_O2\", \"2000000\", \"t\", \"\"], [\"Jacobasch-2021\", \"Page 6, Table 2\", \"Primary\", \"*\", \"#\", \"2021\", \"Input|Steel Scrap\", \"Output|Steel Liquid\", \"400220.06\", \"\", \"t\", \"2000000\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"Primary\", \"*\", \"#\", \"2017\", \"Input|Coal\", \"Output|Steel Liquid\", \"0.284\", \"\", \"MWh_coal_LHV\", \"1\", \"t\", \"According to the source, additional coal is needed to achieve 2% carbon content in steel and 100% charge of sponge iron in the EAF.\"], [\"Otto-2017\", \"Figure 6\", \"Primary\", \"*\", \"#\", \"2017\", \"Input|Directly Reduced Iron\", \"Output|Steel Liquid\", \"1.03\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"Primary\", \"*\", \"#\", \"2017\", \"Input|Electricity\", \"Output|Steel Liquid\", \"2.07\", \"\", \"GJ\", \"1\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"Primary\", \"*\", \"#\", \"2017\", \"Input|Fossil Gas\", \"Output|Steel Liquid\", \"0.78\", \"\", \"GJ_NG_LHV\", \"1\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"*\", \"*\", \"#\", \"2017\", \"Input|Nitrogen\", \"Output|Steel Liquid\", \"0.5\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Otto-2017\", \"Figure 6\", \"*\", \"*\", \"#\", \"2017\", \"Input|Oxygen\", \"Output|Steel Liquid\", \"0.5\", \"\", \"t_O2\", \"1\", \"t\", \"\"], [\"Rechenberger20\", \"Section 4.2.1\", \"Primary\", \"*\", \"#\", \"2020\", \"Input|Electricity\", \"Output|Steel Liquid\", \"475\", \"165\", \"kWh\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"\", \"*\", \"*\", \"#\", \"2018\", \"CAPEX\", \"Output Capacity|Steel Liquid\", \"184\", \"\", \"EUR_2010\", \"1\", \"t/a\", \"This reference assumes the value provided by W\\u00f6rtler et al., 2013.\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"#\", \"2018\", \"Input|Alloys\", \"Output|Steel Liquid\", \"0.011\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"Section 3.1\", \"Primary\", \"w/ reheating\", \"#\", \"2018\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.912\", \"\", \"MWh\", \"1\", \"t\", \"Cold DRI case: An additional 159kWh/t LS is needed. This is not explicit in the paper, but was clarified by an exchange with the author.\"], [\"Vogl-2018\", \"Section 3.1\", \"Primary\", \"w/o reheating\", \"#\", \"2018\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.753\", \"\", \"MWh\", \"1\", \"t\", \"Hot DRI case. This is not explicit in the paper, but was clarified by an exchange with the author.\"], [\"Vogl-2018\", \"Section 3.1\", \"Secondary\", \"*\", \"#\", \"2018\", \"Input|Electricity\", \"Output|Steel Liquid\", \"0.667\", \"\", \"MWh\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"#\", \"2018\", \"Input|Graphite Electrode\", \"Output|Steel Liquid\", \"0.002\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"#\", \"2018\", \"Input|Lime\", \"Output|Steel Liquid\", \"0.05\", \"\", \"t\", \"1\", \"t\", \"\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"Operation and maintenance incl. refractory lining w/o labour\", \"2018\", \"OPEX Fixed\", \"Output Capacity|Steel Liquid\", \"5.52\", \"\", \"EUR_2010/a\", \"1\", \"t/a\", \"Manually calculated, is originally defined as 3% of CAPEX.\"], [\"Vogl-2018\", \"Section 2.1\", \"*\", \"*\", \"Labour\", \"2018\", \"OPEX Fixed Specific\", \"Output|Steel Liquid\", \"53.2\", \"\", \"EUR_2010\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Table 2.1.5\", \"Primary\", \"*\", \"#\", \"2007\", \"Input|Electricity\", \"Output|Steel Liquid\", \"1.7\", \"\", \"GJ\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Section 2.1.4\", \"Secondary\", \"*\", \"Electric arc\", \"2007\", \"Input|Electricity\", \"Output|Steel Liquid\", \"409\", \"\", \"kWh\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Section 2.1.4\", \"Secondary\", \"*\", \"Gas cleaning and ladle refining\", \"2007\", \"Input|Electricity\", \"Output|Steel Liquid\", \"65\", \"\", \"kWh\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Section 2.1.4\", \"Secondary\", \"*\", \"#\", \"2007\", \"Input|Fossil Gas\", \"Output|Steel Liquid\", \"0.15\", \"\", \"GJ_NG_LHV\", \"1\", \"t\", \"\"], [\"Worrell-2007\", \"Table 2.1.5\", \"Primary\", \"*\", \"#\", \"2007\", \"Input|Heat\", \"Output|Steel Liquid\", \"0.6\", \"\", \"GJ\", \"1\", \"t\", \"\"], [\"Wortler-2013\", \"Exhibit 8\", \"*\", \"*\", \"#\", \"2013\", \"CAPEX\", \"Output Capacity|Steel Liquid\", \"184\", \"\", \"EUR_2010\", \"1\", \"t/a\", \"\"]]"};
         new ITable(table, dt_args);
     });
 </script>
