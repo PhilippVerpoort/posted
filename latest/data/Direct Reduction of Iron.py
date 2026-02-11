@@ -139,4 +139,4 @@ The table below contains the raw data contained in the public POSTED database. T
 """)
 
 # %%
-edit(tedf)
+tedf.edit_data()
