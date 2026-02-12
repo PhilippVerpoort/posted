@@ -56,7 +56,7 @@ units = {
 # The techno-economic data is distinguished across the following additional fields.
 
 # %% [markdown]
-# ### Operation mode (`carbon_capture`)
+# ### Carbon capture (`carbon_capture`)
 
 # %%
 Markdown(
@@ -81,6 +81,7 @@ display(
     )
     .map(lambda x: float(f"{x:.3g}") if not pd.isnull(x) else x)
     .fillna("")
+    .loc[list(tedf.fields["carbon_capture"].codes)]
 )
 
 # %% [markdown]
