@@ -52,7 +52,4 @@ The tables below contain the raw data contained in the public POSTED database. T
 # %%
 for t in ["Steel Casting", "Steel Hot Rolling"]:
     display(Markdown(f"### {t}"))
-    TEDF.load(f"Tech|{t}").edit_data()
-
-# %%
-TEDF.load(f"Tech|{t}").edit_data()
+    display(TEDF.load(f"Tech|{t}").edit_data())
