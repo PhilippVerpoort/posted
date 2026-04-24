@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.19.0
+#       jupytext_version: 1.19.1
 #   kernelspec:
 #     display_name: Python (docs)
 #     language: python
@@ -53,7 +53,7 @@ units = {
 # ## Fields
 
 # %% [markdown]
-# The techno-economic data is distinguished across the following additional fields.
+# The techno-economic data is distinguished across the following fields.
 
 # %% [markdown]
 # ### Carbon capture (`carbon_capture`)
@@ -67,7 +67,7 @@ Markdown(
 # ## Aggregated parameters
 
 # %% [markdown]
-# All data added to the POSTED database is aggregated automatically using the POSTED framework. The result yields the following parameters:
+# All data in this dataset can be aggregated via the NOSLAG workflow, which yields the following parameters:
 
 # %%
 aggregated = tedf.aggregate(units=units, append_references=True)
@@ -146,7 +146,9 @@ display(fig)
 
 # %%
 Markdown(f"""
-The table below contains the raw data contained in the public POSTED database. This data has not be automatically normalised or harmonised in any way. You can also find this data in the GitHub repo in this file:
+The table below contains the raw data contained in this dataset. The raw data has not be normalised or harmonised 
+in any way and should closely resemble the data as it is reported by the respective sources. You can also find 
+this data in the GitHub repo in this file:
 {link_public_github(var)}
 """)
 

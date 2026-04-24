@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.19.0
+#       jupytext_version: 1.19.1
 #   kernelspec:
 #     display_name: Python (docs)
 #     language: python
@@ -15,6 +15,9 @@
 
 # %% [markdown]
 # # Steel casting and hot rolling
+
+# %% [markdown]
+# This dataset contains techno-economic data on casting and hot-rolling processing of steel.
 
 # %%
 # Dependencies.
@@ -31,7 +34,7 @@ from posted import TEDF
 # ## Aggregated parameters
 
 # %% [markdown]
-# All data added to the POSTED database is aggregated automatically using the POSTED framework. The result yields the following parameters:
+# All data in the two datasets can be aggregated via the NOSLAG workflow, which yields the following parameters:
 
 # %%
 for t in ["Steel Casting", "Steel Hot Rolling"]:
@@ -45,7 +48,9 @@ for t in ["Steel Casting", "Steel Hot Rolling"]:
 
 # %%
 Markdown(f"""
-The tables below contain the raw data contained in the public POSTED database. This data has not be automatically normalised or harmonised in any way. You can also find this data in the GitHub repo in this file:
+The tables below contain the raw data contained in the two datasets. The raw data has not be normalised or harmonised 
+in any way and should closely resemble the data as it is reported by the respective sources. You can also find 
+this data in the GitHub repo in these two files:
 {link_public_github('Tech|Steel Casting')} and {link_public_github('Tech|Steel Hot Rolling')}
 """)
 
