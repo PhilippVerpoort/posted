@@ -55,7 +55,7 @@ units = {
 # The techno-economic data is distinguished across the following fields.
 
 # %% [markdown]
-# ### Carbon capture (`carbon_capture`)
+# ### Subtechnologies (`subtech`)
 
 # %%
 Markdown(
