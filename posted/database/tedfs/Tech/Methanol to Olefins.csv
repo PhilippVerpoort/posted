@@ -1,0 +1,26 @@
+source,source_detail,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment,component
+Oliveira-2021,"Page 1, Section Costs",2021,CAPEX,Output Capacity|Propylene,0.76,,MEUR_2015,1,kt/year,,#
+Dutta-2019,Figure 4,2019,CAPEX,Output Capacity|Ethylene,511.6,,MUSD_2019,0.356,Mt/a,"Reference ethylene capacity found in footnote, page 968",#
+Bazzanella-2017,Table 35,2017,CAPEX Annualised,Output Capacity|All Products Mass,300,,EUR_2015,1,t/year,Depreciated over 10 years with an interest rate of 10%.,#
+Oliveira-2021,"Page 1, Section Costs",2021,OPEX Fixed Relative,,3,,percent,,,,#
+Bazzanella-2017,Table 35,2017,OPEX Fixed Specific,Output|All Products Mass,45,,EUR_2015,1,t,,#
+Oliveira-2021,"Page 1, Section Costs",2021,OPEX Variable,Output|Propylene,0.02,,MEUR_2015,1,kt,,#
+Dutta-2019,Figure 4,2019,OPEX Fixed,Output Capacity|Ethylene,92.2,,MUSD_2019/year,0.356,Mt/a,"OPEX other than methanol, electricity and heat demand. Reference ethylene capacity found in footnote, page 968",Other
+Bazzanella-2017,Section 4.5.3,2017,Input|Electricity,Output|All Products Mass,5,,GJ,1,t,The source only reports “energy demand” and does not specify it this is heat or electricity.,#
+Bazzanella-2017,Section 4.5.3,2017,Input|Methanol,Output|All Products Mass,2.28,,t_MeOH,1,t,,#
+Jasper-2015,"Table 1, Page 689",2015,Input|Methanol,Output|Ethylene,1560,,kt_MeOH,214,kt,,#
+Jasper-2015,"Table 1, Page 689",2015,Output|Propylene,Output|Ethylene,386,,kt,214,kt,,#
+Zhao-2021,"Figure 2, Page 196",2021,Output|Propylene,Input|Methanol,0.5,,t,2.9,t_MeOH,,#
+Dutta-2019,Table 4,2019,Output|Propylene,Input|Methanol,28.9,,t,217.5,t_MeOH,,#
+Zhao-2021,"Figure 2, Page 196",2021,Output|Ethylene,Input|Methanol,0.5,,t,2.9,t_MeOH,,#
+Dutta-2019,Table 4,2019,Output|Ethylene,Input|Methanol,45.6,,t,217.5,t_MeOH,,#
+Zhao-2021,"Figure 2, Page 196",2021,Output|Residual Gas,Input|Methanol,0.3,,t,2.9,t_MeOH,C4 fraction and LPG,#
+Dutta-2019,Table 4,2019,Output|Butene,Input|Methanol,8.4,,t,217.5,t_MeOH,,#
+Zhao-2021,"Figure 2, Page 196",2021,Input|Electricity,Input|Methanol,50.6,,kWh,2.9,t_MeOH,C4 fraction and LPG,#
+Dutta-2019,Table 4,2019,Input|Electricity,Input|Methanol,31.8,,MWh,217.5,t_MeOH,,#
+Zhao-2021,"Figure 2, Page 196",2021,Input|Steam,Input|Methanol,4.5,,t,2.9,t_MeOH,,#
+Dutta-2019,Table 4,2019,Input|Steam,Input|Methanol,17.4,,t,217.5,t_MeOH,Low-pressure steam. There is also MP and HP steam used but in much smaller amounts,#
+Zhao-2021,"Figure 2, Page 196",2021,Input|Cooling Water,Input|Methanol,93.3,,t,2.9,t_MeOH,,#
+Oliveira-2021,Page 1,2021,FLH,,8550,,hour,,,,#
+Oliveira-2021,Page 1,2021,Lifetime,,20,,year,,,,#
+Oliveira-2021,"Page 2, Section Emissions",2021,Emissions|CO2,Output|Propylene,0.06,,kt,1,kt,Corrected unit.,#
