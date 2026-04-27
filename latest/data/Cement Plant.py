@@ -93,7 +93,11 @@ display(
 # %%
 aggregated = tedf.aggregate(units=units)
 
-show_variables = {"CAPEX": ["CAPEX"], "Energy Demand": ["Input|Coal", "Input|Electricity"], "Emissions": ["GHG Emissions|CO2"]}
+show_variables = {
+    "CAPEX": ["CAPEX"],
+    "Energy Demand": ["Input|Coal", "Input|Electricity"],
+    "Emissions": ["GHG Emissions|CO2"],
+}
 
 fig = make_subplots(
     rows=1,
