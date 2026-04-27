@@ -14,7 +14,7 @@
 # ---
 
 # %% [markdown]
-# # Methanol Synthesis
+# # Methanol Synthesis with Reforming
 
 # %% [markdown]
 # This dataset contains techno-economic data on methanol synthesis plants with reforming (from natural gas).
