@@ -1,0 +1,24 @@
+columns:
+    subtech:
+        name: Subtechnology
+        description: Distinguish between major subclasses of direct air capture technologies.
+        type: case
+        coded: True
+        codes:
+            LT-DAC: Low-temperature DAC.
+            HT-DAC: High-temperature DAC.
+    component:
+        name: component
+        description: Allows to subdivide variables into further sub-components.
+        type: component
+        coded: False
+    period: period
+variables:
+    predefined:
+        - technology
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities
