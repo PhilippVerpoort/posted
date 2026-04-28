@@ -1444,12 +1444,7 @@ inconsistencies found for row.</p>
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
 <span class="normal"> 82</span>
 <span class="normal"> 83</span>
 <span class="normal"> 84</span>
@@ -2288,9 +2283,15 @@ inconsistencies found for row.</p>
 <span class="normal">917</span>
 <span class="normal">918</span>
 <span class="normal">919</span>
-<span class="normal">920</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class to handle Techno-Economic Data Files (TEDFs).</span>
+<span class="normal">920</span>
+<span class="normal">921</span>
+<span class="normal">922</span>
+<span class="normal">923</span>
+<span class="normal">924</span>
+<span class="normal">925</span>
+<span class="normal">926</span>
+<span class="normal">927</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to handle Techno-Economic Data Files (TEDFs).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2304,7 +2305,7 @@ inconsistencies found for row.</p>
 <span class="sd">        Specific Technoeconomic data</span>
 
 <span class="sd">    Methods</span>
-<span class="sd">    ----------</span>
+<span class="sd">    -------</span>
 <span class="sd">    load</span>
 <span class="sd">        Load TEDF if it has not been read yet.</span>
 <span class="sd">    read</span>
@@ -2316,6 +2317,7 @@ inconsistencies found for row.</p>
 <span class="sd">    check_row</span>
 <span class="sd">        Check that row in TEDF is consistent and return all</span>
 <span class="sd">        inconsistencies found for row.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -2363,7 +2365,8 @@ inconsistencies found for row.</p>
         <span class="k">if</span> <span class="n">unknown_cols</span><span class="p">:</span>
             <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_cols</span><span class="p">)</span>
             <span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unknown column</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> treated as comment</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Unknown column</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> treated as &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;comment</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: &quot;</span>
                 <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">unknown_cols</span><span class="p">),</span>
                 <span class="n">POSTEDWarning</span><span class="p">,</span>
             <span class="p">)</span>
@@ -2419,7 +2422,7 @@ inconsistencies found for row.</p>
             <span class="k">raise</span> <span class="n">POSTEDException</span><span class="p">(</span>
                 <span class="s2">&quot;Argument `variable` must be a valid string.&quot;</span>
             <span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">database_id</span> <span class="ow">in</span> <span class="n">databases</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">database_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">databases</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">POSTEDException</span><span class="p">(</span>
                 <span class="s2">&quot;Argument `database_id` must correspond to a valid ID in the &quot;</span>
                 <span class="s2">&quot;`databases` registered in the POSTED package.&quot;</span>
@@ -2478,7 +2481,7 @@ inconsistencies found for row.</p>
             <span class="n">mappings</span><span class="o">=</span><span class="n">mappings</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">edit_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ipydatagrid.DataGrid&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">edit_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataGrid</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">..widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_edit_grid</span>
 
         <span class="k">return</span> <span class="n">build_edit_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -2522,8 +2525,7 @@ inconsistencies found for row.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Normalise data by converting reference values to 1.0 and converting to</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalise data by converting reference values to 1.0 and converting to</span>
 <span class="sd">        default unit for each variable.</span>
 
 <span class="sd">        Parameters</span>
@@ -2537,6 +2539,7 @@ inconsistencies found for row.</p>
 <span class="sd">        -------</span>
 <span class="sd">        pd.DataFrame</span>
 <span class="sd">            DataFrame containing normalised raw data.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">normalised</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
 
@@ -2627,7 +2630,7 @@ inconsistencies found for row.</p>
             <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;conv_factor&quot;</span><span class="p">,</span> <span class="s2">&quot;level_1&quot;</span><span class="p">:</span> <span class="s2">&quot;unit&quot;</span><span class="p">})</span>
         <span class="p">)</span>
 
-        <span class="c1"># For now, we simply assume that there is no column called `conv_factor`.</span>
+        <span class="c1"># For now, we simply assume that no column `conv_factor` exists.</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;factor&quot;</span><span class="p">,</span> <span class="s2">&quot;conv_factor&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_conv_factor&quot;</span><span class="p">]</span>
@@ -2687,8 +2690,7 @@ inconsistencies found for row.</p>
         <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Select desired data from the dataframe.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select desired data from the dataframe.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2722,6 +2724,7 @@ inconsistencies found for row.</p>
 <span class="sd">        -------</span>
 <span class="sd">        pd.DataFrame</span>
 <span class="sd">            DataFrame with selected Values</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">selected</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span>
             <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
@@ -2757,21 +2760,23 @@ inconsistencies found for row.</p>
         <span class="n">normalised</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
         <span class="n">selected</span> <span class="o">=</span> <span class="n">normalised</span>
 
-        <span class="c1"># Drop columns containing comments and the uncertainty column (which is currently unsupported).</span>
+        <span class="c1"># Drop columns containing comments and the uncertainty column (which</span>
+        <span class="c1"># is currently unsupported).</span>
         <span class="n">selected</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;uncertainty&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comments</span><span class="p">),</span>
             <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># Raise exception if fields listed in arguments that is not in the columns.</span>
+        <span class="c1"># Raise exception if fields given as arguments are not in the columns.</span>
         <span class="k">for</span> <span class="n">field_id</span> <span class="ow">in</span> <span class="n">field_vals_select</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field_id</span> <span class="o">==</span> <span class="n">col_id</span> <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{</span><span class="n">field_id</span><span class="si">}</span><span class="s2">&#39; does not exist and cannot be used for &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;selection.&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{</span><span class="n">field_id</span><span class="si">}</span><span class="s2">&#39; does not exist and cannot be used &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;for selection.&quot;</span>
                 <span class="p">)</span>
 
-        <span class="c1"># Order fields for selection: period must be selected last due to the interpolation.</span>
+        <span class="c1"># Order fields before selection. Columns of type PeriodFieldDefinition</span>
+        <span class="c1"># must be selected last due to the interpolation.</span>
         <span class="n">fields_select_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">field_vals_select</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">))</span>
         <span class="k">if</span> <span class="s2">&quot;period&quot;</span> <span class="ow">in</span> <span class="n">fields_select_order</span><span class="p">:</span>
             <span class="n">fields_select_order</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;period&quot;</span><span class="p">)</span>
@@ -2904,8 +2909,7 @@ inconsistencies found for row.</p>
         <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Aggregates data based on specified parameters, applies masks,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Aggregates data based on specified parameters, applies masks,</span>
 <span class="sd">        and cleans up the resulting DataFrame.</span>
 
 <span class="sd">        Parameters</span>
@@ -2952,8 +2956,8 @@ inconsistencies found for row.</p>
 <span class="sd">            weights, inserts reference variables, sorts columns and</span>
 <span class="sd">            rows, rounds values, and inserts units before returning the</span>
 <span class="sd">            final cleaned and aggregated DataFrame.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Run select().</span>
         <span class="n">selected</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span>
             <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
@@ -3165,12 +3169,7 @@ inconsistencies found for row.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
 <span class="normal">114</span>
@@ -3230,7 +3229,13 @@ inconsistencies found for row.</p>
 <span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
-<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">parent_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3275,7 +3280,8 @@ inconsistencies found for row.</p>
     <span class="k">if</span> <span class="n">unknown_cols</span><span class="p">:</span>
         <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_cols</span><span class="p">)</span>
         <span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unknown column</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> treated as comment</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Unknown column</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> treated as &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;comment</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: &quot;</span>
             <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">unknown_cols</span><span class="p">),</span>
             <span class="n">POSTEDWarning</span><span class="p">,</span>
         <span class="p">)</span>
@@ -3519,15 +3525,7 @@ final cleaned and aggregated DataFrame.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">677</span>
-<span class="normal">678</span>
-<span class="normal">679</span>
-<span class="normal">680</span>
-<span class="normal">681</span>
-<span class="normal">682</span>
-<span class="normal">683</span>
-<span class="normal">684</span>
-<span class="normal">685</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">685</span>
 <span class="normal">686</span>
 <span class="normal">687</span>
 <span class="normal">688</span>
@@ -3694,7 +3692,14 @@ final cleaned and aggregated DataFrame.</p>
 <span class="normal">849</span>
 <span class="normal">850</span>
 <span class="normal">851</span>
-<span class="normal">852</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span>
+<span class="normal">852</span>
+<span class="normal">853</span>
+<span class="normal">854</span>
+<span class="normal">855</span>
+<span class="normal">856</span>
+<span class="normal">857</span>
+<span class="normal">858</span>
+<span class="normal">859</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reference_activity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3709,8 +3714,7 @@ final cleaned and aggregated DataFrame.</p>
     <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Aggregates data based on specified parameters, applies masks,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregates data based on specified parameters, applies masks,</span>
 <span class="sd">    and cleans up the resulting DataFrame.</span>
 
 <span class="sd">    Parameters</span>
@@ -3757,8 +3761,8 @@ final cleaned and aggregated DataFrame.</p>
 <span class="sd">        weights, inserts reference variables, sorts columns and</span>
 <span class="sd">        rows, rounds values, and inserts units before returning the</span>
 <span class="sd">        final cleaned and aggregated DataFrame.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
 
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Run select().</span>
     <span class="n">selected</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span>
         <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
@@ -3963,13 +3967,7 @@ default unit for each variable.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">313</span>
 <span class="normal">314</span>
 <span class="normal">315</span>
 <span class="normal">316</span>
@@ -4020,11 +4018,16 @@ default unit for each variable.</p>
 <span class="normal">361</span>
 <span class="normal">362</span>
 <span class="normal">363</span>
-<span class="normal">364</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Normalise data by converting reference values to 1.0 and converting to</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalise data by converting reference values to 1.0 and converting to</span>
 <span class="sd">    default unit for each variable.</span>
 
 <span class="sd">    Parameters</span>
@@ -4038,6 +4041,7 @@ default unit for each variable.</p>
 <span class="sd">    -------</span>
 <span class="sd">    pd.DataFrame</span>
 <span class="sd">        DataFrame containing normalised raw data.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">normalised</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
 
@@ -4286,13 +4290,7 @@ is expanded. Default is True.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">463</span>
-<span class="normal">464</span>
-<span class="normal">465</span>
-<span class="normal">466</span>
-<span class="normal">467</span>
-<span class="normal">468</span>
-<span class="normal">469</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">469</span>
 <span class="normal">470</span>
 <span class="normal">471</span>
 <span class="normal">472</span>
@@ -4352,7 +4350,13 @@ is expanded. Default is True.</p>
 <span class="normal">526</span>
 <span class="normal">527</span>
 <span class="normal">528</span>
-<span class="normal">529</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reference_activity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4364,8 +4368,7 @@ is expanded. Default is True.</p>
     <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Select desired data from the dataframe.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Select desired data from the dataframe.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -4399,6 +4402,7 @@ is expanded. Default is True.</p>
 <span class="sd">    -------</span>
 <span class="sd">    pd.DataFrame</span>
 <span class="sd">        DataFrame with selected Values</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">selected</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span>
         <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
