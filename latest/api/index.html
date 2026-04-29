@@ -1268,6 +1268,11 @@
 <a id="posted"></a>
     <div class="doc doc-contents first">
 
+        <p>POSTED: Potsdam open-source techno-economic database.</p>
+<p>POSTED is a public database of techno-economic data on energy and
+climate-mitigation technologies and a framework for consistent handling of
+this database.</p>
+
 
 
 
@@ -1302,7 +1307,9 @@
 
 
 
-        <p>Class to handle Techno-Economic Data Files (TEDFs).</p>
+        <p>Class for handling Techno-Economic Data Frames (TEDFs).</p>
+<p>This class is used for loading TEDFs from CSV files and performing various
+steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1443,7 +1450,7 @@ inconsistencies found for row.</p>
 
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
+                <summary>Source code in <code>posted/noslag/_tedf.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 81</span>
 <span class="normal"> 82</span>
 <span class="normal"> 83</span>
@@ -2290,8 +2297,36 @@ inconsistencies found for row.</p>
 <span class="normal">924</span>
 <span class="normal">925</span>
 <span class="normal">926</span>
-<span class="normal">927</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to handle Techno-Economic Data Files (TEDFs).</span>
+<span class="normal">927</span>
+<span class="normal">928</span>
+<span class="normal">929</span>
+<span class="normal">930</span>
+<span class="normal">931</span>
+<span class="normal">932</span>
+<span class="normal">933</span>
+<span class="normal">934</span>
+<span class="normal">935</span>
+<span class="normal">936</span>
+<span class="normal">937</span>
+<span class="normal">938</span>
+<span class="normal">939</span>
+<span class="normal">940</span>
+<span class="normal">941</span>
+<span class="normal">942</span>
+<span class="normal">943</span>
+<span class="normal">944</span>
+<span class="normal">945</span>
+<span class="normal">946</span>
+<span class="normal">947</span>
+<span class="normal">948</span>
+<span class="normal">949</span>
+<span class="normal">950</span>
+<span class="normal">951</span>
+<span class="normal">952</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for handling Techno-Economic Data Frames (TEDFs).</span>
+
+<span class="sd">    This class is used for loading TEDFs from CSV files and performing various</span>
+<span class="sd">    steps in the NOSLAG (normalise-select-aggregate) framework.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2331,7 +2366,7 @@ inconsistencies found for row.</p>
         <span class="n">masks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Mask</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">mappings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise parent class and object fields&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise parent class and object fields.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">parent_variable</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">database_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">variables</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -2340,7 +2375,7 @@ inconsistencies found for row.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mappings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">mappings</span> <span class="ow">or</span> <span class="p">[]</span>
 
         <span class="c1"># Combine all fields.</span>
-        <span class="n">source_column</span> <span class="o">=</span> <span class="n">base_column_src</span><span class="p">()</span>
+        <span class="n">source_column</span> <span class="o">=</span> <span class="n">_base_column_src</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AbstractFieldDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source_column</span>
         <span class="p">}</span> <span class="o">|</span> <span class="p">(</span><span class="n">custom_fields</span> <span class="ow">or</span> <span class="p">{})</span>
@@ -2393,7 +2428,7 @@ inconsistencies found for row.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">parent_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parent_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span>
 
     <span class="nd">@property</span>
@@ -2413,7 +2448,7 @@ inconsistencies found for row.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">validated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span>
 
     <span class="nd">@classmethod</span>
@@ -2468,7 +2503,7 @@ inconsistencies found for row.</p>
                 <span class="n">fcontents</span> <span class="o">=</span> <span class="n">read_yaml</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
                 <span class="n">masks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Mask</span><span class="p">(</span><span class="o">**</span><span class="n">mask_specs</span><span class="p">)</span> <span class="k">for</span> <span class="n">mask_specs</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">]</span>
 
-        <span class="n">custom_fields</span><span class="p">,</span> <span class="n">custom_comments</span> <span class="o">=</span> <span class="n">read_fields_comments</span><span class="p">(</span><span class="n">custom_columns</span><span class="p">)</span>
+        <span class="n">custom_fields</span><span class="p">,</span> <span class="n">custom_comments</span> <span class="o">=</span> <span class="n">_read_fields_comments</span><span class="p">(</span><span class="n">custom_columns</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">TEDF</span><span class="p">(</span>
             <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
@@ -2482,7 +2517,7 @@ inconsistencies found for row.</p>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">edit_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataGrid</span><span class="p">:</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">..widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_edit_grid</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">.._widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_edit_grid</span>
 
         <span class="k">return</span> <span class="n">build_edit_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -2490,6 +2525,11 @@ inconsistencies found for row.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_df</span> <span class="o">=</span> <span class="n">df</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">POSTEDException</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot save TEDF as file without database &quot;</span>
+                <span class="s2">&quot;ID and parent variable.&quot;</span>
+            <span class="p">)</span>
         <span class="n">fpath</span> <span class="o">=</span> <span class="n">_get_file_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
@@ -2504,8 +2544,9 @@ inconsistencies found for row.</p>
         <span class="c1"># Load sources for validation.</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">..sources</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_sources</span>
 
-        <span class="n">sources</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">load_sources</span><span class="p">(</span><span class="n">database_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">)</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bibtex_codes</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sources</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">load_sources</span><span class="p">(</span><span class="n">database_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">)</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bibtex_codes</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">col_def</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2525,8 +2566,12 @@ inconsistencies found for row.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalise data by converting reference values to 1.0 and converting to</span>
-<span class="sd">        default unit for each variable.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalise data.</span>
+
+<span class="sd">        Normalise units, reference units, and reference values by multiplying</span>
+<span class="sd">        value column with respective conversion factor needed to convert</span>
+<span class="sd">        reference values to 1.0 and all units to harmonised units for each</span>
+<span class="sd">        variable.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2585,13 +2630,13 @@ inconsistencies found for row.</p>
         <span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
         <span class="n">units</span> <span class="o">=</span> <span class="n">units</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare</span><span class="p">()</span>
+        <span class="n">prepared</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare</span><span class="p">()</span>
 
         <span class="c1"># Get full list of variables and corresponding units.</span>
         <span class="n">df_vars_units</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]],</span>
-                <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_unit&quot;</span><span class="p">]]</span>
+                <span class="n">prepared</span><span class="p">[[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]],</span>
+                <span class="n">prepared</span><span class="p">[[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_unit&quot;</span><span class="p">]]</span>
                 <span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
                 <span class="o">.</span><span class="n">rename</span><span class="p">(</span>
                     <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
@@ -2632,12 +2677,12 @@ inconsistencies found for row.</p>
 
         <span class="c1"># For now, we simply assume that no column `conv_factor` exists.</span>
         <span class="k">assert</span> <span class="p">(</span>
-            <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span>
+            <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prepared</span>
             <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;factor&quot;</span><span class="p">,</span> <span class="s2">&quot;conv_factor&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_conv_factor&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># Merge conversion factors.</span>
-        <span class="n">normalised</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">normalised</span> <span class="o">=</span> <span class="n">prepared</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
             <span class="n">conv_factors</span><span class="p">,</span>
             <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">],</span>
             <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
@@ -2702,13 +2747,10 @@ inconsistencies found for row.</p>
 <span class="sd">            Reference capacity.</span>
 <span class="sd">        drop_singular_fields: bool, optional</span>
 <span class="sd">            If True, drop custom fields with only one value</span>
-<span class="sd">        interpolate_period: bool, optional</span>
-<span class="sd">            If True, determine values by interpolation between known points,</span>
-<span class="sd">            if no value for a requested period is given. Default is True.</span>
-<span class="sd">        extrapolate_period: bool, optional</span>
-<span class="sd">            If True, determine values by extrapolation outside of range of</span>
-<span class="sd">            known data, if no value for a requested period is given. Default</span>
-<span class="sd">            is False.</span>
+<span class="sd">        period_mode: str | PeriodMode, optional</span>
+<span class="sd">            Whether to interpolate, extrapolate, interpolate and extrapolate,</span>
+<span class="sd">            or perform no such action with the values based on the period</span>
+<span class="sd">            field.</span>
 <span class="sd">        expand_not_specified: bool | list[str], optional</span>
 <span class="sd">            Whether to expand fields with value `N/S` (not specified) to all</span>
 <span class="sd">            allowed values. If `True` is passed, then allow `N/S` is expanded</span>
@@ -2717,6 +2759,9 @@ inconsistencies found for row.</p>
 <span class="sd">            is expanded. Default is True.</span>
 <span class="sd">        with_parent: bool, optional</span>
 <span class="sd">            Whether to prepend the parent variable. Default is False.</span>
+<span class="sd">        append_references: bool, optional</span>
+<span class="sd">            Whether to append reference activities and reference capacities as</span>
+<span class="sd">            additional rows instead of leaving them as separate columns.</span>
 <span class="sd">        **field_vals_select</span>
 <span class="sd">            IDs of values to select</span>
 
@@ -2852,7 +2897,7 @@ inconsistencies found for row.</p>
 
         <span class="c1"># Map variables.</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">selected</span><span class="p">]</span>
-        <span class="n">mapped</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="n">map_variables</span><span class="p">(</span>
+        <span class="n">mapped</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="n">_map_variables</span><span class="p">(</span>
             <span class="n">selected</span><span class="o">=</span><span class="n">selected</span><span class="p">,</span>
             <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
             <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span>
@@ -2909,8 +2954,10 @@ inconsistencies found for row.</p>
         <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Aggregates data based on specified parameters, applies masks,</span>
-<span class="sd">        and cleans up the resulting DataFrame.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Aggregate data.</span>
+
+<span class="sd">        Perform aggregation based on specified parameters, apply masks, and</span>
+<span class="sd">        clean up the resulting DataFrame.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2922,15 +2969,18 @@ inconsistencies found for row.</p>
 <span class="sd">            The capacity variable to align all capacities on.</span>
 <span class="sd">        drop_singular_fields: bool, optional</span>
 <span class="sd">            If True, drop custom fields with only one value</span>
-<span class="sd">        extrapolate_period: bool, optional</span>
-<span class="sd">            If True, extrapolate values by extrapolation, if no value</span>
-<span class="sd">            for this period is given</span>
+<span class="sd">        period_mode: str | PeriodMode, optional</span>
+<span class="sd">            Whether to interpolate, extrapolate, interpolate and extrapolate,</span>
+<span class="sd">            or perform no such action with the values based on the period</span>
+<span class="sd">            field.</span>
 <span class="sd">        expand_not_specified: bool | list[str], optional</span>
 <span class="sd">            Whether to expand fields with value `N/S` (not specified) to all</span>
 <span class="sd">            allowed values. If `True` is passed, then allow `N/S` is expanded</span>
 <span class="sd">            for all fields. If a list of strings is passed, then only the</span>
 <span class="sd">            contained fields are expanded. If False is passed, then no field</span>
 <span class="sd">            is expanded. Default is True.</span>
+<span class="sd">        with_parent: bool, optional</span>
+<span class="sd">            Whether to prepend the parent variable. Default is False.</span>
 <span class="sd">        agg : Optional[str | list[str] | tuple[str]]</span>
 <span class="sd">            Specifies which fields to aggregate over.</span>
 <span class="sd">        masks : Optional[list[Mask]]</span>
@@ -2944,6 +2994,13 @@ inconsistencies found for row.</p>
 <span class="sd">            will be included along with any masks provided as function</span>
 <span class="sd">            arguments. If set to `False`, only the masks provided as</span>
 <span class="sd">            function arguments will be applied.</span>
+<span class="sd">        append_references: bool, optional</span>
+<span class="sd">            Whether to append reference activities and reference capacities as</span>
+<span class="sd">            additional rows instead of leaving them as separate columns.</span>
+<span class="sd">        **field_vals_select:</span>
+<span class="sd">            Field names and values provided as keyword arguments. For</span>
+<span class="sd">            instance, `case=[&quot;case1&quot;, &quot;case2&quot;]` will select the two respective</span>
+<span class="sd">            cases if `case` is a field column in the underlying TEDF.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -3164,15 +3221,12 @@ inconsistencies found for row.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Initialise parent class and object fields</p>
+        <p>Initialise parent class and object fields.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
+              <summary>Source code in <code>posted/noslag/_tedf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">114</span>
 <span class="normal">115</span>
 <span class="normal">116</span>
 <span class="normal">117</span>
@@ -3235,7 +3289,10 @@ inconsistencies found for row.</p>
 <span class="normal">174</span>
 <span class="normal">175</span>
 <span class="normal">176</span>
-<span class="normal">177</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">parent_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3246,7 +3303,7 @@ inconsistencies found for row.</p>
     <span class="n">masks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Mask</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mappings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise parent class and object fields&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise parent class and object fields.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">parent_variable</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">database_id</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">variables</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -3255,7 +3312,7 @@ inconsistencies found for row.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">_mappings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">mappings</span> <span class="ow">or</span> <span class="p">[]</span>
 
     <span class="c1"># Combine all fields.</span>
-    <span class="n">source_column</span> <span class="o">=</span> <span class="n">base_column_src</span><span class="p">()</span>
+    <span class="n">source_column</span> <span class="o">=</span> <span class="n">_base_column_src</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AbstractFieldDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source_column</span>
     <span class="p">}</span> <span class="o">|</span> <span class="p">(</span><span class="n">custom_fields</span> <span class="ow">or</span> <span class="p">{})</span>
@@ -3319,8 +3376,9 @@ inconsistencies found for row.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Aggregates data based on specified parameters, applies masks,
-and cleans up the resulting DataFrame.</p>
+        <p>Aggregate data.</p>
+<p>Perform aggregation based on specified parameters, apply masks, and
+clean up the resulting DataFrame.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3400,18 +3458,20 @@ and cleans up the resulting DataFrame.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>extrapolate_period</code>
+                <code>period_mode</code>
             </td>
             <td>
+                  <code><span title="posted._columns.fields.PeriodMode">PeriodMode</span> | <span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If True, extrapolate values by extrapolation, if no value
-for this period is given</p>
+                <p>Whether to interpolate, extrapolate, interpolate and extrapolate,
+or perform no such action with the values based on the period
+field.</p>
               </div>
             </td>
             <td>
-                <em>required</em>
+                  <code><span title="posted._columns.fields.PeriodMode.INTER_AND_EXTRAPOLATION">INTER_AND_EXTRAPOLATION</span></code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -3436,6 +3496,22 @@ is expanded. Default is True.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
+                <code>with_parent</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to prepend the parent variable. Default is False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
                 <code>agg</code>
             </td>
             <td>
@@ -3455,7 +3531,7 @@ is expanded. Default is True.</p>
                 <code>masks</code>
             </td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[<span title="list">list</span>[<span title="posted.noslag.masking.Mask">Mask</span>]]</code>
+                  <code><span title="typing.Optional">Optional</span>[<span title="list">list</span>[<span title="posted.noslag._masking.Mask">Mask</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -3487,6 +3563,40 @@ function arguments will be applied.</p>
             </td>
             <td>
                   <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>append_references</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to append reference activities and reference capacities as
+additional rows instead of leaving them as separate columns.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>**field_vals_select</code>
+            </td>
+            <td>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Field names and values provided as keyword arguments. For
+instance, <code>case=["case1", "case2"]</code> will select the two respective
+cases if <code>case</code> is a field column in the underlying TEDF.</p>
+              </div>
+            </td>
+            <td>
+                  <code>{}</code>
             </td>
           </tr>
       </tbody>
@@ -3524,21 +3634,8 @@ final cleaned and aggregated DataFrame.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">685</span>
-<span class="normal">686</span>
-<span class="normal">687</span>
-<span class="normal">688</span>
-<span class="normal">689</span>
-<span class="normal">690</span>
-<span class="normal">691</span>
-<span class="normal">692</span>
-<span class="normal">693</span>
-<span class="normal">694</span>
-<span class="normal">695</span>
-<span class="normal">696</span>
-<span class="normal">697</span>
-<span class="normal">698</span>
+              <summary>Source code in <code>posted/noslag/_tedf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">698</span>
 <span class="normal">699</span>
 <span class="normal">700</span>
 <span class="normal">701</span>
@@ -3699,7 +3796,32 @@ final cleaned and aggregated DataFrame.</p>
 <span class="normal">856</span>
 <span class="normal">857</span>
 <span class="normal">858</span>
-<span class="normal">859</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span>
+<span class="normal">859</span>
+<span class="normal">860</span>
+<span class="normal">861</span>
+<span class="normal">862</span>
+<span class="normal">863</span>
+<span class="normal">864</span>
+<span class="normal">865</span>
+<span class="normal">866</span>
+<span class="normal">867</span>
+<span class="normal">868</span>
+<span class="normal">869</span>
+<span class="normal">870</span>
+<span class="normal">871</span>
+<span class="normal">872</span>
+<span class="normal">873</span>
+<span class="normal">874</span>
+<span class="normal">875</span>
+<span class="normal">876</span>
+<span class="normal">877</span>
+<span class="normal">878</span>
+<span class="normal">879</span>
+<span class="normal">880</span>
+<span class="normal">881</span>
+<span class="normal">882</span>
+<span class="normal">883</span>
+<span class="normal">884</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">aggregate</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reference_activity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3714,8 +3836,10 @@ final cleaned and aggregated DataFrame.</p>
     <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregates data based on specified parameters, applies masks,</span>
-<span class="sd">    and cleans up the resulting DataFrame.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregate data.</span>
+
+<span class="sd">    Perform aggregation based on specified parameters, apply masks, and</span>
+<span class="sd">    clean up the resulting DataFrame.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3727,15 +3851,18 @@ final cleaned and aggregated DataFrame.</p>
 <span class="sd">        The capacity variable to align all capacities on.</span>
 <span class="sd">    drop_singular_fields: bool, optional</span>
 <span class="sd">        If True, drop custom fields with only one value</span>
-<span class="sd">    extrapolate_period: bool, optional</span>
-<span class="sd">        If True, extrapolate values by extrapolation, if no value</span>
-<span class="sd">        for this period is given</span>
+<span class="sd">    period_mode: str | PeriodMode, optional</span>
+<span class="sd">        Whether to interpolate, extrapolate, interpolate and extrapolate,</span>
+<span class="sd">        or perform no such action with the values based on the period</span>
+<span class="sd">        field.</span>
 <span class="sd">    expand_not_specified: bool | list[str], optional</span>
 <span class="sd">        Whether to expand fields with value `N/S` (not specified) to all</span>
 <span class="sd">        allowed values. If `True` is passed, then allow `N/S` is expanded</span>
 <span class="sd">        for all fields. If a list of strings is passed, then only the</span>
 <span class="sd">        contained fields are expanded. If False is passed, then no field</span>
 <span class="sd">        is expanded. Default is True.</span>
+<span class="sd">    with_parent: bool, optional</span>
+<span class="sd">        Whether to prepend the parent variable. Default is False.</span>
 <span class="sd">    agg : Optional[str | list[str] | tuple[str]]</span>
 <span class="sd">        Specifies which fields to aggregate over.</span>
 <span class="sd">    masks : Optional[list[Mask]]</span>
@@ -3749,6 +3876,13 @@ final cleaned and aggregated DataFrame.</p>
 <span class="sd">        will be included along with any masks provided as function</span>
 <span class="sd">        arguments. If set to `False`, only the masks provided as</span>
 <span class="sd">        function arguments will be applied.</span>
+<span class="sd">    append_references: bool, optional</span>
+<span class="sd">        Whether to append reference activities and reference capacities as</span>
+<span class="sd">        additional rows instead of leaving them as separate columns.</span>
+<span class="sd">    **field_vals_select:</span>
+<span class="sd">        Field names and values provided as keyword arguments. For</span>
+<span class="sd">        instance, `case=[&quot;case1&quot;, &quot;case2&quot;]` will select the two respective</span>
+<span class="sd">        cases if `case` is a field column in the underlying TEDF.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -3891,8 +4025,11 @@ final cleaned and aggregated DataFrame.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Normalise data by converting reference values to 1.0 and converting to
-default unit for each variable.</p>
+        <p>Normalise data.</p>
+<p>Normalise units, reference units, and reference values by multiplying
+value column with respective conversion factor needed to convert
+reference values to 1.0 and all units to harmonised units for each
+variable.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3966,17 +4103,8 @@ default unit for each variable.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
+              <summary>Source code in <code>posted/noslag/_tedf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">322</span>
 <span class="normal">323</span>
 <span class="normal">324</span>
 <span class="normal">325</span>
@@ -4024,11 +4152,28 @@ default unit for each variable.</p>
 <span class="normal">367</span>
 <span class="normal">368</span>
 <span class="normal">369</span>
-<span class="normal">370</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalise data by converting reference values to 1.0 and converting to</span>
-<span class="sd">    default unit for each variable.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalise data.</span>
+
+<span class="sd">    Normalise units, reference units, and reference values by multiplying</span>
+<span class="sd">    value column with respective conversion factor needed to convert</span>
+<span class="sd">    reference values to 1.0 and all units to harmonised units for each</span>
+<span class="sd">    variable.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -4179,35 +4324,20 @@ default unit for each variable.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>interpolate_period</code>
+                <code>period_mode</code>
             </td>
             <td>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If True, determine values by interpolation between known points,
-if no value for a requested period is given. Default is True.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>extrapolate_period</code>
-            </td>
-            <td>
+                  <code><span title="str">str</span> | <span title="posted._columns.fields.PeriodMode">PeriodMode</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If True, determine values by extrapolation outside of range of
-known data, if no value for a requested period is given. Default
-is False.</p>
+                <p>Whether to interpolate, extrapolate, interpolate and extrapolate,
+or perform no such action with the values based on the period
+field.</p>
               </div>
             </td>
             <td>
-                <em>required</em>
+                  <code><span title="posted._columns.fields.PeriodMode.INTER_AND_EXTRAPOLATION">INTER_AND_EXTRAPOLATION</span></code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -4240,6 +4370,23 @@ is expanded. Default is True.</p>
             <td>
               <div class="doc-md-description">
                 <p>Whether to prepend the parent variable. Default is False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>append_references</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to append reference activities and reference capacities as
+additional rows instead of leaving them as separate columns.</p>
               </div>
             </td>
             <td>
@@ -4289,21 +4436,8 @@ is expanded. Default is True.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>posted/noslag/tedf.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">469</span>
-<span class="normal">470</span>
-<span class="normal">471</span>
-<span class="normal">472</span>
-<span class="normal">473</span>
-<span class="normal">474</span>
-<span class="normal">475</span>
-<span class="normal">476</span>
-<span class="normal">477</span>
-<span class="normal">478</span>
-<span class="normal">479</span>
-<span class="normal">480</span>
-<span class="normal">481</span>
-<span class="normal">482</span>
+              <summary>Source code in <code>posted/noslag/_tedf.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">482</span>
 <span class="normal">483</span>
 <span class="normal">484</span>
 <span class="normal">485</span>
@@ -4356,7 +4490,20 @@ is expanded. Default is True.</p>
 <span class="normal">532</span>
 <span class="normal">533</span>
 <span class="normal">534</span>
-<span class="normal">535</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">reference_activity</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4380,13 +4527,10 @@ is expanded. Default is True.</p>
 <span class="sd">        Reference capacity.</span>
 <span class="sd">    drop_singular_fields: bool, optional</span>
 <span class="sd">        If True, drop custom fields with only one value</span>
-<span class="sd">    interpolate_period: bool, optional</span>
-<span class="sd">        If True, determine values by interpolation between known points,</span>
-<span class="sd">        if no value for a requested period is given. Default is True.</span>
-<span class="sd">    extrapolate_period: bool, optional</span>
-<span class="sd">        If True, determine values by extrapolation outside of range of</span>
-<span class="sd">        known data, if no value for a requested period is given. Default</span>
-<span class="sd">        is False.</span>
+<span class="sd">    period_mode: str | PeriodMode, optional</span>
+<span class="sd">        Whether to interpolate, extrapolate, interpolate and extrapolate,</span>
+<span class="sd">        or perform no such action with the values based on the period</span>
+<span class="sd">        field.</span>
 <span class="sd">    expand_not_specified: bool | list[str], optional</span>
 <span class="sd">        Whether to expand fields with value `N/S` (not specified) to all</span>
 <span class="sd">        allowed values. If `True` is passed, then allow `N/S` is expanded</span>
@@ -4395,6 +4539,9 @@ is expanded. Default is True.</p>
 <span class="sd">        is expanded. Default is True.</span>
 <span class="sd">    with_parent: bool, optional</span>
 <span class="sd">        Whether to prepend the parent variable. Default is False.</span>
+<span class="sd">    append_references: bool, optional</span>
+<span class="sd">        Whether to append reference activities and reference capacities as</span>
+<span class="sd">        additional rows instead of leaving them as separate columns.</span>
 <span class="sd">    **field_vals_select</span>
 <span class="sd">        IDs of values to select</span>
 
