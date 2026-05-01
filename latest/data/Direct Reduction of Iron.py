@@ -39,6 +39,8 @@ tedf = TEDF.load(var)
 
 # Define units to use for energy carriers.
 units = {
+    "CAPEX": "EUR_2024",
+    "OPEX Fixed": "EUR_2024/year",
     "Input|Electricity": "MWh",
     "Input|Heat": "MWh",
     "Input|Natural Gas": "MWh_NG_LHV",
@@ -89,17 +91,6 @@ display(
 selected = tedf.select(units=units)
 aggregated = tedf.aggregate(units=units)
 
-df_plot = (
-    pd.concat([
-        selected,
-        aggregated.assign(source="POSTED-default"),
-    ])
-    .query(f"variable.isin({list(units)})")
-    .assign(variable=lambda df: df["variable"].str.extract(r"^Input\|(.*)", expand=False))
-    .assign(variable=lambda df: df.agg(lambda r: f"{r['variable']}{(' (' + r['component'] + ')') if r['component'] not in ['#', np.nan] else ''}", axis=1))
-    .sort_values(by="variable")
-)
-
 colorway = px.colors.qualitative.D3
 colours = {
     "Electricity": colorway[2],
@@ -109,6 +100,17 @@ colours = {
     "Hydrogen (Reduction agent)": "#0D619C",
     "Natural Gas": colorway[1],
 }
+
+df_plot = (
+    pd.concat([
+        selected,
+        aggregated.assign(source="POSTED-default"),
+    ])
+    .query(f"variable.str.removeprefix('Input|').isin({list(colours)})")
+    .assign(variable=lambda df: df["variable"].str.extract(r"^Input\|(.*)", expand=False))
+    .assign(variable=lambda df: df.agg(lambda r: f"{r['variable']}{(' (' + r['component'] + ')') if r['component'] not in ['#', np.nan] else ''}", axis=1))
+    .sort_values(by="variable")
+)
 
 display(
     df_plot
