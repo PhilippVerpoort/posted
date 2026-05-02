@@ -2,4 +2,4 @@ source,source_detail,period,variable,reference_variable,value,uncertainty,unit,r
 Bazzanella-2017,Table 35,2017,CAPEX,Output Capacity|Methanol,400.0,,EUR_2015,1,t_MeOH/year,"Depreciated over 10 years with an interest rate of 10%. Units given as EUR/t, but should be EUR/t/a"
 Bazzanella-2017,Table 35,2017,OPEX Fixed Specific,Output|Methanol,60.0,,EUR_2015,1,t_MeOH,
 Bazzanella-2017,Section 4.4.1,2017,Input|Electricity,Output|Methanol,0.6,,GJ,1,t_MeOH,
-Bazzanella-2017,Section 4.4.1,2017,Input|Fossil Gas,Output|Methanol,12.5,,GJ,1,t_MeOH,
+Bazzanella-2017,Section 4.4.1,2017,Input|Natural Gas,Output|Methanol,12.5,,GJ,1,t_MeOH,

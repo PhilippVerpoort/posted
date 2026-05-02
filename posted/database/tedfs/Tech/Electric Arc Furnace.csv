@@ -29,7 +29,7 @@ Jacobasch-2021,"Page 6, Table 2",Primary,*,#,2021,Input|Steel Scrap,Output|Steel
 Otto-2017,Figure 6,Primary,*,#,2017,Input|Coal,Output|Steel Liquid,0.284,,MWh_coal_LHV,1,t,"According to the source, additional coal is needed to achieve 2% carbon content in steel and 100% charge of sponge iron in the EAF."
 Otto-2017,Figure 6,Primary,*,#,2017,Input|Direct Reduced Iron,Output|Steel Liquid,1.03,,t,1,t,
 Otto-2017,Figure 6,Primary,*,#,2017,Input|Electricity,Output|Steel Liquid,2.07,,GJ,1,t,
-Otto-2017,Figure 6,Primary,*,#,2017,Input|Fossil Gas,Output|Steel Liquid,0.78,,GJ_NG_LHV,1,t,
+Otto-2017,Figure 6,Primary,*,#,2017,Input|Natural Gas,Output|Steel Liquid,0.78,,GJ_NG_LHV,1,t,
 Otto-2017,Figure 6,*,*,#,2017,Input|Nitrogen,Output|Steel Liquid,0.5,,t,1,t,
 Otto-2017,Figure 6,*,*,#,2017,Input|Oxygen,Output|Steel Liquid,0.5,,t_O2,1,t,
 Rechberger-2020,Section 4.2.1,Primary,*,#,2020,Input|Electricity,Output|Steel Liquid,475,165,kWh,1,t,
@@ -47,7 +47,7 @@ Vogl-2018,"Page 4 of 10, Document Page 739, Section 2.1",*,*,Labour,2018,OPEX Fi
 Worrell-2007,Table 2.1.5,Primary,*,#,2007,Input|Electricity,Output|Steel Liquid,1.7,,GJ,1,t,
 Worrell-2007,Section 2.1.4,Secondary,*,Electric arc,2007,Input|Electricity,Output|Steel Liquid,409,,kWh,1,t,
 Worrell-2007,Section 2.1.4,Secondary,*,Gas cleaning and ladle refining,2007,Input|Electricity,Output|Steel Liquid,65,,kWh,1,t,
-Worrell-2007,Section 2.1.4,Secondary,*,#,2007,Input|Fossil Gas,Output|Steel Liquid,0.15,,GJ_NG_LHV,1,t,
+Worrell-2007,Section 2.1.4,Secondary,*,#,2007,Input|Natural Gas,Output|Steel Liquid,0.15,,GJ_NG_LHV,1,t,
 Worrell-2007,Table 2.1.5,Primary,*,#,2007,Input|Heat,Output|Steel Liquid,0.6,,GJ,1,t,
 Wortler-2013,"Page 24 of 52, Document Page 22, Exhibit 8",*,*,#,2013,CAPEX,Output Capacity|Steel Liquid,184,,EUR_2010,1,t/year,
 Zang-2023,"Page 8 of 17, Document Page 2200297, Table 6",*,*,Labour,2023,OPEX Fixed,Output Capacity|Steel Liquid,6659,,kUSD_2019/year,4.92,Mt/year,
