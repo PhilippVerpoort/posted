@@ -1,6 +1,6 @@
 [project]
 name = "posted"
-version = "0.5.0"
+version = "0.5.1"
 description = "POSTED: Potsdam open-source techno-economic database"
 authors = [
     { name = "Philipp C. Verpoort", email = "philipp.verpoort@pik-potsdam.de" },
