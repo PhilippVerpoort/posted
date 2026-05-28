@@ -32,14 +32,14 @@
       "orcid": "0009-0001-4837-3530"
     },
     {
-      "name": "Weiss, Bennet",
-      "affiliation": "Potsdam Institute for Climate Impact Research",
-      "orcid": "0009-0009-9859-9683"
-    },
-    {
       "name": "Ueckerdt, Falko",
       "affiliation": "Potsdam Institute for Climate Impact Research",
       "orcid": "0000-0001-5585-030X"
+    },
+    {
+      "name": "Weiss, Bennet",
+      "affiliation": "Potsdam Institute for Climate Impact Research",
+      "orcid": "0009-0009-9859-9683"
     }
   ],
   "keywords": ["techno-economic assessment", "database", "technologies", "energy", "climate"],
