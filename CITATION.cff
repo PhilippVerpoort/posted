@@ -24,6 +24,9 @@ authors:
 - family-names: Ueckerdt
   given-names: Falko
   orcid: https://orcid.org/0000-0001-5585-030X
+- family-names: Weiss
+  given-names: Bennet
+  orcid: https://orcid.org/0009-0009-9859-9683
 title: "POSTED: Potsdam open-source techno-economic database"
 version: v0.5.1
 doi: 10.5281/zenodo.10639752
