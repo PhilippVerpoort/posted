@@ -1,0 +1,38 @@
+source,source_detail,subtech,size,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+DEA-TIPIH-2026,"Sheet 6.1 (Boiler, gas and oil), Row 7 (Efficiency at nominal load)",gas-steam-boiler,0.5-50 MW,*,Input|Natural Gas,Output|Heat,1,,kWh_NG_LHV,0.94,kWh,"Thermal efficiency 94% (range 92–95%); steam boiler with economiser"
+DEA-TIPIH-2026,"Sheet 6.1 (Boiler, gas and oil), Row 22 (Nominal investment)",gas-steam-boiler,0.5-50 MW,2025,CAPEX,Output Capacity|Heat,0.09,,MEUR_2024,1,MW,"Total installed cost: boiler, burner, pumps, economiser, water treatment system, chimney"
+DEA-TIPIH-2026,"Sheet 6.1 (Boiler, gas and oil), Row 25 (Fixed O&M costs)",gas-steam-boiler,0.5-50 MW,2025,OPEX Fixed,Output Capacity|Heat,2000,,EUR_2024/a,1,MW,
+DEA-TIPIH-2026,"Sheet 6.1 (Boiler, gas and oil), Row 26 (Variable O&M costs)",gas-steam-boiler,0.5-50 MW,2025,OPEX Variable,Output|Heat,1.23,,EUR_2024,1,MWh,
+DEA-TIPIH-2026,"Sheet 6.1 (Boiler, gas and oil), Row 12 (Technical lifetime)",gas-steam-boiler,0.5-50 MW,*,Lifetime,,25,,a,,,
+DEA-TIPIH-2026,"Sheet 5.1a (Electric boiler, 0.4–0.69 kV, steam, 1–12 bar), Row 7 (Efficiency at nominal load)",electrode-boiler,1-5 MW,*,Input|Electricity,Output|Heat,1,,kWh,0.99,kWh,"Electrical efficiency 99% (range 98–100%)"
+DEA-TIPIH-2026,"Sheet 5.1a (Electric boiler, 0.4–0.69 kV, steam, 1–12 bar), Row 19 (Nominal investment)",electrode-boiler,1-5 MW,2025,CAPEX,Output Capacity|Heat,0.25,,MEUR_2024,1,MW,"Low-voltage (0.4–0.69 kV) steam boiler including transformer"
+DEA-TIPIH-2026,"Sheet 5.1a (Electric boiler, 0.4–0.69 kV, steam, 1–12 bar), Row 19 (Nominal investment)",electrode-boiler,1-5 MW,2030,CAPEX,Output Capacity|Heat,0.22,,MEUR_2024,1,MW,"Low-voltage (0.4–0.69 kV) steam boiler including transformer"
+DEA-TIPIH-2026,"Sheet 5.1a (Electric boiler, 0.4–0.69 kV, steam, 1–12 bar), Row 22 (Fixed O&M costs)",electrode-boiler,1-5 MW,2025,OPEX Fixed,Output Capacity|Heat,1442,,EUR_2024/a,1,MW,
+DEA-TIPIH-2026,"Sheet 5.1a (Electric boiler, 0.4–0.69 kV, steam, 1–12 bar), Row 23 (Variable O&M costs)",electrode-boiler,1-5 MW,2025,OPEX Variable,Output|Heat,0.674,,EUR_2024,1,MWh,
+DEA-TIPIH-2026,"Sheet 5.1a (Electric boiler, 0.4–0.69 kV, steam, 1–12 bar), Row 12 (Technical lifetime)",electrode-boiler,1-5 MW,*,Lifetime,,25,,a,,,
+DEA-TIPIH-2026,"Sheet 5.1b (Electric boiler, 10 kV, steam, 1–12 bar), Row 7 (Efficiency at nominal load)",electrode-boiler,5-60 MW,*,Input|Electricity,Output|Heat,1,,kWh,0.99,kWh,"Electrical efficiency 99% (range 98–100%)"
+DEA-TIPIH-2026,"Sheet 5.1b (Electric boiler, 10 kV, steam, 1–12 bar), Row 19 (Nominal investment)",electrode-boiler,5-60 MW,2025,CAPEX,Output Capacity|Heat,0.11,,MEUR_2024,1,MW,"Medium-voltage (10 kV) steam boiler"
+DEA-TIPIH-2026,"Sheet 5.1b (Electric boiler, 10 kV, steam, 1–12 bar), Row 19 (Nominal investment)",electrode-boiler,5-60 MW,2030,CAPEX,Output Capacity|Heat,0.10,,MEUR_2024,1,MW,"Medium-voltage (10 kV) steam boiler"
+DEA-TIPIH-2026,"Sheet 5.1b (Electric boiler, 10 kV, steam, 1–12 bar), Row 22 (Fixed O&M costs)",electrode-boiler,5-60 MW,2025,OPEX Fixed,Output Capacity|Heat,1298,,EUR_2024/a,1,MW,
+DEA-TIPIH-2026,"Sheet 5.1b (Electric boiler, 10 kV, steam, 1–12 bar), Row 23 (Variable O&M costs)",electrode-boiler,5-60 MW,2025,OPEX Variable,Output|Heat,0.61,,EUR_2024,1,MWh,
+DEA-TIPIH-2026,"Sheet 5.1b (Electric boiler, 10 kV, steam, 1–12 bar), Row 12 (Technical lifetime)",electrode-boiler,5-60 MW,*,Lifetime,,25,,a,,,
+DEA-TIPIH-2026,"Sheet 1.1 (Traditional heat pump, up to 60°C, temp lift 40 K), Row 7 (COP at nominal load)",heat-pump-60c,N/S,*,Output|Heat,Input|Electricity,5.33,,kWh,1,kWh,"COP at 40 K temperature lift; heat sink up to 60°C"
+DEA-TIPIH-2026,"Sheet 1.1 (Traditional heat pump, up to 60°C, temp lift 40 K), Row 19 (Nominal investment)",heat-pump-60c,N/S,2025,CAPEX,Output Capacity|Heat,0.95,,MEUR_2024,1,MW,
+DEA-TIPIH-2026,"Sheet 1.1 (Traditional heat pump, up to 60°C, temp lift 40 K), Row 22 (Fixed O&M costs)",heat-pump-60c,N/S,2025,OPEX Fixed,Output Capacity|Heat,2127,,EUR_2024/a,1,MW,
+DEA-TIPIH-2026,"Sheet 1.1 (Traditional heat pump, up to 60°C, temp lift 40 K), Row 23 (Variable O&M costs)",heat-pump-60c,N/S,2025,OPEX Variable,Output|Heat,3.07,,EUR_2024,1,MWh,
+DEA-TIPIH-2026,"Sheet 1.1 (Traditional heat pump, up to 60°C, temp lift 40 K), Row 12 (Technical lifetime)",heat-pump-60c,N/S,*,Lifetime,,25,,a,,,
+DEA-TIPIH-2026,"Sheet 1.2 (Combined heating/cooling heat pump, up to 80°C, temp lift 75 K), Row 7 (COP at nominal load)",heat-pump-80c,N/S,*,Output|Heat,Input|Electricity,3.35,,kWh,1,kWh,"COP at 75 K temperature lift; combined heating and cooling heat pump; heat sink up to 80°C"
+DEA-TIPIH-2026,"Sheet 1.2 (Combined heating/cooling heat pump, up to 80°C, temp lift 75 K), Row 19 (Nominal investment)",heat-pump-80c,N/S,2025,CAPEX,Output Capacity|Heat,0.95,,MEUR_2024,1,MW,
+DEA-TIPIH-2026,"Sheet 1.2 (Combined heating/cooling heat pump, up to 80°C, temp lift 75 K), Row 22 (Fixed O&M costs)",heat-pump-80c,N/S,2025,OPEX Fixed,Output Capacity|Heat,2127,,EUR_2024/a,1,MW,
+DEA-TIPIH-2026,"Sheet 1.2 (Combined heating/cooling heat pump, up to 80°C, temp lift 75 K), Row 23 (Variable O&M costs)",heat-pump-80c,N/S,2025,OPEX Variable,Output|Heat,3.07,,EUR_2024,1,MWh,
+DEA-TIPIH-2026,"Sheet 1.2 (Combined heating/cooling heat pump, up to 80°C, temp lift 75 K), Row 12 (Technical lifetime)",heat-pump-80c,N/S,*,Lifetime,,25,,a,,,
+DEA-TIPIH-2026,"Sheet 2.a (High-temperature heat pump, up to 125°C, temp lift 65 K), Row 7 (COP at nominal load)",heat-pump-125c,N/S,*,Output|Heat,Input|Electricity,2.75,,kWh,1,kWh,"COP at 65 K temperature lift; heat sink up to 125°C"
+DEA-TIPIH-2026,"Sheet 2.a (High-temperature heat pump, up to 125°C, temp lift 65 K), Row 22 (Nominal investment)",heat-pump-125c,N/S,2025,CAPEX,Output Capacity|Heat,1.20,,MEUR_2024,1,MW,
+DEA-TIPIH-2026,"Sheet 2.a (High-temperature heat pump, up to 125°C, temp lift 65 K), Row 25 (Fixed O&M costs)",heat-pump-125c,N/S,2025,OPEX Fixed,Output Capacity|Heat,2494,,EUR_2024/a,1,MW,
+DEA-TIPIH-2026,"Sheet 2.a (High-temperature heat pump, up to 125°C, temp lift 65 K), Row 26 (Variable O&M costs)",heat-pump-125c,N/S,2025,OPEX Variable,Output|Heat,3.60,,EUR_2024,1,MWh,
+DEA-TIPIH-2026,"Sheet 2.a (High-temperature heat pump, up to 125°C, temp lift 65 K), Row 12 (Technical lifetime)",heat-pump-125c,N/S,*,Lifetime,,20,,a,,,
+DEA-TIPIH-2026,"Sheet 2.b (High-temperature heat pump, up to 150°C, temp lift 65 K), Row 7 (COP at nominal load)",heat-pump-150c,N/S,*,Output|Heat,Input|Electricity,2.75,,kWh,1,kWh,"COP at 65 K temperature lift; heat sink up to 150°C"
+DEA-TIPIH-2026,"Sheet 2.b (High-temperature heat pump, up to 150°C, temp lift 65 K), Row 22 (Nominal investment)",heat-pump-150c,N/S,2025,CAPEX,Output Capacity|Heat,1.55,,MEUR_2024,1,MW,
+DEA-TIPIH-2026,"Sheet 2.b (High-temperature heat pump, up to 150°C, temp lift 65 K), Row 25 (Fixed O&M costs)",heat-pump-150c,N/S,2025,OPEX Fixed,Output Capacity|Heat,2494,,EUR_2024/a,1,MW,
+DEA-TIPIH-2026,"Sheet 2.b (High-temperature heat pump, up to 150°C, temp lift 65 K), Row 26 (Variable O&M costs)",heat-pump-150c,N/S,2025,OPEX Variable,Output|Heat,3.60,,EUR_2024,1,MWh,
+DEA-TIPIH-2026,"Sheet 2.b (High-temperature heat pump, up to 150°C, temp lift 65 K), Row 12 (Technical lifetime)",heat-pump-150c,N/S,*,Lifetime,,20,,a,,,

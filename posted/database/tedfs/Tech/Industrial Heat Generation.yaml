@@ -1,0 +1,30 @@
+columns:
+    subtech:
+        name: Subtechnology
+        description: Industrial heat generation technology type and output temperature range.
+        type: case
+        coded: True
+        codes:
+            gas-steam-boiler: Natural gas-fired steam boiler (0.5–50 MW, with economiser)
+            electrode-boiler: Electric electrode boiler (steam, 1–12 bar)
+            heat-pump-60c: Large-scale heat pump, heat sink up to 60 °C, temperature lift 40 K
+            heat-pump-80c: Large-scale heat pump (combined heating/cooling), heat sink up to 80 °C, temperature lift 75 K
+            heat-pump-125c: High-temperature heat pump, heat sink up to 125 °C, temperature lift 65 K
+            heat-pump-150c: High-temperature heat pump, heat sink up to 150 °C, temperature lift 65 K
+    size:
+        name: Plant size
+        description: Total heat output capacity of the assumed plant.
+        type: case
+        coded: False
+    period: period
+
+variables:
+    predefined:
+        - technology
+
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities
