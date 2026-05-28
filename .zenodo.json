@@ -1,6 +1,6 @@
 {
   "title": "POSTED: Potsdam open-source techno-economic database",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "creators": [
     {
       "name": "Verpoort, Philipp C.",
@@ -43,5 +43,5 @@
     "title": "MIT Licence",
     "url": "http://www.opensource.org/licenses/MIT"
   },
-  "publication_date": "2024-02-09"
+  "publication_date": "2026-01-05"
 }
