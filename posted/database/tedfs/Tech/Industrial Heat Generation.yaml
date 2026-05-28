@@ -1,7 +1,7 @@
 columns:
     subtech:
         name: Subtechnology
-        description: Industrial heat generation technology type and output temperature range.
+        description: Heat generation technology type and output temperature range (where applicable).
         type: case
         coded: True
         codes:
@@ -11,6 +11,17 @@ columns:
             heat-pump-80c: Large-scale heat pump (combined heating/cooling), heat sink up to 80 °C, temperature lift 75 K
             heat-pump-125c: High-temperature heat pump, heat sink up to 125 °C, temperature lift 65 K
             heat-pump-150c: High-temperature heat pump, heat sink up to 150 °C, temperature lift 65 K
+    heat_source:
+        name: Heat source
+        description: Type of heat source used by the heat pump (where applicable).
+        type: case
+        coded: True
+        codes:
+            flue-gas: Flue gas from combustion process
+            sewage-water: Sewage water
+            excess-heat: Industrial excess heat
+            groundwater: Groundwater
+            air: Ambient air
     size:
         name: Plant size
         description: Total heat output capacity of the assumed plant.
