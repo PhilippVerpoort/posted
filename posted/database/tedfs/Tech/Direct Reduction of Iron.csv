@@ -24,7 +24,7 @@ Jacobasch-2021,"Page 6, Table 2",H2,Input|Hydrogen,Output|Direct Reduced Iron,20
 Jacobasch-2021,"Page 6, Table 2",H2,Input|Iron Ore,Output|Direct Reduced Iron,2021,#,2590520,,t,1744694.39,t,
 Jacobasch-2021,"Page 6, Table 2",NG,Input|Iron Ore,Output|Direct Reduced Iron,2021,#,2434400,,t,1905400,t,
 Jacobasch-2021,"Page 6, Table 2",NG,Input|Natural Gas,Output|Direct Reduced Iron,2021,#,390692,,t_NG,1905400,t,
-Jacobasch-2021,"Page 6, Table 2",NG,Input|Oxygen,Output|Direct Reduced Iron,2021,#,163000,,t,1905400,t,
+Jacobasch-2021,"Page 6, Table 2",NG,Input|Oxygen,Output|Direct Reduced Iron,2021,#,163000,,t_O2,1905400,t,
 Otto-2017,Figure 6,H2,Input|Electricity,Output|Direct Reduced Iron,2017,#,0.46,,GJ,1.03,t,This source states 0.46 GJ of electric power per 1.03 tonnes of iron sponge.
 Otto-2017,Figure 6,H2,Input|Heat,Output|Direct Reduced Iron,2017,#,5.62,,GJ,1.03,t,This source states 5.62 GJ of NG demand for heat provision per 1.03 tonnes of iron sponge.
 Otto-2017,Figure 6,H2,Input|Hydrogen,Output|Direct Reduced Iron,2017,#,58.17,,kg_H2,1.03,t,This source states 58.17 kg of hydrogen per 1.03 tonnes of iron sponge.
