@@ -1,0 +1,15 @@
+/* Hide both by default */
+img.only-light,
+img.only-dark {
+  display: none;
+}
+
+/* Show light image in light mode */
+[data-md-color-scheme="default"] img.only-light {
+  display: block;
+}
+
+/* Show dark image in dark mode */
+[data-md-color-scheme="slate"] img.only-dark {
+  display: block;
+}
