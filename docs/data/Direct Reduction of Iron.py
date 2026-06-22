@@ -62,6 +62,14 @@ Markdown(
 )
 
 # %% [markdown]
+# ### Carbon capture (`carbon_capture`)
+
+# %%
+Markdown(
+    "\n".join(f"* **{code}**: {desc}" for code, desc in tedf.fields["carbon_capture"].codes.items())
+)
+
+# %% [markdown]
 # ## Aggregated parameters
 
 # %% [markdown]
@@ -72,6 +80,7 @@ aggregated = tedf.aggregate(units=units, append_references=True)
 
 display(
     aggregated
+    .query("mode=='NG' | carbon_capture=='No Capture'")
     .pivot(
         index=aggregated.columns[:-3],
         columns=["variable", "unit"],
@@ -88,8 +97,8 @@ display(
 # The figure below gives an overview of the energy demand reported by different sources across different energy carriers.
 
 # %%
-selected = tedf.select(units=units)
-aggregated = tedf.aggregate(units=units)
+selected = tedf.select(units=units, carbon_capture="No Capture")
+aggregated = tedf.aggregate(units=units, carbon_capture="No Capture")
 
 colorway = px.colors.qualitative.D3
 colours = {
