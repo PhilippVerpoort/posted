@@ -1,4 +1,12 @@
 columns:
+    carbon_capture:
+        name: Carbon Capture
+        description: Whether, how, and how much CO2 is captured from the process.
+        type: case
+        coded: True
+        codes:
+            No Capture: Conventional process without CO2 capture
+            With Capture: Process with carbon capture installed
     mode:
         name: Operation Mode
         description: Which energy carrier to operate the shaft furnace with.
@@ -22,4 +30,3 @@ mappings:
     - fixed_opex_specific
     - capacities_to_activities
     - activities
-
