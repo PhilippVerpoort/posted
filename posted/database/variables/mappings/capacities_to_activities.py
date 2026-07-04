@@ -45,8 +45,8 @@ class CapacitiesToActivities(AbstractVariableMapper):
             )
             df.loc[cond, col_id] = new
             if is_ref:
-                df.loc[cond, "value"] *= conv_factors
-            else:
                 df.loc[cond, "value"] /= conv_factors
+            else:
+                df.loc[cond, "value"] *= conv_factors
 
         return df
