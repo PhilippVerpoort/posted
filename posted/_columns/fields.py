@@ -389,8 +389,8 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                     )
                     .assign(
                         value=lambda row: (
-                            row["value_lower"]
-                            + (row[f"{col_id}_upper"] - row[col_id])
+                            row["value_upper"]
+                            - (row[f"{col_id}_upper"] - row[col_id])
                             / (row[f"{col_id}_upper"] - row[f"{col_id}_lower"])
                             * (row["value_upper"] - row["value_lower"])
                         )
