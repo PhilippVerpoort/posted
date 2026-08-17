@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/logos/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -2441,7 +2441,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 <span class="normal">974</span>
 <span class="normal">975</span>
 <span class="normal">976</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TEDF</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for handling Techno-Economic Data Frames (TEDFs).</span>
+<span class="w">    </span><span class="sd">"""Class for handling Techno-Economic Data Frames (TEDFs).</span>
 
 <span class="sd">    This class is used for loading TEDFs from CSV files and performing various</span>
 <span class="sd">    steps in the NOSLAG (normalise-select-aggregate) framework.</span>
@@ -2463,7 +2463,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 
 <span class="sd">    Methods</span>
 <span class="sd">    -------</span>
-<span class="sd">    load(parent_variable: str, database_id: str = &quot;public&quot;)</span>
+<span class="sd">    load(parent_variable: str, database_id: str = "public")</span>
 <span class="sd">        Load TEDF if it has not been read yet.</span>
 <span class="sd">    edit_data()</span>
 <span class="sd">        Set up ipydatawidget for interactively editing raw data.</span>
@@ -2474,7 +2474,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 <span class="sd">    validate()</span>
 <span class="sd">        Validate raw data loaded in TEDF.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2487,7 +2487,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="n">masks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Mask</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">mappings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise parent class and object fields.</span>
+<span class="w">        </span><span class="sd">"""Initialise parent class and object fields.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2508,7 +2508,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 <span class="sd">        mappings:</span>
 <span class="sd">            Mappings to apply when selecting.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">parent_variable</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">database_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">variables</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -2519,19 +2519,19 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="c1"># Combine all fields.</span>
         <span class="n">source_column</span> <span class="o">=</span> <span class="n">_base_column_src</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AbstractFieldDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source_column</span>
+            <span class="s2">"source"</span><span class="p">:</span> <span class="n">source_column</span>
         <span class="p">}</span> <span class="o">|</span> <span class="p">(</span><span class="n">custom_fields</span> <span class="ow">or</span> <span class="p">{})</span>
 
         <span class="c1"># Combine all comments.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_comments</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CommentDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">base_columns_src_detail</span>
-            <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="n">CommentDefinition</span><span class="p">}</span>
+            <span class="o">|</span> <span class="p">{</span><span class="s2">"comment"</span><span class="p">:</span> <span class="n">CommentDefinition</span><span class="p">}</span>
             <span class="o">|</span> <span class="p">(</span><span class="n">custom_comments</span> <span class="ow">or</span> <span class="p">{})</span>
         <span class="p">)</span>
 
         <span class="c1"># Combine all columns.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AbstractColumnDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source_column</span><span class="p">}</span>
+            <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">source_column</span><span class="p">}</span>
             <span class="o">|</span> <span class="n">base_columns_src_detail</span>
             <span class="o">|</span> <span class="p">(</span><span class="n">custom_fields</span> <span class="ow">or</span> <span class="p">{})</span>
             <span class="o">|</span> <span class="n">base_columns_other</span>
@@ -2542,15 +2542,15 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="k">if</span> <span class="n">unknown_cols</span><span class="p">:</span>
             <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_cols</span><span class="p">)</span>
             <span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Unknown column</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> treated as &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;comment</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: &quot;</span>
-                <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">unknown_cols</span><span class="p">),</span>
+                <span class="sa">f</span><span class="s2">"Unknown column</span><span class="si">{</span><span class="s1">'s'</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> treated as "</span>
+                <span class="sa">f</span><span class="s2">"comment</span><span class="si">{</span><span class="s1">'s'</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: "</span>
+                <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">unknown_cols</span><span class="p">),</span>
                 <span class="n">POSTEDWarning</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">unknown_cols</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">c</span><span class="p">:</span> <span class="n">CommentDefinition</span><span class="p">(</span>
                     <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
-                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
                     <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">unknown_cols</span>
@@ -2561,7 +2561,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="c1"># Add missing columns.</span>
         <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">missing_cols</span><span class="p">:</span>
-            <span class="n">df</span><span class="p">[</span><span class="n">missing_cols</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">missing_cols</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)]</span>
 
@@ -2594,15 +2594,15 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent_variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;public&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">parent_variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"public"</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent_variable</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">POSTEDException</span><span class="p">(</span>
-                <span class="s2">&quot;Argument `variable` must be a valid string.&quot;</span>
+                <span class="s2">"Argument `variable` must be a valid string."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">database_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">databases</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">POSTEDException</span><span class="p">(</span>
-                <span class="s2">&quot;Argument `database_id` must correspond to a valid ID in the &quot;</span>
-                <span class="s2">&quot;`databases` registered in the POSTED package.&quot;</span>
+                <span class="s2">"Argument `database_id` must correspond to a valid ID in the "</span>
+                <span class="s2">"`databases` registered in the POSTED package."</span>
             <span class="p">)</span>
 
         <span class="c1"># Load data.</span>
@@ -2616,30 +2616,30 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="n">mappings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">database_path</span> <span class="ow">in</span> <span class="n">databases</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="n">fpath</span> <span class="o">=</span> <span class="n">_get_file_path</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">parent_variable</span><span class="p">,</span> <span class="n">ending</span><span class="o">=</span><span class="s2">&quot;yaml&quot;</span><span class="p">)</span>
+            <span class="n">fpath</span> <span class="o">=</span> <span class="n">_get_file_path</span><span class="p">(</span><span class="n">database_id</span><span class="p">,</span> <span class="n">parent_variable</span><span class="p">,</span> <span class="n">ending</span><span class="o">=</span><span class="s2">"yaml"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">fpath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
                 <span class="n">fcontents</span> <span class="o">=</span> <span class="n">read_yaml</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s2">&quot;variables&quot;</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="s2">&quot;predefined&quot;</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">]:</span>
-                        <span class="k">for</span> <span class="n">predefined</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="s2">&quot;predefined&quot;</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="s2">"variables"</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s2">"predefined"</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">"variables"</span><span class="p">]:</span>
+                        <span class="k">for</span> <span class="n">predefined</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">"variables"</span><span class="p">][</span><span class="s2">"predefined"</span><span class="p">]:</span>
                             <span class="n">variables</span> <span class="o">|=</span> <span class="n">read_yaml</span><span class="p">(</span>
                                 <span class="n">database_path</span>
-                                <span class="o">/</span> <span class="s2">&quot;variables&quot;</span>
-                                <span class="o">/</span> <span class="s2">&quot;definitions&quot;</span>
-                                <span class="o">/</span> <span class="p">(</span><span class="n">predefined</span> <span class="o">+</span> <span class="s2">&quot;.yaml&quot;</span><span class="p">)</span>
+                                <span class="o">/</span> <span class="s2">"variables"</span>
+                                <span class="o">/</span> <span class="s2">"definitions"</span>
+                                <span class="o">/</span> <span class="p">(</span><span class="n">predefined</span> <span class="o">+</span> <span class="s2">".yaml"</span><span class="p">)</span>
                             <span class="p">)</span>
-                    <span class="k">if</span> <span class="s2">&quot;custom&quot;</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">]:</span>
-                        <span class="n">variables</span> <span class="o">|=</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">&quot;variables&quot;</span><span class="p">][</span><span class="s2">&quot;custom&quot;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">&quot;columns&quot;</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">:</span>
-                    <span class="n">custom_columns</span> <span class="o">|=</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">&quot;columns&quot;</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">&quot;mappings&quot;</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">:</span>
-                    <span class="n">mappings</span> <span class="o">+=</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">&quot;mappings&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="s2">"custom"</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">"variables"</span><span class="p">]:</span>
+                        <span class="n">variables</span> <span class="o">|=</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">"variables"</span><span class="p">][</span><span class="s2">"custom"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">"columns"</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">:</span>
+                    <span class="n">custom_columns</span> <span class="o">|=</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">"columns"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">"mappings"</span> <span class="ow">in</span> <span class="n">fcontents</span><span class="p">:</span>
+                    <span class="n">mappings</span> <span class="o">+=</span> <span class="n">fcontents</span><span class="p">[</span><span class="s2">"mappings"</span><span class="p">]</span>
 
             <span class="n">fpath</span> <span class="o">=</span> <span class="n">_get_file_path</span><span class="p">(</span>
                 <span class="n">database_id</span><span class="p">,</span>
                 <span class="n">parent_variable</span><span class="p">,</span>
-                <span class="n">ftype</span><span class="o">=</span><span class="s2">&quot;masks&quot;</span><span class="p">,</span>
-                <span class="n">ending</span><span class="o">=</span><span class="s2">&quot;yaml&quot;</span><span class="p">,</span>
+                <span class="n">ftype</span><span class="o">=</span><span class="s2">"masks"</span><span class="p">,</span>
+                <span class="n">ending</span><span class="o">=</span><span class="s2">"yaml"</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">fpath</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
                 <span class="n">fcontents</span> <span class="o">=</span> <span class="n">read_yaml</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
@@ -2669,16 +2669,16 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">POSTEDException</span><span class="p">(</span>
-                <span class="s2">&quot;Cannot save TEDF as file without database &quot;</span>
-                <span class="s2">&quot;ID and parent variable.&quot;</span>
+                <span class="s2">"Cannot save TEDF as file without database "</span>
+                <span class="s2">"ID and parent variable."</span>
             <span class="p">)</span>
         <span class="n">fpath</span> <span class="o">=</span> <span class="n">_get_file_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
             <span class="n">fpath</span><span class="p">,</span>
-            <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
-            <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span>
-            <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+            <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span>
+            <span class="n">quotechar</span><span class="o">=</span><span class="s1">'"'</span><span class="p">,</span>
+            <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span>
             <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -2688,17 +2688,17 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sources</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">load_sources</span><span class="p">(</span><span class="n">database_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">)</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_bibtex_codes</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span><span class="o">.</span><span class="n">set_bibtex_codes</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">col_def</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_validated</span><span class="p">[</span><span class="n">col_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_def</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">[</span><span class="n">col_id</span><span class="p">])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_df</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_df</span> <span class="o">==</span> <span class="s2">""</span><span class="p">)</span>
 
         <span class="c1"># Value, uncertainty, and reference value must be floats.</span>
-        <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;uncertainty&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_value&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"value"</span><span class="p">,</span> <span class="s2">"uncertainty"</span><span class="p">,</span> <span class="s2">"reference_value"</span><span class="p">]:</span>
             <span class="n">df</span><span class="p">[</span><span class="n">col_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col_id</span><span class="p">])</span>
 
         <span class="c1"># TODO: Turn fields into categories.</span>
@@ -2708,7 +2708,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalise data.</span>
+<span class="w">        </span><span class="sd">"""Normalise data.</span>
 
 <span class="sd">        Normalise units, reference units, and reference values by multiplying</span>
 <span class="sd">        value column with respective conversion factor needed to convert</span>
@@ -2727,27 +2727,27 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 <span class="sd">        pd.DataFrame</span>
 <span class="sd">            DataFrame containing normalised raw data.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">normalised</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
 
         <span class="c1"># Insert unit, reference value, and reference unit.</span>
         <span class="n">normalised</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-            <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;uncertainty&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;unit&quot;</span><span class="p">,</span>
+            <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"uncertainty"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">"unit"</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">normalised</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
         <span class="n">normalised</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-            <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;unit&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;reference_value&quot;</span><span class="p">,</span>
+            <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"unit"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">"reference_value"</span><span class="p">,</span>
             <span class="mf">1.0</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">normalised</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-            <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;reference_value&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;reference_unit&quot;</span><span class="p">,</span>
+            <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"reference_value"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">"reference_unit"</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+        <span class="n">normalised</span><span class="p">[</span><span class="s2">"reference_unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
             <span class="n">units</span>
         <span class="p">)</span>
 
@@ -2755,10 +2755,10 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="k">if</span> <span class="n">with_parent</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
+                    <span class="s2">"Can only prepend parent variable if not None."</span>
                 <span class="p">)</span>
-            <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
+            <span class="n">normalised</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">"|"</span> <span class="o">+</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span>
             <span class="p">)</span>
 
         <span class="c1"># Order columns.</span>
@@ -2777,34 +2777,34 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="c1"># Get full list of variables and corresponding units.</span>
         <span class="n">df_vars_units</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="n">prepared</span><span class="p">[[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]],</span>
-                <span class="n">prepared</span><span class="p">[[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_unit&quot;</span><span class="p">]]</span>
-                <span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+                <span class="n">prepared</span><span class="p">[[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"unit"</span><span class="p">]],</span>
+                <span class="n">prepared</span><span class="p">[[</span><span class="s2">"reference_variable"</span><span class="p">,</span> <span class="s2">"reference_unit"</span><span class="p">]]</span>
+                <span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span><span class="o">=</span><span class="s2">"all"</span><span class="p">)</span>
                 <span class="o">.</span><span class="n">rename</span><span class="p">(</span>
                     <span class="n">columns</span><span class="o">=</span><span class="p">{</span>
-                        <span class="s2">&quot;reference_variable&quot;</span><span class="p">:</span> <span class="s2">&quot;variable&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;reference_unit&quot;</span><span class="p">:</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span>
+                        <span class="s2">"reference_variable"</span><span class="p">:</span> <span class="s2">"variable"</span><span class="p">,</span>
+                        <span class="s2">"reference_unit"</span><span class="p">:</span> <span class="s2">"unit"</span><span class="p">,</span>
                     <span class="p">}</span>
                 <span class="p">),</span>
             <span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># Determine default units for all variables.</span>
-        <span class="n">currencies_pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s2">&quot;(</span><span class="si">{</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">currencies</span><span class="p">)</span><span class="si">}</span><span class="s2">)_\d</span><span class="se">{{</span><span class="s2">4</span><span class="se">}}</span><span class="s2">&quot;</span>
+        <span class="n">currencies_pattern</span> <span class="o">=</span> <span class="sa">rf</span><span class="s2">"(</span><span class="si">{</span><span class="s1">'|'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ureg</span><span class="o">.</span><span class="n">currencies</span><span class="p">)</span><span class="si">}</span><span class="s2">)_\d</span><span class="se">{{</span><span class="s2">4</span><span class="se">}}</span><span class="s2">"</span>
         <span class="n">units</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">df_vars_units</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
-                <span class="n">unit</span><span class="o">=</span><span class="n">df_vars_units</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-                    <span class="n">currencies_pattern</span><span class="p">,</span> <span class="n">defaults</span><span class="p">[</span><span class="s2">&quot;currency&quot;</span><span class="p">],</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">unit</span><span class="o">=</span><span class="n">df_vars_units</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                    <span class="n">currencies_pattern</span><span class="p">,</span> <span class="n">defaults</span><span class="p">[</span><span class="s2">"currency"</span><span class="p">],</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span>
                 <span class="p">),</span>
             <span class="p">)</span>
-            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">)[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"variable"</span><span class="p">)[</span><span class="s2">"unit"</span><span class="p">]</span>
             <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
             <span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="p">)</span> <span class="o">|</span> <span class="n">units</span>
 
         <span class="c1"># Determine unit conversion factors.</span>
         <span class="n">conv_factors</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">df_vars_units</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">)[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+            <span class="n">df_vars_units</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"variable"</span><span class="p">)[</span><span class="s2">"unit"</span><span class="p">]</span>
             <span class="o">.</span><span class="n">apply</span><span class="p">(</span>
                 <span class="k">lambda</span> <span class="n">group</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="p">{</span>
@@ -2814,27 +2814,27 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
                 <span class="p">)</span>
             <span class="p">)</span>
             <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;conv_factor&quot;</span><span class="p">,</span> <span class="s2">&quot;level_1&quot;</span><span class="p">:</span> <span class="s2">&quot;unit&quot;</span><span class="p">})</span>
+            <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">"unit"</span><span class="p">:</span> <span class="s2">"conv_factor"</span><span class="p">,</span> <span class="s2">"level_1"</span><span class="p">:</span> <span class="s2">"unit"</span><span class="p">})</span>
         <span class="p">)</span>
 
         <span class="c1"># For now, we simply assume that no column `conv_factor` exists.</span>
         <span class="k">assert</span> <span class="p">(</span>
             <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">prepared</span>
-            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;factor&quot;</span><span class="p">,</span> <span class="s2">&quot;conv_factor&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_conv_factor&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"factor"</span><span class="p">,</span> <span class="s2">"conv_factor"</span><span class="p">,</span> <span class="s2">"reference_conv_factor"</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># Merge conversion factors.</span>
         <span class="n">normalised</span> <span class="o">=</span> <span class="n">prepared</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
             <span class="n">conv_factors</span><span class="p">,</span>
-            <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">],</span>
-            <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+            <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"unit"</span><span class="p">],</span>
+            <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="n">normalised</span> <span class="o">=</span> <span class="n">normalised</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
-                <span class="n">conv_factors</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">&quot;reference_&quot;</span> <span class="o">+</span> <span class="n">s</span><span class="p">),</span>
-                <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_unit&quot;</span><span class="p">],</span>
-                <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+                <span class="n">conv_factors</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s2">"reference_"</span> <span class="o">+</span> <span class="n">s</span><span class="p">),</span>
+                <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">,</span> <span class="s2">"reference_unit"</span><span class="p">],</span>
+                <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">normalised</span> <span class="o">=</span> <span class="n">normalised</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">reference_conv_factor</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
@@ -2842,22 +2842,22 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="c1"># Assign updated values.</span>
         <span class="n">normalised</span> <span class="o">=</span> <span class="n">normalised</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
             <span class="n">factor</span><span class="o">=</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="p">(</span>
-                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;conv_factor&quot;</span><span class="p">]</span>
-                <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_value&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_conv_factor&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
-                    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">"conv_factor"</span><span class="p">]</span>
+                <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"reference_value"</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">"reference_conv_factor"</span><span class="p">])</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                    <span class="n">df</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span>
                     <span class="n">other</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">),</span>
-            <span class="n">value</span><span class="o">=</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;factor&quot;</span><span class="p">],</span>
-            <span class="n">uncertainty</span><span class="o">=</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;uncertainty&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;factor&quot;</span><span class="p">],</span>
+            <span class="n">value</span><span class="o">=</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"value"</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">"factor"</span><span class="p">],</span>
+            <span class="n">uncertainty</span><span class="o">=</span><span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s2">"uncertainty"</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">"factor"</span><span class="p">],</span>
         <span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
-                <span class="s2">&quot;factor&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;conv_factor&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;reference_conv_factor&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;reference_value&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;unit&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;reference_unit&quot;</span><span class="p">,</span>
+                <span class="s2">"factor"</span><span class="p">,</span>
+                <span class="s2">"conv_factor"</span><span class="p">,</span>
+                <span class="s2">"reference_conv_factor"</span><span class="p">,</span>
+                <span class="s2">"reference_value"</span><span class="p">,</span>
+                <span class="s2">"unit"</span><span class="p">,</span>
+                <span class="s2">"reference_unit"</span><span class="p">,</span>
             <span class="p">]</span>
         <span class="p">)</span>
 
@@ -2877,7 +2877,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select desired data from the dataframe.</span>
+<span class="w">        </span><span class="sd">"""Select desired data from the dataframe.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2912,7 +2912,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 <span class="sd">        pd.DataFrame</span>
 <span class="sd">            DataFrame with selected Values</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">selected</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span>
             <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
             <span class="n">reference_activity</span><span class="o">=</span><span class="n">reference_activity</span><span class="p">,</span>
@@ -2950,7 +2950,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="c1"># Drop columns containing comments and the uncertainty column (which</span>
         <span class="c1"># is currently unsupported).</span>
         <span class="n">selected</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;uncertainty&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comments</span><span class="p">),</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"uncertainty"</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_comments</span><span class="p">),</span>
             <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -2958,16 +2958,16 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="k">for</span> <span class="n">field_id</span> <span class="ow">in</span> <span class="n">field_vals_select</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">field_id</span> <span class="o">==</span> <span class="n">col_id</span> <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Field &#39;</span><span class="si">{</span><span class="n">field_id</span><span class="si">}</span><span class="s2">&#39; does not exist and cannot be used &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;for selection.&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Field '</span><span class="si">{</span><span class="n">field_id</span><span class="si">}</span><span class="s2">' does not exist and cannot be used "</span>
+                    <span class="sa">f</span><span class="s2">"for selection."</span>
                 <span class="p">)</span>
 
         <span class="c1"># Order fields before selection. Columns of type PeriodFieldDefinition</span>
         <span class="c1"># must be selected last due to the interpolation.</span>
         <span class="n">fields_select_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">field_vals_select</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">))</span>
-        <span class="k">if</span> <span class="s2">&quot;period&quot;</span> <span class="ow">in</span> <span class="n">fields_select_order</span><span class="p">:</span>
-            <span class="n">fields_select_order</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;period&quot;</span><span class="p">)</span>
-            <span class="n">fields_select_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;period&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"period"</span> <span class="ow">in</span> <span class="n">fields_select_order</span><span class="p">:</span>
+            <span class="n">fields_select_order</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"period"</span><span class="p">)</span>
+            <span class="n">fields_select_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"period"</span><span class="p">)</span>
 
         <span class="c1"># Expand non-specified values in fields if requested.</span>
         <span class="k">if</span> <span class="n">expand_not_specified</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -2977,11 +2977,11 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">expand_not_specified</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="s2">&quot;N/S values can only be expanded on fields: &quot;</span>
-                    <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span>
+                    <span class="s2">"N/S values can only be expanded on fields: "</span>
+                    <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span>
                 <span class="p">)</span>
         <span class="k">for</span> <span class="n">field_id</span> <span class="ow">in</span> <span class="n">expand_not_specified</span><span class="p">:</span>
-            <span class="n">selected</span><span class="p">[</span><span class="n">field_id</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;N/S&quot;</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)</span>
+            <span class="n">selected</span><span class="p">[</span><span class="n">field_id</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"N/S"</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">)</span>
 
         <span class="c1"># Convert str to PeriodMode if needed.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">period_mode</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -2999,12 +2999,12 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 
         <span class="c1"># Check for duplicates.</span>
         <span class="n">field_var_cols</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span>
-            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"reference_variable"</span><span class="p">]</span>
         <span class="p">]</span>
         <span class="n">duplicates</span> <span class="o">=</span> <span class="n">field_var_cols</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">duplicates</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
             <span class="k">raise</span> <span class="n">POSTEDException</span><span class="p">(</span>
-                <span class="s2">&quot;Duplicate field/variable entries:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">"Duplicate field/variable entries:</span><span class="se">\n</span><span class="s2">"</span>
                 <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">field_var_cols</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">duplicates</span><span class="p">])</span>
             <span class="p">)</span>
 
@@ -3023,18 +3023,18 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="n">activities</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">_var_pattern</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">keep_token_names</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">var_specs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">var_specs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;activity&quot;</span>
+            <span class="k">if</span> <span class="n">var_specs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reference"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"activity"</span>
         <span class="p">]</span>
         <span class="n">reference_activity</span> <span class="o">=</span> <span class="n">reference_activity</span> <span class="ow">or</span> <span class="n">_get_reference</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">],</span> <span class="n">activities</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">],</span> <span class="n">activities</span>
         <span class="p">)</span>
         <span class="n">capacities</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">_var_pattern</span><span class="p">(</span><span class="n">var_name</span><span class="p">,</span> <span class="n">keep_token_names</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">var_name</span><span class="p">,</span> <span class="n">var_specs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">var_specs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;reference&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;capacity&quot;</span>
+            <span class="k">if</span> <span class="n">var_specs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reference"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"capacity"</span>
         <span class="p">]</span>
         <span class="n">reference_capacity</span> <span class="o">=</span> <span class="n">reference_capacity</span> <span class="ow">or</span> <span class="n">_get_reference</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">],</span> <span class="n">capacities</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">],</span> <span class="n">capacities</span>
         <span class="p">)</span>
 
         <span class="c1"># Map variables.</span>
@@ -3052,31 +3052,31 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="p">)</span>
 
         <span class="c1"># Drop rows with failed mappings.</span>
-        <span class="n">mapped</span> <span class="o">=</span> <span class="n">mapped</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="n">mapped</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s2">"value"</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Get dict of variables and corresponding reference variables.</span>
         <span class="n">ref_vars</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">mapped</span><span class="p">[[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_variable&quot;</span><span class="p">]]</span>
+            <span class="n">mapped</span><span class="p">[[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"reference_variable"</span><span class="p">]]</span>
             <span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;variable&quot;</span><span class="p">)[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"variable"</span><span class="p">)[</span><span class="s2">"reference_variable"</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># Check for multiple reference variables per reported variable.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ref_vars</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">is_unique</span><span class="p">:</span>
             <span class="n">duplicated_vars</span> <span class="o">=</span> <span class="n">ref_vars</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">ref_vars</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()]</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="s2">&quot;Multiple reference variables per reported variable found:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">"Multiple reference variables per reported variable found:</span><span class="se">\n</span><span class="s2">"</span>
                 <span class="o">+</span> <span class="n">ref_vars</span><span class="p">[</span><span class="n">duplicated_vars</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
-                <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
-                <span class="o">+</span> <span class="s2">&quot;These are the rows:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="o">+</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span>
+                <span class="o">+</span> <span class="s2">"These are the rows:</span><span class="se">\n</span><span class="s2">"</span>
                 <span class="o">+</span> <span class="n">mapped</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
-                    <span class="n">mapped</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">duplicated_vars</span><span class="p">)</span>
+                    <span class="n">mapped</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">duplicated_vars</span><span class="p">)</span>
                 <span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="n">ref_vars</span> <span class="o">=</span> <span class="n">ref_vars</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
         <span class="c1"># Remove reference_variable column.</span>
-        <span class="n">mapped</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">mapped</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Return.</span>
         <span class="k">return</span> <span class="n">mapped</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span>
@@ -3096,7 +3096,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Aggregate data.</span>
+<span class="w">        </span><span class="sd">"""Aggregate data.</span>
 
 <span class="sd">        Perform aggregation based on specified parameters, apply masks, and</span>
 <span class="sd">        clean up the resulting DataFrame.</span>
@@ -3141,7 +3141,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 <span class="sd">            additional rows instead of leaving them as separate columns.</span>
 <span class="sd">        **field_vals_select:</span>
 <span class="sd">            Field names and values provided as keyword arguments. For</span>
-<span class="sd">            instance, `case=[&quot;case1&quot;, &quot;case2&quot;]` will select the two respective</span>
+<span class="sd">            instance, `case=["case1", "case2"]` will select the two respective</span>
 <span class="sd">            cases if `case` is a field column in the underlying TEDF.</span>
 
 <span class="sd">        Returns</span>
@@ -3156,7 +3156,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 <span class="sd">            rows, rounds values, and inserts units before returning the</span>
 <span class="sd">            final cleaned and aggregated DataFrame.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Run select().</span>
         <span class="n">selected</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span>
             <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
@@ -3171,8 +3171,8 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="c1"># Compile masks from databases and from argument into one list.</span>
         <span class="k">if</span> <span class="n">masks</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">Mask</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="s2">&quot;Function argument &#39;masks&#39; must contain a list of &quot;</span>
-                <span class="s2">&quot;posted.masking.Mask objects.&quot;</span>
+                <span class="s2">"Function argument 'masks' must contain a list of "</span>
+                <span class="s2">"posted.masking.Mask objects."</span>
             <span class="p">)</span>
         <span class="n">masks</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_masks</span> <span class="k">if</span> <span class="n">masks_database</span> <span class="k">else</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">(</span><span class="n">masks</span> <span class="ow">or</span> <span class="p">[])</span>
 
@@ -3180,10 +3180,10 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
         <span class="n">component_fields</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">col_id</span>
             <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="o">==</span> <span class="s2">&quot;component&quot;</span>
+            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="o">==</span> <span class="s2">"component"</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="n">agg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">agg</span> <span class="o">=</span> <span class="n">component_fields</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span>
+            <span class="n">agg</span> <span class="o">=</span> <span class="n">component_fields</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"source"</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
                 <span class="n">agg</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">agg</span><span class="p">)</span>
@@ -3192,29 +3192,29 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
             <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">agg</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Field ID in argument &#39;agg&#39; must be a &quot;</span>
-                        <span class="sa">f</span><span class="s2">&quot;string but found: </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Field ID in argument 'agg' must be a "</span>
+                        <span class="sa">f</span><span class="s2">"string but found: </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">col_id</span> <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Field ID in argument &#39;agg&#39; is not a valid field: </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Field ID in argument 'agg' is not a valid field: </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">"</span>
                     <span class="p">)</span>
 
         <span class="c1"># Aggregate over component fields.</span>
         <span class="n">group_cols</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">c</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">selected</span><span class="o">.</span><span class="n">columns</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="n">agg</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">component_fields</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s2">"value"</span> <span class="ow">or</span> <span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="n">agg</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">component_fields</span><span class="p">))</span>
         <span class="p">]</span>
         <span class="n">aggregated</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">selected</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">group_cols</span><span class="p">,</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
+            <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">"value"</span><span class="p">:</span> <span class="s2">"sum"</span><span class="p">})</span>
             <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
         <span class="p">)</span>
 
         <span class="c1"># Aggregate over cases fields.</span>
         <span class="n">group_cols</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span> <span class="ow">or</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">agg</span><span class="p">)</span>
+            <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s2">"value"</span> <span class="ow">or</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">agg</span><span class="p">)</span>
         <span class="p">]</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">keys</span><span class="p">,</span> <span class="n">rows</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">group_cols</span><span class="p">,</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -3224,21 +3224,21 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
             <span class="c1"># Update weights by applying masks.</span>
             <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
-                    <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">mask</span><span class="o">.</span><span class="n">get_weights</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+                    <span class="n">rows</span><span class="p">[</span><span class="s2">"weight"</span><span class="p">]</span> <span class="o">*=</span> <span class="n">mask</span><span class="o">.</span><span class="n">get_weights</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
 
             <span class="c1"># Drop all rows with weights equal to nan.</span>
-            <span class="n">rows</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s2">"weight"</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">rows</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="c1"># Aggregate with weights.</span>
                 <span class="n">out</span> <span class="o">=</span> <span class="n">rows</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">group_cols</span><span class="p">,</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span>
-                    <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">]</span>
+                    <span class="p">[</span><span class="s2">"value"</span><span class="p">,</span> <span class="s2">"weight"</span><span class="p">]</span>
                 <span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
                     <span class="k">lambda</span> <span class="n">cols</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                         <span class="p">{</span>
-                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span>
-                                <span class="n">cols</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
-                                <span class="n">weights</span><span class="o">=</span><span class="n">cols</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">],</span>
+                            <span class="s2">"value"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span>
+                                <span class="n">cols</span><span class="p">[</span><span class="s2">"value"</span><span class="p">],</span>
+                                <span class="n">weights</span><span class="o">=</span><span class="n">cols</span><span class="p">[</span><span class="s2">"weight"</span><span class="p">],</span>
                             <span class="p">),</span>
                         <span class="p">}</span>
                     <span class="p">)</span>
@@ -3252,10 +3252,10 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
             <span class="n">add_cols</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="p">[]</span>
                 <span class="k">if</span> <span class="n">append_references</span>
-                <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span>
+                <span class="k">else</span> <span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">,</span> <span class="s2">"reference_unit"</span><span class="p">]</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="n">columns</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_cols</span>
+                <span class="n">columns</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">,</span> <span class="s2">"unit"</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_cols</span>
             <span class="p">)</span>
         <span class="n">aggregated</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
@@ -3283,7 +3283,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
             <span class="k">if</span> <span class="n">append_references</span><span class="p">:</span>
                 <span class="n">var_ref_unique</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="n">ref_vars</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
                 <span class="p">}</span>
                 <span class="n">to_append</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3291,11 +3291,11 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
                     <span class="n">to_append</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
                             <span class="p">{</span>
-                                <span class="s2">&quot;variable&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ref_var</span><span class="p">],</span>
-                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+                                <span class="s2">"variable"</span><span class="p">:</span> <span class="p">[</span><span class="n">ref_var</span><span class="p">],</span>
+                                <span class="s2">"value"</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
                             <span class="p">}</span>
                             <span class="o">|</span> <span class="p">{</span>
-                                <span class="n">col_id</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span>
+                                <span class="n">col_id</span><span class="p">:</span> <span class="p">[</span><span class="s2">"*"</span><span class="p">]</span>
                                 <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                                 <span class="k">if</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="n">df</span>
                             <span class="p">}</span>
@@ -3314,23 +3314,23 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
                         <span class="p">)</span>
                     <span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
                         <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">to_append</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                        <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">])</span>
+                        <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"variable"</span><span class="p">])</span>
                         <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">)</span>
-                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">ref_vars</span><span class="p">)</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">"reference_unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
 
         <span class="c1"># Insert unit(s).</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
 
         <span class="c1"># Prepend parent variable.</span>
         <span class="k">if</span> <span class="n">with_parent</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
+                    <span class="s2">"Can only prepend parent variable if not None."</span>
                 <span class="p">)</span>
-            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">"|"</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span>
 
         <span class="c1"># Order columns.</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="p">]]</span>
@@ -3609,7 +3609,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
     <span class="n">masks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Mask</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">mappings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialise parent class and object fields.</span>
+<span class="w">    </span><span class="sd">"""Initialise parent class and object fields.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -3630,7 +3630,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
 <span class="sd">    mappings:</span>
 <span class="sd">        Mappings to apply when selecting.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">parent_variable</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_database_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">database_id</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">variables</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -3641,19 +3641,19 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
     <span class="c1"># Combine all fields.</span>
     <span class="n">source_column</span> <span class="o">=</span> <span class="n">_base_column_src</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AbstractFieldDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source_column</span>
+        <span class="s2">"source"</span><span class="p">:</span> <span class="n">source_column</span>
     <span class="p">}</span> <span class="o">|</span> <span class="p">(</span><span class="n">custom_fields</span> <span class="ow">or</span> <span class="p">{})</span>
 
     <span class="c1"># Combine all comments.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_comments</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">CommentDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">base_columns_src_detail</span>
-        <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;comment&quot;</span><span class="p">:</span> <span class="n">CommentDefinition</span><span class="p">}</span>
+        <span class="o">|</span> <span class="p">{</span><span class="s2">"comment"</span><span class="p">:</span> <span class="n">CommentDefinition</span><span class="p">}</span>
         <span class="o">|</span> <span class="p">(</span><span class="n">custom_comments</span> <span class="ow">or</span> <span class="p">{})</span>
     <span class="p">)</span>
 
     <span class="c1"># Combine all columns.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AbstractColumnDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="p">{</span><span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="n">source_column</span><span class="p">}</span>
+        <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">source_column</span><span class="p">}</span>
         <span class="o">|</span> <span class="n">base_columns_src_detail</span>
         <span class="o">|</span> <span class="p">(</span><span class="n">custom_fields</span> <span class="ow">or</span> <span class="p">{})</span>
         <span class="o">|</span> <span class="n">base_columns_other</span>
@@ -3664,15 +3664,15 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
     <span class="k">if</span> <span class="n">unknown_cols</span><span class="p">:</span>
         <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unknown_cols</span><span class="p">)</span>
         <span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unknown column</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> treated as &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;comment</span><span class="si">{</span><span class="s1">&#39;s&#39;</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">unknown_cols</span><span class="p">),</span>
+            <span class="sa">f</span><span class="s2">"Unknown column</span><span class="si">{</span><span class="s1">'s'</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> treated as "</span>
+            <span class="sa">f</span><span class="s2">"comment</span><span class="si">{</span><span class="s1">'s'</span><span class="p">[:</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: "</span>
+            <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">unknown_cols</span><span class="p">),</span>
             <span class="n">POSTEDWarning</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">unknown_cols</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">c</span><span class="p">:</span> <span class="n">CommentDefinition</span><span class="p">(</span>
                 <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">),</span>
-                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span>
                 <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">unknown_cols</span>
@@ -3683,7 +3683,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
     <span class="c1"># Add missing columns.</span>
     <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">missing_cols</span><span class="p">:</span>
-        <span class="n">df</span><span class="p">[</span><span class="n">missing_cols</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">missing_cols</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)]</span>
 </code></pre></div></td></tr></table></div>
@@ -4163,7 +4163,7 @@ final cleaned and aggregated DataFrame.</p>
     <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregate data.</span>
+<span class="w">    </span><span class="sd">"""Aggregate data.</span>
 
 <span class="sd">    Perform aggregation based on specified parameters, apply masks, and</span>
 <span class="sd">    clean up the resulting DataFrame.</span>
@@ -4208,7 +4208,7 @@ final cleaned and aggregated DataFrame.</p>
 <span class="sd">        additional rows instead of leaving them as separate columns.</span>
 <span class="sd">    **field_vals_select:</span>
 <span class="sd">        Field names and values provided as keyword arguments. For</span>
-<span class="sd">        instance, `case=[&quot;case1&quot;, &quot;case2&quot;]` will select the two respective</span>
+<span class="sd">        instance, `case=["case1", "case2"]` will select the two respective</span>
 <span class="sd">        cases if `case` is a field column in the underlying TEDF.</span>
 
 <span class="sd">    Returns</span>
@@ -4223,7 +4223,7 @@ final cleaned and aggregated DataFrame.</p>
 <span class="sd">        rows, rounds values, and inserts units before returning the</span>
 <span class="sd">        final cleaned and aggregated DataFrame.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Run select().</span>
     <span class="n">selected</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span>
         <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
@@ -4238,8 +4238,8 @@ final cleaned and aggregated DataFrame.</p>
     <span class="c1"># Compile masks from databases and from argument into one list.</span>
     <span class="k">if</span> <span class="n">masks</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">Mask</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-            <span class="s2">&quot;Function argument &#39;masks&#39; must contain a list of &quot;</span>
-            <span class="s2">&quot;posted.masking.Mask objects.&quot;</span>
+            <span class="s2">"Function argument 'masks' must contain a list of "</span>
+            <span class="s2">"posted.masking.Mask objects."</span>
         <span class="p">)</span>
     <span class="n">masks</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_masks</span> <span class="k">if</span> <span class="n">masks_database</span> <span class="k">else</span> <span class="p">[])</span> <span class="o">+</span> <span class="p">(</span><span class="n">masks</span> <span class="ow">or</span> <span class="p">[])</span>
 
@@ -4247,10 +4247,10 @@ final cleaned and aggregated DataFrame.</p>
     <span class="n">component_fields</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">col_id</span>
         <span class="k">for</span> <span class="n">col_id</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="o">==</span> <span class="s2">&quot;component&quot;</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="o">==</span> <span class="s2">"component"</span>
     <span class="p">]</span>
     <span class="k">if</span> <span class="n">agg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">agg</span> <span class="o">=</span> <span class="n">component_fields</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span>
+        <span class="n">agg</span> <span class="o">=</span> <span class="n">component_fields</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"source"</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">agg</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="n">agg</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">agg</span><span class="p">)</span>
@@ -4259,29 +4259,29 @@ final cleaned and aggregated DataFrame.</p>
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">agg</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Field ID in argument &#39;agg&#39; must be a &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;string but found: </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Field ID in argument 'agg' must be a "</span>
+                    <span class="sa">f</span><span class="s2">"string but found: </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span> <span class="o">==</span> <span class="n">col_id</span> <span class="k">for</span> <span class="n">col_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Field ID in argument &#39;agg&#39; is not a valid field: </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Field ID in argument 'agg' is not a valid field: </span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
     <span class="c1"># Aggregate over component fields.</span>
     <span class="n">group_cols</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">c</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">selected</span><span class="o">.</span><span class="n">columns</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="n">agg</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">component_fields</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s2">"value"</span> <span class="ow">or</span> <span class="p">(</span><span class="n">c</span> <span class="ow">in</span> <span class="n">agg</span> <span class="ow">and</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">component_fields</span><span class="p">))</span>
     <span class="p">]</span>
     <span class="n">aggregated</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">selected</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">group_cols</span><span class="p">,</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;sum&quot;</span><span class="p">})</span>
+        <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">"value"</span><span class="p">:</span> <span class="s2">"sum"</span><span class="p">})</span>
         <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
     <span class="p">)</span>
 
     <span class="c1"># Aggregate over cases fields.</span>
     <span class="n">group_cols</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span> <span class="ow">or</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">agg</span><span class="p">)</span>
+        <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="s2">"value"</span> <span class="ow">or</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">agg</span><span class="p">)</span>
     <span class="p">]</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">keys</span><span class="p">,</span> <span class="n">rows</span> <span class="ow">in</span> <span class="n">aggregated</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">group_cols</span><span class="p">,</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -4291,21 +4291,21 @@ final cleaned and aggregated DataFrame.</p>
         <span class="c1"># Update weights by applying masks.</span>
         <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="n">masks</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
-                <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">*=</span> <span class="n">mask</span><span class="o">.</span><span class="n">get_weights</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+                <span class="n">rows</span><span class="p">[</span><span class="s2">"weight"</span><span class="p">]</span> <span class="o">*=</span> <span class="n">mask</span><span class="o">.</span><span class="n">get_weights</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
 
         <span class="c1"># Drop all rows with weights equal to nan.</span>
-        <span class="n">rows</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s2">"weight"</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">rows</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="c1"># Aggregate with weights.</span>
             <span class="n">out</span> <span class="o">=</span> <span class="n">rows</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">group_cols</span><span class="p">,</span> <span class="n">dropna</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span>
-                <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">]</span>
+                <span class="p">[</span><span class="s2">"value"</span><span class="p">,</span> <span class="s2">"weight"</span><span class="p">]</span>
             <span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
                 <span class="k">lambda</span> <span class="n">cols</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                     <span class="p">{</span>
-                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span>
-                            <span class="n">cols</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
-                            <span class="n">weights</span><span class="o">=</span><span class="n">cols</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">],</span>
+                        <span class="s2">"value"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span>
+                            <span class="n">cols</span><span class="p">[</span><span class="s2">"value"</span><span class="p">],</span>
+                            <span class="n">weights</span><span class="o">=</span><span class="n">cols</span><span class="p">[</span><span class="s2">"weight"</span><span class="p">],</span>
                         <span class="p">),</span>
                     <span class="p">}</span>
                 <span class="p">)</span>
@@ -4319,10 +4319,10 @@ final cleaned and aggregated DataFrame.</p>
         <span class="n">add_cols</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">[]</span>
             <span class="k">if</span> <span class="n">append_references</span>
-            <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">,</span> <span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span>
+            <span class="k">else</span> <span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">,</span> <span class="s2">"reference_unit"</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="n">columns</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_cols</span>
+            <span class="n">columns</span><span class="o">=</span><span class="n">group_cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"variable"</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">,</span> <span class="s2">"unit"</span><span class="p">]</span> <span class="o">+</span> <span class="n">add_cols</span>
         <span class="p">)</span>
     <span class="n">aggregated</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
@@ -4495,7 +4495,7 @@ variable.</p>
 <span class="normal">407</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalise</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">with_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalise data.</span>
+<span class="w">    </span><span class="sd">"""Normalise data.</span>
 
 <span class="sd">    Normalise units, reference units, and reference values by multiplying</span>
 <span class="sd">    value column with respective conversion factor needed to convert</span>
@@ -4514,27 +4514,27 @@ variable.</p>
 <span class="sd">    pd.DataFrame</span>
 <span class="sd">        DataFrame containing normalised raw data.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">normalised</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
 
     <span class="c1"># Insert unit, reference value, and reference unit.</span>
     <span class="n">normalised</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-        <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;uncertainty&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;unit&quot;</span><span class="p">,</span>
+        <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"uncertainty"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"unit"</span><span class="p">,</span>
         <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+    <span class="n">normalised</span><span class="p">[</span><span class="s2">"unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
     <span class="n">normalised</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-        <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;unit&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;reference_value&quot;</span><span class="p">,</span>
+        <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"unit"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"reference_value"</span><span class="p">,</span>
         <span class="mf">1.0</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">normalised</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-        <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;reference_value&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;reference_unit&quot;</span><span class="p">,</span>
+        <span class="n">normalised</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"reference_value"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"reference_unit"</span><span class="p">,</span>
         <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;reference_unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;reference_variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+    <span class="n">normalised</span><span class="p">[</span><span class="s2">"reference_unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">"reference_variable"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
         <span class="n">units</span>
     <span class="p">)</span>
 
@@ -4542,10 +4542,10 @@ variable.</p>
     <span class="k">if</span> <span class="n">with_parent</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="s2">&quot;Can only prepend parent variable if not None.&quot;</span>
+                <span class="s2">"Can only prepend parent variable if not None."</span>
             <span class="p">)</span>
-        <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">&quot;|&quot;</span> <span class="o">+</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span>
+        <span class="n">normalised</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parent_variable</span> <span class="o">+</span> <span class="s2">"|"</span> <span class="o">+</span> <span class="n">normalised</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span>
         <span class="p">)</span>
 
     <span class="c1"># Order columns.</span>
@@ -4842,7 +4842,7 @@ additional rows instead of leaving them as separate columns.</p>
     <span class="n">append_references</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="o">**</span><span class="n">field_vals_select</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Select desired data from the dataframe.</span>
+<span class="w">    </span><span class="sd">"""Select desired data from the dataframe.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -4877,7 +4877,7 @@ additional rows instead of leaving them as separate columns.</p>
 <span class="sd">    pd.DataFrame</span>
 <span class="sd">        DataFrame with selected Values</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">selected</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">ref_vars</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_select</span><span class="p">(</span>
         <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
         <span class="n">reference_activity</span><span class="o">=</span><span class="n">reference_activity</span><span class="p">,</span>
@@ -4953,7 +4953,7 @@ additional rows instead of leaving them as separate columns.</p>
 
 
 <h2 id="posted.sources.format_sources" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">format_sources</span><span class="p">(</span><span class="n">bib_data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;plaintext&#39;</span><span class="p">,</span> <span class="n">exclude_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">format_sources</span><span class="p">(</span><span class="n">bib_data</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">'alpha'</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">'plaintext'</span><span class="p">,</span> <span class="n">exclude_fields</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 </h2>
 
@@ -5171,15 +5171,15 @@ with any excluded fields removed.</p>
 <span class="normal"> 99</span>
 <span class="normal">100</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">format_sources</span><span class="p">(</span>
     <span class="n">bib_data</span><span class="p">:</span> <span class="n">BibliographyData</span><span class="p">,</span>
-    <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;alpha&quot;</span><span class="p">,</span>
-    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;plaintext&quot;</span><span class="p">,</span>
+    <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"alpha"</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"plaintext"</span><span class="p">,</span>
     <span class="n">exclude_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert sources to specific format.</span>
+<span class="w">    </span><span class="sd">"""Convert sources to specific format.</span>
 
 <span class="sd">    Takes a citation style, a citation format, and (optionally) excluded</span>
 <span class="sd">    fields, and returns a formatted list of sources based on the specified</span>
-<span class="sd">    style and format. The sources are loaded from &#39;sources.bib&#39; file.</span>
+<span class="sd">    style and format. The sources are loaded from 'sources.bib' file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -5190,7 +5190,7 @@ with any excluded fields removed.</p>
 <span class="sd">    target</span>
 <span class="sd">        Specifies the format in which the citation should be rendered.</span>
 <span class="sd">        It determines how the citation information will be displayed or</span>
-<span class="sd">        structured in the final output. This can be &#39;plaintext&#39; or &#39;html&#39;.</span>
+<span class="sd">        structured in the final output. This can be 'plaintext' or 'html'.</span>
 <span class="sd">    exclude_fields</span>
 <span class="sd">        Specifies a list of fields that should be excluded from the</span>
 <span class="sd">        final output. These fields will be removed from the entries</span>
@@ -5204,20 +5204,20 @@ with any excluded fields removed.</p>
 <span class="sd">            data, formatted according to the specified style and form,</span>
 <span class="sd">            with any excluded fields removed.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># set exclude_fields to an empty list if provided as None</span>
     <span class="n">exclude_fields</span> <span class="o">=</span> <span class="n">exclude_fields</span> <span class="ow">or</span> <span class="p">[]</span>
 
     <span class="c1"># load pybtext styles and formats based on arguments</span>
-    <span class="n">pyb_style</span> <span class="o">=</span> <span class="n">find_plugin</span><span class="p">(</span><span class="s2">&quot;pybtex.style.formatting&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">)()</span>
-    <span class="n">pyb_format</span> <span class="o">=</span> <span class="n">find_plugin</span><span class="p">(</span><span class="s2">&quot;pybtex.backends&quot;</span><span class="p">,</span> <span class="n">target</span><span class="p">)()</span>
+    <span class="n">pyb_style</span> <span class="o">=</span> <span class="n">find_plugin</span><span class="p">(</span><span class="s2">"pybtex.style.formatting"</span><span class="p">,</span> <span class="n">style</span><span class="p">)()</span>
+    <span class="n">pyb_format</span> <span class="o">=</span> <span class="n">find_plugin</span><span class="p">(</span><span class="s2">"pybtex.backends"</span><span class="p">,</span> <span class="n">target</span><span class="p">)()</span>
 
     <span class="c1"># exclude undesired fields</span>
     <span class="k">if</span> <span class="n">exclude_fields</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">bib_data</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">ef</span> <span class="ow">in</span> <span class="n">exclude_fields</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">ef</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_dict&quot;</span><span class="p">]:</span>
-                    <span class="k">del</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">&quot;_dict&quot;</span><span class="p">][</span><span class="n">ef</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">ef</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">"_dict"</span><span class="p">]:</span>
+                    <span class="k">del</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s2">"_dict"</span><span class="p">][</span><span class="n">ef</span><span class="p">]</span>
 
     <span class="c1"># loop over entries and format accordingly</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
@@ -5225,40 +5225,40 @@ with any excluded fields removed.</p>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">entry</span> <span class="o">=</span> <span class="n">bib_data</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">identifier</span><span class="p">]</span>
 
-            <span class="n">first_author</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">persons</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="p">[])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">last_names</span>
-            <span class="n">cite_auth</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">{}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">first_author</span><span class="p">))</span>
-            <span class="n">cite_year</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;n.d.&quot;</span><span class="p">)</span>
+            <span class="n">first_author</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">persons</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"author"</span><span class="p">,</span> <span class="p">[])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">last_names</span>
+            <span class="n">cite_auth</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">"[</span><span class="si">{}</span><span class="s2">]"</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">first_author</span><span class="p">))</span>
+            <span class="n">cite_year</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"year"</span><span class="p">,</span> <span class="s2">"n.d."</span><span class="p">)</span>
 
-            <span class="n">doi</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">pdf</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pdf&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="n">url_doi</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">doi</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">doi</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"doi"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"url"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">pdf</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"pdf"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">url_doi</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"https://doi.org/</span><span class="si">{</span><span class="n">doi</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">doi</span> <span class="k">else</span> <span class="kc">None</span>
 
             <span class="k">if</span> <span class="n">doi</span><span class="p">:</span>
-                <span class="k">del</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span>
+                <span class="k">del</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">"doi"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
-                <span class="k">del</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span>
+                <span class="k">del</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">pdf</span><span class="p">:</span>
-                <span class="k">del</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;pdf&quot;</span><span class="p">]</span>
+                <span class="k">del</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">"pdf"</span><span class="p">]</span>
 
             <span class="n">bib</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">pyb_style</span><span class="o">.</span><span class="n">format_entries</span><span class="p">([</span><span class="n">entry</span><span class="p">]))</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
                 <span class="n">pyb_format</span>
             <span class="p">)</span>
 
             <span class="n">ret</span><span class="p">[</span><span class="n">identifier</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;cite_auth&quot;</span><span class="p">:</span> <span class="n">cite_auth</span><span class="p">,</span>
-                <span class="s2">&quot;cite_year&quot;</span><span class="p">:</span> <span class="n">cite_year</span><span class="p">,</span>
-                <span class="s2">&quot;cite&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cite_auth</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">cite_year</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;citep&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">cite_auth</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">cite_year</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;bib&quot;</span><span class="p">:</span> <span class="n">bib</span><span class="p">,</span>
-                <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">doi</span><span class="p">,</span>
-                <span class="s2">&quot;url_doi&quot;</span><span class="p">:</span> <span class="n">url_doi</span><span class="p">,</span>
-                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span> <span class="ow">or</span> <span class="n">url_doi</span><span class="p">,</span>
-                <span class="s2">&quot;pdf&quot;</span><span class="p">:</span> <span class="n">pdf</span><span class="p">,</span>
+                <span class="s2">"cite_auth"</span><span class="p">:</span> <span class="n">cite_auth</span><span class="p">,</span>
+                <span class="s2">"cite_year"</span><span class="p">:</span> <span class="n">cite_year</span><span class="p">,</span>
+                <span class="s2">"cite"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">cite_auth</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">cite_year</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
+                <span class="s2">"citep"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">cite_auth</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">cite_year</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
+                <span class="s2">"bib"</span><span class="p">:</span> <span class="n">bib</span><span class="p">,</span>
+                <span class="s2">"doi"</span><span class="p">:</span> <span class="n">doi</span><span class="p">,</span>
+                <span class="s2">"url_doi"</span><span class="p">:</span> <span class="n">url_doi</span><span class="p">,</span>
+                <span class="s2">"url"</span><span class="p">:</span> <span class="n">url</span> <span class="ow">or</span> <span class="n">url_doi</span><span class="p">,</span>
+                <span class="s2">"pdf"</span><span class="p">:</span> <span class="n">pdf</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Error occurred while parsing &#39;</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&#39;:</span><span class="se">\n</span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Error occurred while parsing '</span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2">':</span><span class="se">\n</span><span class="si">{</span><span class="n">ex</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ret</span>
@@ -5361,7 +5361,7 @@ the data can manually be processed with the <code>pybtex</code> package.</p>
 <span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_sources</span><span class="p">(</span><span class="n">database_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BibliographyData</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load sources from BibTeX files in database(s).</span>
+<span class="w">    </span><span class="sd">"""Load sources from BibTeX files in database(s).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -5376,9 +5376,9 @@ the data can manually be processed with the <code>pybtex</code> package.</p>
 <span class="sd">        passed on to `format_sources` from `posted.formatting`. Alternatively,</span>
 <span class="sd">        the data can manually be processed with the `pybtex` package.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sources_file_path</span> <span class="o">=</span> <span class="n">databases</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;sources.bib&quot;</span>
-    <span class="k">with</span> <span class="n">sources_file_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_stream</span><span class="p">:</span>
+<span class="sd">    """</span>
+    <span class="n">sources_file_path</span> <span class="o">=</span> <span class="n">databases</span><span class="p">[</span><span class="n">database_id</span><span class="p">]</span> <span class="o">/</span> <span class="s2">"sources.bib"</span>
+    <span class="k">with</span> <span class="n">sources_file_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_stream</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">bibtex</span><span class="o">.</span><span class="n">Parser</span><span class="p">()</span><span class="o">.</span><span class="n">parse_file</span><span class="p">(</span><span class="n">file_stream</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -5455,7 +5455,7 @@ the data can manually be processed with the <code>pybtex</code> package.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.indexes", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="../assets/_markdown_exec_pyodide.js"></script>
       
