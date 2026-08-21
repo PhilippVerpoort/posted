@@ -36,6 +36,7 @@ defaults = {
 # Define flow units.
 ureg.define_flows(
     [
+        "biomass",
         "crude_oil",
         "coal",
         "H2",

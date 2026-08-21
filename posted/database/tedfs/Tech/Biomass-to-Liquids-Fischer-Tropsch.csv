@@ -1,0 +1,13 @@
+source,source_detail,carbon_capture,period,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+Baumstark-2021,,*,2020,Lifetime,,25,,year,,,Dummy value from REMIND; to be replaced with literature data
+Baumstark-2021,,*,2020,OCF,,80,,percent,,,Dummy value from REMIND; assumed full-load operation similar to gasification plants
+Baumstark-2021,,w/o CC,2020,CAPEX,Output Capacity|Fischer-Tropsch Fuel,4500,,USD_2017,1.0,kW,Dummy value from REMIND; BtL without CCS
+Baumstark-2021,,w/ CC,2020,CAPEX,Output Capacity|Fischer-Tropsch Fuel,5500,,USD_2017,1.0,kW,Dummy value from REMIND; BtL with CCS; ~20% CAPEX penalty
+Baumstark-2021,,*,2020,OPEX Fixed Relative,,4,,percent,,,Dummy value from REMIND
+Baumstark-2021,,w/o CC,2020,Output|Fischer-Tropsch Fuel,Input|Biomass,0.38,,GJ,1.0,GJ_biomass_LHV,Dummy value from REMIND; overall biomass-to-liquid efficiency ~38% LHV basis
+Baumstark-2021,,w/ CC,2020,Output|Fischer-Tropsch Fuel,Input|Biomass,0.36,,GJ,1.0,GJ_biomass_LHV,Dummy value from REMIND; ~2pp efficiency penalty for CCS
+Baumstark-2021,,w/o CC,2020,Input|Electricity,Output|Fischer-Tropsch Fuel,0.05,,GJ,1.0,GJ,Dummy value from REMIND; auxiliary electricity for ASU and FT synthesis
+Baumstark-2021,,w/ CC,2020,Input|Electricity,Output|Fischer-Tropsch Fuel,0.07,,GJ,1.0,GJ,Dummy value from REMIND; additional electricity for CO2 compression
+Baumstark-2021,,w/o CC,2020,Emissions|CO2,Input|Biomass,0,,kg CO2eq,1.0,GJ_biomass_LHV,Dummy value from REMIND; biogenic carbon assumed CO2-neutral without CCS
+Baumstark-2021,,w/ CC,2020,Capture Rate,,90,,percent,,,Dummy value from REMIND; ~90% of process CO2 captured
+Baumstark-2021,,w/ CC,2020,Emissions|CO2,Input|Biomass,-53.5,,kg CO2eq,1.0,GJ_biomass_LHV,Dummy value from REMIND; net negative emissions due to BECCS (-14.6 GtC/ZJ converted)
