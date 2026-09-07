@@ -29,7 +29,7 @@ The public database is intended for the curation of a comprehensive set of gener
 The TEDF base format contains the following columns:
 
 * **`variable`** — The reported variable, as defined in the metadata or a predefined set under `variables/definitions/`.
-* **`reference_variable`** — The reference variable. This is only used for
+* **`reference_variable`** — The reference variable. This is only used for variables that are defined in reference to other variables, such as activity-like or capacity-like technology variables (e.g. CAPEX per rated capacity or specific energy consumption).
 * **`value`** — The value corresponding to the reported variable.
 * **`uncertainty`** — The uncertainty corresponding to the reported variable.
 * **`unit`** — The unit corresponding to the reported variable. This must be a valid unit string known to [`cet-units`](https://philippverpoort.github.io/cet-units/latest/).
