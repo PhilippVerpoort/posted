@@ -174,13 +174,17 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
 
         """
         # Get list of selected field values.
+        keep_vals = []
         if field_vals is None:
             if col_id == "period":
                 field_vals = defaults["period"]
             else:
-                field_vals = (
-                    df[col_id].replace("*", np.nan).dropna().unique().tolist()
-                )
+                # Collect individual values from (comma-separated) cells. The
+                # asterisk expands to these but not to N/S. Rows with N/S are
+                # nonetheless kept.
+                vals = df[col_id].str.split(",").explode().str.strip()
+                field_vals = vals[~vals.isin(["*", "N/S"])].unique().tolist()
+                keep_vals = ["N/S"]
         else:
             # Ensure that `field_vals` is a list of elements (not tuple or
             # single value).
@@ -197,7 +201,7 @@ class AbstractFieldDefinition(AbstractColumnDefinition):
                 )
 
         df = self._expand(df, col_id, field_vals, **kwargs)
-        df = self._select(df, col_id, field_vals, **kwargs)
+        df = self._select(df, col_id, field_vals + keep_vals, **kwargs)
 
         return df
 
