@@ -61,3 +61,24 @@ class TestsNOSLAG(unittest.TestCase):
         )
 
         assert not error_msg, error_msg
+
+    def test_expand_not_specified(self):
+        """Test that `N/S` field values are expanded only when requested."""
+        from posted import TEDF
+
+        # The electrolysis TEDF contains `N/S` entries in the size field.
+        tedf = TEDF.load("Tech|Electrolysis")
+
+        # By default, `N/S` is expanded to all other values of the field.
+        selected = tedf.select()
+        self.assertNotIn("N/S", selected["size"].unique())
+
+        # When disabled, `N/S` is kept as a separate field value.
+        selected = tedf.select(expand_not_specified=False)
+        self.assertIn("N/S", selected["size"].unique())
+
+        # Expansion can be restricted to specific fields.
+        selected = tedf.select(expand_not_specified=["subtech"])
+        self.assertIn("N/S", selected["size"].unique())
+        with self.assertRaises(Exception):
+            tedf.select(expand_not_specified=["nonexistent"])

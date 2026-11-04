@@ -619,7 +619,7 @@ class TEDF:
                     + ", ".join(self._fields)
                 )
         for field_id in expand_not_specified:
-            selected[field_id].replace("N/S", "*")
+            selected[field_id] = selected[field_id].replace("N/S", "*")
 
         # Convert str to PeriodMode if needed.
         if isinstance(period_mode, str):
