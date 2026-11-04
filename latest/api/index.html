@@ -2981,7 +2981,7 @@ steps in the NOSLAG (normalise-select-aggregate) framework.</p>
                     <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fields</span><span class="p">)</span>
                 <span class="p">)</span>
         <span class="k">for</span> <span class="n">field_id</span> <span class="ow">in</span> <span class="n">expand_not_specified</span><span class="p">:</span>
-            <span class="n">selected</span><span class="p">[</span><span class="n">field_id</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"N/S"</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">)</span>
+            <span class="n">selected</span><span class="p">[</span><span class="n">field_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">selected</span><span class="p">[</span><span class="n">field_id</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"N/S"</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">)</span>
 
         <span class="c1"># Convert str to PeriodMode if needed.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">period_mode</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
