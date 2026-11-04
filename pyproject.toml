@@ -51,7 +51,7 @@ docs = [
 ]
 
 [tool.uv.sources]
-cet-units = { git = "https://github.com/PhilippVerpoort/cet-units.git", rev = "v0.2.0" }
+cet-units = { git = "https://github.com/PhilippVerpoort/cet-units.git", rev = "v0.3.0" }
 
 [build-system]
 requires = ["setuptools>=68"]
