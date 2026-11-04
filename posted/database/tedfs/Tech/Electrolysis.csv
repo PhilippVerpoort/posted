@@ -42,7 +42,7 @@ DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16",SOEC,1 MW,2040,GLO,Output|Hydrogen,Inp
 DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Row 16",SOEC,1 MW,2050,GLO,Output|Hydrogen,Input|Electricity,25.1,0.5,kg_H2,1,MWh,
 DEA-TDRF-2023,"Sheet 86 AEC 1MW, Sheet Name","AEL, PEM",1 MW,*,GLO,Total Input Capacity|Electricity,,1,,MW,,,
 DEA-TDRF-2023,"Sheet 86 SOEC 1MW, Sheet Name",SOEC,1 MW,*,GLO,Total Input Capacity|Electricity,,1,,MW,,,
-DEA-TDRF-2023,"Sheet 86 AEC 100MW, Sheet Name","AEL, PEM",100 MW,*,GLO,Total Input Capacity|Electricity,,5,,MW,,,
+DEA-TDRF-2023,"Sheet 86 AEC 100MW, Sheet Name","AEL, PEM",100 MW,*,GLO,Total Input Capacity|Electricity,,100,,MW,,,
 Holst-2021,"Appendix A, Page 79",AEL,100 MW,2020,GLO,CAPEX,Input Capacity|Electricity,663,,EUR_2020,1,kW,
 Holst-2021,"Appendix A, Page 79",AEL,100 MW,2030,GLO,CAPEX,Input Capacity|Electricity,444,,EUR_2020,1,kW,
 Holst-2021,"Appendix A, Page 79",AEL,5 MW,2020,GLO,CAPEX,Input Capacity|Electricity,949,,EUR_2020,1,kW,
