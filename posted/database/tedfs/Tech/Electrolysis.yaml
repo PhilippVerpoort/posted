@@ -13,6 +13,11 @@ columns:
         description: Total size (capacity) of the assumed plant
         type: case
         coded: False
+    country:
+        name: Country
+        description: Countries (ISO 3166-1 alpha-3) where the value applies (GLO for global)
+        type: case
+        coded: False
     period: period
 variables:
     predefined:
