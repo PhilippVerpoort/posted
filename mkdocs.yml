@@ -50,6 +50,7 @@ extra_javascript:
 
 markdown_extensions:
 - attr_list
+- def_list
 - md_in_html
 - tables
 - pymdownx.superfences
