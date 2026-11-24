@@ -11,17 +11,17 @@
         <link rel="canonical" href="https://philippverpoort.github.io/posted/latest/guide/format/">
       
       
-        <link rel="prev" href="../overview/">
+        <link rel="prev" href="../concepts/">
       
       
-        <link rel="next" href="../contribute/">
+        <link rel="next" href="../noslag/">
       
       
         
       
       
       <link rel="icon" href="../../assets/logos/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
@@ -421,6 +421,16 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -484,6 +494,62 @@
     
   
     Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
   
 
     
@@ -575,10 +641,82 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#base-column-format" class="md-nav__link">
+  <a href="#techno-economic-data-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Base column format
+        Techno-economic data files
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Techno-economic data files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#naming-and-parent-variable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Naming and parent variable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Base columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#field-cell-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Field cell values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metadata file
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variable-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variable definitions
       
     </span>
   </a>
@@ -586,10 +724,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#fields" class="md-nav__link">
+  <a href="#variable-mappings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Fields
+        Variable mappings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#masks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Masks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources
       
     </span>
   </a>
@@ -612,6 +772,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../noslag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NO-SL-AG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../units/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Units
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../contribute/" class="md-nav__link">
         
   
@@ -620,6 +836,34 @@
     
   
     Contribute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
   
 
     
@@ -1322,44 +1566,342 @@
 
 
 <h1 id="format">Format</h1>
+<p>This section specifies the files that make up a POSTED database. The ideas behind the data model are explained in <a href="../concepts/">Concepts</a>.</p>
 <h2 id="databases">Databases</h2>
-<p><strong>POSTED is extensible via public and private databases.</strong> The public database is part of the <a href="https://github.com/PhilippVerpoort/posted/tree/main/posted/database">public GitHub repository</a> (in the <code>posted/database</code> directory). Private project-specific databases can be added to POSTED by adding a respective database path to the <code>databases</code> dictionary of the path module before executing any other POSTED code.</p>
+<p><strong>POSTED is extensible via public and private databases.</strong> The public database is part of the <a href="https://github.com/PhilippVerpoort/posted/tree/main/posted/database">public GitHub repository</a> (in the <code>posted/database</code> directory) and is installed together with the package. Private project-specific databases can be added to POSTED by adding a respective database path to the <code>databases</code> dictionary before executing any other POSTED code.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">posted</span><span class="w"> </span><span class="kn">import</span> <span class="n">databases</span>
 
 <span class="n">databases</span> <span class="o">|=</span> <span class="p">{</span><span class="s2">"my_private_database"</span><span class="p">:</span> <span class="n">Path</span><span class="p">(</span><span class="s2">"/path/to/database/"</span><span class="p">)}</span>
 </code></pre></div>
-<p>The public database is intended for the curation of a comprehensive set of general-purpose resources that should suit the needs of most users. Private databases may be used for low-threshold extensibility, for more project-specific work that is not in the interest of a broad audience, or for confidential data that cannot be made available publicly.</p>
-<p><strong>Each database may contain the following components</strong>, which should each be contained in a directory.</p>
+<p>The public database is intended for the curation of a comprehensive set of general-purpose resources that should suit the needs of most users. Private databases may be used for low-threshold extensibility, for more project-specific work that is not in the interest of a broad audience, or for confidential data that cannot be made available publicly. A TEDF is always loaded from one database, selected by the <code>database_id</code> argument of <code>TEDF.load()</code>, which defaults to <code>"public"</code>.</p>
+<p><strong>Each database may contain the following components</strong>, each contained in a directory or file of the given name.</p>
+<div class="highlight"><pre><span></span><code>database/
+├── tedfs/                   # techno-economic data files and their metadata
+│   ├── Emission Factor.csv
+│   ├── Emission Factor.yaml
+│   └── Tech/
+│       ├── Electrolysis.csv
+│       ├── Electrolysis.yaml
+│       └── ...
+├── variables/
+│   ├── definitions/         # reusable variable definitions (YAML)
+│   │   └── technology.yaml
+│   └── mappings/            # variable mappings (Python)
+│       ├── activities.py
+│       └── ...
+├── masks/                   # default masks per TEDF (YAML)
+│   └── Tech/
+│       └── Electrolysis.yaml
+└── sources.bib              # bibliographic records (BibTeX)
+</code></pre></div>
 <ul>
-<li><code>tedfs/</code>: This directory contains TEDFs (techno-economic data files), which are UTF8-encoded CSV files following a specific format (see below). The files are organised in a directory structure following a hierarchical system. Moreover, each TEDF file is accompanied by a metadata file in YAML format outlining the column structure (fields and comments, see below) and the allowed variables (see below). Both column and variable definitions may be defined explicitly or may refer to predefined sets.</li>
-<li><code>variables/definitions/</code>: This directory may contain variable definitions in YAML format that can be referred to by TEDF metadata files (see above).</li>
-<li><code>variables/mappings/</code>: This directory defines automated variable mappings as Python code.</li>
-<li><code>masks/</code>: This directory contains masks, which add weights to different rows when aggregating the data using <code>TEDF.aggregate()</code>. It will make sense to define these manually for each case, but some masks useful generally will be stored here as part of the database.</li>
+<li><code>tedfs/</code>: This directory contains TEDFs (techno-economic data files), which are UTF-8 encoded CSV files following the format described below. The files are organised in a directory structure that mirrors the hierarchy of variable names. Each TEDF is accompanied by a metadata file in YAML format with the same base name that declares the column structure (fields and comments) and the variables of the file. Both column and variable definitions may be given explicitly or may refer to predefined sets.</li>
+<li><code>variables/definitions/</code>: This directory contains variable definitions in YAML format that can be referred to by the metadata files of TEDFs.</li>
+<li><code>variables/mappings/</code>: This directory contains variable mappings as Python modules. Mappings transform one representation of a variable into another during the selection step. A TEDF lists the mappings to apply in its metadata file.</li>
+<li><code>masks/</code>: This directory contains masks, which assign weights to rows when aggregating data. Masks stored here are applied by default when the corresponding TEDF is aggregated. The directory structure mirrors that of <code>tedfs/</code>.</li>
+<li><code>sources.bib</code>: A BibTeX file with one entry per source referenced in the TEDFs of this database.</li>
 </ul>
-<h2 id="base-column-format">Base column format</h2>
-<p>The TEDF base format contains the following columns:</p>
-<ul>
-<li><strong><code>variable</code></strong> — The reported variable, as defined in the metadata or a predefined set under <code>variables/definitions/</code>.</li>
-<li><strong><code>reference_variable</code></strong> — The reference variable. This is only used for variables that are defined in reference to other variables, such as activity-like or capacity-like technology variables (e.g. CAPEX per rated capacity or specific energy consumption).</li>
-<li><strong><code>value</code></strong> — The value corresponding to the reported variable.</li>
-<li><strong><code>uncertainty</code></strong> — The uncertainty corresponding to the reported variable.</li>
-<li><strong><code>unit</code></strong> — The unit corresponding to the reported variable. This must be a valid unit string known to <a href="https://philippverpoort.github.io/cet-units/latest/"><code>cet-units</code></a>.</li>
-<li><strong><code>reference_value</code></strong> — The value corresponding to the reference value. This can only be entered if <code>reference_variable</code> is set.</li>
-<li><strong><code>reference_unit</code></strong> — The unit corresponding to the reference variable. This can only be entered if <code>reference_variable</code> is set. This must be a valid unit string known to <a href="https://philippverpoort.github.io/cet-units/latest/"><code>cet-units</code></a>.</li>
-<li><strong><code>comment</code></strong> — A free-text comment on the entry. This column should especially be used to report any conversion performed if the value originally reported by a source had to be modified manually before reporting. It should also be used to report additional assumptions or deviating from original units.</li>
-<li><strong><code>source</code></strong> — A valid BibTeX identifier from the <code>sources.bib</code> file.</li>
-<li><strong><code>source_detail</code></strong> — Detailed information on where exactly in the source this entry can be found.</li>
-</ul>
+<h2 id="techno-economic-data-files">Techno-economic data files</h2>
+<h3 id="naming-and-parent-variable">Naming and parent variable</h3>
+<p>A TEDF consists of a CSV file and a YAML file with the same base name. Its position below <code>tedfs/</code> defines its <strong>parent variable</strong>, with directory separators replaced by <code>|</code>. The file <code>tedfs/Tech/Electrolysis.csv</code> has the parent variable <code>Tech|Electrolysis</code> and is loaded with <code>TEDF.load("Tech|Electrolysis")</code>. All variables reported in the file are implicitly prefixed with the parent variable. The variable <code>CAPEX</code> in this file denotes <code>Tech|Electrolysis|CAPEX</code>.</p>
+<p>The CSV file is read with <code>,</code> as separator, <code>"</code> as quote character, and UTF-8 encoding. All cells are read as text. Empty cells are permitted only in columns that are not required. The first row holds the column identifiers.</p>
+<h3 id="base-columns">Base columns</h3>
+<p>The TEDF base format contains the following columns. They are present in every TEDF. Columns missing in the CSV file are added as empty columns when the file is read.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source</code></td>
+<td>yes</td>
+<td>A valid BibTeX identifier from the <code>sources.bib</code> file of the database. Exactly one identifier per row.</td>
+</tr>
+<tr>
+<td><code>source_detail</code></td>
+<td>yes</td>
+<td>Detailed information on where exactly in the source this entry can be found, e.g. page, table, figure, or spreadsheet cell.</td>
+</tr>
+<tr>
+<td><code>variable</code></td>
+<td>yes</td>
+<td>The reported variable, relative to the parent variable. Must be defined in the metadata or in a predefined set under <code>variables/definitions/</code>.</td>
+</tr>
+<tr>
+<td><code>reference_variable</code></td>
+<td>no</td>
+<td>The reference variable, relative to the parent variable. Used for variables that are reported in reference to other variables, e.g. CAPEX per rated capacity or energy input per unit of product.</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>yes</td>
+<td>The value corresponding to the reported variable.</td>
+</tr>
+<tr>
+<td><code>uncertainty</code></td>
+<td>no</td>
+<td>The uncertainty corresponding to the reported variable, in the same unit as the value.</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>yes</td>
+<td>The unit corresponding to the reported variable. Must be a valid unit string known to <a href="https://philippverpoort.github.io/cet-units/latest/"><code>cet-units</code></a>. See <a href="../units/">Units</a>.</td>
+</tr>
+<tr>
+<td><code>reference_value</code></td>
+<td>no</td>
+<td>The value corresponding to the reference variable. Only permitted if <code>reference_variable</code> is set.</td>
+</tr>
+<tr>
+<td><code>reference_unit</code></td>
+<td>no</td>
+<td>The unit corresponding to the reference variable. Only permitted if <code>reference_variable</code> is set. Must be a valid unit string known to <code>cet-units</code>.</td>
+</tr>
+<tr>
+<td><code>comment</code></td>
+<td>no</td>
+<td>A free-text comment on the entry. This column should be used to report any conversion performed if the value originally reported by a source had to be modified before reporting, as well as additional assumptions or deviations from the original units.</td>
+</tr>
+</tbody>
+</table>
+<p>The columns <code>source</code> and the fields described below must be filled in every row. The columns <code>source_detail</code>, <code>variable</code>, <code>value</code>, and <code>unit</code> are required as well.</p>
 <blockquote>
-<p><strong>Note:</strong> The <code>uncertainty</code> column can currently only be reported but not processed further with the POSTED framework. This feature may be added at a later stage.</p>
+<p><strong>Note:</strong> The <code>uncertainty</code> column can currently only be reported but not processed further with the POSTED framework. It is normalised alongside the value and then dropped in the selection step. This feature may be added at a later stage.</p>
 </blockquote>
-<h2 id="fields">Fields</h2>
+<p><strong>Example.</strong> The row below reports from a technology catalogue that a 1 MW alkaline electrolyser has a CAPEX of 1566 EUR (2020 prices) per kg of hydrogen output capacity per day in the year 2020, with an uncertainty of 918 EUR.</p>
+<div class="highlight"><pre><span></span><code>source,source_detail,subtech,size,period,country,variable,reference_variable,value,uncertainty,unit,reference_value,reference_unit,comment
+DEA-TDRF-2023,"Sheet 86 AEC 1MW, Row 24",AEL,1 MW,2020,GLO,CAPEX,Output Capacity|Hydrogen,1566,918,EUR_2020,1,kg_H2/day,
+</code></pre></div>
+<p>The reference value need not be one. The row below reports that 541 cubic metres of hydrogen are consumed per 1.1 tonnes of direct reduced iron, with the conversion assumption documented in the comment.</p>
+<div class="highlight"><pre><span></span><code>Agora-KSV-2023,"Page 79, Tabelle 12",H2,No Capture,Input|Hydrogen,Output|Direct Reduced Iron,2022,#,541,,cubic_meter_H2_norm,1.1,t,"This source states 541 Nm³ of hydrogen per tonne of steel, but does not state how much DRI it assumes per steel. The conversion factor from Devlin et al, 2022 of 1.1 DRI/tSteel is therefore used."
+</code></pre></div>
+<h3 id="fields">Fields</h3>
 <p>Fields are additional columns that can help report data that varies across cases or components. Fields can currently be of type <code>case</code> or <code>component</code>.</p>
 <ul>
-<li><strong>A case field:</strong> POSTED treats these columns as different competing options for data. When data is aggregated in the select method of the NO-SL-AG framework, case fields are averaged over.</li>
-<li><strong>A component field:</strong> POSTED treats these columns as components of the same data that require summing up. When data is aggregated in the select method of the NO-SL-AG framework, component fields are simply summed up.</li>
+<li><strong>A case field:</strong> POSTED treats these columns as different competing options for data. When data is aggregated in the aggregate step of the NO-SL-AG framework, case fields are averaged over.</li>
+<li><strong>A component field:</strong> POSTED treats these columns as components of the same data that require summing up. When data is aggregated in the aggregate step of the NO-SL-AG framework, component fields are simply summed up.</li>
 </ul>
+<p>Fields may be <strong>coded</strong> or <strong>non-coded</strong>. A coded field defines a fixed set of allowed values (the codes) in the metadata file, and every cell must contain one of these codes or one of the special values below. A non-coded field accepts any text. The <code>source</code> column is a coded case field whose codes are the BibTeX identifiers in <code>sources.bib</code>. The <code>period</code> column is a non-coded case field that accepts integer years.</p>
+<p>Two fields are predefined.</p>
+<ul>
+<li><strong><code>source</code></strong> is present in every TEDF and does not need to be declared.</li>
+<li><strong><code>period</code></strong> must be declared in the metadata file if the TEDF uses it, with the entry <code>period: period</code>. TEDFs without a period column, e.g. emission factors, are permitted. If a TEDF has no <code>period</code> column, selecting by period is not possible.</li>
+</ul>
+<p>Field identifiers must not coincide with base column identifiers. Field columns may be placed anywhere in the CSV file. By convention they are placed between <code>source_detail</code> and <code>variable</code>.</p>
+<h3 id="field-cell-values">Field cell values</h3>
+<p>Every field cell must be filled. Besides a single plain value, the following entries are permitted. How they are processed when selecting data is described in the <a href="../noslag/#field-selection-and-expansion">NO-SL-AG guide</a>.</p>
+<ul>
+<li><strong>Multiple values (<code>A, B</code>)</strong> — A cell may list several comma-separated values if the entry applies equally to each of them. For example, an entry with <code>AEL, PEM</code> in a <code>subtech</code> field reports one value that holds for both alkaline and PEM electrolysis. Spaces around the commas are ignored. This is not available for the <code>source</code> column. Because the comma is the separator, individual values in a multi-value field must not contain commas themselves.</li>
+<li><strong>Asterisk (<code>*</code>)</strong> — The entry applies to all values of this field. Use it when a source reports a value without distinguishing between cases, e.g. a total plant capacity that is the same for every sub-technology, or a parameter that does not depend on the period. The asterisk is a wildcard, not a value of its own. For the <code>period</code> column it is the only permitted non-numeric entry.</li>
+<li><strong>Not specified (<code>N/S</code>)</strong> — The source does not state which value of this field the entry refers to. This differs from the asterisk. The asterisk asserts that the value holds for all cases, whereas <code>N/S</code> records that the case is unknown. It is intended for case fields, e.g. a cost figure from a report that does not mention the plant size.</li>
+<li><strong>Hash (<code>#</code>)</strong> — Only in component fields. It marks an entry that reports the total, i.e. the quantity is not subdivided into components. It is an ordinary value from the point of view of selection and aggregation. Since aggregation sums over all component values within a source and case, a quantity should be reported either as a total with <code>#</code> or itemised by component, never both, as this would double-count.</li>
+</ul>
+<p>The asterisk and <code>N/S</code> may be used in any field, including non-coded ones. For coded fields they count as allowed values in addition to the codes. When reporting data, prefer the most specific entry that the source supports: a plain value where the case is known, a comma-separated list where the value is known to hold for several cases, the asterisk where it holds for all cases, and <code>N/S</code> only where the source gives no information.</p>
+<h3 id="metadata-file">Metadata file</h3>
+<p>Each TEDF is accompanied by a YAML file with the same base name. It has up to three top-level keys.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">columns</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">subtech</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Subtechnology</span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Subtechnology</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">case</span>
+<span class="w">        </span><span class="nt">coded</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">        </span><span class="nt">codes</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">AEL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Alkaline electrolysis</span>
+<span class="w">            </span><span class="nt">PEM</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Proton-exchange membrane electrolysis</span>
+<span class="w">            </span><span class="nt">SOEC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">High-temperature solid-oxide electrolysis</span>
+<span class="w">    </span><span class="nt">size</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Plant size</span>
+<span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Total size (capacity) of the assumed plant</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">case</span>
+<span class="w">        </span><span class="nt">coded</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<span class="w">    </span><span class="nt">period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">period</span>
+<span class="nt">variables</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">predefined</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">technology</span>
+<span class="nt">mappings</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">full_load_hours</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fixed_opex_relative</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fixed_opex_specific</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">capacities_to_activities</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">activities</span>
+</code></pre></div>
+<p><strong><code>columns</code></strong> declares the additional columns of the CSV file. Each key is a column identifier. The value is either the name of a predefined column, currently only <code>period</code>, or a mapping with the following entries.</p>
+<table>
+<thead>
+<tr>
+<th>Entry</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>yes</td>
+<td><code>case</code>, <code>component</code>, or <code>comment</code>.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>yes</td>
+<td>Human-readable name of the column.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>yes</td>
+<td>Explanation of what the column distinguishes.</td>
+</tr>
+<tr>
+<td><code>coded</code></td>
+<td>for fields</td>
+<td>Whether the field only accepts the codes listed under <code>codes</code>.</td>
+</tr>
+<tr>
+<td><code>codes</code></td>
+<td>if coded</td>
+<td>Mapping of allowed codes to their descriptions.</td>
+</tr>
+</tbody>
+</table>
+<p>Columns of type <code>comment</code> are free-text columns that are carried along with the raw data but dropped during selection, like the base column <code>comment</code>. Columns in the CSV file that are not declared in the metadata are treated as comment columns and a warning is issued.</p>
+<p><strong><code>variables</code></strong> declares the variables that may appear in the <code>variable</code> and <code>reference_variable</code> columns. The entry <code>predefined</code> lists files from <code>variables/definitions/</code> (without the <code>.yaml</code> extension) whose definitions are included. The entry <code>custom</code> holds definitions written directly in the metadata file, using the same syntax as the definition files. Both may be combined, and later definitions override earlier ones with the same name.</p>
+<p><strong><code>mappings</code></strong> lists the variable mappings from <code>variables/mappings/</code> (without the <code>.py</code> extension) that are applied during selection, in the given order. Order matters when one mapping depends on the output of another. The standard order for technology TEDFs is shown above and is explained in the <a href="../noslag/#variable-mappings">NO-SL-AG</a> section.</p>
+<h2 id="variable-definitions">Variable definitions</h2>
+<p>Variable definitions describe the variables that may appear in TEDFs. They are stored as YAML mappings from variable name to attributes, either in files under <code>variables/definitions/</code> or under <code>variables: custom:</code> in a metadata file.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">CAPEX</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CAPital EXpenditure (in reference to capacity specified by reference variable)</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">capacity</span>
+<span class="w">    </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="s">"[currency]"</span>
+<span class="w">    </span><span class="nt">default_unit</span><span class="p">:</span><span class="w"> </span><span class="s">"{default</span><span class="nv"> </span><span class="s">currency}"</span>
+<span class="l l-Scalar l-Scalar-Plain">Input|?flow_type</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Input (energy or feedstock) needed</span>
+<span class="w">    </span><span class="nt">reference</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">activity</span>
+<span class="w">    </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="s">"[{flow_type_dimension}]"</span>
+<span class="w">    </span><span class="nt">default_unit</span><span class="p">:</span><span class="w"> </span><span class="s">"{flow_type_default_unit}"</span>
+<span class="nt">Lifetime</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Expected time a facility can be in production for</span>
+<span class="w">    </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="s">"[time]"</span>
+<span class="w">    </span><span class="nt">default_unit</span><span class="p">:</span><span class="w"> </span><span class="s">"a"</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>description</code></td>
+<td>Explanation of the variable.</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td>How the variable relates to a reference variable. <code>activity</code> for variables reported per unit of a flow, <code>capacity</code> for variables reported per unit of capacity, <code>intensive</code> or absent for variables without a reference. This attribute controls the harmonisation of references during selection.</td>
+</tr>
+<tr>
+<td><code>dimension</code></td>
+<td>Expected dimensionality of the unit, in <code>pint</code> notation. Documentary; not currently checked by the framework.</td>
+</tr>
+<tr>
+<td><code>default_unit</code></td>
+<td>Default unit for the variable. Documentary; the framework currently derives target units from the data as described under <a href="../units/#default-units-and-overrides">Units</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>Variable names may contain placeholders for name segments. A segment <code>?name</code> matches exactly one segment of a variable name, e.g. <code>Input|?flow_type</code> matches <code>Input|Electricity</code> and <code>Input|Hydrogen</code>. A segment <code>*name</code> matches the remainder of a variable name including further <code>|</code> separators. Placeholders allow one definition to cover a family of variables.</p>
+<p>The public database provides the definition set <code>technology</code>, which covers the variables used by technology TEDFs: <code>CAPEX</code>, <code>OPEX Fixed</code>, <code>OPEX Fixed Specific</code>, <code>OPEX Fixed Relative</code>, <code>OPEX Variable</code>, <code>Lifetime</code>, <code>OCF</code>, <code>FLH</code>, <code>Input|?flow_type</code>, <code>Output|?flow_type</code>, <code>Input Capacity|?flow_type</code>, <code>Output Capacity|?flow_type</code>, <code>Total Input Capacity|?flow_type</code>, <code>Total Output Capacity|?flow_type</code>, <code>Emissions|?emission_type</code>, <code>Capture Rate</code>, and others. The current list is in <a href="https://github.com/PhilippVerpoort/posted/blob/main/posted/database/variables/definitions/technology.yaml"><code>technology.yaml</code></a>.</p>
+<h2 id="variable-mappings">Variable mappings</h2>
+<p>Variable mappings are Python modules in <code>variables/mappings/</code>. Each module defines exactly one class derived from <code>AbstractVariableMapper</code> or <code>AbstractVariableGroupMapper</code> in <code>posted.noslag.mapping</code>. The module name is the identifier used in the <code>mappings</code> list of metadata files.</p>
+<p>A mapper implements three methods.</p>
+<ul>
+<li><code>_condition()</code> returns a boolean series marking the rows that the mapping applies to.</li>
+<li><code>_prepare_units()</code> determines unit conversion factors and registers units for variables that the mapping creates. Optional.</li>
+<li><code>_map(df, cond)</code> transforms the marked rows and returns the modified frame. For <code>AbstractVariableMapper</code> it is called once for the whole frame. For <code>AbstractVariableGroupMapper</code> it is called once per combination of field values, which allows a mapping to use other variables of the same source and case, e.g. the CAPEX belonging to a relative OPEX.</li>
+</ul>
+<p>A mapper may declare <code>_warning_types</code>, a mapping of warning identifiers to messages, and call <code>_add_warning()</code> to flag rows that could not be mapped. Such rows are reported to the user and dropped. The simplest mapping in the public database converts full-load hours into a capacity factor.</p>
+<div class="highlight"><pre><span></span><code><span class="sd">"""Convert full-load hours to operational capacity factor."""</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cet_units</span><span class="w"> </span><span class="kn">import</span> <span class="n">Q</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">posted.noslag.mapping</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractVariableMapper</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FullLoadHoursMapper</span><span class="p">(</span><span class="n">AbstractVariableMapper</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Convert full-load hours to operational capacity factor."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_df</span><span class="p">[</span><span class="s2">"variable"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"FLH"</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"OCF"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">"OCF"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"dimensionless"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_conv_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">Q</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">"FLH"</span><span class="p">])</span> <span class="o">/</span> <span class="n">Q</span><span class="p">(</span><span class="s2">"year"</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">"OCF"</span><span class="p">])</span><span class="o">.</span><span class="n">m</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">cond</span><span class="p">,</span> <span class="s2">"variable"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"OCF"</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">cond</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">]</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conv_factor</span>
+
+        <span class="k">return</span> <span class="n">df</span>
+</code></pre></div>
+<p>The mapper receives the frame with the columns <code>variable</code>, <code>reference_variable</code>, and <code>value</code>, a dictionary of target units per variable, the row groups, the patterns of activity-type and capacity-type variables, and the reference activity and reference capacity. The mappings shipped with the public database are described in the <a href="../noslag/#variable-mappings">NO-SL-AG</a> section.</p>
+<h2 id="masks">Masks</h2>
+<p>Default masks for a TEDF are stored in <code>masks/</code> under the same relative path as the TEDF, e.g. <code>masks/Tech/Electrolysis.yaml</code> for <code>tedfs/Tech/Electrolysis.csv</code>. The file holds a list of mask specifications. Each specification is passed to the constructor of <code>posted.noslag.Mask</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">where</span><span class="p">:</span><span class="w"> </span><span class="s">"variable</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'CAPEX'"</span>
+<span class="w">  </span><span class="nt">use</span><span class="p">:</span><span class="w"> </span><span class="s">"source</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">'Example-2020'"</span>
+<span class="w">  </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nan</span>
+<span class="w">  </span><span class="nt">other</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">  </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CAPEX in this source is misquoted from another publication.</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>where</code></td>
+<td>Condition or list of conditions that all rows of a group must satisfy for the mask to apply to that group.</td>
+</tr>
+<tr>
+<td><code>use</code></td>
+<td>Condition or list of conditions identifying rows that receive a weight.</td>
+</tr>
+<tr>
+<td><code>weight</code></td>
+<td>Weight or list of weights, one per <code>use</code> condition. Defaults to 1. A weight of <code>nan</code> excludes the row.</td>
+</tr>
+<tr>
+<td><code>other</code></td>
+<td>Weight for rows of the group that match none of the <code>use</code> conditions. Defaults to <code>nan</code>, i.e. such rows are excluded.</td>
+</tr>
+<tr>
+<td><code>comment</code></td>
+<td>Free-text explanation.</td>
+</tr>
+</tbody>
+</table>
+<p>Conditions are strings evaluated with <code>DataFrame.eval()</code> on the selected data, mappings of column to value that must all be equal, or callables that receive a row and return a boolean. The variable column at that stage does not include the parent variable. The semantics of masks during aggregation are described in the <a href="../noslag/#masks">NO-SL-AG</a> section.</p>
+<h2 id="sources">Sources</h2>
+<p>Sources are stored in <code>sources.bib</code> in BibTeX format. The BibTeX key is the identifier used in the <code>source</code> column of all TEDFs of the database. Keys in the public database follow the pattern <code>Author-Year</code> or <code>Institution-Acronym-Year</code>, e.g. <code>Vartiainen-2022</code> or <code>DEA-TDRF-2023</code>.</p>
+<p>The following rules are enforced by the test suite of the public database.</p>
+<ul>
+<li>Every identifier used in a TEDF must have an entry in <code>sources.bib</code>.</li>
+<li>Every entry in <code>sources.bib</code> must be used in at least one TEDF.</li>
+<li>Entries must be sorted alphabetically by key, case-insensitively.</li>
+<li>Every entry must be parseable and formattable by <code>pybtex</code>.</li>
+</ul>
+<p>In addition to standard BibTeX fields, the non-standard field <code>pdf</code> may hold a direct link to a PDF file. It is used alongside <code>doi</code> and <code>url</code> to generate the links on the <a href="../../sources/">Sources</a> page.</p>
+<p>Only one source may belong to a row of data. If the same value is reported by several sources, it is entered once per source on separate rows.</p>
 
 
 
@@ -1422,7 +1964,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.indexes", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../../assets/_markdown_exec_pyodide.js"></script>
       

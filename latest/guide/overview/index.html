@@ -14,18 +14,18 @@
         <link rel="prev" href="../..">
       
       
-        <link rel="next" href="../format/">
+        <link rel="next" href="../getting-started/">
       
       
         
       
       
       <link rel="icon" href="../../assets/logos/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.2">
     
     
       
-        <title>User Guide - POSTED Documentation</title>
+        <title>Overview - POSTED Documentation</title>
       
     
     
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#user-guide" class="md-skip">
+        <a href="#overview" class="md-skip">
           Skip to content
         </a>
       
@@ -123,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              User Guide
+              Overview
             
           </span>
         </div>
@@ -421,6 +421,16 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -547,6 +557,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design principles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#components-at-a-glance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Components at a glance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -561,6 +593,62 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -601,6 +689,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../noslag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NO-SL-AG
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../units/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Units
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../contribute/" class="md-nav__link">
         
   
@@ -609,6 +753,34 @@
     
   
     Contribute
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossary
   
 
     
@@ -1310,31 +1482,90 @@
   
 
 
-<h1 id="user-guide">User Guide</h1>
+<h1 id="overview">Overview</h1>
 <h2 id="purpose">Purpose</h2>
-<p>POSTED is aimed at researchers who want to perform techno-economic assessments or modelling exercises in the context of the energy transition, industrial ecology, climate mitigation, and related fields.</p>
-<p>Such work often relies on techno-economic parameters, i.e. a combination of technological parameters (concerning the physical performance of a technology) and economic parameters (concerning its cost of investment and operation). Other important parameters may include market prices, technology lifetimes, or emissions intensities.</p>
-<p>Such data is often compartmentalised and scattered across many sources (academic literature, grey literature, etc). Collecting this data for analysis, transparently tracing its origin, and consistently harmonising it is a cumbersome and tedious endeavour.</p>
-<p>Therefore, the POSTED database and framework aims to achieve the following.</p>
+<p>POSTED is aimed at researchers who perform techno-economic assessments or modelling exercises in the context of the energy transition, industrial ecology, climate mitigation, and related fields.</p>
+<p>Such work relies on techno-economic parameters, i.e. a combination of technological parameters (concerning the physical performance of a technology, such as energy demand or conversion efficiency) and economic parameters (concerning its cost of investment and operation). Other relevant parameters include market prices, technology lifetimes, or emission intensities.</p>
+<p>This data is compartmentalised and scattered across many sources (academic literature, grey literature, technical reports, databases of public agencies, etc). Collecting it for an analysis, tracing its origin transparently, and harmonising it consistently is a cumbersome and error-prone endeavour that is repeated by many research groups in parallel.</p>
+<p>POSTED addresses this problem with two components.</p>
 <ul>
-<li><strong>Curate a comprehensive collection of techno-economic data</strong> to alleviate researchers from performing this task manually for each analysis.</li>
+<li><strong>A public database</strong> of techno-economic data, curated as a set of techno-economic data files (TEDFs) that record values as they are reported in the original sources.</li>
+<li><strong>A Python framework</strong> that converts this raw data into harmonised, analysis-ready data in a reproducible way. The central part of this framework is the NO-SL-AG (normalise, select, aggregate) workflow.</li>
+</ul>
+<p>The POSTED database and framework aim to achieve the following.</p>
+<ul>
+<li><strong>Curate a comprehensive collection of techno-economic data</strong> to relieve researchers from performing this task manually for each analysis.</li>
 <li><strong>Store this data in a machine-readable format</strong> to ease interoperability.</li>
 <li><strong>Transparently report where original data can be found</strong> to make research and its assumptions understandable and reproducible.</li>
 <li><strong>Simplify the conversion of raw data into specific formats</strong> to ease further processing in other tools.</li>
 <li><strong>Avoid misunderstandings when storing and reading data</strong> through the development and explication of clear standards.</li>
-<li><strong>Be extendable</strong> to meet a variety of requirements by different users groups.</li>
+<li><strong>Be extendable</strong> to meet a variety of requirements by different user groups.</li>
 </ul>
 <p>In particular, POSTED aspires to comply with the <a href="https://openscience.eu/article/infrastructure/guide-fair-principles">FAIR principles</a> of research data.</p>
+<h2 id="design-principles">Design principles</h2>
+<p>Three principles shape the design of POSTED. They are explained in more detail in the <a href="../concepts/">Concepts</a> section.</p>
+<p><strong>Report data as found in the source, harmonise in code.</strong> A TEDF records each value with the unit, the reference quantity, and the period stated by the original source. No manual unit conversion, currency deflation, or rescaling takes place when data is entered. All of these transformations are performed by the framework when the data is read. This separation keeps the database transparent and auditable: every number in a TEDF can be checked against its source, and every transformation is documented in code rather than in the heads of contributors.</p>
+<p><strong>Make the structure of the data explicit.</strong> Techno-economic data varies along several dimensions: across sources, across variants of a technology (sub-technologies, plant sizes, operation modes), across time, and across sub-components of a cost or energy demand. POSTED represents each of these dimensions as a column of the TEDF with a defined type. The type determines how the framework treats the dimension when selecting and aggregating data, for instance whether values are averaged or summed.</p>
+<p><strong>Separate data collection from data judgement.</strong> Values from sources of varying quality can coexist in the database. Whether a value is used in a specific analysis is decided when the data is selected and aggregated, for instance by restricting to specific sources or by applying masks that weight or exclude entries. Contributors are not required to judge the quality of a source before adding its data.</p>
+<h2 id="components-at-a-glance">Components at a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>What it is</th>
+<th>Where to read more</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database</td>
+<td>A directory with TEDFs, their metadata, variable definitions, variable mappings, masks, and a BibTeX file of sources. POSTED ships a public database and can register private ones.</td>
+<td><a href="../format/#databases">Format</a></td>
+</tr>
+<tr>
+<td>TEDF</td>
+<td>A techno-economic data file: a CSV file plus a YAML metadata file describing one technology or one group of related variables.</td>
+<td><a href="../format/#techno-economic-data-files">Format</a></td>
+</tr>
+<tr>
+<td>Variables</td>
+<td>Named quantities such as <code>CAPEX</code> or <code>Input|Electricity</code>. Many variables are reported relative to a reference variable, e.g. CAPEX per unit of output capacity.</td>
+<td><a href="../concepts/#variables-and-reference-variables">Concepts</a></td>
+</tr>
+<tr>
+<td>Fields</td>
+<td>Additional columns that distinguish cases (competing alternatives, averaged over) and components (parts of a whole, summed up).</td>
+<td><a href="../concepts/#cases-and-components">Concepts</a></td>
+</tr>
+<tr>
+<td>NO-SL-AG</td>
+<td>The three-step workflow normalise, select, aggregate that turns raw data into harmonised data.</td>
+<td><a href="../noslag/">NO-SL-AG</a></td>
+</tr>
+<tr>
+<td>Units</td>
+<td>Unit handling, including flow-specific units and currencies with base years, via the <code>cet-units</code> package.</td>
+<td><a href="../units/">Units</a></td>
+</tr>
+<tr>
+<td>Sources</td>
+<td>Bibliographic records in BibTeX format referenced from every row of data.</td>
+<td><a href="../format/#sources">Format</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="workflow">Workflow</h2>
-<p>A typical workflow looks like this:</p>
+<p>A typical workflow looks like this.</p>
 <ol>
-<li>Find techno-economic data in a original source, e.g. an academic journal article or a technical report.</li>
-<li>Add this data to the POSTED database in its original format (unit, reference, etc). This is done by editing the <code>*.tedf</code> (techno-economic data file) files, which are simple UTF8-encoded comma-separated value (CSV) files.</li>
-<li>Use the POSTED framework to harmonise this data alongside other data (common units, reference, etc), using the <code>TEDF.normalise()</code> function.</li>
-<li>Select the specific case and/or component of the data required, e.g. a specific year, subtechnology, etc, using the <code>TEDF.select()</code> function.</li>
-<li>Aggregate data over multiple sources, cases, or components using the <code>TEDF.aggregate()</code> function.</li>
-<li>Use the resulting harmonised data as input for some further processing in other tools.</li>
+<li><strong>Find</strong> techno-economic data in an original source, e.g. an academic journal article or a technical report.</li>
+<li><strong>Record</strong> this data in a TEDF in its original form (unit, reference quantity, period, etc). TEDFs are UTF-8 encoded comma-separated value (CSV) files. See <a href="../format/">Format</a>.</li>
+<li><strong>Normalise</strong> the data alongside data from other sources to common units and reference values using <code>TEDF.normalise()</code>. See <a href="../noslag/#normalise">NO-SL-AG</a>.</li>
+<li><strong>Select</strong> the cases and components required for the analysis, e.g. a specific year or sub-technology, using <code>TEDF.select()</code>. This step also harmonises variables, e.g. by expressing all energy inputs relative to the same output. See <a href="../noslag/#select">NO-SL-AG</a>.</li>
+<li><strong>Aggregate</strong> the data over sources, cases, or components using <code>TEDF.aggregate()</code>. See <a href="../noslag/#aggregate">NO-SL-AG</a>.</li>
+<li><strong>Use</strong> the resulting harmonised data as input for further processing in other tools.</li>
 </ol>
+<p>Steps 3 to 5 build on each other: <code>select()</code> runs <code>normalise()</code> internally and <code>aggregate()</code> runs <code>select()</code> internally. Users therefore typically call only one of the three methods.</p>
+<p>For a hands-on introduction, continue with <a href="../getting-started/">Getting Started</a>. For the ideas behind the data model, continue with <a href="../concepts/">Concepts</a>.</p>
 
 
 
@@ -1397,7 +1628,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.tabs.link", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.indexes", "navigation.expand", "navigation.sections", "toc.integrate"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../../assets/_markdown_exec_pyodide.js"></script>
       
