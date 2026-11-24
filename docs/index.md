@@ -26,11 +26,19 @@ POSTED is a public database of techno-economic data on energy and climate-mitiga
 
 <div class="grid cards" markdown>
 
+-   :material-rocket-launch:{ .lg .middle } __Getting Started__
+
+    ---
+
+    Install POSTED and harmonise your first dataset.
+
+    [:octicons-arrow-right-24: Get started](guide/getting-started.md)
+
 -   :material-book-open-variant:{ .lg .middle } __User Guide__
 
     ---
 
-    Understand the basic concepts of POSTED.
+    Understand the concepts behind POSTED, the data format, and the NO-SL-AG workflow.
 
     [:octicons-arrow-right-24: Read documentation](guide/overview.md)
 

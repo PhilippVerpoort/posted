@@ -5,8 +5,13 @@ nav:
 - Home: index.md
 - User Guide:
     - Overview: guide/overview.md
+    - Getting Started: guide/getting-started.md
+    - Concepts: guide/concepts.md
     - Format: guide/format.md
+    - NO-SL-AG: guide/noslag.md
+    - Units: guide/units.md
     - Contribute: guide/contribute.md
+    - Glossary: guide/glossary.md
 - Data:
     - data/index.md
     - "data/*.ipynb"
