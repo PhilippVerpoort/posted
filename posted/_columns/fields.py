@@ -289,6 +289,25 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
         field_vals: list[int | float],
         **kwargs,
     ) -> pd.DataFrame:
+        """Select periods, interpolating and extrapolating as requested.
+
+        For each group of rows sharing identical values in all columns
+        except `col_id` and `value`, generate rows for all requested
+        periods by exactly matching observed periods, by taking the value
+        of the nearest observed period if no period is observed on one
+        side (extrapolation), or by linearly interpolating between the
+        nearest observed periods on both sides. Periods with missing
+        values count as not observed.
+
+        Rows are returned in group order, and within each group in the
+        order of the requested periods. Group key columns are returned
+        with object dtype.
+
+        The implementation pivots the data to a group-by-period matrix and
+        performs the selection with a handful of matrix operations, which
+        avoids the per-group pandas overhead of looping over groups and
+        merging per-group time series.
+        """
         # Perform a normal selection if arugment `period_mode` is NONE.
         if kwargs.get("period_mode") == PeriodMode.NONE:
             return super()._select(
@@ -298,141 +317,117 @@ class PeriodFieldDefinition(AbstractFieldDefinition):
                 **kwargs,
             )
 
-        # Group by identifying columns and select periods/generate time series
-        # get list of groupable columns.
+        period_mode = kwargs.get("period_mode")
+        extrapolate = period_mode in [
+            PeriodMode.EXTRAPOLATE,
+            PeriodMode.INTER_AND_EXTRAPOLATION,
+        ]
+        interpolate = period_mode in [
+            PeriodMode.INTERPOLATE,
+            PeriodMode.INTER_AND_EXTRAPOLATION,
+        ]
+
+        if df.empty:
+            return df
+
+        # Group by identifying columns. Group ids follow the group order of
+        # a groupby iteration; one representative row per group provides
+        # the group keys.
         group_cols = [c for c in df.columns if c not in [col_id, "value"]]
-
-        # Perform groupby and do not drop NA values.
-        grouped = df.groupby(group_cols, dropna=False)
-
-        # Create return list.
-        ret = []
-
-        # Loop over groups.
-        for keys, rows in grouped:
-            # Get rows in group.
-            rows = rows[[col_id, "value"]]
-
-            # Get a list of periods that exist
-            periods_exist = rows[col_id].unique()
-
-            # Create dataframe containing rows for all requested periods.
-            req_rows = pd.DataFrame.from_dict(
-                {
-                    f"{col_id}": field_vals,
-                    f"{col_id}_upper": [
-                        min(
-                            [ip for ip in periods_exist if ip >= p],
-                            default=np.nan,
-                        )
-                        for p in field_vals
-                    ],
-                    f"{col_id}_lower": [
-                        max(
-                            [ip for ip in periods_exist if ip <= p],
-                            default=np.nan,
-                        )
-                        for p in field_vals
-                    ],
-                }
+        group_ids = df.groupby(group_cols, dropna=False).ngroup()
+        duplicates = df.duplicated(subset=group_cols + [col_id])
+        if duplicates.any():
+            raise POSTEDException(
+                f"Duplicate {col_id} entries for one combination of "
+                "fields and variable:\n" + str(df.loc[duplicates])
             )
+        keys = (
+            df.assign(_group=group_ids)
+            .groupby("_group")
+            .head(1)
+            .set_index("_group")[group_cols]
+            .sort_index()
+            .astype(object)
+        )
+        # Use the same null value as groupby itself for missing keys.
+        keys = keys.where(keys.notna(), np.nan)
 
-            # Set missing columns from group.
-            req_rows[group_cols] = keys
+        # Pivot to a matrix with one row per group and one column per
+        # observed period. Periods with missing values count as not
+        # observed.
+        wide = df.assign(_group=group_ids).pivot(
+            index="_group", columns=col_id, values="value"
+        )
+        column_order = wide.columns.to_numpy().astype(float).argsort()
+        periods = wide.columns.to_numpy()[column_order].astype(float)
+        values = wide.to_numpy("float64")[:, column_order]
+        observed = ~np.isnan(values)
 
-            # Check case.
-            cond_match = req_rows[col_id].isin(periods_exist)
-            cond_extrapolate = (
-                req_rows[f"{col_id}_upper"].isna()
-                | req_rows[f"{col_id}_lower"].isna()
-            )
+        req = pd.Series(list(field_vals))
+        req_periods = req.astype(float).to_numpy()
+        k = len(periods)
 
-            # Match.
-            rows_match = req_rows.loc[cond_match].merge(rows, on=col_id)
+        # For each group and requested period, locate the nearest observed
+        # periods below and above. Argmax over booleans locates the first
+        # observed column, searching the reversed matrix the last one.
+        upper = np.full((len(keys), len(req_periods)), np.nan)
+        lower = np.full_like(upper, np.nan)
+        upper_col = np.full(upper.shape, -1)
+        lower_col = np.full(upper.shape, -1)
+        match = np.zeros(upper.shape, bool)
+        match_value = np.full(upper.shape, np.nan)
+        for j, period in enumerate(req_periods):
+            above = observed & (periods >= period)
+            loc = above.any(axis=1)
+            upper_col[loc, j] = above[loc].argmax(axis=1)
+            upper[loc, j] = periods[upper_col[loc, j]]
+            below = observed & (periods <= period)
+            loc = below.any(axis=1)
+            lower_col[loc, j] = k - 1 - below[loc, ::-1].argmax(axis=1)
+            lower[loc, j] = periods[lower_col[loc, j]]
+            observed_col = np.flatnonzero(periods == period)
+            if len(observed_col):
+                match[:, j] = observed[:, observed_col[0]]
+                match_value[:, j] = values[:, observed_col[0]]
 
-            # Extrapolate.
-            if kwargs.get("period_mode") in [
-                PeriodMode.EXTRAPOLATE,
-                PeriodMode.INTER_AND_EXTRAPOLATION,
-            ]:
-                rows_extrapolate = (
-                    req_rows.loc[~cond_match & cond_extrapolate]
-                    .assign(
-                        period_combined=lambda x: np.where(
-                            x.notna()[f"{col_id}_upper"],
-                            x[f"{col_id}_upper"],
-                            x[f"{col_id}_lower"],
-                        ),
-                    )
-                    .merge(
-                        rows.rename(columns={col_id: f"{col_id}_combined"}),
-                        on=f"{col_id}_combined",
-                    )
-                )
-            else:
-                rows_extrapolate = None
+        # For unobserved requested periods, take the value of the nearest
+        # observed period if no period is observed on one side
+        # (extrapolation), or linearly interpolate between the values on
+        # both sides.
+        one_sided = np.isnan(upper) | np.isnan(lower)
+        extra = ~match & one_sided
+        inter = ~match & ~one_sided
+        lower_value = np.take_along_axis(
+            values, np.clip(lower_col, 0, None), axis=1
+        )
+        upper_value = np.take_along_axis(
+            values, np.clip(upper_col, 0, None), axis=1
+        )
+        extra_value = np.where(np.isnan(upper), lower_value, upper_value)
+        with np.errstate(invalid="ignore"):
+            inter_value = lower_value + (req_periods - lower) / (
+                upper - lower
+            ) * (upper_value - lower_value)
 
-            # Interpolate.
-            if kwargs.get("period_mode") in [
-                PeriodMode.INTERPOLATE,
-                PeriodMode.INTER_AND_EXTRAPOLATION,
-            ]:
-                rows_interpolate = (
-                    req_rows.loc[~cond_match & ~cond_extrapolate]
-                    .merge(
-                        rows.rename(
-                            columns={c: f"{c}_upper" for c in rows.columns}
-                        ),
-                        on=f"{col_id}_upper",
-                    )
-                    .merge(
-                        rows.rename(
-                            columns={c: f"{c}_lower" for c in rows.columns}
-                        ),
-                        on=f"{col_id}_lower",
-                    )
-                    .assign(
-                        value=lambda row: (
-                            row["value_lower"]
-                            + (row[col_id] - row[f"{col_id}_lower"])
-                            / (row[f"{col_id}_upper"] - row[f"{col_id}_lower"])
-                            * (row["value_upper"] - row["value_lower"])
-                        )
-                    )
-                )
-            else:
-                rows_interpolate = None
-
-            # Combine into one dataframe and drop unused columns.
-            rows_append = pd.concat(
-                [
-                    rows_match,
-                    rows_extrapolate,
-                    rows_interpolate,
-                ]
-            )
-            if rows_append.empty:
-                continue
-            rows_append.drop(
-                columns=[
-                    c
-                    for c in [
-                        f"{col_id}_upper",
-                        f"{col_id}_lower",
-                        f"{col_id}_combined",
-                        "value_upper",
-                        "value_lower",
-                    ]
-                    if c in rows_append.columns
-                ],
-                inplace=True,
-            )
-
-            # add to return list
-            ret.append(rows_append)
-
-        # convert return list to dataframe and return
-        return pd.concat(ret).reset_index(drop=True) if ret else df.iloc[[]]
+        # Assemble the returned rows: per group, in group order, all
+        # requested periods that are matched, extrapolated or interpolated
+        # as permitted by `period_mode`, in the order of the requests.
+        keep = match | (extra & extrapolate) | (inter & interpolate)
+        group_idx, req_idx = np.nonzero(keep)
+        if not len(group_idx):
+            return df.iloc[[]]
+        value = np.select(
+            [match[group_idx, req_idx], extra[group_idx, req_idx]],
+            [match_value[group_idx, req_idx], extra_value[group_idx, req_idx]],
+            inter_value[group_idx, req_idx],
+        )
+        return pd.DataFrame(
+            {
+                col_id: req.to_numpy()[req_idx],
+                **{c: keys[c].to_numpy()[group_idx] for c in group_cols},
+                "value": value,
+            }
+        )
 
 
 class SourceFieldDefinition(AbstractFieldDefinition):
