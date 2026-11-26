@@ -110,12 +110,21 @@ class AbstractVariableGroupMapper(AbstractVariableMapper):
         if not cond.any():
             return self._df
         self._prepare_units()
+        # Map all groups based on the original dataframe and assign the
+        # results back in one go. Groups partition disjoint sets of rows,
+        # so mapping results neither depend on nor interfere with each
+        # other, and a single assignment avoids the repeated index
+        # alignment of one per-group assignment.
+        mapped = [
+            self._map(self._df.loc[idx], group_cond)
+            for idx in self._groups
+            if (group_cond := cond.loc[idx]).any()
+        ]
+        if not mapped:
+            return self._df
+        mapped = pd.concat(mapped)
         df = self._df.copy()
-        for idx in self._groups:
-            group_cond = cond.loc[idx]
-            if not group_cond.any():
-                continue
-            df.loc[idx] = self._map(df.loc[idx], group_cond)
+        df.loc[mapped.index] = mapped
         return df.where(cond, other=self._df)
 
 
