@@ -1,0 +1,19 @@
+columns:
+    carbon_capture:
+        name: Carbon Capture
+        description: Whether, how, and how much CO2 is captured from the process.
+        type: case
+        coded: True
+        codes:
+            w/o CC: Without carbon capture
+            w/ CC: With carbon capture
+    period: period
+variables:
+    predefined:
+        - technology
+mappings:
+    - full_load_hours
+    - fixed_opex_relative
+    - fixed_opex_specific
+    - capacities_to_activities
+    - activities
